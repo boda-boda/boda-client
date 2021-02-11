@@ -1,9 +1,10 @@
-import Layout from '../components/layout';
+import styled from 'styled-components';
+
+const Title = styled.h1`
+  color: red;
+  font-size: 50px;
+`;
 
 export default function Home() {
-  return (
-    <>
-      <Layout>여기서부터 본문 content</Layout>
-    </>
-  );
+  return <Title>My Page</Title>;
 }
