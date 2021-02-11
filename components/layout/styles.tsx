@@ -10,11 +10,17 @@ export const Layout = styled.div`
   align-items: center;
 `;
 
+export const ContentWrapper = styled.div`
+  width: 100%;
+  margin-top: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const ContentContainer = styled.div`
   width: 978px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 84px;
-  background: #00000011;
 `;
