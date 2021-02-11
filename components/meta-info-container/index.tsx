@@ -6,9 +6,5 @@ interface DefaultButtonProps {
 }
 
 export default function DefaultButtonContainter(props: DefaultButtonProps) {
-  return (
-    <>
-      <S.MetaInfoContainer>{props.content}</S.MetaInfoContainer>
-    </>
-  );
+  return <S.MetaInfoContainer>{props.content}</S.MetaInfoContainer>;
 }
