@@ -46,7 +46,7 @@ export const MenuItem = styled.div`
   position: relative;
   margin-left: 38px;
   color: white;
-  font-size: 1.6rem;
+  font-size: 16px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,15 +58,15 @@ export const MenuItem = styled.div`
 export const MenuModal = styled.div`
   position: absolute;
   width: 100%;
-  padding: 1.5rem 0;
-  top: 4rem;
+  padding: 15px 0;
+  top: 40px;
   right: 0;
   z-index: 20;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem 0 #00000022;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 #00000022;
   background-color: white;
   color: ${THEME.ACHROMATIC7};
-  font-size: 1.4rem;
+  font-size: 14px;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
@@ -74,7 +74,7 @@ export const MenuBar = styled.div`
   width: calc(100% - 20px);
   height: 1px;
   border-bottom: 1px solid ${THEME.ACHROMATIC3};
-  margin: 1rem 0;
+  margin: 10px 0;
 `;
 
 export const LoginModalLayout = styled.div`
@@ -95,7 +95,7 @@ export const LoginModal = styled.div`
   margin: 15px 0 0;
   padding: 60px 192px 70px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
-  border-radius: 1rem;
+  border-radius: 10px;
   background-color: ${THEME.ACHROMATIC1};
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
@@ -107,7 +107,7 @@ export const LoginModalInnerContent = styled.div`
 
 export const LoginModalTitle = styled.div`
   width: 100%;
-  font-size: 3.2rem;
+  font-size: 32px;
   font-weight: 500;
   text-align: center;
   color: ${THEME.ACHROMATIC8};
@@ -115,14 +115,14 @@ export const LoginModalTitle = styled.div`
 `;
 
 export const LoginModalSubtitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 16px;
   font-weight: 500;
   text-align: left;
   color: ${THEME.ACHROMATIC8};
   margin-bottom: 15px;
   span {
     font-weight: 500;
-    font-size: 1.6rem;
+    font-size: 16px;
     color: ${THEME.MAIN};
   }
 `;
@@ -133,7 +133,7 @@ export const StringInput = styled.input`
   margin: 0 0 16px;
   padding: 10px;
   border-radius: 3px;
-  font-size: 1.4rem;
+  font-size: 14px;
   color: ${THEME.ACHROMATIC8};
   outline: none;
   border: 1px solid ${THEME.ACHROMATIC3};
@@ -145,7 +145,7 @@ export const StringInput = styled.input`
 `;
 
 export const LoginModalText = styled.div`
-  font-size: 1.2rem;
+  font-size: 12px;
   margin-bottom: 15px;
   margin-top: -5px;
   color: ${THEME.ACHROMATIC7};
@@ -166,12 +166,12 @@ export const LoginModalButton = styled.button`
   border: none;
   outline: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 14px;
   background-color: ${THEME.MAIN};
 `;
 
 export const LoginSaveLabel = styled.label`
-  font-size: 1.4rem;
+  font-size: 14px;
   color: ${THEME.ACHROMATIC7};
   margin-left: 5px;
 `;

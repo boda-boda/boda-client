@@ -18,10 +18,10 @@ export const InnerContent = styled.div`
 `;
 
 export const Text = styled.div`
-  font-size: 1.4rem;
+  font-size: 14px;
   line-height: 1.71;
   span {
-    font-size: 1.4rem;
+    font-size: 14px;
     font-weight: 600;
   }
 `;
