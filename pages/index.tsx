@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Layout from '../components/layout';
 
 const Title = styled.h1`
   color: red;
@@ -6,5 +7,14 @@ const Title = styled.h1`
 `;
 
 export default function Home() {
-  return <Title>My Page</Title>;
+  return (
+    <Layout>
+      <Title>My Page</Title>
+      <Title>My Page</Title>
+      <Title>My Page</Title>
+      <Title>My Page</Title>
+      <Title>My Page</Title>
+      <Title>My Page</Title>
+    </Layout>
+  );
 }
