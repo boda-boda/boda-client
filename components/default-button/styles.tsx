@@ -17,4 +17,5 @@ export const DefaultButton = styled.div<DefaultButtonProps>`
   font-size: ${(props) => (props.size == 'Large' ? '16px' : '14px')};
   padding: ${(props) => (props.size == 'Large' ? '16px 59px' : '11px 15px')};
   ${FLEX_ROW_CENTER_CENTER}
+  cursor: pointer;
 `;
