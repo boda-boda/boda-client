@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function Etc(props: any) {
+export default function EtcSVG(props: any) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

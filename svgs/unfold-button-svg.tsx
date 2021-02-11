@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function UnfoldButton(props: any) {
+export default function UnfoldButtonSVG(props: any) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 30 30" {...props}>
       <path fill="#7131b7" d="M0 0h30v30H0z" />

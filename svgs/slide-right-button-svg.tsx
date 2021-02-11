@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function SlideRightButton(props: any) {
+export default function SlideRightButtonSVG(props: any) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={50} height={50} viewBox="0 0 50 50" {...props}>
       <path fill="#001d36" d="M0 0h50v50H0z" opacity={0.25} />

@@ -12,6 +12,8 @@ export const THEME = {
   ACHROMATIC6: '#868593',
   ACHROMATIC7: '#4e515c',
   ACHROMATIC8: '#001d36',
+  BORDER_GREY: '#c4c4c4',
+  FONT_COLOR_GREY: '#4e515c',
 };
 
 export const FLEX_ROW_CENTER_CENTER = `
