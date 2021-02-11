@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function SmallTextButton(props: any) {
+export default function SmallTextButtonSVG(props: any) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={100} height={36} viewBox="0 0 100 36" {...props}>
       <g fill="none" stroke="#8d44df">
