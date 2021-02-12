@@ -14,7 +14,7 @@ export default function Layout({ children }: LayoutProps) {
       <S.Layout>
         <Header />
         <S.ContentWrapper>
-          <Banner />
+          <Banner bannerStyle="ad" />
           <S.ContentContainer>{children}</S.ContentContainer>
         </S.ContentWrapper>
         <Footer />

@@ -21,6 +21,13 @@ export const FLEX_ROW_CENTER_CENTER = `
   align-items:center;
 `;
 
+export const FLEX_ROW_CENTER_END = `
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:flex-end;
+`;
+
 export const FLEX_COLUMN_CENTER_START = `
   display:flex;
   flex-direction:column;
