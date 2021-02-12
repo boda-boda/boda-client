@@ -5,6 +5,7 @@ export default function Banner() {
   return (
     <>
       <S.Banner>
+        <S.BackgroundImage />
         <S.InnerContentContainer>
           <S.InnerContent></S.InnerContent>
         </S.InnerContentContainer>

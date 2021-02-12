@@ -53,6 +53,7 @@ export const MenuItem = styled.div`
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
+  cursor: pointer;
 `;
 
 export const MenuModal = styled.div`
@@ -111,7 +112,7 @@ export const LoginModalTitle = styled.div`
   font-weight: 500;
   text-align: center;
   color: ${THEME.ACHROMATIC8};
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 export const LoginModalSubtitle = styled.div`
@@ -168,6 +169,7 @@ export const LoginModalButton = styled.button`
   color: white;
   font-size: 14px;
   background-color: ${THEME.MAIN};
+  cursor: pointer;
 `;
 
 export const LoginSaveLabel = styled.label`
