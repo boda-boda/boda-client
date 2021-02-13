@@ -5,6 +5,7 @@ import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
+import MinusIconSVG from '../../svgs/minus-icon-svg';
 
 interface CgListProps {
   isAll: boolean;
@@ -12,7 +13,9 @@ interface CgListProps {
 
 export default function CgList({ isAll }: CgListProps) {
   const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-  const [selectedDay, setSelectedDay] = useState([false, false, false, false, false, false, false]);
+  const [selectedDayList, setSelectedDayList] = useState([
+    [false, false, false, false, false, false, false],
+  ]);
   const careInfoList = [
     '석션',
     '휠체어',
@@ -81,45 +84,73 @@ export default function CgList({ isAll }: CgListProps) {
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td>
-                    <S.TdFlexBox style={{ justifyContent: 'space-between' }}>
-                      <S.TdFlexBox>
-                        {dayList.map((item, index) => {
-                          return (
-                            <S.ToggleButton
-                              isSelected={selectedDay[index]}
-                              onClick={() => {
-                                setSelectedDay((selectedDay) =>
-                                  selectedDay.map((item, i) => {
-                                    if (index === i) return !item;
-                                    return item;
-                                  })
+                  <td style={{ padding: 0 }}>
+                    {selectedDayList.map((list, index) => {
+                      return (
+                        <>
+                          <S.TimeSelectContainer isLast={selectedDayList.length - 1 === index}>
+                            <S.TdFlexBox>
+                              {dayList.map((item, day) => {
+                                return (
+                                  <S.ToggleButton
+                                    isSelected={selectedDayList[index][day]}
+                                    onClick={() => {
+                                      setSelectedDayList((selectedDayList) =>
+                                        selectedDayList.map((list, listIndex) => {
+                                          if (index !== listIndex) return list;
+                                          return list.map((item, i) => {
+                                            if (day === i) return !item;
+                                            return item;
+                                          });
+                                        })
+                                      );
+                                    }}
+                                    key={`dayListItem-${day}`}
+                                    style={{ width: '36px', padding: 0 }}
+                                  >
+                                    {item}
+                                  </S.ToggleButton>
                                 );
-                              }}
-                              key={`dayListItem-${index}`}
-                              style={{ width: '36px', padding: 0 }}
-                            >
-                              {item}
-                            </S.ToggleButton>
-                          );
-                        })}
-                      </S.TdFlexBox>
-                      <S.TdFlexBox>
-                        <S.ClockSelect>
-                          00:00
-                          <TimeInput />
-                        </S.ClockSelect>
-                        부터
-                        <S.ClockSelect>
-                          00:00
-                          <TimeInput />
-                        </S.ClockSelect>
-                        까지
-                      </S.TdFlexBox>
-                      <S.AddButton>
-                        <PlusIconSVG />
-                      </S.AddButton>
-                    </S.TdFlexBox>
+                              })}
+                            </S.TdFlexBox>
+                            <S.TdFlexBox>
+                              <S.ClockSelect>
+                                00:00
+                                <TimeInput />
+                              </S.ClockSelect>
+                              부터
+                              <S.ClockSelect>
+                                00:00
+                                <TimeInput />
+                              </S.ClockSelect>
+                              까지
+                            </S.TdFlexBox>
+                            {selectedDayList.length - 1 === index ? (
+                              <S.AddButton
+                                onClick={() => {
+                                  setSelectedDayList([
+                                    ...selectedDayList,
+                                    [false, false, false, false, false, false, false],
+                                  ]);
+                                }}
+                              >
+                                <PlusIconSVG />
+                              </S.AddButton>
+                            ) : (
+                              <S.AddButton
+                                onClick={() => {
+                                  setSelectedDayList((list) =>
+                                    list.filter((item, i) => i !== index)
+                                  );
+                                }}
+                              >
+                                <MinusIconSVG />
+                              </S.AddButton>
+                            )}
+                          </S.TimeSelectContainer>
+                        </>
+                      );
+                    })}
                   </td>
                 </tr>
                 <tr>

@@ -41,6 +41,16 @@ export const SectionTitle = styled.div`
   color: ${THEME.ACHROMATIC8};
 `;
 
+interface TimeSeleceContainerProps {
+  isLast: boolean;
+}
+
+export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
+  ${FLEX_ROW_SPACE_CENTER};
+  padding: 12px;
+  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.ACHROMATIC4}`)};
+`;
+
 export const FilterTable = styled.table`
   width: 100%;
   margin-top: 24px;
@@ -48,13 +58,13 @@ export const FilterTable = styled.table`
   border-collapse: collapse;
   th,
   td {
-    height: 60px;
     border-bottom: 1px solid ${THEME.ACHROMATIC4};
     padding: 12px;
     color: ${THEME.ACHROMATIC8};
     font-size: 14px;
     font-weight: 500;
     text-align: left;
+    vertical-align: text-top;
   }
   th {
     width: 84px;
@@ -104,6 +114,7 @@ export const ClockSelect = styled.div`
   width: 120px;
   height: 36px;
   padding: 0 0 0 15px;
+  color: ${THEME.ACHROMATIC7};
   ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
   border: 1px solid ${THEME.ACHROMATIC4};
