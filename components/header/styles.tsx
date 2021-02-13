@@ -173,6 +173,8 @@ export const LoginModalButton = styled.button`
 `;
 
 export const LoginSaveLabel = styled.label`
+  position: relative;
+  top: -1.5px;
   font-size: 14px;
   color: ${THEME.ACHROMATIC7};
   margin-left: 5px;
