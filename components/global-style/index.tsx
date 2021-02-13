@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Noto Sans KR', sans-serif; 
     font-weight: 400;
-    font-size: 10px;
+    font-size: 14px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     box-sizing: border-box;
