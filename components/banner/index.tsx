@@ -28,7 +28,7 @@ export default function Banner({ bannerStyle, title, subtitle }: BannerProps) {
     <>
       <S.Banner bannerStyle={bannerStyle}>
         <S.BackgroundImage url={adImage[bgIndex]} />
-        {bannerStyle === 'SECTION' ? (
+        {bannerStyle === BannerStyleType.SECTION ? (
           <>
             <S.InnerContentContainer>
               <S.InnerContent>

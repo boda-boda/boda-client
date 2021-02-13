@@ -1,4 +1,5 @@
 import React, { ReactChild } from 'react';
+import { BannerStyleType } from '../../common/types';
 import Banner from '../banner';
 import Footer from '../footer';
 import Header from '../header';
@@ -14,7 +15,7 @@ export default function Layout({ children }: LayoutProps) {
       <S.Layout>
         <Header />
         <S.ContentWrapper>
-          <Banner bannerStyle="AD" />
+          <Banner bannerStyle={BannerStyleType.AD} />
           <S.ContentContainer>{children}</S.ContentContainer>
         </S.ContentWrapper>
         <Footer />
