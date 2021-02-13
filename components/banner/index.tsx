@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { BannerStyleType } from '../../common/types';
 import * as S from './styles';
 
 interface BannerProps {
-  bannerStyle: string;
+  bannerStyle: BannerStyleType;
   title?: string;
   subtitle?: string;
 }
@@ -27,7 +28,7 @@ export default function Banner({ bannerStyle, title, subtitle }: BannerProps) {
         <S.BackgroundImage url={adImage[bgIndex]} />
         <S.InnerContentContainer>
           <S.InnerContent>
-            {bannerStyle === 'section' ? (
+            {bannerStyle === 'SECTION' ? (
               <>
                 <S.Title>{title}</S.Title>
                 <S.SubTitle>{subtitle}</S.SubTitle>
