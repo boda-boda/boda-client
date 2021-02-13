@@ -18,7 +18,7 @@ export default function Layout({ children }: LayoutProps) {
         <S.ContentWrapper>
           <Banner bannerStyle={BannerStyleType.AD} />
           <Category list={['홈', '인생', '라이프라이프']} />
-          <S.ContentContainer>{children}</S.ContentContainer>
+          {children}
         </S.ContentWrapper>
         <Footer />
       </S.Layout>
