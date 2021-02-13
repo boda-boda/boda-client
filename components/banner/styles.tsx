@@ -13,7 +13,7 @@ interface BannerProps {
 
 export const Banner = styled.div<BannerProps>`
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: ${(props) => (props.bannerStyle === 'section' ? '200px' : '404px')};
   background: ${THEME.LIGHTPURPLE};
 `;
