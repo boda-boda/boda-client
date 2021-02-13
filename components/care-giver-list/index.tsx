@@ -7,11 +7,11 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 
-interface CgListProps {
+interface CareGiverListProps {
   isAll: boolean;
 }
 
-export default function CgList({ isAll }: CgListProps) {
+export default function CareGiverList({ isAll }: CareGiverListProps) {
   const dayList = ['월', '화', '수', '목', '금', '토', '일'];
   const [selectedDayList, setSelectedDayList] = useState([
     [false, false, false, false, false, false, false],

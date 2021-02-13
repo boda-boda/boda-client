@@ -2,7 +2,7 @@ import * as S from './styles';
 import Layout from '../../components/layout';
 import Banner from '../../components/banner';
 import { BannerStyleType } from '../../common/types';
-import CgList from '../../components/cg-list';
+import CareGiverList from '../../components/care-giver-list';
 
 export default function Main() {
   return (
@@ -10,7 +10,7 @@ export default function Main() {
       <>
         <Banner bannerStyle={BannerStyleType.AD} />
         <S.Main>
-          <CgList isAll={false} />
+          <CareGiverList isAll={false} />
         </S.Main>
       </>
     </Layout>
