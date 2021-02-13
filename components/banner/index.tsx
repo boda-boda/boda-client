@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BannerStyleType } from '../../common/types';
+import SlideLeftButton from '../../svgs/slide-left-button-svg';
+import SlideRightButton from '../../svgs/slide-right-button-svg';
 import * as S from './styles';
 
 interface BannerProps {
@@ -26,30 +28,38 @@ export default function Banner({ bannerStyle, title, subtitle }: BannerProps) {
     <>
       <S.Banner bannerStyle={bannerStyle}>
         <S.BackgroundImage url={adImage[bgIndex]} />
-        <S.InnerContentContainer>
-          <S.InnerContent>
-            {bannerStyle === 'SECTION' ? (
-              <>
+        {bannerStyle === 'SECTION' ? (
+          <>
+            <S.InnerContentContainer>
+              <S.InnerContent>
                 <S.Title>{title}</S.Title>
                 <S.SubTitle>{subtitle}</S.SubTitle>
-              </>
-            ) : (
-              <>
-                <S.IndicatorContainer>
-                  {adImage.map((item, index) => {
-                    return (
-                      <div key={`indicator-${index}`}>
-                        <S.IndicatorWrapper onClick={() => setBgIndex(index)}>
-                          <S.Indicator mark={index === bgIndex} />
-                        </S.IndicatorWrapper>
-                      </div>
-                    );
-                  })}
-                </S.IndicatorContainer>
-              </>
-            )}
-          </S.InnerContent>
-        </S.InnerContentContainer>
+              </S.InnerContent>
+            </S.InnerContentContainer>
+          </>
+        ) : (
+          <>
+            <S.ButtonContainer>
+              <S.ButtonDiv onClick={() => setBgIndex((bgIndex + 2) % adImage.length)}>
+                <SlideLeftButton />
+              </S.ButtonDiv>
+              <S.ButtonDiv onClick={() => setBgIndex((bgIndex + 1) % adImage.length)}>
+                <SlideRightButton />
+              </S.ButtonDiv>
+            </S.ButtonContainer>
+            <S.IndicatorContainer>
+              {adImage.map((item, index) => {
+                return (
+                  <div key={`indicator-${index}`}>
+                    <S.IndicatorWrapper onClick={() => setBgIndex(index)}>
+                      <S.Indicator mark={index === bgIndex} />
+                    </S.IndicatorWrapper>
+                  </div>
+                );
+              })}
+            </S.IndicatorContainer>
+          </>
+        )}
       </S.Banner>
     </>
   );

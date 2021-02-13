@@ -13,7 +13,7 @@ interface BannerProps {
 
 export const Banner = styled.div<BannerProps>`
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: ${(props) => (props.bannerStyle === 'section' ? '200px' : '404px')};
   background: ${THEME.LIGHTPURPLE};
 `;
@@ -57,10 +57,32 @@ export const SubTitle = styled.div`
   margin-top: 20px;
 `;
 
+export const ButtonContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  ${FLEX_ROW_CENTER_CENTER};
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+`;
+
+export const ButtonDiv = styled.div`
+  width: 50px;
+  height: 50px;
+  opacity: 0.25;
+  background-color: ${THEME.ACHROMATIC8};
+  cursor: pointer;
+`;
+
 export const IndicatorContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   ${FLEX_ROW_CENTER_END};
   width: 100%;
   height: 100%;
+  pointer-events: none;
 `;
 
 interface IndicatorProps {
@@ -73,6 +95,7 @@ export const IndicatorWrapper = styled.div`
   height: 14px;
   margin: 35px 4px;
   cursor: pointer;
+  pointer-events: all;
 `;
 
 export const Indicator = styled.div<IndicatorProps>`
