@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FLEX_ROW_START_CENTER, THEME } from '../../constant';
+import { CONTENT_WIDTH, FLEX_ROW_START_CENTER, THEME } from '../../constant';
 
 export const Category = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ export const Category = styled.div`
 `;
 
 export const InnerContent = styled.div`
-  width: 978px;
+  width: ${CONTENT_WIDTH}px;
   height: 100%;
   color: ${THEME.ACHROMATIC4};
   ${FLEX_ROW_START_CENTER};

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_CENTER_END,
@@ -30,7 +31,7 @@ export const InnerContentContainer = styled.div`
 `;
 
 export const InnerContent = styled.div`
-  width: 978px;
+  width: ${CONTENT_WIDTH}px;
   height: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;

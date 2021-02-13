@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FLEX_COLUMN_CENTER_START, THEME } from '../../constant';
+import { CONTENT_WIDTH, FLEX_COLUMN_CENTER_START, THEME } from '../../constant';
 
 export const Footer = styled.div`
   width: 100%;
@@ -11,7 +11,7 @@ export const Footer = styled.div`
 `;
 
 export const InnerContent = styled.div`
-  width: 978px;
+  width: ${CONTENT_WIDTH}px;
   height: 100%;
   color: ${THEME.ACHROMATIC4};
   ${FLEX_COLUMN_CENTER_START};

@@ -4,6 +4,7 @@ import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_ROW_END_START,
   FLEX_COLUMN_CENTER_START,
+  CONTENT_WIDTH,
 } from '../../constant';
 
 export const Header = styled.div`
@@ -20,7 +21,7 @@ export const Header = styled.div`
 `;
 
 export const InnerContent = styled.div`
-  width: 978px;
+  width: ${CONTENT_WIDTH}px;
   height: 100%;
   display: flex;
   flex-direction: row;

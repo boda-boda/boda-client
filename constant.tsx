@@ -1,3 +1,5 @@
+export const CONTENT_WIDTH = 978;
+
 export const THEME = {
   MAIN: '#7131b7',
   RED: '#dc3545',
