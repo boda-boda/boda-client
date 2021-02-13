@@ -103,12 +103,24 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
 export const ClockSelect = styled.div`
   width: 120px;
   height: 36px;
+  padding: 0 0 0 15px;
+  ${FLEX_ROW_SPACE_CENTER};
+  border-radius: 3px;
+  border: 1px solid ${THEME.ACHROMATIC4};
   margin-right: 10px;
   margin-left: 20px;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 `;
 
 export const AddButton = styled.div`
+  width: 36px;
   height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  border-radius: 3px;
+  border: 1px solid ${THEME.ACHROMATIC4};
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
