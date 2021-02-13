@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_ROW_CENTER_CENTER,
