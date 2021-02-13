@@ -72,7 +72,14 @@ export default function Header() {
                 )}
               </S.MenuItem>
             ) : (
-              <S.MenuItem onClick={() => setIsLoginModalOn(true)}>로그인 / 이용 신청</S.MenuItem>
+              <S.MenuItem
+                onClick={() => {
+                  setIsLoginModalOn(true);
+                  handleMenuClick(-1);
+                }}
+              >
+                로그인 / 이용 신청
+              </S.MenuItem>
             )}
           </S.MenuList>
         </S.InnerContent>
