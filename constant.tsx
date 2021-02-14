@@ -1,3 +1,5 @@
+export const CONTENT_WIDTH = 978;
+
 export const THEME = {
   MAIN: '#7131b7',
   RED: '#dc3545',
@@ -21,6 +23,13 @@ export const FLEX_ROW_CENTER_CENTER = `
   flex-direction:row;
   justify-content:center;
   align-items:center;
+`;
+
+export const FLEX_ROW_CENTER_END = `
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:flex-end;
 `;
 
 export const FLEX_COLUMN_CENTER_START = `

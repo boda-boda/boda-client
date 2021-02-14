@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { THEME } from '../../constant';
 import ArrowDown from '../../svgs/arrow-down-svg';
+import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
 import * as S from './styles';
 
@@ -26,40 +27,59 @@ export default function Header() {
           <S.MenuList>
             <S.MenuItem onClick={() => handleMenuClick(0)}>
               신규 요양보호사 추가
-              <ArrowDown />
-              {isMenuModalOn[0] && (
-                <S.MenuModal>
-                  요양보호사 검색
-                  <S.MenuBar />
-                  보낸 제안서 목록
-                </S.MenuModal>
+              {isMenuModalOn[0] ? (
+                <>
+                  <ArrowUp />
+                  <S.MenuModal>
+                    요양보호사 검색
+                    <S.MenuBar />
+                    보낸 제안서 목록
+                  </S.MenuModal>
+                </>
+              ) : (
+                <ArrowDown />
               )}
             </S.MenuItem>
             <S.MenuItem onClick={() => handleMenuClick(1)}>
               나의 요양보호사 관리
-              <ArrowDown />
-              {isMenuModalOn[1] && (
-                <S.MenuModal>
-                  요양보호사 목록
-                  <S.MenuBar />
-                  요양보호사 추가
-                </S.MenuModal>
+              {isMenuModalOn[1] ? (
+                <>
+                  <ArrowUp />
+                  <S.MenuModal>
+                    요양보호사 목록
+                    <S.MenuBar />
+                    요양보호사 추가
+                  </S.MenuModal>
+                </>
+              ) : (
+                <ArrowDown />
               )}
             </S.MenuItem>
             {isLogined ? (
               <S.MenuItem onClick={() => handleMenuClick(2)}>
                 나의 센터 정보
-                <ArrowDown />
-                {isMenuModalOn[2] && (
-                  <S.MenuModal>
-                    나의 센터 정보
-                    <S.MenuBar />
-                    수급자 관리
-                  </S.MenuModal>
+                {isMenuModalOn[1] ? (
+                  <>
+                    <ArrowUp />
+                    <S.MenuModal>
+                      나의 센터 정보
+                      <S.MenuBar />
+                      수급자 관리
+                    </S.MenuModal>
+                  </>
+                ) : (
+                  <ArrowDown />
                 )}
               </S.MenuItem>
             ) : (
-              <S.MenuItem onClick={() => setIsLoginModalOn(true)}>로그인 / 이용 신청</S.MenuItem>
+              <S.MenuItem
+                onClick={() => {
+                  setIsLoginModalOn(true);
+                  handleMenuClick(-1);
+                }}
+              >
+                로그인 / 이용 신청
+              </S.MenuItem>
             )}
           </S.MenuList>
         </S.InnerContent>
@@ -67,7 +87,7 @@ export default function Header() {
           <S.LoginModalLayout>
             <S.LoginModal>
               <CloseIconSVG
-                style={{ position: 'absolute', top: '-40px', right: 0 }}
+                style={{ position: 'absolute', top: '20px', right: '20px', cursor: 'pointer' }}
                 onClick={() => setIsLoginModalOn(false)}
               />
               <S.LoginModalInnerContent>

@@ -4,6 +4,7 @@ import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_ROW_END_START,
   FLEX_COLUMN_CENTER_START,
+  CONTENT_WIDTH,
 } from '../../constant';
 
 export const Header = styled.div`
@@ -20,7 +21,7 @@ export const Header = styled.div`
 `;
 
 export const InnerContent = styled.div`
-  width: 978px;
+  width: ${CONTENT_WIDTH}px;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -53,6 +54,7 @@ export const MenuItem = styled.div`
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
+  cursor: pointer;
 `;
 
 export const MenuModal = styled.div`
@@ -111,7 +113,7 @@ export const LoginModalTitle = styled.div`
   font-weight: 500;
   text-align: center;
   color: ${THEME.ACHROMATIC8};
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 `;
 
 export const LoginModalSubtitle = styled.div`
@@ -168,9 +170,12 @@ export const LoginModalButton = styled.button`
   color: white;
   font-size: 14px;
   background-color: ${THEME.MAIN};
+  cursor: pointer;
 `;
 
 export const LoginSaveLabel = styled.label`
+  position: relative;
+  top: -1.5px;
   font-size: 14px;
   color: ${THEME.ACHROMATIC7};
   margin-left: 5px;

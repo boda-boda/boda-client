@@ -17,10 +17,3 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-export const ContentContainer = styled.div`
-  width: 978px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
