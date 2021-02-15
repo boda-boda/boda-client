@@ -67,7 +67,7 @@ export const MenuModal = styled.div`
   border-radius: 5px;
   box-shadow: 0 0 10px 0 #00000022;
   background-color: white;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
   font-size: 14px;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
@@ -150,13 +150,13 @@ export const LoginModalText = styled.div`
   font-size: 12px;
   margin-bottom: 15px;
   margin-top: -5px;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const LoginModalBar = styled.div`
   width: 100%;
   height: 1px;
-  border-bottom: 1px solid ${THEME.GREY_LINE};
+  border-bottom: 1px solid ${THEME.GRAY_LINE};
   margin: 40px 0;
 `;
 
@@ -177,6 +177,6 @@ export const LoginSaveLabel = styled.label`
   position: relative;
   top: -1.5px;
   font-size: 14px;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
   margin-left: 5px;
 `;

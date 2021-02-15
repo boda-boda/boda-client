@@ -31,7 +31,7 @@ export const Section = styled.div<SectionProps>`
 export const InnerContent = styled.div`
   width: ${CONTENT_WIDTH}px;
   height: 100%;
-  color: ${THEME.GREY_LINE};
+  color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
 `;
 
@@ -48,7 +48,7 @@ interface TimeSeleceContainerProps {
 export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
   ${FLEX_ROW_SPACE_CENTER};
   padding: 12px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GREY_LINE}`)};
+  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
 `;
 
 export const FilterTable = styled.table`
@@ -58,7 +58,7 @@ export const FilterTable = styled.table`
   border-collapse: collapse;
   th,
   td {
-    border-bottom: 1px solid ${THEME.GREY_LINE};
+    border-bottom: 1px solid ${THEME.GRAY_LINE};
     padding: 12px;
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-size: 14px;
@@ -83,10 +83,10 @@ export const DropDown = styled.select`
   margin-right: 10px;
   border-radius: 3px;
   outline: none;
-  border: 1px solid ${THEME.GREY_LINE};
-  color: ${THEME.GREY_FONT};
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
   option {
-    color: ${THEME.GREY_FONT};
+    color: ${THEME.GRAY_FONT};
   }
 `;
 
@@ -101,8 +101,8 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   border-radius: 3px;
   background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
   border: ${(props) =>
-    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GREY_LINE}`};
-  color: ${(props) => (props.isSelected ? 'white' : THEME.GREY_FONT)};
+    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GRAY_LINE}`};
+  color: ${(props) => (props.isSelected ? 'white' : THEME.GRAY_FONT)};
   ${FLEX_ROW_CENTER_CENTER};
   user-select: none;
   -ms-user-select: none;
@@ -114,10 +114,10 @@ export const ClockSelect = styled.div`
   width: 120px;
   height: 36px;
   padding: 0 0 0 15px;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
   ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
-  border: 1px solid ${THEME.GREY_LINE};
+  border: 1px solid ${THEME.GRAY_LINE};
   margin-right: 10px;
   margin-left: 20px;
   user-select: none;
@@ -131,7 +131,7 @@ export const AddButton = styled.div`
   height: 36px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
-  border: 1px solid ${THEME.GREY_LINE};
+  border: 1px solid ${THEME.GRAY_LINE};
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -211,7 +211,7 @@ export const Time = styled.div`
   right: 25px;
   top: 25px;
   font-size: 12px;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const InfoTable = styled.table`
@@ -233,7 +233,7 @@ export const InfoTable = styled.table`
   }
   td {
     text-align: left;
-    color: ${THEME.GREY_FONT};
+    color: ${THEME.GRAY_FONT};
   }
 `;
 
@@ -244,9 +244,9 @@ export const SVGIconBox = styled.div`
 export const InfoItem = styled.div`
   height: 19px;
   border-radius: 3px;
-  border: 1px solid ${THEME.GREY_LINE};
+  border: 1px solid ${THEME.GRAY_LINE};
   font-size: 11px;
-  color: ${THEME.GREY_FONT};
+  color: ${THEME.GRAY_FONT};
   margin-right: 5px;
   padding: 0 5px;
   ${FLEX_ROW_CENTER_CENTER};

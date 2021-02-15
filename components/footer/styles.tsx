@@ -13,7 +13,7 @@ export const Footer = styled.div`
 export const InnerContent = styled.div`
   width: ${CONTENT_WIDTH}px;
   height: 100%;
-  color: ${THEME.GREY_LINE};
+  color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
 `;
 
@@ -29,6 +29,6 @@ export const Text = styled.div`
 export const FooterBar = styled.div`
   width: 100%;
   height: 1px;
-  border-bottom: 1px solid ${THEME.GREY_LINE};
+  border-bottom: 1px solid ${THEME.GRAY_LINE};
   margin: 20px 0;
 `;
