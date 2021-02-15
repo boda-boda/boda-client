@@ -19,7 +19,7 @@ export default function MyCenterPage() {
       <>
         <Banner
           bannerStyle={BannerStyleType.SECTION}
-          sectionIndex={1}
+          sectionIndex={2}
           title="나의 센터 정보"
           subtitle="우리 센터 정보를 등록할 수 있습니다."
         />
