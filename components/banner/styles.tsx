@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BannerStyleType } from '../../common/types';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
@@ -8,14 +9,14 @@ import {
 } from '../../constant';
 
 interface BannerProps {
-  bannerStyle?: string;
+  bannerStyle?: BannerStyleType;
   url?: string;
 }
 
 export const Banner = styled.div<BannerProps>`
   position: relative;
   width: 100%;
-  height: ${(props) => (props.bannerStyle === 'section' ? '200px' : '404px')};
+  height: ${(props) => (props.bannerStyle === BannerStyleType.SECTION ? '200px' : '404px')};
   background: ${THEME.HEADER_BACKGROUND};
 `;
 
@@ -52,10 +53,14 @@ export const Title = styled.div`
 `;
 
 export const SubTitle = styled.div`
-  font-weight: 400;
-  font-size: 16px;
-  color: white;
-  margin-top: 20px;
+  text-align: center;
+  margin-top: 10px;
+  span {
+    font-weight: 300;
+    font-size: 16px;
+    color: white;
+    line-height: 1.69;
+  }
 `;
 
 export const ButtonContainer = styled.div`
