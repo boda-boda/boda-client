@@ -8,10 +8,10 @@ import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 
 interface CareGiverListProps {
-  isAll: boolean;
+  isMine: boolean;
 }
 
-export default function CareGiverList({ isAll }: CareGiverListProps) {
+export default function CareGiverList({ isMine }: CareGiverListProps) {
   const dayList = ['월', '화', '수', '목', '금', '토', '일'];
   const [selectedDayList, setSelectedDayList] = useState([
     [false, false, false, false, false, false, false],

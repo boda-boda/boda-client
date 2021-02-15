@@ -5,7 +5,7 @@ import CareGiverDetail from '../../components/care-giver-detail';
 import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 
-export default function CareGiverDetailPage() {
+export default function CareGiverDetailView() {
   return (
     <Layout>
       <>

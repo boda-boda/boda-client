@@ -7,7 +7,7 @@ import SlideLeftButtonSVG from '../../svgs/slide-left-button-svg';
 import SlideRightButtonSVG from '../../svgs/slide-right-button-svg';
 import { useState } from 'react';
 
-export default function MyCenterPage() {
+export default function MyCenterView() {
   const centerImage = [
     'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg',
     'https://icatcare.org/app/uploads/2018/06/Layer-1704-1200x630.jpg',

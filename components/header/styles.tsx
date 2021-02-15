@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import {
   THEME,
   FLEX_COLUMN_CENTER_CENTER,
@@ -30,12 +31,12 @@ export const InnerContent = styled.div`
 `;
 
 export const Logo = styled.div`
-  width: 88px;
+  width: 100px;
   height: 45px;
 `;
 
 export const LogoImg = styled.img`
-  width: 100%;
+  width: auto;
   height: 100%;
 `;
 
@@ -179,4 +180,9 @@ export const LoginSaveLabel = styled.label`
   font-size: 14px;
   color: ${THEME.GRAY_FONT};
   margin-left: 5px;
+`;
+
+export const StyledLink = styled.a`
+  color: ${THEME.GRAY_FONT};
+  text-decoration: none;
 `;
