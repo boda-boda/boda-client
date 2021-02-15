@@ -25,20 +25,20 @@ export const Section = styled.div<SectionProps>`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
   padding: 60px 0;
-  background: ${(props) => (props.isBackgroundColored ? THEME.ACHROMATIC2 : 'white')};
+  background: ${(props) => (props.isBackgroundColored ? THEME.BACKGROUND : 'white')};
 `;
 
 export const InnerContent = styled.div`
   width: ${CONTENT_WIDTH}px;
   height: 100%;
-  color: ${THEME.ACHROMATIC4};
+  color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
 `;
 
 export const SectionTitle = styled.div`
   font-size: 22px;
   font-weight: 500;
-  color: ${THEME.ACHROMATIC8};
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
 interface TimeSeleceContainerProps {
@@ -48,7 +48,7 @@ interface TimeSeleceContainerProps {
 export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
   ${FLEX_ROW_SPACE_CENTER};
   padding: 12px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.ACHROMATIC4}`)};
+  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
 `;
 
 export const FilterTable = styled.table`
@@ -58,9 +58,9 @@ export const FilterTable = styled.table`
   border-collapse: collapse;
   th,
   td {
-    border-bottom: 1px solid ${THEME.ACHROMATIC4};
+    border-bottom: 1px solid ${THEME.GRAY_LINE};
     padding: 12px;
-    color: ${THEME.ACHROMATIC8};
+    color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-size: 14px;
     font-weight: 500;
     text-align: left;
@@ -68,7 +68,7 @@ export const FilterTable = styled.table`
   }
   th {
     width: 84px;
-    background: ${THEME.LIGHTPURPLE};
+    background: ${THEME.HEADER_BACKGROUND};
   }
 `;
 
@@ -83,10 +83,10 @@ export const DropDown = styled.select`
   margin-right: 10px;
   border-radius: 3px;
   outline: none;
-  border: 1px solid ${THEME.ACHROMATIC4};
-  color: ${THEME.ACHROMATIC7};
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
   option {
-    color: ${THEME.ACHROMATIC7};
+    color: ${THEME.GRAY_FONT};
   }
 `;
 
@@ -101,8 +101,8 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   border-radius: 3px;
   background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
   border: ${(props) =>
-    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.ACHROMATIC4}`};
-  color: ${(props) => (props.isSelected ? 'white' : THEME.ACHROMATIC7)};
+    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GRAY_LINE}`};
+  color: ${(props) => (props.isSelected ? 'white' : THEME.GRAY_FONT)};
   ${FLEX_ROW_CENTER_CENTER};
   user-select: none;
   -ms-user-select: none;
@@ -114,10 +114,10 @@ export const ClockSelect = styled.div`
   width: 120px;
   height: 36px;
   padding: 0 0 0 15px;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GRAY_FONT};
   ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
-  border: 1px solid ${THEME.ACHROMATIC4};
+  border: 1px solid ${THEME.GRAY_LINE};
   margin-right: 10px;
   margin-left: 20px;
   user-select: none;
@@ -131,7 +131,7 @@ export const AddButton = styled.div`
   height: 36px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
-  border: 1px solid ${THEME.ACHROMATIC4};
+  border: 1px solid ${THEME.GRAY_LINE};
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;
@@ -184,7 +184,7 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: ${THEME.ACHROMATIC2};
+  background: ${THEME.BACKGROUND};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
@@ -202,7 +202,7 @@ export const InfoContainer = styled.div`
 export const BasicInfo = styled.div`
   font-size: 20px;
   font-weight: 500;
-  color: ${THEME.ACHROMATIC8};
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   margin-bottom: 20px;
 `;
 
@@ -211,7 +211,7 @@ export const Time = styled.div`
   right: 25px;
   top: 25px;
   font-size: 12px;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const InfoTable = styled.table`
@@ -227,13 +227,13 @@ export const InfoTable = styled.table`
     text-align: left;
     padding: 0 5px;
     width: 70px;
-    color: ${THEME.ACHROMATIC8};
+    color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-weight: 500;
     ${FLEX_ROW_START_CENTER};
   }
   td {
     text-align: left;
-    color: ${THEME.ACHROMATIC7};
+    color: ${THEME.GRAY_FONT};
   }
 `;
 
@@ -244,9 +244,9 @@ export const SVGIconBox = styled.div`
 export const InfoItem = styled.div`
   height: 19px;
   border-radius: 3px;
-  border: 1px solid ${THEME.ACHROMATIC4};
+  border: 1px solid ${THEME.GRAY_LINE};
   font-size: 11px;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GRAY_FONT};
   margin-right: 5px;
   padding: 0 5px;
   ${FLEX_ROW_CENTER_CENTER};

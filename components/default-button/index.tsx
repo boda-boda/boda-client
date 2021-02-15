@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonSize } from '../../common/types';
+
 import * as S from './styles';
 
 interface DefaultButtonProps {
