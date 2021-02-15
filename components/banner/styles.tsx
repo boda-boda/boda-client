@@ -16,7 +16,7 @@ export const Banner = styled.div<BannerProps>`
   position: relative;
   width: 100%;
   height: ${(props) => (props.bannerStyle === 'section' ? '200px' : '404px')};
-  background: ${THEME.LIGHTPURPLE};
+  background: ${THEME.HEADER_BACKGROUND};
 `;
 
 export const InnerContentContainer = styled.div`
@@ -72,7 +72,7 @@ export const ButtonDiv = styled.div`
   width: 50px;
   height: 50px;
   opacity: 0.25;
-  background-color: ${THEME.ACHROMATIC8};
+  background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   cursor: pointer;
 `;
 

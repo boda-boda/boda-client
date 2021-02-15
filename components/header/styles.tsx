@@ -67,7 +67,7 @@ export const MenuModal = styled.div`
   border-radius: 5px;
   box-shadow: 0 0 10px 0 #00000022;
   background-color: white;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GREY_FONT};
   font-size: 14px;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
@@ -75,7 +75,7 @@ export const MenuModal = styled.div`
 export const MenuBar = styled.div`
   width: calc(100% - 20px);
   height: 1px;
-  border-bottom: 1px solid ${THEME.ACHROMATIC3};
+  border-bottom: 1px solid ${THEME.LOCATION_LINE};
   margin: 10px 0;
 `;
 
@@ -98,7 +98,7 @@ export const LoginModal = styled.div`
   padding: 60px 192px 70px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  background-color: ${THEME.ACHROMATIC1};
+  background-color: ${THEME.WHITE};
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
@@ -112,7 +112,7 @@ export const LoginModalTitle = styled.div`
   font-size: 32px;
   font-weight: 500;
   text-align: center;
-  color: ${THEME.ACHROMATIC8};
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   margin-bottom: 40px;
 `;
 
@@ -120,7 +120,7 @@ export const LoginModalSubtitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   text-align: left;
-  color: ${THEME.ACHROMATIC8};
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   margin-bottom: 15px;
   span {
     font-weight: 500;
@@ -136,9 +136,9 @@ export const StringInput = styled.input`
   padding: 10px;
   border-radius: 3px;
   font-size: 14px;
-  color: ${THEME.ACHROMATIC8};
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   outline: none;
-  border: 1px solid ${THEME.ACHROMATIC3};
+  border: 1px solid ${THEME.LOCATION_LINE};
   transition: 0.2s ease;
   margin-bottom: 16px 0;
   :focus {
@@ -150,13 +150,13 @@ export const LoginModalText = styled.div`
   font-size: 12px;
   margin-bottom: 15px;
   margin-top: -5px;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GREY_FONT};
 `;
 
 export const LoginModalBar = styled.div`
   width: 100%;
   height: 1px;
-  border-bottom: 1px solid ${THEME.ACHROMATIC4};
+  border-bottom: 1px solid ${THEME.GREY_LINE};
   margin: 40px 0;
 `;
 
@@ -177,6 +177,6 @@ export const LoginSaveLabel = styled.label`
   position: relative;
   top: -1.5px;
   font-size: 14px;
-  color: ${THEME.ACHROMATIC7};
+  color: ${THEME.GREY_FONT};
   margin-left: 5px;
 `;

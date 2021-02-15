@@ -9,12 +9,12 @@ export const THEME = {
   WHITE: '#ffffff',
   BACKGROUND: '#f8f8f8',
   LOCATION_LINE: '#e3e3e3',
-  LINE_GREY: '#cbcbcb',
+  GREY_LINE: '#cbcbcb',
   ICON_BACKGROUND: '#b6b5bf',
   PLACEHOLDER_UNACTIVE: '#868593',
   PLACEHOLDER_ACTIVE_LOCATION_END: '#001d36',
-  BORDER_GREY: '#c4c4c4',
-  FONT_COLOR_GREY: '#4e515c',
+  GREY_BORDER: '#c4c4c4',
+  GREY_FONT: '#4e515c',
 };
 
 export const FLEX_ROW_CENTER_CENTER = `

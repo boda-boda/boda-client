@@ -7,13 +7,13 @@ export const Category = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid ${THEME.ACHROMATIC3};
+  border-bottom: 1px solid ${THEME.LOCATION_LINE};
 `;
 
 export const InnerContent = styled.div`
   width: ${CONTENT_WIDTH}px;
   height: 100%;
-  color: ${THEME.ACHROMATIC4};
+  color: ${THEME.GREY_LINE};
   ${FLEX_ROW_START_CENTER};
 `;
 
@@ -24,7 +24,7 @@ interface TextProps {
 export const Text = styled.div<TextProps>`
   font-size: 12px;
   font-weight: ${(props) => (props.isBold ? 500 : 400)};
-  color: ${(props) => (props.isBold ? THEME.ACHROMATIC8 : THEME.ACHROMATIC7)};
+  color: ${(props) => (props.isBold ? THEME.PLACEHOLDER_ACTIVE_LOCATION_END : THEME.GREY_FONT)};
   margin-right: 5px;
 `;
 
