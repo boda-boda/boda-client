@@ -5,6 +5,7 @@ import {
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_CENTER_END,
+  FLEX_ROW_CENTER_START,
   THEME,
 } from '../../constant';
 
@@ -34,7 +35,7 @@ export const Table = styled.table`
   }
   .profile {
     width: 168px;
-    vertical-align: middle;
+    vertical-align: top;
     padding: 0;
   }
   .personality {
@@ -56,7 +57,8 @@ export const Table = styled.table`
 export const ProfileImageContainer = styled.div`
   width: 100%;
   height: 100%;
-  ${FLEX_ROW_CENTER_CENTER};
+  padding: 32px 25px;
+  ${FLEX_ROW_CENTER_START};
 `;
 
 interface ProfileImageProps {
