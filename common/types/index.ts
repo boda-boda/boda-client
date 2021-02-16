@@ -2,4 +2,5 @@ export enum BannerStyleType {
   AD = 'AD',
   SECTION = 'SECTION',
 }
-export type ButtonSize = 'Large' | 'Small';
+export type ButtonType = 'Complete' | 'Load' | 'Selection';
+export type Size = 'LONG' | 'SHORT';
