@@ -27,6 +27,7 @@ export default function MyCenterView() {
         <S.InnerContent>
           <S.MyCenterPage>
             <S.Section>
+              <S.EditButton>센터정보 수정</S.EditButton>
               <S.SectionTitle>센터 정보</S.SectionTitle>
               <S.Table>
                 <tbody>

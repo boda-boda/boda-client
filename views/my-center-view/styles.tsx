@@ -134,3 +134,16 @@ export const ButtonDiv = styled.div`
   background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
   cursor: pointer;
 `;
+
+export const EditButton = styled.div`
+  position: absolute;
+  top: 33px;
+  right: 0;
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  border: 1px solid ${THEME.MAIN};
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+`;
