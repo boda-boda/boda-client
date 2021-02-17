@@ -21,11 +21,13 @@ export default function Header() {
     <>
       <S.Header>
         <S.InnerContent>
-          <S.StyledLink href="/">
-            <S.Logo>
-              <S.LogoImg src={'https://cdn.worldvectorlogo.com/logos/chanel-2.svg'} />
-            </S.Logo>
-          </S.StyledLink>
+          <Link href="/" passHref>
+            <S.StyledLink>
+              <S.Logo>
+                <S.LogoImg src={'https://cdn.worldvectorlogo.com/logos/chanel-2.svg'} />
+              </S.Logo>
+            </S.StyledLink>
+          </Link>
           <S.MenuList>
             <S.MenuItem onClick={() => handleMenuClick(0)}>
               신규 요양보호사 추가
