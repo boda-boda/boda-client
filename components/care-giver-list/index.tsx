@@ -215,6 +215,7 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
             <S.CardList>
+<<<<<<< HEAD
               <Link
                 href={{
                   pathname: '/list/[id]',
@@ -281,6 +282,66 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                   </S.Card>
                 </S.StyledLink>
               </Link>
+=======
+              <a href="caregiverdetail">
+                <S.Card>
+                  <S.ProfileImage src="https://static.scientificamerican.com/sciam/cache/file/92E141F8-36E4-4331-BB2EE42AC8674DD3_source.jpg" />
+                  <S.InfoContainer>
+                    <S.BasicInfo>야옹이 (03/여)</S.BasicInfo>
+                    <S.Time>1시간 전</S.Time>
+                    <S.InfoTable>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <S.SVGIconBox>
+                              <PhoneNumberIconSVG />
+                            </S.SVGIconBox>
+                          </td>
+                          <th>연락처</th>
+                          <td>010-1234-1234</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <S.SVGIconBox>
+                              <CareInfoIconSVG />
+                            </S.SVGIconBox>
+                          </td>
+                          <th>요양 정보</th>
+                          <td>
+                            <S.InfoItemList>
+                              {careInfo.map((item, index) => {
+                                return (
+                                  <S.InfoItem key={`careInfoItem-${index}`}>{item}</S.InfoItem>
+                                );
+                              })}
+                            </S.InfoItemList>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <S.SVGIconBox>
+                              <PersonalityInfoIconSVG />
+                            </S.SVGIconBox>
+                          </td>
+                          <th>성격 정보</th>
+                          <td>
+                            <S.InfoItemList>
+                              {personalityInfo.map((item, index) => {
+                                return (
+                                  <S.InfoItem key={`personalityInfoItem-${index}`}>
+                                    {item}
+                                  </S.InfoItem>
+                                );
+                              })}
+                            </S.InfoItemList>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </S.InfoTable>
+                  </S.InfoContainer>
+                </S.Card>
+              </a>
+>>>>>>> 7b172f573d593191b8fe0ef24f977d1bbb14eea6
               <S.Card></S.Card>
               <S.Card></S.Card>
               <S.Card></S.Card>

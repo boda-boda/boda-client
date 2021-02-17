@@ -9,9 +9,14 @@ export default function Main() {
   return (
     <Layout>
       <>
-        <Banner bannerStyle={BannerStyleType.AD} />
+        <Banner bannerStyle={BannerStyleType.SECTION} />
         <S.Main>
+<<<<<<< HEAD
           <CareGiverList isMine={false} />
+=======
+          {/* <CareGiverList isMine={false} /> */}
+          <MatchingProposal isFilled={true}></MatchingProposal>
+>>>>>>> 7b172f573d593191b8fe0ef24f977d1bbb14eea6
         </S.Main>
       </>
     </Layout>
