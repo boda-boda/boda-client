@@ -17,6 +17,13 @@ export const THEME = {
   GRAY_FONT: '#4e515c',
 };
 
+export const FLEX_ROW_CENTER_START = `
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:flex-start;
+`;
+
 export const FLEX_ROW_CENTER_CENTER = `
   display:flex;
   flex-direction:row;

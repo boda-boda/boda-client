@@ -64,11 +64,13 @@ export const FilterTable = styled.table`
     font-size: 14px;
     font-weight: 500;
     text-align: left;
-    vertical-align: text-top;
+    vertical-align: middle;
   }
   th {
+    padding: 23px 12px;
     width: 84px;
     background: ${THEME.HEADER_BACKGROUND};
+    vertical-align: top;
   }
 `;
 
@@ -256,4 +258,9 @@ export const InfoItemList = styled.div`
   width: 100%;
   ${FLEX_ROW_START_CENTER};
   flex-wrap: nowrap;
+`;
+
+export const StyledLink = styled.a`
+  color: ${THEME.GRAY_FONT};
+  text-decoration: none;
 `;

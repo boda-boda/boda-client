@@ -13,7 +13,7 @@ export default function Category({ list }: CategoryProps) {
         <S.InnerContent>
           {list.map((item, index) => {
             return (
-              <S.TextContainer>
+              <S.TextContainer key={`textcontainer-${index}`}>
                 <S.Text isBold={index === list.length - 1}>{item}</S.Text>
                 {index !== list.length - 1 && <RightArrowIconSVG style={{ marginRight: '5px' }} />}
               </S.TextContainer>

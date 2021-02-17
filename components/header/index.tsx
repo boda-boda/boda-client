@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { THEME } from '../../constant';
 import ArrowDown from '../../svgs/arrow-down-svg';
 import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
+import Link from 'next/link';
 import * as S from './styles';
 
 export default function Header() {
   const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
   const [isLoginModalOn, setIsLoginModalOn] = useState(false);
-  const [isLogined, setIsLogined] = useState(false); //이거는 ㄹㅇ 임시
+  const [isLogined, setIsLogined] = useState(true); //이거는 ㄹㅇ 임시
   const handleMenuClick = (i: number) => {
     setIsMenuModalOn((isModalOn) =>
       isModalOn.map((item, index) => {
@@ -21,9 +21,13 @@ export default function Header() {
     <>
       <S.Header>
         <S.InnerContent>
-          <S.Logo>
-            <S.LogoImg src={'https://cdn.worldvectorlogo.com/logos/naver-2.svg'} />
-          </S.Logo>
+          <Link href="/" passHref>
+            <S.StyledLink>
+              <S.Logo>
+                <S.LogoImg src={'https://cdn.worldvectorlogo.com/logos/chanel-2.svg'} />
+              </S.Logo>
+            </S.StyledLink>
+          </Link>
           <S.MenuList>
             <S.MenuItem onClick={() => handleMenuClick(0)}>
               신규 요양보호사 추가
@@ -31,9 +35,13 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    요양보호사 검색
+                    <Link href="/search" passHref>
+                      <S.StyledLink>요양보호사 검색</S.StyledLink>
+                    </Link>
                     <S.MenuBar />
-                    보낸 제안서 목록
+                    <Link href="/" passHref>
+                      <S.StyledLink>보낸 제안서 목록</S.StyledLink>
+                    </Link>
                   </S.MenuModal>
                 </>
               ) : (
@@ -46,9 +54,13 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    요양보호사 목록
+                    <Link href="/list" passHref>
+                      <S.StyledLink>요양보호사 목록</S.StyledLink>
+                    </Link>
                     <S.MenuBar />
-                    요양보호사 추가
+                    <Link href="/" passHref>
+                      <S.StyledLink>요양보호사 추가</S.StyledLink>
+                    </Link>
                   </S.MenuModal>
                 </>
               ) : (
@@ -58,13 +70,17 @@ export default function Header() {
             {isLogined ? (
               <S.MenuItem onClick={() => handleMenuClick(2)}>
                 나의 센터 정보
-                {isMenuModalOn[1] ? (
+                {isMenuModalOn[2] ? (
                   <>
                     <ArrowUp />
                     <S.MenuModal>
-                      나의 센터 정보
+                      <Link href="/mycenter" passHref>
+                        <S.StyledLink>나의 센터 정보</S.StyledLink>
+                      </Link>
                       <S.MenuBar />
-                      수급자 관리
+                      <Link href="/" passHref>
+                        <S.StyledLink>수급자 관리</S.StyledLink>
+                      </Link>
                     </S.MenuModal>
                   </>
                 ) : (
