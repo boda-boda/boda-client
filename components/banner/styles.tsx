@@ -16,15 +16,7 @@ interface BannerProps {
 export const Banner = styled.div<BannerProps>`
   position: relative;
   width: 100%;
-<<<<<<< HEAD
-<<<<<<< HEAD
   height: ${(props) => (props.bannerStyle === BannerStyleType.SECTION ? '200px' : '404px')};
-=======
-  height: ${(props) => (props.bannerStyle === 'SECTION' ? '200px' : '404px')};
->>>>>>> 4321fff (add: 매칭제안서 작성 페이지 미완성)
-=======
-  height: ${(props) => (props.bannerStyle === 'SECTION' ? '200px' : '404px')};
->>>>>>> 7b172f573d593191b8fe0ef24f977d1bbb14eea6
   background: ${THEME.HEADER_BACKGROUND};
 `;
 
