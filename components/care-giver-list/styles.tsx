@@ -257,3 +257,8 @@ export const InfoItemList = styled.div`
   ${FLEX_ROW_START_CENTER};
   flex-wrap: nowrap;
 `;
+
+export const StyledLink = styled.a`
+  color: ${THEME.GRAY_FONT};
+  text-decoration: none;
+`;

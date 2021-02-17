@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ArrowDown from '../../svgs/arrow-down-svg';
 import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
+import Link from 'next/link';
 import * as S from './styles';
 
 export default function Header() {
@@ -32,7 +33,9 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    <S.StyledLink href="/caregiverlist">요양보호사 검색</S.StyledLink>
+                    <Link href="/caregiverlist" passHref>
+                      <S.StyledLink>요양보호사 검색</S.StyledLink>
+                    </Link>
                     <S.MenuBar />
                     보낸 제안서 목록
                   </S.MenuModal>
@@ -47,7 +50,9 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    <S.StyledLink href="/mycaregiverlist">요양보호사 목록</S.StyledLink>
+                    <Link href="/mycaregiverlist" passHref>
+                      <S.StyledLink>요양보호사 목록</S.StyledLink>
+                    </Link>
                     <S.MenuBar />
                     요양보호사 추가
                   </S.MenuModal>
@@ -63,7 +68,9 @@ export default function Header() {
                   <>
                     <ArrowUp />
                     <S.MenuModal>
-                      <S.StyledLink href="/mycenter">나의 센터 정보</S.StyledLink>
+                      <Link href="/mycenter" passHref>
+                        <S.StyledLink>나의 센터 정보</S.StyledLink>
+                      </Link>
                       <S.MenuBar />
                       수급자 관리
                     </S.MenuModal>
