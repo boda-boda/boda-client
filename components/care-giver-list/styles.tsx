@@ -64,11 +64,13 @@ export const FilterTable = styled.table`
     font-size: 14px;
     font-weight: 500;
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
   }
   th {
+    padding: 23px 12px;
     width: 84px;
     background: ${THEME.HEADER_BACKGROUND};
+    vertical-align: top;
   }
 `;
 

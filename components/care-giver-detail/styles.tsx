@@ -47,7 +47,7 @@ export const Table = styled.table`
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
-    vertical-align: top;
+    vertical-align: middle;
   }
   th {
     width: 84px;
