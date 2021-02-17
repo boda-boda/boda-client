@@ -42,9 +42,9 @@ export default function Banner({ bannerStyle, sectionIndex, title, subtitle }: B
               <S.InnerContent>
                 <S.Title>{title}</S.Title>
                 <S.SubTitle>
-                  {(subtitle || '').split('#').map((line) => {
+                  {(subtitle || '').split('#').map((line, index) => {
                     return (
-                      <span>
+                      <span key={`subtitle-${index}`}>
                         {line}
                         <br />
                       </span>
