@@ -35,7 +35,7 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    <Link href="/caregiverlist" passHref>
+                    <Link href="/search" passHref>
                       <S.StyledLink>요양보호사 검색</S.StyledLink>
                     </Link>
                     <S.MenuBar />
@@ -54,7 +54,7 @@ export default function Header() {
                 <>
                   <ArrowUp />
                   <S.MenuModal>
-                    <Link href="/mycaregiverlist" passHref>
+                    <Link href="/list" passHref>
                       <S.StyledLink>요양보호사 목록</S.StyledLink>
                     </Link>
                     <S.MenuBar />

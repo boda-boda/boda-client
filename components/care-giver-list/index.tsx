@@ -215,7 +215,13 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
             <S.CardList>
-              <Link href="/caregiverdetail" passHref>
+              <Link
+                href={{
+                  pathname: '/list/[id]',
+                }}
+                as={`/list/0`}
+                passHref
+              >
                 <S.StyledLink>
                   <S.Card>
                     <S.ProfileImage src="https://static.scientificamerican.com/sciam/cache/file/92E141F8-36E4-4331-BB2EE42AC8674DD3_source.jpg" />

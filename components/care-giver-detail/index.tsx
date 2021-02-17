@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from './styles';
 
-export default function CareGiverList() {
+export default function CareGiveDetail() {
   return (
     <>
       <S.CareGiverDetail>
