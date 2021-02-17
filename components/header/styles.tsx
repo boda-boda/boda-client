@@ -61,7 +61,6 @@ export const MenuItem = styled.div`
 export const MenuModal = styled.div`
   position: absolute;
   width: 100%;
-  padding: 15px 0;
   top: 40px;
   right: 0;
   z-index: 20;
@@ -70,6 +69,7 @@ export const MenuModal = styled.div`
   background-color: white;
   color: ${THEME.GRAY_FONT};
   font-size: 14px;
+  cursor: default;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
@@ -77,7 +77,7 @@ export const MenuBar = styled.div`
   width: calc(100% - 20px);
   height: 1px;
   border-bottom: 1px solid ${THEME.LOCATION_LINE};
-  margin: 10px 0;
+  margin: -5px 0;
 `;
 
 export const LoginModalLayout = styled.div`
@@ -185,4 +185,5 @@ export const LoginSaveLabel = styled.label`
 export const StyledLink = styled.a`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
+  padding: 15px;
 `;

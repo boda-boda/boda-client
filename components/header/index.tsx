@@ -39,7 +39,9 @@ export default function Header() {
                       <S.StyledLink>요양보호사 검색</S.StyledLink>
                     </Link>
                     <S.MenuBar />
-                    보낸 제안서 목록
+                    <Link href="/" passHref>
+                      <S.StyledLink>보낸 제안서 목록</S.StyledLink>
+                    </Link>
                   </S.MenuModal>
                 </>
               ) : (
@@ -56,7 +58,9 @@ export default function Header() {
                       <S.StyledLink>요양보호사 목록</S.StyledLink>
                     </Link>
                     <S.MenuBar />
-                    요양보호사 추가
+                    <Link href="/" passHref>
+                      <S.StyledLink>요양보호사 추가</S.StyledLink>
+                    </Link>
                   </S.MenuModal>
                 </>
               ) : (
@@ -74,7 +78,9 @@ export default function Header() {
                         <S.StyledLink>나의 센터 정보</S.StyledLink>
                       </Link>
                       <S.MenuBar />
-                      수급자 관리
+                      <Link href="/" passHref>
+                        <S.StyledLink>수급자 관리</S.StyledLink>
+                      </Link>
                     </S.MenuModal>
                   </>
                 ) : (
