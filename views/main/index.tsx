@@ -9,10 +9,9 @@ export default function Main() {
   return (
     <Layout>
       <>
-        <Banner bannerStyle={BannerStyleType.SECTION} />
+        <Banner bannerStyle={BannerStyleType.AD} />
         <S.Main>
-          {/* <CareGiverList isMine={false} /> */}
-          <MatchingProposal isFilled={true}></MatchingProposal>
+          <CareGiverList isMine={false} />
         </S.Main>
       </>
     </Layout>
