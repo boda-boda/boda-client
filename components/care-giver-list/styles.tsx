@@ -64,7 +64,7 @@ export const FilterTable = styled.table`
     font-size: 14px;
     font-weight: 500;
     text-align: left;
-    vertical-align: text-top;
+    vertical-align: top;
   }
   th {
     width: 84px;

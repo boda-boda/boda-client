@@ -25,7 +25,7 @@ export const Table = styled.table`
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
-    vertical-align: text-top;
+    vertical-align: top;
   }
   th {
     width: 84px;
