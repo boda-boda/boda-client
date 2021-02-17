@@ -340,14 +340,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
           </S.Section>
           <S.Section>
             <S.SectionTitleContainer>
-              <S.SectionTitle>기본 정보</S.SectionTitle>
-              <DefaultButtonContainter
-                content="기본 센터로 저장하기"
-                type="Load"
-                width="152px"
-                height="36px"
-                active={false}
-              ></DefaultButtonContainter>
+              <S.SectionTitle>기타</S.SectionTitle>
             </S.SectionTitleContainer>
             <S.InfoTable>
               <tbody>
