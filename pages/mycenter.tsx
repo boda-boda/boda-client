@@ -1,5 +1,1 @@
-import MyCenterView from '../views/my-center-view';
-
-export default function MyCenterPage() {
-  return <MyCenterView />;
-}
+export { default } from '../views/my-center-view';
