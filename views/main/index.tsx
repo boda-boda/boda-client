@@ -9,7 +9,7 @@ export default function Main() {
   return (
     <Layout>
       <>
-        <Banner bannerStyle={BannerStyleType.SECTION} />
+        <Banner bannerStyle={BannerStyleType.AD} />
         <S.Main>
           <CareGiverList isMine={false} />
         </S.Main>
