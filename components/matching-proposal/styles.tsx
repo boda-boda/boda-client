@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { DropDownType } from '../../common/types';
+import { Size } from '../../common/types';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
@@ -27,6 +27,14 @@ export const Section = styled.div`
   padding-bottom: 20px;
 `;
 
+export const CompleteSection = styled.div`
+  position: relative;
+  width: 100%;
+  ${FLEX_ROW_CENTER_CENTER};
+  padding-top: 40px;
+  padding-bottom: 60px;
+`;
+
 export const InnerContent = styled.div`
   width: ${CONTENT_WIDTH}px;
   height: 100%;
@@ -50,14 +58,16 @@ export const InfoTable = styled.table`
   margin-top: 17px;
   border-top: 2px solid ${THEME.MAIN};
   border-collapse: collapse;
+  table-layout: fixed;
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 21px 12px;
+    padding: 12px;
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
-    vertical-align: text-top;
+    vertical-align: middle;
+    table-layout: fixed;
   }
   th {
     width: 84px;
@@ -66,15 +76,36 @@ export const InfoTable = styled.table`
     font-weight: 500;
   }
   .profile {
+    padding: 32px 25px;
     width: 168px;
     vertical-align: middle;
-    padding: 0;
   }
-  .input {
-    padding: 0 12px;
+  .recipientProfile {
+    width: 168px;
+    vertical-align: top;
+    padding: 32px 25px 0 25px;
   }
+  .left {
+    width: 336px;
+  }
+  .right {
+    width: 306px;
+  }
+  .wide {
+    width: 726px;
+  }
+
   .select {
     padding: 12px;
+  }
+  .overtd {
+    padding: 2px 0 12px 12px;
+  }
+  .overitems {
+    margin-top: 10px;
+  }
+  .money {
+    margin-right: 5px;
   }
 `;
 
@@ -98,26 +129,40 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   background-position: center;
 `;
 interface InfoInputProps {
-  size?: Size;
+  Size?: Size;
 }
 
 export const InfoInput = styled.input<InfoInputProps>`
-  width: ${(props) => (props.size === 'LONG' ? '300px' : '200px')};
+  width: ${(props) => (props.Size === 'LONG' ? '300px' : '200px')};
   height: 36px;
   padding: 0 0 0 10px;
-  margin-right: 10px;
   border-radius: 3px;
   outline: none;
   border: 1px solid ${THEME.GRAY_LINE};
   color: ${THEME.GRAY_FONT};
 `;
 
+interface InfoInputDetailProps {
+  Size?: Size;
+}
+
+export const InfoInputDetail = styled.textarea<InfoInputDetailProps>`
+  width: ${(props) => (props.Size === 'LONG' ? '870px' : '702px')};
+  min-height: ${(props) => (props.Size === 'LONG' ? '84px' : '72px')};
+  padding: 10px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
+  overflow-y: auto;
+`;
+
 interface DropDownProps {
-  size: Size;
+  Size: Size;
 }
 
 export const DropDown = styled.select<DropDownProps>`
-  width: ${(props) => (props.size === 'LONG' ? '200px' : '120px')};
+  width: ${(props) => (props.Size === 'LONG' ? '200px' : '120px')};
   height: 36px;
   padding: 0 0 0 10px;
   margin-right: 10px;
@@ -148,14 +193,16 @@ export const InfoItemList = styled.div`
 
 export const TdFlexBox = styled.div`
   ${FLEX_ROW_START_CENTER};
+  flex-wrap: wrap;
 `;
 interface ToggleButtonProps {
   isSelected: boolean;
+  isLast?: boolean;
 }
 export const ToggleButton = styled.div<ToggleButtonProps>`
   padding: 0 15px;
   height: 36px;
-  margin-right: 10px;
+  margin-right: ${(props) => (props.isLast ? '0' : '10px')};
   border-radius: 3px;
   background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
   border: ${(props) =>
@@ -173,15 +220,17 @@ interface TimeSeleceContainerProps {
 }
 
 export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
-  ${FLEX_ROW_SPACE_CENTER};
+  ${FLEX_ROW_START_CENTER};
   padding: 12px;
   border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+  flex-wrap: wrap;
 `;
 export const AddButton = styled.div`
   width: 36px;
   height: 36px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
+  margin-left: 12px;
   border: 1px solid ${THEME.GRAY_LINE};
   user-select: none;
   -ms-user-select: none;
@@ -197,8 +246,8 @@ export const ClockSelect = styled.div`
   ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
   border: 1px solid ${THEME.GRAY_LINE};
-  margin-right: 10px;
-  margin-left: 20px;
+  margin-right: 8px;
+  margin-left: 14px;
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;

@@ -22,6 +22,36 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [selectedDayList, setSelectedDayList] = useState([
     [false, false, false, false, false, false, false],
   ]);
+  const careInfoList = [
+    '석션',
+    '휠체어',
+    '기저귀',
+    '목욕',
+    '재활',
+    '청소',
+    '음식',
+    '남성 수급자',
+    '치매교육 이수',
+  ];
+  const [selectedCareInfo, setSelectedCareInfo] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
+  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   return (
     <>
       <S.MatchingProposalContent>
@@ -30,9 +60,9 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
             <S.SectionTitleContainer>
               <S.SectionTitle>기본 정보</S.SectionTitle>
               <DefaultButtonContainter
-                content="기본 센터로 저장하기"
+                content="기본 센터 정보로 저장하기"
                 type="Load"
-                width="152px"
+                width="178px"
                 height="36px"
                 active={false}
               ></DefaultButtonContainter>
@@ -46,28 +76,40 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td>김요양</td>
+                  <td className="left">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                   <th>위치</th>
-                  <td>서대문구 통일로 123</td>
+                  <td className="right">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                 </tr>
                 <tr>
                   <th>전화</th>
-                  <td>02-000-0000</td>
+                  <td className="left">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                   <th>홈페이지</th>
-                  <td>www.bodaisthebest.com</td>
+                  <td className="right">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                 </tr>
                 <tr>
                   <th>팩스</th>
-                  <td>02-000-0000</td>
+                  <td className="left">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                   <th>이메일</th>
-                  <td>bodacenter@boda.kr</td>
+                  <td className="right">
+                    <S.InfoInput></S.InfoInput>
+                  </td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
           <S.Section>
             <S.SectionTitleContainer>
-              <S.SectionTitle>기본 정보</S.SectionTitle>
+              <S.SectionTitle>수급자 정보</S.SectionTitle>
               <DefaultButtonContainter
                 content="불러오기"
                 type="Load"
@@ -79,17 +121,17 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={8} className="profile">
+                  <td rowSpan={8} className="recipientProfile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="input">
+                  <td className="left">
                     <S.InfoInput></S.InfoInput>
                   </td>
                   <th>성별</th>
-                  <td className="select">
+                  <td className="select right">
                     <S.TdFlexBox>
                       {gender.map((item, index) => {
                         return (
@@ -114,8 +156,8 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 </tr>
                 <tr>
                   <th>등급</th>
-                  <td className="select">
-                    <S.DropDown size="LONG" defaultValue="-1">
+                  <td className="select left">
+                    <S.DropDown Size="LONG" defaultValue="-1">
                       <option value="-1" disabled hidden>
                         등급 선택
                       </option>
@@ -127,13 +169,13 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                     </S.DropDown>
                   </td>
                   <th>나이</th>
-                  <td className="input">
+                  <td className="right">
                     <S.InfoInput></S.InfoInput>
                   </td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td style={{ padding: 0 }} colSpan={3}>
+                  <td style={{ padding: 0 }} colSpan={3} className="wide">
                     {selectedDayList.map((list, index) => {
                       return (
                         <>
@@ -143,6 +185,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                                 return (
                                   <S.ToggleButton
                                     isSelected={selectedDayList[index][day]}
+                                    isLast={dayList.length - 1 === day}
                                     onClick={() => {
                                       setSelectedDayList((selectedDayList) =>
                                         selectedDayList.map((list, listIndex) => {
@@ -204,58 +247,134 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 </tr>
                 <tr>
                   <th>위치</th>
-                  <td colSpan={3} className="select">
-                    <S.DropDown size="SHORT" defaultValue="-1">
+                  <td colSpan={3} className="select wide">
+                    <S.DropDown Size="SHORT" defaultValue="-1">
                       <option value="-1" disabled hidden>
                         시/도 선택
                       </option>
                       <option value="0">서울특별시</option>
                       <option value="1">경기도</option>
                     </S.DropDown>
-                    <S.DropDown size="SHORT" defaultValue="-1">
+                    <S.DropDown Size="SHORT" defaultValue="-1">
                       <option value="-1" disabled hidden>
                         구 선택
                       </option>
                       <option value="0">양천구</option>
                       <option value="1">강서구</option>
                     </S.DropDown>
-                    <S.DropDown size="SHORT" defaultValue="-1">
+                    <S.DropDown Size="SHORT" defaultValue="-1">
                       <option value="-1" disabled hidden>
                         동 선택
                       </option>
                       <option value="0">목1동</option>
                       <option value="1">목2동</option>
                     </S.DropDown>
-                    <S.InfoInput size="LONG" placeholder="세부 주소"></S.InfoInput>
+                    <S.InfoInput Size="LONG" placeholder="세부 주소"></S.InfoInput>
                   </td>
                 </tr>
                 <tr>
                   <th>거주 형태</th>
-                  <td colSpan={3} className="select">
+                  <td colSpan={3} className="select wide">
                     <S.InfoInput></S.InfoInput>
                   </td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>
-                  <td colSpan={3} className="select">
-                    <S.InfoInput></S.InfoInput>
+                  <td colSpan={3} className="wide overtd">
+                    <S.TdFlexBox>
+                      {careInfoList.map((item, index) => {
+                        return (
+                          <S.ToggleButton
+                            className="overitems"
+                            isSelected={selectedCareInfo[index]}
+                            onClick={() => {
+                              setSelectedCareInfo((selectedCareInfo) =>
+                                selectedCareInfo.map((item, i) => {
+                                  if (index === i) return !item;
+                                  return item;
+                                })
+                              );
+                            }}
+                            key={`careInfoListItem-${index}`}
+                          >
+                            {item}
+                          </S.ToggleButton>
+                        );
+                      })}
+                    </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>요구 성격</th>
-                  <td colSpan={3} className="select">
-                    <S.InfoInput></S.InfoInput>
+                  <td colSpan={3} className="wide">
+                    <S.TdFlexBox>
+                      {personalityInfoList.map((item, index) => {
+                        return (
+                          <S.ToggleButton
+                            isSelected={selectedPersonalityInfo[index]}
+                            onClick={() => {
+                              setSelectedPersonalityInfo((selectedPersonalityInfo) =>
+                                selectedPersonalityInfo.map((item, i) => {
+                                  if (index === i) return !item;
+                                  return item;
+                                })
+                              );
+                            }}
+                            key={`personalityInfoListItem-${index}`}
+                          >
+                            {item}
+                          </S.ToggleButton>
+                        );
+                      })}
+                    </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>세부 사항</th>
-                  <td colSpan={3} className="select">
-                    <S.InfoInput></S.InfoInput>
+                  <td colSpan={3} className="select wide">
+                    <S.InfoInputDetail></S.InfoInputDetail>
                   </td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
+          <S.Section>
+            <S.SectionTitleContainer>
+              <S.SectionTitle>기본 정보</S.SectionTitle>
+              <DefaultButtonContainter
+                content="기본 센터로 저장하기"
+                type="Load"
+                width="152px"
+                height="36px"
+                active={false}
+              ></DefaultButtonContainter>
+            </S.SectionTitleContainer>
+            <S.InfoTable>
+              <tbody>
+                <tr>
+                  <th>시급</th>
+                  <td>
+                    <S.InfoInput className="money"></S.InfoInput>원
+                  </td>
+                </tr>
+                <tr>
+                  <th>비고</th>
+                  <td>
+                    <S.InfoInputDetail Size="LONG"></S.InfoInputDetail>
+                  </td>
+                </tr>
+              </tbody>
+            </S.InfoTable>
+          </S.Section>
+          <S.CompleteSection>
+            <DefaultButtonContainter
+              content="매칭 제안서 보내기"
+              type="Complete"
+              width="306px"
+              height="48px"
+              active={true}
+            ></DefaultButtonContainter>
+          </S.CompleteSection>
         </S.InnerContent>
       </S.MatchingProposalContent>
     </>
