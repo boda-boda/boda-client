@@ -189,3 +189,7 @@ export const MatchingButton = styled.div`
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
 `;
+export const StyledLink = styled.a`
+  color: ${THEME.GRAY_FONT};
+  text-decoration: none;
+`;
