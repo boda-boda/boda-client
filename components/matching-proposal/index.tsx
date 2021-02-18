@@ -1,5 +1,5 @@
 import React, { ReactChild, useState } from 'react';
-import { BannerStyleType } from '../../common/types';
+import { BannerStyleType, ButtonSize, ButtonType } from '../../common/types';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import Banner from '../banner';
@@ -61,7 +61,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
               <S.SectionTitle>기본 정보</S.SectionTitle>
               <DefaultButtonContainter
                 content="기본 센터 정보로 저장하기"
-                type="Load"
+                type={ButtonType.LOAD}
                 width="178px"
                 height="36px"
                 active={false}
@@ -112,7 +112,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
               <S.SectionTitle>수급자 정보</S.SectionTitle>
               <DefaultButtonContainter
                 content="불러오기"
-                type="Load"
+                type={ButtonType.LOAD}
                 width="100px"
                 height="36px"
                 active={false}
@@ -157,7 +157,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>등급</th>
                   <td className="select left">
-                    <S.DropDown Size="LONG" defaultValue="-1">
+                    <S.DropDown Size={ButtonSize.LONG} defaultValue="-1">
                       <option value="-1" disabled hidden>
                         등급 선택
                       </option>
@@ -248,28 +248,28 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>위치</th>
                   <td colSpan={3} className="select wide">
-                    <S.DropDown Size="SHORT" defaultValue="-1">
+                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
                       <option value="-1" disabled hidden>
                         시/도 선택
                       </option>
                       <option value="0">서울특별시</option>
                       <option value="1">경기도</option>
                     </S.DropDown>
-                    <S.DropDown Size="SHORT" defaultValue="-1">
+                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
                       <option value="-1" disabled hidden>
                         구 선택
                       </option>
                       <option value="0">양천구</option>
                       <option value="1">강서구</option>
                     </S.DropDown>
-                    <S.DropDown Size="SHORT" defaultValue="-1">
+                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
                       <option value="-1" disabled hidden>
                         동 선택
                       </option>
                       <option value="0">목1동</option>
                       <option value="1">목2동</option>
                     </S.DropDown>
-                    <S.InfoInput Size="LONG" placeholder="세부 주소"></S.InfoInput>
+                    <S.InfoInput Size={ButtonSize.LONG} placeholder="세부 주소"></S.InfoInput>
                   </td>
                 </tr>
                 <tr>
@@ -353,7 +353,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>비고</th>
                   <td>
-                    <S.InfoInputDetail Size="LONG"></S.InfoInputDetail>
+                    <S.InfoInputDetail Size={ButtonSize.LONG}></S.InfoInputDetail>
                   </td>
                 </tr>
               </tbody>
@@ -362,7 +362,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
           <S.CompleteSection>
             <DefaultButtonContainter
               content="매칭 제안서 보내기"
-              type="Complete"
+              type={ButtonType.COMPLETE}
               width="306px"
               height="48px"
               active={true}

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Size } from '../../common/types';
+import { ButtonSize } from '../../common/types';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
@@ -129,7 +129,7 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   background-position: center;
 `;
 interface InfoInputProps {
-  Size?: Size;
+  Size?: ButtonSize;
 }
 
 export const InfoInput = styled.input<InfoInputProps>`
@@ -143,7 +143,7 @@ export const InfoInput = styled.input<InfoInputProps>`
 `;
 
 interface InfoInputDetailProps {
-  Size?: Size;
+  Size?: ButtonSize;
 }
 
 export const InfoInputDetail = styled.textarea<InfoInputDetailProps>`
@@ -158,7 +158,7 @@ export const InfoInputDetail = styled.textarea<InfoInputDetailProps>`
 `;
 
 interface DropDownProps {
-  Size: Size;
+  Size: ButtonSize;
 }
 
 export const DropDown = styled.select<DropDownProps>`
