@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import * as S from './styles';
 
@@ -133,7 +134,11 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.MatchingButtonContainer>
-            <S.MatchingButton>매칭 제안서 작성하기</S.MatchingButton>
+            <Link href="/matching-proposal" passHref>
+              <S.StyledLink>
+                <S.MatchingButton>매칭 제안서 작성하기</S.MatchingButton>
+              </S.StyledLink>
+            </Link>
           </S.MatchingButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>

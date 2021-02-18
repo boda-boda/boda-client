@@ -10,7 +10,7 @@ export default function Main() {
       <>
         <Banner bannerStyle={BannerStyleType.AD} />
         <S.Main>
-          <CareGiverList isAll={false} />
+          <CareGiverList isMine={false} />
         </S.Main>
       </>
     </Layout>
