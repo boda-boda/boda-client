@@ -81,6 +81,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 return (
                                   <S.ToggleButton
                                     isSelected={selectedDays.indexOf(day) !== -1}
+                                    className="square"
                                     onClick={() => {
                                       if (selectedDays.indexOf(day) === -1) {
                                         setSelectedDayList((selectedDayList) =>
@@ -103,7 +104,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                       }
                                     }}
                                     key={`dayListItem-${day}`}
-                                    style={{ width: '36px', padding: 0 }}
                                   >
                                     {day}
                                   </S.ToggleButton>

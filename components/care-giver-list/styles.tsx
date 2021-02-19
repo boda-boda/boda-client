@@ -76,6 +76,10 @@ export const FilterTable = styled.table`
 
 export const TdFlexBox = styled.div`
   ${FLEX_ROW_START_CENTER};
+  .square {
+    width: 36px;
+    padding: 0;
+  }
 `;
 
 export const DropDown = styled.select`
