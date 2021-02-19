@@ -9,46 +9,30 @@ import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
 
 interface CareGiverListProps {
-  isMine: boolean;
+  isMyCaregiver: boolean;
 }
 
-export default function CareGiverList({ isMine }: CareGiverListProps) {
-  const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-  const [selectedDayList, setSelectedDayList] = useState([
-    [false, false, false, false, false, false, false],
-  ]);
-  const careInfoList = [
-    '석션',
-    '휠체어',
-    '기저귀',
-    '목욕',
-    '재활',
-    '청소',
-    '음식',
-    '남성 수급자',
-    '치매교육 이수',
-  ];
-  const [selectedCareInfo, setSelectedCareInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활'];
-  const personalityInfo = ['활발함', '긍정적임', '섬세함'];
+const dayList = ['월', '화', '수', '목', '금', '토', '일'];
+const careInfoList = [
+  '석션',
+  '휠체어',
+  '기저귀',
+  '목욕',
+  '재활',
+  '청소',
+  '음식',
+  '남성 수급자',
+  '치매교육 이수',
+];
+const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
+
+const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
+const personalityInfo = ['활발함', '긍정적임', '섬세함']; //얘네는 임시
+
+export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
+  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
   return (
     <>
       <S.CgList>
@@ -86,30 +70,42 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }}>
-                    {selectedDayList.map((list, index) => {
+                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
                       return (
                         <>
-                          <S.TimeSelectContainer isLast={selectedDayList.length - 1 === index}>
+                          <S.TimeSelectContainer
+                            isLast={selectedDayList.length - 1 === selectedDaysIndex}
+                          >
                             <S.TdFlexBox>
-                              {dayList.map((item, day) => {
+                              {dayList.map((day) => {
                                 return (
                                   <S.ToggleButton
-                                    isSelected={selectedDayList[index][day]}
+                                    isSelected={selectedDays.indexOf(day) !== -1}
                                     onClick={() => {
-                                      setSelectedDayList((selectedDayList) =>
-                                        selectedDayList.map((list, listIndex) => {
-                                          if (index !== listIndex) return list;
-                                          return list.map((item, i) => {
-                                            if (day === i) return !item;
-                                            return item;
-                                          });
-                                        })
-                                      );
+                                      if (selectedDays.indexOf(day) === -1) {
+                                        setSelectedDayList((selectedDayList) =>
+                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
+                                            if (selectedDayIndex === selectedDaysIndex)
+                                              return [...selectedDay, day];
+                                            return selectedDay;
+                                          })
+                                        );
+                                      } else {
+                                        setSelectedDayList((selectedDayList) =>
+                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
+                                            if (selectedDayIndex === selectedDaysIndex)
+                                              return selectedDay.filter(
+                                                (selected) => selected !== day
+                                              );
+                                            return selectedDay;
+                                          })
+                                        );
+                                      }
                                     }}
                                     key={`dayListItem-${day}`}
                                     style={{ width: '36px', padding: 0 }}
                                   >
-                                    {item}
+                                    {day}
                                   </S.ToggleButton>
                                 );
                               })}
@@ -126,13 +122,10 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                               </S.ClockSelect>
                               까지
                             </S.TdFlexBox>
-                            {selectedDayList.length - 1 === index ? (
+                            {selectedDayList.length - 1 === selectedDaysIndex ? (
                               <S.AddButton
                                 onClick={() => {
-                                  setSelectedDayList([
-                                    ...selectedDayList,
-                                    [false, false, false, false, false, false, false],
-                                  ]);
+                                  setSelectedDayList([...selectedDayList, [] as string[]]);
                                 }}
                               >
                                 <PlusIconSVG />
@@ -140,8 +133,8 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                             ) : (
                               <S.AddButton
                                 onClick={() => {
-                                  setSelectedDayList((list) =>
-                                    list.filter((item, i) => i !== index)
+                                  setSelectedDayList((selectedDayList) =>
+                                    selectedDayList.filter((item, i) => i !== selectedDaysIndex)
                                   );
                                 }}
                               >
@@ -161,14 +154,15 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                       {careInfoList.map((item, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedCareInfo[index]}
+                            isSelected={selectedCareInfo.indexOf(item) !== -1}
                             onClick={() => {
-                              setSelectedCareInfo((selectedCareInfo) =>
-                                selectedCareInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
+                              if (selectedCareInfo.indexOf(item) === -1) {
+                                setSelectedCareInfo([...selectedCareInfo, item]);
+                              } else {
+                                setSelectedCareInfo((selectedCareInfo) =>
+                                  selectedCareInfo.filter((careInfo) => careInfo !== item)
+                                );
+                              }
                             }}
                             key={`careInfoListItem-${index}`}
                           >
@@ -186,14 +180,17 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                       {personalityInfoList.map((item, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo[index]}
+                            isSelected={selectedPersonalityInfo.indexOf(item) !== -1}
                             onClick={() => {
-                              setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-                                selectedPersonalityInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
+                              if (selectedPersonalityInfo.indexOf(item) === -1) {
+                                setSelectedPersonalityInfo([...selectedPersonalityInfo, item]);
+                              } else {
+                                setSelectedPersonalityInfo((selectedPersonalityInfo) =>
+                                  selectedPersonalityInfo.filter(
+                                    (personalityInfo) => personalityInfo !== item
+                                  )
+                                );
+                              }
                             }}
                             key={`personalityInfoListItem-${index}`}
                           >

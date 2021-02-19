@@ -6,14 +6,14 @@ import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 
 interface CareGiverListViewProps {
-  isMine: boolean;
+  isMyCaregiver: boolean;
 }
 
-export default function CareGiverListView({ isMine }: CareGiverListViewProps) {
+export default function CareGiverListView({ isMyCaregiver }: CareGiverListViewProps) {
   return (
     <Layout>
       <>
-        {isMine ? (
+        {isMyCaregiver ? (
           <>
             <Banner
               bannerStyle={BannerStyleType.SECTION}
@@ -35,7 +35,7 @@ export default function CareGiverListView({ isMine }: CareGiverListViewProps) {
           </>
         )}
         <S.CareGiverDetailPage>
-          <CareGiverList isMine={isMine} />
+          <CareGiverList isMyCaregiver={isMyCaregiver} />
         </S.CareGiverDetailPage>
       </>
     </Layout>
