@@ -151,22 +151,22 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   <th>요양 정보</th>
                   <td>
                     <S.TdFlexBox>
-                      {careInfoList.map((item, index) => {
+                      {careInfoList.map((careInfo, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedCareInfo.indexOf(item) !== -1}
+                            isSelected={selectedCareInfo.indexOf(careInfo) !== -1}
                             onClick={() => {
-                              if (selectedCareInfo.indexOf(item) === -1) {
-                                setSelectedCareInfo([...selectedCareInfo, item]);
+                              if (selectedCareInfo.indexOf(careInfo) === -1) {
+                                setSelectedCareInfo([...selectedCareInfo, careInfo]);
                               } else {
                                 setSelectedCareInfo((selectedCareInfo) =>
-                                  selectedCareInfo.filter((careInfo) => careInfo !== item)
+                                  selectedCareInfo.filter((careInfo) => careInfo !== careInfo)
                                 );
                               }
                             }}
                             key={`careInfoListItem-${index}`}
                           >
-                            {item}
+                            {careInfo}
                           </S.ToggleButton>
                         );
                       })}
@@ -177,24 +177,27 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   <th>성격 정보</th>
                   <td>
                     <S.TdFlexBox>
-                      {personalityInfoList.map((item, index) => {
+                      {personalityInfoList.map((personalityInfo, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo.indexOf(item) !== -1}
+                            isSelected={selectedPersonalityInfo.indexOf(personalityInfo) !== -1}
                             onClick={() => {
-                              if (selectedPersonalityInfo.indexOf(item) === -1) {
-                                setSelectedPersonalityInfo([...selectedPersonalityInfo, item]);
+                              if (selectedPersonalityInfo.indexOf(personalityInfo) === -1) {
+                                setSelectedPersonalityInfo([
+                                  ...selectedPersonalityInfo,
+                                  personalityInfo,
+                                ]);
                               } else {
                                 setSelectedPersonalityInfo((selectedPersonalityInfo) =>
                                   selectedPersonalityInfo.filter(
-                                    (personalityInfo) => personalityInfo !== item
+                                    (personalityInfo) => personalityInfo !== personalityInfo
                                   )
                                 );
                               }
                             }}
                             key={`personalityInfoListItem-${index}`}
                           >
-                            {item}
+                            {personalityInfo}
                           </S.ToggleButton>
                         );
                       })}
@@ -245,9 +248,11 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <th>요양 정보</th>
                             <td>
                               <S.InfoItemList>
-                                {careInfo.map((item, index) => {
+                                {careInfo.map((careInfo, index) => {
                                   return (
-                                    <S.InfoItem key={`careInfoItem-${index}`}>{item}</S.InfoItem>
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {careInfo}
+                                    </S.InfoItem>
                                   );
                                 })}
                               </S.InfoItemList>
@@ -262,10 +267,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <th>성격 정보</th>
                             <td>
                               <S.InfoItemList>
-                                {personalityInfo.map((item, index) => {
+                                {personalityInfo.map((personalityInfo, index) => {
                                   return (
                                     <S.InfoItem key={`personalityInfoItem-${index}`}>
-                                      {item}
+                                      {personalityInfo}
                                     </S.InfoItem>
                                   );
                                 })}
