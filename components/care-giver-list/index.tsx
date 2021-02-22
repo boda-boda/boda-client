@@ -7,24 +7,11 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
+import { dayList, careInfoList, personalityInfoList } from '../../constant';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
 }
-
-const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-const careInfoList = [
-  '석션',
-  '휠체어',
-  '기저귀',
-  '목욕',
-  '재활',
-  '청소',
-  '음식',
-  '남성 수급자',
-  '치매교육 이수',
-];
-const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
 
 const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
 const personalityInfo = ['활발함', '긍정적임', '섬세함']; //얘네는 임시
