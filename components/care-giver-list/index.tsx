@@ -7,48 +7,55 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
+import { dayList, careInfoList, personalityInfoList } from '../../constant';
 
 interface CareGiverListProps {
-  isMine: boolean;
+  isMyCaregiver: boolean;
 }
 
-export default function CareGiverList({ isMine }: CareGiverListProps) {
-  const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-  const [selectedDayList, setSelectedDayList] = useState([
-    [false, false, false, false, false, false, false],
-  ]);
-  const careInfoList = [
-    '석션',
-    '휠체어',
-    '기저귀',
-    '목욕',
-    '재활',
-    '청소',
-    '음식',
-    '남성 수급자',
-    '치매교육 이수',
-  ];
-  const [selectedCareInfo, setSelectedCareInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활'];
-  const personalityInfo = ['활발함', '긍정적임', '섬세함'];
+const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
+const personalityInfo = ['활발함', '긍정적임', '섬세함']; //얘네는 임시
+
+export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
+  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
+  const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
+    if (selectedDays.includes(day)) {
+      setSelectedDayList((selectedDayList) =>
+        selectedDayList.map((selectedDay, selectedDayIndex) => {
+          if (selectedDayIndex === selectedDaysIndex)
+            return selectedDay.filter((selected) => selected !== day);
+          return selectedDay;
+        })
+      );
+      return;
+    }
+    setSelectedDayList((selectedDayList) =>
+      selectedDayList.map((selectedDay, selectedDayIndex) => {
+        if (selectedDayIndex === selectedDaysIndex) return [...selectedDay, day];
+        return selectedDay;
+      })
+    );
+  };
+  const toggleCareInfo = (careInfo: string) => {
+    if (selectedCareInfo.includes(careInfo)) {
+      setSelectedCareInfo((selectedCareInfo) =>
+        selectedCareInfo.filter((selected) => selected !== careInfo)
+      );
+      return;
+    }
+    setSelectedCareInfo([...selectedCareInfo, careInfo]);
+  };
+  const togglePersonalityInfo = (personalityInfo: string) => {
+    if (selectedPersonalityInfo.includes(personalityInfo)) {
+      setSelectedPersonalityInfo((selectedPersonalityInfo) =>
+        selectedPersonalityInfo.filter((selected) => selected !== personalityInfo)
+      );
+      return;
+    }
+    setSelectedPersonalityInfo([...selectedPersonalityInfo, personalityInfo]);
+  };
   return (
     <>
       <S.CgList>
@@ -86,70 +93,58 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }}>
-                    {selectedDayList.map((list, index) => {
+                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
                       return (
-                        <>
-                          <S.TimeSelectContainer isLast={selectedDayList.length - 1 === index}>
-                            <S.TdFlexBox>
-                              {dayList.map((item, day) => {
-                                return (
-                                  <S.ToggleButton
-                                    isSelected={selectedDayList[index][day]}
-                                    onClick={() => {
-                                      setSelectedDayList((selectedDayList) =>
-                                        selectedDayList.map((list, listIndex) => {
-                                          if (index !== listIndex) return list;
-                                          return list.map((item, i) => {
-                                            if (day === i) return !item;
-                                            return item;
-                                          });
-                                        })
-                                      );
-                                    }}
-                                    key={`dayListItem-${day}`}
-                                    style={{ width: '36px', padding: 0 }}
-                                  >
-                                    {item}
-                                  </S.ToggleButton>
+                        <S.TimeSelectContainer
+                          isLast={selectedDayList.length - 1 === selectedDaysIndex}
+                          key={`timeselectcontainer-${selectedDaysIndex}`}
+                        >
+                          <S.TdFlexBox>
+                            {dayList.map((day) => {
+                              return (
+                                <S.ToggleButton
+                                  isSelected={selectedDays.includes(day)}
+                                  className="square"
+                                  onClick={() => toggleDays(selectedDays, selectedDaysIndex, day)}
+                                  key={`dayListItem-${day}`}
+                                >
+                                  {day}
+                                </S.ToggleButton>
+                              );
+                            })}
+                          </S.TdFlexBox>
+                          <S.TdFlexBox>
+                            <S.ClockSelect>
+                              00:00
+                              <TimeInput />
+                            </S.ClockSelect>
+                            부터
+                            <S.ClockSelect>
+                              00:00
+                              <TimeInput />
+                            </S.ClockSelect>
+                            까지
+                          </S.TdFlexBox>
+                          {selectedDayList.length - 1 === selectedDaysIndex ? (
+                            <S.AddButton
+                              onClick={() => {
+                                setSelectedDayList([...selectedDayList, [] as string[]]);
+                              }}
+                            >
+                              <PlusIconSVG />
+                            </S.AddButton>
+                          ) : (
+                            <S.AddButton
+                              onClick={() => {
+                                setSelectedDayList((selectedDayList) =>
+                                  selectedDayList.filter((item, i) => i !== selectedDaysIndex)
                                 );
-                              })}
-                            </S.TdFlexBox>
-                            <S.TdFlexBox>
-                              <S.ClockSelect>
-                                00:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              부터
-                              <S.ClockSelect>
-                                00:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              까지
-                            </S.TdFlexBox>
-                            {selectedDayList.length - 1 === index ? (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList([
-                                    ...selectedDayList,
-                                    [false, false, false, false, false, false, false],
-                                  ]);
-                                }}
-                              >
-                                <PlusIconSVG />
-                              </S.AddButton>
-                            ) : (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList((list) =>
-                                    list.filter((item, i) => i !== index)
-                                  );
-                                }}
-                              >
-                                <MinusIconSVG />
-                              </S.AddButton>
-                            )}
-                          </S.TimeSelectContainer>
-                        </>
+                              }}
+                            >
+                              <MinusIconSVG />
+                            </S.AddButton>
+                          )}
+                        </S.TimeSelectContainer>
                       );
                     })}
                   </td>
@@ -158,21 +153,14 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                   <th>요양 정보</th>
                   <td>
                     <S.TdFlexBox>
-                      {careInfoList.map((item, index) => {
+                      {careInfoList.map((careInfo, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedCareInfo[index]}
-                            onClick={() => {
-                              setSelectedCareInfo((selectedCareInfo) =>
-                                selectedCareInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
-                            }}
+                            isSelected={selectedCareInfo.includes(careInfo)}
+                            onClick={() => toggleCareInfo(careInfo)}
                             key={`careInfoListItem-${index}`}
                           >
-                            {item}
+                            {careInfo}
                           </S.ToggleButton>
                         );
                       })}
@@ -183,21 +171,14 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                   <th>성격 정보</th>
                   <td>
                     <S.TdFlexBox>
-                      {personalityInfoList.map((item, index) => {
+                      {personalityInfoList.map((personalityInfo, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo[index]}
-                            onClick={() => {
-                              setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-                                selectedPersonalityInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
-                            }}
+                            isSelected={selectedPersonalityInfo.includes(personalityInfo)}
+                            onClick={() => togglePersonalityInfo(personalityInfo)}
                             key={`personalityInfoListItem-${index}`}
                           >
-                            {item}
+                            {personalityInfo}
                           </S.ToggleButton>
                         );
                       })}
@@ -248,9 +229,11 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                             <th>요양 정보</th>
                             <td>
                               <S.InfoItemList>
-                                {careInfo.map((item, index) => {
+                                {careInfo.map((careInfo, index) => {
                                   return (
-                                    <S.InfoItem key={`careInfoItem-${index}`}>{item}</S.InfoItem>
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {careInfo}
+                                    </S.InfoItem>
                                   );
                                 })}
                               </S.InfoItemList>
@@ -265,10 +248,10 @@ export default function CareGiverList({ isMine }: CareGiverListProps) {
                             <th>성격 정보</th>
                             <td>
                               <S.InfoItemList>
-                                {personalityInfo.map((item, index) => {
+                                {personalityInfo.map((personalityInfo, index) => {
                                   return (
                                     <S.InfoItem key={`personalityInfoItem-${index}`}>
-                                      {item}
+                                      {personalityInfo}
                                     </S.InfoItem>
                                   );
                                 })}

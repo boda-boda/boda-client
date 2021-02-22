@@ -194,6 +194,13 @@ export const InfoItemList = styled.div`
 export const TdFlexBox = styled.div`
   ${FLEX_ROW_START_CENTER};
   flex-wrap: wrap;
+  .square {
+    width: 36px;
+    padding: 0;
+  }
+  .clock-right {
+    margin-left: 20px;
+  }
 `;
 interface ToggleButtonProps {
   isSelected: boolean;
@@ -246,8 +253,7 @@ export const ClockSelect = styled.div`
   ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
   border: 1px solid ${THEME.GRAY_LINE};
-  margin-right: 8px;
-  margin-left: 14px;
+  margin-right: 10px;
   user-select: none;
   -ms-user-select: none;
   -moz-user-select: none;

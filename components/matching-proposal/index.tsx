@@ -15,43 +15,26 @@ interface MatchingProposalProps {
   isFilled: boolean;
 }
 
+const gender = ['여자', '남자'];
+const dayList = ['월', '화', '수', '목', '금', '토', '일'];
+const careInfoList = [
+  '석션',
+  '휠체어',
+  '기저귀',
+  '목욕',
+  '재활',
+  '청소',
+  '음식',
+  '남성 수급자',
+  '치매교육 이수',
+];
+const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
+
 export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
-  const gender = ['여자', '남자'];
-  const [selectedGender, setSelectedGender] = useState([false, false]);
-  const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-  const [selectedDayList, setSelectedDayList] = useState([
-    [false, false, false, false, false, false, false],
-  ]);
-  const careInfoList = [
-    '석션',
-    '휠체어',
-    '기저귀',
-    '목욕',
-    '재활',
-    '청소',
-    '음식',
-    '남성 수급자',
-    '치매교육 이수',
-  ];
-  const [selectedCareInfo, setSelectedCareInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [isWoman, setIsWoman] = useState(true);
+  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
   return (
     <>
       <S.MatchingProposalContent>
@@ -133,24 +116,24 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   <th>성별</th>
                   <td className="select right">
                     <S.TdFlexBox>
-                      {gender.map((item, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedGender[index]}
-                            onClick={() => {
-                              setSelectedGender((selectedGender) =>
-                                selectedGender.map((item, i) => {
-                                  if (index === i) return !item;
-                                  else return false;
-                                })
-                              );
-                            }}
-                            key={`GenderItem-${index}`}
-                          >
-                            {item}
-                          </S.ToggleButton>
-                        );
-                      })}
+                      <S.ToggleButton
+                        isSelected={isWoman}
+                        onClick={() => {
+                          setIsWoman(true);
+                        }}
+                        key={`GenderItem-woman`}
+                      >
+                        여자
+                      </S.ToggleButton>
+                      <S.ToggleButton
+                        isSelected={!isWoman}
+                        onClick={() => {
+                          setIsWoman(false);
+                        }}
+                        key={`GenderItem-man`}
+                      >
+                        남자
+                      </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
                 </tr>
@@ -176,31 +159,42 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }} colSpan={3} className="wide">
-                    {selectedDayList.map((list, index) => {
+                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
                       return (
                         <>
-                          <S.TimeSelectContainer isLast={selectedDayList.length - 1 === index}>
+                          <S.TimeSelectContainer
+                            isLast={selectedDayList.length - 1 === selectedDaysIndex}
+                          >
                             <S.TdFlexBox>
-                              {dayList.map((item, day) => {
+                              {dayList.map((day) => {
                                 return (
                                   <S.ToggleButton
-                                    isSelected={selectedDayList[index][day]}
-                                    isLast={dayList.length - 1 === day}
+                                    isSelected={selectedDays.indexOf(day) !== -1}
                                     onClick={() => {
-                                      setSelectedDayList((selectedDayList) =>
-                                        selectedDayList.map((list, listIndex) => {
-                                          if (index !== listIndex) return list;
-                                          return list.map((item, i) => {
-                                            if (day === i) return !item;
-                                            return item;
-                                          });
-                                        })
-                                      );
+                                      if (selectedDays.indexOf(day) === -1) {
+                                        setSelectedDayList((selectedDayList) =>
+                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
+                                            if (selectedDayIndex === selectedDaysIndex)
+                                              return [...selectedDay, day];
+                                            return selectedDay;
+                                          })
+                                        );
+                                      } else {
+                                        setSelectedDayList((selectedDayList) =>
+                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
+                                            if (selectedDayIndex === selectedDaysIndex)
+                                              return selectedDay.filter(
+                                                (selected) => selected !== day
+                                              );
+                                            return selectedDay;
+                                          })
+                                        );
+                                      }
                                     }}
                                     key={`dayListItem-${day}`}
-                                    style={{ width: '36px', padding: 0 }}
+                                    className="square"
                                   >
-                                    {item}
+                                    {day}
                                   </S.ToggleButton>
                                 );
                               })}
@@ -211,19 +205,16 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                                 <TimeInput />
                               </S.ClockSelect>
                               부터
-                              <S.ClockSelect>
+                              <S.ClockSelect className="clock-right">
                                 00:00
                                 <TimeInput />
                               </S.ClockSelect>
                               까지
                             </S.TdFlexBox>
-                            {selectedDayList.length - 1 === index ? (
+                            {selectedDayList.length - 1 === selectedDaysIndex ? (
                               <S.AddButton
                                 onClick={() => {
-                                  setSelectedDayList([
-                                    ...selectedDayList,
-                                    [false, false, false, false, false, false, false],
-                                  ]);
+                                  setSelectedDayList([...selectedDayList, [] as string[]]);
                                 }}
                               >
                                 <PlusIconSVG />
@@ -231,8 +222,8 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                             ) : (
                               <S.AddButton
                                 onClick={() => {
-                                  setSelectedDayList((list) =>
-                                    list.filter((item, i) => i !== index)
+                                  setSelectedDayList((selectedDayList) =>
+                                    selectedDayList.filter((item, i) => i !== selectedDaysIndex)
                                   );
                                 }}
                               >
@@ -282,22 +273,23 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   <th>요구 사항</th>
                   <td colSpan={3} className="wide overtd">
                     <S.TdFlexBox>
-                      {careInfoList.map((item, index) => {
+                      {careInfoList.map((careInfo, index) => {
                         return (
                           <S.ToggleButton
                             className="overitems"
-                            isSelected={selectedCareInfo[index]}
+                            isSelected={selectedCareInfo.indexOf(careInfo) !== -1}
                             onClick={() => {
-                              setSelectedCareInfo((selectedCareInfo) =>
-                                selectedCareInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
+                              if (selectedCareInfo.indexOf(careInfo) === -1) {
+                                setSelectedCareInfo([...selectedCareInfo, careInfo]);
+                              } else {
+                                setSelectedCareInfo((selectedCareInfo) =>
+                                  selectedCareInfo.filter((careInfo) => careInfo !== careInfo)
+                                );
+                              }
                             }}
                             key={`careInfoListItem-${index}`}
                           >
-                            {item}
+                            {careInfo}
                           </S.ToggleButton>
                         );
                       })}
@@ -308,21 +300,27 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   <th>요구 성격</th>
                   <td colSpan={3} className="wide">
                     <S.TdFlexBox>
-                      {personalityInfoList.map((item, index) => {
+                      {personalityInfoList.map((personalityInfo, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo[index]}
+                            isSelected={selectedPersonalityInfo.indexOf(personalityInfo) !== -1}
                             onClick={() => {
-                              setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-                                selectedPersonalityInfo.map((item, i) => {
-                                  if (index === i) return !item;
-                                  return item;
-                                })
-                              );
+                              if (selectedPersonalityInfo.indexOf(personalityInfo) === -1) {
+                                setSelectedPersonalityInfo([
+                                  ...selectedPersonalityInfo,
+                                  personalityInfo,
+                                ]);
+                              } else {
+                                setSelectedPersonalityInfo((selectedPersonalityInfo) =>
+                                  selectedPersonalityInfo.filter(
+                                    (personalityInfo) => personalityInfo !== personalityInfo
+                                  )
+                                );
+                              }
                             }}
                             key={`personalityInfoListItem-${index}`}
                           >
-                            {item}
+                            {personalityInfo}
                           </S.ToggleButton>
                         );
                       })}

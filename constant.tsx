@@ -113,3 +113,19 @@ export const FLEX_COLUMN_SPACE_CENTER = `
   justify-content:space-between;
   align-items:center;
 `;
+
+export const dayList = ['월', '화', '수', '목', '금', '토', '일'];
+
+export const careInfoList = [
+  '석션',
+  '휠체어',
+  '기저귀',
+  '목욕',
+  '재활',
+  '청소',
+  '음식',
+  '남성 수급자',
+  '치매교육 이수',
+];
+
+export const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];

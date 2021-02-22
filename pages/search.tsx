@@ -1,5 +1,5 @@
 import CareGiverListView from '../views/care-giver-list-view';
 
 export default function CareGiverListPage() {
-  return <CareGiverListView isMine={false} />;
+  return <CareGiverListView isMyCaregiver={false} />;
 }

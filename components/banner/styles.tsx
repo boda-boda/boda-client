@@ -43,7 +43,7 @@ export const BackgroundImage = styled.div<BannerProps>`
   height: 100%;
   background-image: url(${(props) => props.url});
   background-repeat: no-repeat;
-  background-position: center;
+  background-size: cover;
   transition: 0.2s ease;
 `;
 
