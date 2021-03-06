@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
-import PersonalityInfoIconSVG from '../../svgs/personality-info-icon-svg';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList, personalityInfoList } from '../../constant';
+import { dayList, careInfoList } from '../../constant';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
 }
 
 const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
-const personalityInfo = ['활발함', '긍정적임', '섬세함']; //얘네는 임시
 
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
@@ -46,15 +44,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       return;
     }
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
-  };
-  const togglePersonalityInfo = (personalityInfo: string) => {
-    if (selectedPersonalityInfo.includes(personalityInfo)) {
-      setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-        selectedPersonalityInfo.filter((selected) => selected !== personalityInfo)
-      );
-      return;
-    }
-    setSelectedPersonalityInfo([...selectedPersonalityInfo, personalityInfo]);
   };
   return (
     <>
@@ -150,40 +139,51 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>요양 정보</th>
-                  <td>
-                    <S.TdFlexBox>
-                      {careInfoList.map((careInfo, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedCareInfo.includes(careInfo)}
-                            onClick={() => toggleCareInfo(careInfo)}
-                            key={`careInfoListItem-${index}`}
-                          >
-                            {careInfo}
-                          </S.ToggleButton>
-                        );
-                      })}
-                    </S.TdFlexBox>
-                  </td>
-                </tr>
-                <tr>
-                  <th>성격 정보</th>
-                  <td>
-                    <S.TdFlexBox>
-                      {personalityInfoList.map((personalityInfo, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedPersonalityInfo.includes(personalityInfo)}
-                            onClick={() => togglePersonalityInfo(personalityInfo)}
-                            key={`personalityInfoListItem-${index}`}
-                          >
-                            {personalityInfo}
-                          </S.ToggleButton>
-                        );
-                      })}
-                    </S.TdFlexBox>
-                  </td>
+                  <th rowSpan={2}>가능 조건</th>
+                  <tr>
+                    <td className="available">
+                      석션
+                      <S.CheckBox type="checkbox" id="checkbox1" />
+                    </td>
+                    <td className="available">
+                      피딩
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available">
+                      휠체어
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available">
+                      기저귀
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available right">
+                      재활
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="available">
+                      가사
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available">
+                      남성
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available">
+                      치매
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available">
+                      입주
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                    <td className="available right">
+                      간호조무사
+                      <S.CheckBox type="checkbox" />
+                    </td>
+                  </tr>
                 </tr>
               </tbody>
             </S.FilterTable>
@@ -226,32 +226,13 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 <CareInfoIconSVG />
                               </S.SVGIconBox>
                             </td>
-                            <th>요양 정보</th>
+                            <th>가능 조건</th>
                             <td>
                               <S.InfoItemList>
                                 {careInfo.map((careInfo, index) => {
                                   return (
                                     <S.InfoItem key={`careInfoItem-${index}`}>
                                       {careInfo}
-                                    </S.InfoItem>
-                                  );
-                                })}
-                              </S.InfoItemList>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <S.SVGIconBox>
-                                <PersonalityInfoIconSVG />
-                              </S.SVGIconBox>
-                            </td>
-                            <th>성격 정보</th>
-                            <td>
-                              <S.InfoItemList>
-                                {personalityInfo.map((personalityInfo, index) => {
-                                  return (
-                                    <S.InfoItem key={`personalityInfoItem-${index}`}>
-                                      {personalityInfo}
                                     </S.InfoItem>
                                   );
                                 })}

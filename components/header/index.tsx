@@ -24,14 +24,19 @@ export default function Header() {
           <Link href="/" passHref>
             <S.StyledLink>
               <S.Logo>
-                <S.LogoImg src={'https://cdn.worldvectorlogo.com/logos/chanel-2.svg'} />
+                <S.LogoImg
+                  src={
+                    'https://user-images.githubusercontent.com/52532871/110198039-f07d4a80-7e92-11eb-9501-241d562b71b1.png'
+                  }
+                />
               </S.Logo>
             </S.StyledLink>
           </Link>
           <S.MenuList>
-            <S.MenuItem onClick={() => handleMenuClick(0)}>
-              신규 요양보호사 추가
-              {isMenuModalOn[0] ? (
+            <Link href="/search" passHref>
+              <S.MenuItem onClick={() => handleMenuClick(0)}>
+                신규 요양보호사 검색
+                {/* {isMenuModalOn[0] ? (
                 <>
                   <ArrowUp />
                   <S.MenuModal>
@@ -46,8 +51,9 @@ export default function Header() {
                 </>
               ) : (
                 <ArrowDown />
-              )}
-            </S.MenuItem>
+              )} */}
+              </S.MenuItem>
+            </Link>
             <S.MenuItem onClick={() => handleMenuClick(1)}>
               나의 요양보호사 관리
               {isMenuModalOn[1] ? (
@@ -79,7 +85,7 @@ export default function Header() {
                       </Link>
                       <S.MenuBar />
                       <Link href="/" passHref>
-                        <S.StyledLink>수급자 관리</S.StyledLink>
+                        <S.StyledLink>로그아웃</S.StyledLink>
                       </Link>
                     </S.MenuModal>
                   </>

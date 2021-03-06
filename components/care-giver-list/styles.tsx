@@ -61,7 +61,6 @@ export const FilterTable = styled.table`
     border-bottom: 1px solid ${THEME.GRAY_LINE};
     padding: 12px;
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
-    font-size: 14px;
     font-weight: 500;
     text-align: left;
     vertical-align: middle;
@@ -71,6 +70,16 @@ export const FilterTable = styled.table`
     width: 84px;
     background: ${THEME.HEADER_BACKGROUND};
     vertical-align: top;
+  }
+  .available {
+    border-right: 1px solid ${THEME.GRAY_LINE};
+    width: 10%;
+    position: relative;
+    font-weight: 400;
+    color: ${THEME.GRAY_FONT};
+  }
+  .right {
+    border-right: none;
   }
 `;
 
@@ -145,6 +154,13 @@ export const AddButton = styled.div`
   cursor: pointer;
 `;
 
+export const CheckBox = styled.input`
+  position: absolute;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+`;
+
 export const ResetButtonContainer = styled.div`
   width: 100%;
   ${FLEX_ROW_END_CENTER};
@@ -174,7 +190,7 @@ export const CardList = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 474px;
-  height: 169px;
+  height: 149px;
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
