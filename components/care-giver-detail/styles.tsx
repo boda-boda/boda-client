@@ -83,7 +83,7 @@ export const Table = styled.table`
     padding: 24px 12px;
   }
   .infovalue {
-    width: 336px;
+    width: 330px;
   }
 `;
 
@@ -196,13 +196,16 @@ export const ButtonContainer = styled.div`
 `;
 
 export const EditButton = styled.button`
-  margin-top: -7px;
-  outline: none;
-  border: 1px solid ${THEME.MAIN};
-  padding: 10px;
+  position: absolute;
+  top: 33px;
+  right: 0;
+  padding: 11px 10px;
+  height: 36px;
   border-radius: 3px;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
   color: ${THEME.MAIN};
-  background: white;
+  ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
 `;
 

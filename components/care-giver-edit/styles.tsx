@@ -87,7 +87,7 @@ export const Table = styled.table`
     padding: 12px;
   }
   .infovalue {
-    width: 336px;
+    width: 330px;
   }
 `;
 

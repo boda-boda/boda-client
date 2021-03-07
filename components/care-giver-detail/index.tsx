@@ -9,11 +9,9 @@ export default function CareGiveDetail() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <S.ButtonContainer>
-              <S.StyledLink href="0/edit">
-                <S.EditButton>세부정보 수정</S.EditButton>
-              </S.StyledLink>
-            </S.ButtonContainer>
+            <S.StyledLink href="0/edit">
+              <S.EditButton>세부정보 수정</S.EditButton>
+            </S.StyledLink>
             <S.Table>
               <tbody>
                 <tr>

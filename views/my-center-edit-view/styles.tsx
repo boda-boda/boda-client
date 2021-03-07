@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_START,
@@ -21,7 +21,7 @@ export const Table = styled.table`
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 21px 12px;
+    padding: 12px;
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
@@ -53,7 +53,7 @@ export const Table = styled.table`
     border-right: none;
   }
   .infovalue {
-    width: 336px;
+    width: 330px;
   }
 `;
 
@@ -65,17 +65,39 @@ export const ProfileImageContainer = styled.div`
 `;
 
 interface ProfileImageProps {
-  src: string;
+  src?: string | null;
+  isHover?: boolean;
 }
 
 export const ProfileImage = styled.div<ProfileImageProps>`
   width: 118px;
   height: 118px;
   border-radius: 10px;
-  background: ${THEME.BACKGROUND};
+  background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
+`;
+
+export const ImageIconContainer = styled.div<ProfileImageProps>`
+  opacity: ${(props) => (props.isHover ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+`;
+
+export const AddressButton = styled.button`
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  width: 80px;
+  height: 36px;
+  border-radius: 3px;
+  color: ${THEME.MAIN};
+  margin-left: 10px;
+  background: white;
+  cursor: pointer;
 `;
 
 export const Section = styled.div`
@@ -97,11 +119,40 @@ export const InnerContent = styled.div`
   height: 100%;
   color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
+  padding-bottom: 60px;
 `;
 
 interface ImageProps {
   src: string;
 }
+
+interface TextInputProps {
+  withButton?: boolean;
+  long?: boolean;
+}
+
+export const TextInput = styled.input<TextInputProps>`
+  outline: none;
+  width: ${(props) => (props.withButton ? css`calc(100% - 90px)` : props.long ? '100%' : '200px')};
+  height: 36px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  padding: 0 10px;
+  color: ${THEME.GRAY_FONT};
+  cursor: ${(props) => props.withButton && 'pointer'};
+`;
+
+export const TextArea = styled.textarea`
+  outline: none;
+  width: 100%;
+  min-height: 84px;
+  padding: 10px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  resize: none;
+  overflow-y: hidden;
+  color: ${THEME.GRAY_FONT};
+`;
 
 export const CenterImageContainer = styled.div`
   margin-top: 24px;
@@ -149,4 +200,25 @@ export const EditButton = styled.div`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+`;
+
+export const FinishButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  ${FLEX_ROW_CENTER_CENTER};
+`;
+
+export const FinishButton = styled.div`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
 `;
