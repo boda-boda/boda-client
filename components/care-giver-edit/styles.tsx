@@ -105,17 +105,27 @@ export const ProfileImageContainer = styled.div`
 `;
 
 interface ProfileImageProps {
-  src: string;
+  src?: string;
+  isHover?: boolean;
 }
 
 export const ProfileImage = styled.div<ProfileImageProps>`
   width: 118px;
   height: 118px;
   border-radius: 10px;
-  background: ${THEME.BACKGROUND};
+  background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
+`;
+
+export const ImageIconContainer = styled.div<ProfileImageProps>`
+  opacity: ${(props) => (props.isHover ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    opacity: 1;
+    cursor: pointer;
+  }
 `;
 
 export const PersonalityInfoList = styled.div`

@@ -5,6 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import * as S from './styles';
 import { dayList } from '../../constant';
+import ImageDefaultSVG from '../../svgs/image-default-svg';
 
 interface CareGiverEditProps {
   isNew: boolean;
@@ -14,6 +15,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [address, setAddress] = useState('');
   const [memo, setMemo] = useState('');
   const [careers, setCareers] = useState([['', '', '']]);
+  const [profileImage, setProfileImage] = useState((null as unknown) as string);
   const memoRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (!memoRef.current) return;
@@ -62,7 +64,11 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 <tr>
                   <td rowSpan={3} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <S.ProfileImage src={profileImage}>
+                        <S.ImageIconContainer isHover={profileImage !== null}>
+                          <ImageDefaultSVG />
+                        </S.ImageIconContainer>
+                      </S.ProfileImage>
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
@@ -318,7 +324,11 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             </S.Table>
           </S.Section>
           <S.FinishButtonContainer>
-            <S.FinishButton>수정 완료</S.FinishButton>
+            {isNew ? (
+              <S.FinishButton>작성 완료</S.FinishButton>
+            ) : (
+              <S.FinishButton>수정 완료</S.FinishButton>
+            )}
           </S.FinishButtonContainer>
         </S.InnerContent>
       </S.CareGiverEdit>
