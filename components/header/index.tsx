@@ -64,7 +64,7 @@ export default function Header() {
                       <S.StyledLink>요양보호사 목록</S.StyledLink>
                     </Link>
                     <S.MenuBar />
-                    <Link href="/" passHref>
+                    <Link href="/new" passHref>
                       <S.StyledLink>요양보호사 추가</S.StyledLink>
                     </Link>
                   </S.MenuModal>

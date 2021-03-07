@@ -46,7 +46,7 @@ export const Table = styled.table`
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 20px 12px;
+    padding: 12px;
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
@@ -231,7 +231,6 @@ export const TextInput = styled.input<TextInputProps>`
   outline: none;
   width: ${(props) => (props.withButton ? css`calc(100% - 90px)` : props.long ? '100%' : '200px')};
   height: 36px;
-  margin: -18px 0;
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};
   padding: 0 10px;
@@ -247,6 +246,7 @@ export const TextArea = styled.textarea`
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};
   resize: none;
+  overflow-y: hidden;
   color: ${THEME.GRAY_FONT};
 `;
 
@@ -257,7 +257,6 @@ export const AddressButton = styled.button`
   height: 36px;
   border-radius: 3px;
   color: ${THEME.MAIN};
-  margin: -18px 0;
   margin-left: 10px;
   background: white;
   cursor: pointer;
