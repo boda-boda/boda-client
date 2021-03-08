@@ -65,7 +65,7 @@ export const MenuModal = styled.div`
   right: 0;
   z-index: 20;
   border-radius: 5px;
-  box-shadow: 0 0 10px 0 #00000022;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   color: ${THEME.GRAY_FONT};
   font-size: 14px;

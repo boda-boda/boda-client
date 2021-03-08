@@ -9,6 +9,9 @@ export default function CareGiveDetail() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
+            <S.StyledLink href="0/edit">
+              <S.EditButton>세부정보 수정</S.EditButton>
+            </S.StyledLink>
             <S.Table>
               <tbody>
                 <tr>
@@ -18,15 +21,15 @@ export default function CareGiveDetail() {
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td>김요양</td>
+                  <td className="infovalue">김요양</td>
                   <th>나이</th>
-                  <td>55세</td>
+                  <td className="infovalue">55세</td>
                 </tr>
                 <tr>
                   <th>성별</th>
-                  <td>여자</td>
+                  <td className="infovalue">여자</td>
                   <th>연락처</th>
-                  <td>010-0000-0000</td>
+                  <td className="infovalue">010-0000-0000</td>
                 </tr>
                 <tr>
                   <th>지역</th>
@@ -36,34 +39,26 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>요양 정보</S.SectionTitle>
+            <S.SectionTitle>메모</S.SectionTitle>
             <S.Table>
               <tbody>
                 <tr>
-                  <th>석션</th>
-                  <td>경험 1년</td>
-                  <th>기저귀</th>
-                  <td>경험 1년</td>
-                </tr>
-                <tr>
-                  <th>휠체어</th>
-                  <td>경험 1년</td>
-                  <th>목욕</th>
-                  <td>경험 1년</td>
+                  <td className="memo">센터가 작성</td>
                 </tr>
               </tbody>
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>성격 정보</S.SectionTitle>
+            <S.SectionTitle>가능 조건</S.SectionTitle>
             <S.Table>
               <tbody>
                 <tr>
                   <td className="personality">
                     <S.PersonalityInfoList>
-                      <S.PersonalityInfoItem>조용함</S.PersonalityInfoItem>
-                      <S.PersonalityInfoItem>활발함</S.PersonalityInfoItem>
-                      <S.PersonalityInfoItem>긍정적임</S.PersonalityInfoItem>
+                      <S.PersonalityInfoItem>석션</S.PersonalityInfoItem>
+                      <S.PersonalityInfoItem>입주</S.PersonalityInfoItem>
+                      <S.PersonalityInfoItem>휠체어</S.PersonalityInfoItem>
+                      <S.PersonalityInfoItem>기저귀</S.PersonalityInfoItem>
                     </S.PersonalityInfoList>
                   </td>
                 </tr>
@@ -71,7 +66,7 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>돌봄 가능 시간</S.SectionTitle>
+            <S.SectionTitle>돌봄 스케줄</S.SectionTitle>
             <S.TimeTable>
               <tbody>
                 <tr>
@@ -123,23 +118,23 @@ export default function CareGiveDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career">근무지</th>
+                  <th className="career long">근무지</th>
+                  <th className="career">수급자</th>
                   <th className="career right">기간</th>
                 </tr>
                 <tr>
-                  <td className="career">성북구 S재가센터</td>
+                  <td className="career long">성북구 제빵왕 재가센터</td>
+                  <td className="career">윤시윤</td>
                   <td className="career right">2015.07~</td>
+                </tr>
+                <tr>
+                  <td className="career long">동대문구 의형제 재가센터</td>
+                  <td className="career">강동원</td>
+                  <td className="career right">2013.07~2014.11</td>
                 </tr>
               </tbody>
             </S.Table>
           </S.Section>
-          <S.MatchingButtonContainer>
-            <Link href="/matching-proposal" passHref>
-              <S.StyledLink>
-                <S.MatchingButton>매칭 제안서 작성하기</S.MatchingButton>
-              </S.StyledLink>
-            </Link>
-          </S.MatchingButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>
     </>
