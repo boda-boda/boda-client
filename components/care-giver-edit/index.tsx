@@ -250,7 +250,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 </tr>
                 {careers.map((career, careerIndex) => {
                   return (
-                    <tr>
+                    <tr key={`career-row-${careerIndex}`}>
                       <td className="career long">
                         <S.TextInput
                           type="text"

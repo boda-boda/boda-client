@@ -42,20 +42,18 @@ export default function MyCenterView() {
                     </td>
                     <th>이름</th>
                     <td className="infovalue">보다 재가센터</td>
-                    <th>위치</th>
-                    <td className="infovalue">서대문구 통일로 123</td>
-                  </tr>
-                  <tr>
                     <th>전화</th>
                     <td className="infovalue">02-000-0000</td>
+                  </tr>
+                  <tr>
+                    <th>이메일</th>
+                    <td className="infovalue">bodacenter@boda.kr</td>
                     <th>홈페이지</th>
                     <td className="infovalue">www.boda.kr</td>
                   </tr>
                   <tr>
-                    <th>팩스</th>
-                    <td className="infovalue">02-000-0000</td>
-                    <th>이메일</th>
-                    <td className="infovalue">bodacenter@boda.kr</td>
+                    <th>위치</th>
+                    <td colSpan={3}>서대문구 통일로 123</td>
                   </tr>
                   <tr>
                     <th>센터 소개</th>
