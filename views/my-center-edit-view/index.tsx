@@ -15,7 +15,9 @@ export default function MyCenterView() {
     'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/kitten-440379.jpg',
   ];
   const [memo, setMemo] = useState('');
-  const [address, setAddress] = useState('');
+  const [roadAddress, setRoadAddress] = useState('');
+  const [jibunAddress, setJibunAddress] = useState('');
+  const [extraAddress, setExtraAddress] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const memoRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -30,8 +32,8 @@ export default function MyCenterView() {
     }
     new window.daum.Postcode({
       oncomplete: function (data: any) {
-        let fullAddress = data.address;
-        setAddress(fullAddress);
+        setRoadAddress(data.roadAddress);
+        setJibunAddress(data.jibunAddress || data.autoJibunAddress);
       },
     }).open();
   };
@@ -53,7 +55,7 @@ export default function MyCenterView() {
               <S.Table>
                 <tbody>
                   <tr>
-                    <td rowSpan={4} className="profile">
+                    <td rowSpan={5} className="profile">
                       <S.ProfileImageContainer>
                         <S.ProfileImage src={profileImage}>
                           <S.ImageIconContainer isHover={profileImage !== null}>
@@ -66,20 +68,13 @@ export default function MyCenterView() {
                     <td className="infovalue">
                       <S.TextInput type="text" />
                     </td>
-                    <th>위치</th>
+                    <th>전화</th>
                     <td className="infovalue">
-                      <S.TextInput
-                        type="text"
-                        value={address}
-                        readOnly
-                        withButton
-                        onClick={openAddressModal}
-                      />
-                      <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                      <S.TextInput type="text" />
                     </td>
                   </tr>
                   <tr>
-                    <th>전화</th>
+                    <th>이메일</th>
                     <td className="infovalue">
                       <S.TextInput type="text" />
                     </td>
@@ -89,13 +84,32 @@ export default function MyCenterView() {
                     </td>
                   </tr>
                   <tr>
-                    <th>팩스</th>
-                    <td className="infovalue">
-                      <S.TextInput type="text" />
+                    <th rowSpan={2}>위치</th>
+                    <td colSpan={3}>
+                      <S.TextInput
+                        type="text"
+                        value={roadAddress}
+                        readOnly
+                        onClick={openAddressModal}
+                      />
+                      <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
                     </td>
-                    <th>이메일</th>
-                    <td className="infovalue">
-                      <S.TextInput type="text" />
+                  </tr>
+                  <tr>
+                    <td>
+                      <S.TextInput type="text" value={jibunAddress} long />
+                    </td>
+                    <td colSpan={2}>
+                      <S.TextInput
+                        type="text"
+                        value={extraAddress}
+                        readOnly={roadAddress === ''}
+                        long
+                        placeholder="상세주소 입력"
+                        onChange={(e) => {
+                          setExtraAddress(e.target.value);
+                        }}
+                      />
                     </td>
                   </tr>
                   <tr>
