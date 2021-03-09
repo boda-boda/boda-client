@@ -17,7 +17,6 @@ const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
   const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
     if (selectedDays.includes(day)) {
       setSelectedDayList((selectedDayList) =>
@@ -205,9 +204,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
               >
                 <S.StyledLink>
                   <S.Card>
-                    <S.ProfileImage src="https://static.scientificamerican.com/sciam/cache/file/92E141F8-36E4-4331-BB2EE42AC8674DD3_source.jpg" />
+                    <S.ProfileImage src="https://user-images.githubusercontent.com/52532871/110496615-001dbd00-8139-11eb-80b6-78d719193f1d.jpeg" />
                     <S.InfoContainer>
-                      <S.BasicInfo>야옹이 (03/여)</S.BasicInfo>
+                      <S.BasicInfo>김요양 (60/여)</S.BasicInfo>
                       <S.Time>1시간 전</S.Time>
                       <S.InfoTable>
                         <tbody>
@@ -245,9 +244,153 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   </S.Card>
                 </S.StyledLink>
               </Link>
-              <S.Card></S.Card>
-              <S.Card></S.Card>
-              <S.Card></S.Card>
+              <Link
+                href={{
+                  pathname: '/list/[id]',
+                }}
+                as={`/list/1`}
+                passHref
+              >
+                <S.StyledLink>
+                  <S.Card>
+                    <S.ProfileImage src="https://user-images.githubusercontent.com/52532871/110496616-014eea00-8139-11eb-821b-0da24e11a924.jpeg" />
+                    <S.InfoContainer>
+                      <S.BasicInfo>조요양 (41/여)</S.BasicInfo>
+                      <S.Time>1시간 전</S.Time>
+                      <S.InfoTable>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <PhoneNumberIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>연락처</th>
+                            <td>010-1234-1234</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <CareInfoIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>가능 조건</th>
+                            <td>
+                              <S.InfoItemList>
+                                {careInfo.map((careInfo, index) => {
+                                  return (
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {careInfo}
+                                    </S.InfoItem>
+                                  );
+                                })}
+                              </S.InfoItemList>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </S.InfoTable>
+                    </S.InfoContainer>
+                  </S.Card>
+                </S.StyledLink>
+              </Link>
+              <Link
+                href={{
+                  pathname: '/list/[id]',
+                }}
+                as={`/list/2`}
+                passHref
+              >
+                <S.StyledLink>
+                  <S.Card>
+                    <S.ProfileImage src="https://user-images.githubusercontent.com/52532871/110497825-27c15500-813a-11eb-9bc3-f50574285d26.jpeg" />
+                    <S.InfoContainer>
+                      <S.BasicInfo>박요양 (48/여)</S.BasicInfo>
+                      <S.Time>1시간 전</S.Time>
+                      <S.InfoTable>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <PhoneNumberIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>연락처</th>
+                            <td>010-1234-1234</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <CareInfoIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>가능 조건</th>
+                            <td>
+                              <S.InfoItemList>
+                                {careInfo.map((careInfo, index) => {
+                                  return (
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {careInfo}
+                                    </S.InfoItem>
+                                  );
+                                })}
+                              </S.InfoItemList>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </S.InfoTable>
+                    </S.InfoContainer>
+                  </S.Card>
+                </S.StyledLink>
+              </Link>
+              <Link
+                href={{
+                  pathname: '/list/[id]',
+                }}
+                as={`/list/3`}
+                passHref
+              >
+                <S.StyledLink>
+                  <S.Card>
+                    <S.ProfileImage src="https://user-images.githubusercontent.com/52532871/110497839-2a23af00-813a-11eb-8a6b-07e11fa47792.jpeg" />
+                    <S.InfoContainer>
+                      <S.BasicInfo>강요양 (54/여)</S.BasicInfo>
+                      <S.Time>1시간 전</S.Time>
+                      <S.InfoTable>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <PhoneNumberIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>연락처</th>
+                            <td>010-1234-1234</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <S.SVGIconBox>
+                                <CareInfoIconSVG />
+                              </S.SVGIconBox>
+                            </td>
+                            <th>가능 조건</th>
+                            <td>
+                              <S.InfoItemList>
+                                {careInfo.map((careInfo, index) => {
+                                  return (
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {careInfo}
+                                    </S.InfoItem>
+                                  );
+                                })}
+                              </S.InfoItemList>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </S.InfoTable>
+                    </S.InfoContainer>
+                  </S.Card>
+                </S.StyledLink>
+              </Link>
             </S.CardList>
           </S.InnerContent>
         </S.Section>
