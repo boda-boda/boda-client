@@ -187,3 +187,10 @@ export const StyledLink = styled.a`
   text-decoration: none;
   padding: 15px;
 `;
+
+export const LogoutButton = styled.div`
+  color: ${THEME.GRAY_FONT};
+  text-decoration: none;
+  padding: 15px;
+  cursor: pointer;
+`;
