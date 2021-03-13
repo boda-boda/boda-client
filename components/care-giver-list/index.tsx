@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
-import TimeInput from '../../svgs/time-input-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
@@ -102,15 +101,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             })}
                           </S.TdFlexBox>
                           <S.TdFlexBox>
-                            <S.ClockSelect>
-                              00:00
-                              <TimeInput />
-                            </S.ClockSelect>
+                            <S.ClockSelect type="time" />
                             부터
-                            <S.ClockSelect>
-                              00:00
-                              <TimeInput />
-                            </S.ClockSelect>
+                            <S.ClockSelect type="time" />
                             까지
                           </S.TdFlexBox>
                           {selectedDayList.length - 1 === selectedDaysIndex ? (

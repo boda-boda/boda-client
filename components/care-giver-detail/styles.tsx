@@ -76,6 +76,11 @@ export const Table = styled.table`
   th.career {
     padding: 13px 0;
   }
+  .area {
+    width: 33.3333%;
+    text-align: center;
+    border-right: 1px solid ${THEME.GRAY_LINE};
+  }
   .right {
     border-right: none;
   }
