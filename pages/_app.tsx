@@ -14,7 +14,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         isLoggedIn: false,
       }}
     >
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </CareCenterProvider>
   );
 }
