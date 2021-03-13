@@ -54,9 +54,18 @@ export default function Header() {
               )} */}
               </S.MenuItem>
             </Link>
-            <S.MenuItem onClick={() => handleMenuClick(1)}>
+            <S.MenuItem
+              onClick={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  setIsLoginModalOn(true);
+                  handleMenuClick(-1);
+                  return;
+                }
+                handleMenuClick(1);
+              }}
+            >
               나의 요양보호사 관리
-              {isMenuModalOn[1] ? (
+              {!careCenter.isValidating && careCenter.isLoggedIn && isMenuModalOn[1] ? (
                 <>
                   <ArrowUp />
                   <S.MenuModal>

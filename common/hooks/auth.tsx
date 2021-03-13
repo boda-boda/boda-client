@@ -9,6 +9,7 @@ export const useSoftRefresh = () => {
 
   useEffect(() => {
     (async () => {
+      if (!careCenter.isValidating) return;
       if (careCenter && careCenter.expiresIn > new Date()) return; // 현재 토큰이 활성화되어 있으면 요청을 할 이유가 없음
 
       try {
@@ -31,6 +32,9 @@ export const useSoftRefresh = () => {
             console.log('TOKEN REFRESH');
             console.log('예측할 수 없는 오류입니다. 관리자에게 문의 부탁드립니다.');
         }
+        careCenterDispatch({
+          type: 'LOGOUT',
+        });
       }
     })();
   });

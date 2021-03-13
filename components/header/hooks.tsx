@@ -2,8 +2,11 @@ import { useCallback, useState } from 'react';
 import axios from 'axios';
 import { useCareCenter, useCareCenterDispatch } from '../../context/care-center';
 import { addSeconds } from 'date-fns';
+import { useRouter } from 'next/router';
 
 export default function useHeader() {
+  const router = useRouter();
+
   const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
   const [isLoginModalOn, setIsLoginModalOn] = useState(false);
 
@@ -32,6 +35,7 @@ export default function useHeader() {
     careCenterDispatch({
       type: 'LOGOUT',
     });
+    router.replace('/');
   }, []);
 
   const handleLogin = useCallback(async () => {
