@@ -4,9 +4,10 @@ import { useCareCenter, useCareCenterDispatch } from '../../context/care-center'
 import { addSeconds } from 'date-fns';
 import { useRouter } from 'next/router';
 
-export default function useHeader() {
+export function useHeader() {
   const router = useRouter();
 
+  const [isRequestingLogin, setIsRequestingLogin] = useState(false);
   const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
   const [isLoginModalOn, setIsLoginModalOn] = useState(false);
 
@@ -39,18 +40,24 @@ export default function useHeader() {
   }, []);
 
   const handleLogin = useCallback(async () => {
+    if (isRequestingLogin) return;
+    setIsRequestingLogin(true);
+
     if (!name.trim()) {
       alert('아이디를 입력해 주세요.');
+      setIsRequestingLogin(false);
       return;
     }
 
     if (!password.trim()) {
       alert('비밀번호를 입력해 주세요.');
+      setIsRequestingLogin(false);
       return;
     }
 
     if (name.trim() !== name || password.trim() !== password) {
       alert('아이디와 비밀번호는 공백문자를 포함할 수 없습니다.');
+      setIsRequestingLogin(false);
       return;
     }
 
@@ -69,21 +76,31 @@ export default function useHeader() {
           careCenter: loginResponse.data.careCenter,
         },
       });
+      alert(`${loginResponse.data.careCenter.name}님, 환영합니다`);
     } catch ({ response }) {
       switch (response.status) {
-        case 404:
-        case 401:
         case 400:
+        case 401:
+        case 404:
           alert(response.data.message);
           break;
         default:
           alert('예측할 수 없는 오류가 발생하였습니다.');
       }
+      setIsRequestingLogin(false);
       return;
     }
 
     setIsLoginModalOn(false);
+    setIsRequestingLogin(false);
   }, [name, password]);
+
+  const handlePressEnter = useCallback(
+    (e: any) => {
+      if (e.key === 'Enter') handleLogin();
+    },
+    [handleLogin]
+  );
 
   const handleMenuClick = (i: number) => {
     setIsMenuModalOn((isModalOn) =>
@@ -98,13 +115,43 @@ export default function useHeader() {
     name,
     password,
     handleLogin,
+    handlePressEnter,
     handleLogout,
     updateUsername,
     updatePassword,
     isMenuModalOn,
     isLoginModalOn,
+    isRequestingLogin,
     careCenter,
     setIsLoginModalOn,
     handleMenuClick,
+  };
+}
+
+export function useConsultRequest() {
+  const [contact, setContact] = useState('');
+
+  const handleContactUpdate = useCallback((e: any) => {
+    setContact(e.target.value);
+  }, []);
+
+  const handleConsultRequest = useCallback(async () => {
+    try {
+      await axios.post('/api/consult', {
+        contact,
+      });
+    } catch (e) {
+      alert(
+        '서버에 오류가 발생하였습니다. 하단의 메일 혹은 전화로 문의 주시면 정말 감사드리겠습니다.'
+      );
+    }
+
+    alert('요청이 완료되었습니다.');
+  }, [contact]);
+
+  return {
+    contact,
+    handleContactUpdate,
+    handleConsultRequest,
   };
 }
