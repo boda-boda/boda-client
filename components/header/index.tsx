@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ArrowDown from '../../svgs/arrow-down-svg';
 import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
 import Link from 'next/link';
 import * as S from './styles';
+import useHeader from './hooks';
 
 export default function Header() {
-  const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
-  const [isLoginModalOn, setIsLoginModalOn] = useState(false);
-  const [isLogined, setIsLogined] = useState(true); //이거는 ㄹㅇ 임시
-  const handleMenuClick = (i: number) => {
-    setIsMenuModalOn((isModalOn) =>
-      isModalOn.map((item, index) => {
-        if (index === i) return !item;
-        return false;
-      })
-    );
-  };
+  const {
+    name,
+    password,
+    careCenter,
+    handleLogin,
+    handleLogout,
+    updateUsername,
+    updatePassword,
+    isMenuModalOn,
+    isLoginModalOn,
+    setIsLoginModalOn,
+    handleMenuClick,
+  } = useHeader();
+
   return (
     <>
       <S.Header>
@@ -24,11 +28,7 @@ export default function Header() {
           <Link href="/" passHref>
             <S.StyledLink>
               <S.Logo>
-                <S.LogoImg
-                  src={
-                    'https://user-images.githubusercontent.com/52532871/110198039-f07d4a80-7e92-11eb-9501-241d562b71b1.png'
-                  }
-                />
+                <S.LogoImg src="https://user-images.githubusercontent.com/52532871/110198039-f07d4a80-7e92-11eb-9501-241d562b71b1.png" />
               </S.Logo>
             </S.StyledLink>
           </Link>
@@ -54,9 +54,18 @@ export default function Header() {
               )} */}
               </S.MenuItem>
             </Link>
-            <S.MenuItem onClick={() => handleMenuClick(1)}>
+            <S.MenuItem
+              onClick={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  setIsLoginModalOn(true);
+                  handleMenuClick(-1);
+                  return;
+                }
+                handleMenuClick(1);
+              }}
+            >
               나의 요양보호사 관리
-              {isMenuModalOn[1] ? (
+              {!careCenter.isValidating && careCenter.isLoggedIn && isMenuModalOn[1] ? (
                 <>
                   <ArrowUp />
                   <S.MenuModal>
@@ -73,7 +82,7 @@ export default function Header() {
                 <ArrowDown />
               )}
             </S.MenuItem>
-            {isLogined ? (
+            {careCenter.isLoggedIn ? (
               <S.MenuItem onClick={() => handleMenuClick(2)}>
                 나의 센터 정보
                 {isMenuModalOn[2] ? (
@@ -84,9 +93,7 @@ export default function Header() {
                         <S.StyledLink>나의 센터 정보</S.StyledLink>
                       </Link>
                       <S.MenuBar />
-                      <Link href="/" passHref>
-                        <S.StyledLink>로그아웃</S.StyledLink>
-                      </Link>
+                      <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
                     </S.MenuModal>
                   </>
                 ) : (
@@ -117,13 +124,18 @@ export default function Header() {
                 <S.LoginModalSubtitle>
                   <span>보다</span>의 회원이신가요?
                 </S.LoginModalSubtitle>
-                <S.StringInput type="string" placeholder="아이디 입력" />
-                <S.StringInput type="password" placeholder="비밀번호 입력" />
+                <S.StringInput value={name} onChange={updateUsername} placeholder="아이디 입력" />
+                <S.StringInput
+                  value={password}
+                  onChange={updatePassword}
+                  type="password"
+                  placeholder="비밀번호 입력"
+                />
                 <div style={{ marginBottom: '21px' }}>
                   <input type="checkbox" id="login-save" />
                   <S.LoginSaveLabel htmlFor="login-save">자동 로그인</S.LoginSaveLabel>
                 </div>
-                <S.LoginModalButton>로그인</S.LoginModalButton>
+                <S.LoginModalButton onClick={handleLogin}>로그인</S.LoginModalButton>
                 <S.LoginModalBar />
                 <S.LoginModalSubtitle>
                   <span>보다</span>가 처음이신가요?

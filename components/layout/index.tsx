@@ -1,7 +1,5 @@
 import React, { ReactChild } from 'react';
-import { BannerStyleType } from '../../common/types';
-import Banner from '../banner';
-import Category from '../category';
+import { useSoftRefresh } from '../../common/hooks/auth';
 import Footer from '../footer';
 import Header from '../header';
 import * as S from './styles';
@@ -11,6 +9,8 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  useSoftRefresh();
+
   return (
     <>
       <S.Layout>
