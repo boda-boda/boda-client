@@ -125,20 +125,16 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -webkit-user-select: none;
 `;
 
-export const ClockSelect = styled.div`
+export const ClockSelect = styled.input`
+  padding: 0 0 0 15px;
   width: 120px;
   height: 36px;
-  padding: 0 0 0 15px;
   color: ${THEME.GRAY_FONT};
-  ${FLEX_ROW_SPACE_CENTER};
   border-radius: 3px;
   border: 1px solid ${THEME.GRAY_LINE};
   margin-right: 10px;
   margin-left: 20px;
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
+  outline: none;
 `;
 
 export const AddButton = styled.div`

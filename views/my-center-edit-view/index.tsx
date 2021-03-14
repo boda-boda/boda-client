@@ -16,7 +16,7 @@ export default function MyCenterView() {
   ];
   const [memo, setMemo] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
-  const [jibunAddress, setJibunAddress] = useState('');
+  const [zonecode, setZonecode] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [profileImage, setProfileImage] = useState(null);
   const memoRef = useRef<HTMLTextAreaElement>(null);
@@ -33,7 +33,7 @@ export default function MyCenterView() {
     new window.daum.Postcode({
       oncomplete: function (data: any) {
         setRoadAddress(data.roadAddress);
-        setJibunAddress(data.jibunAddress || data.autoJibunAddress);
+        setZonecode(data.zonecode);
       },
     }).open();
   };
@@ -88,7 +88,7 @@ export default function MyCenterView() {
                     <td colSpan={3}>
                       <S.TextInput
                         type="text"
-                        value={roadAddress}
+                        value={zonecode}
                         readOnly
                         onClick={openAddressModal}
                       />
@@ -97,7 +97,7 @@ export default function MyCenterView() {
                   </tr>
                   <tr>
                     <td>
-                      <S.TextInput type="text" value={jibunAddress} long />
+                      <S.TextInput type="text" value={roadAddress} long readOnly />
                     </td>
                     <td colSpan={2}>
                       <S.TextInput

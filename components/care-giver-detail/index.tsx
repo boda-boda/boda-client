@@ -49,6 +49,18 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
+            <S.SectionTitle>활동 지역</S.SectionTitle>
+            <S.Table>
+              <tbody>
+                <tr>
+                  <td className="area">서울특별시 양천구 목2동</td>
+                  <td className="area">서울특별시 양천구 목2동</td>
+                  <td className="area right">서울특별시 양천구 목2동</td>
+                </tr>
+              </tbody>
+            </S.Table>
+          </S.Section>
+          <S.Section>
             <S.SectionTitle>가능 조건</S.SectionTitle>
             <S.Table>
               <tbody>

@@ -87,7 +87,7 @@ export const LoginModalLayout = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.16);
+  background: rgba(0, 0, 0, 0.6);
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 

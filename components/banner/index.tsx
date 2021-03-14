@@ -28,7 +28,7 @@ export default function Banner({ bannerStyle, sectionIndex, title, subtitle }: B
   };
   useEffect(() => {
     if (bannerStyle === BannerStyleType.AD) {
-      const change = setInterval(imageChange, 5000);
+      const change = setInterval(imageChange, 15000);
       return () => clearInterval(change);
     }
   }, [bgIndex]);
