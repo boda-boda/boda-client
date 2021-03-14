@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { DayType } from '../../common/types/date';
 import BusinessArea from '../../model/business-area';
 import CareGiverSchedule from '../../model/care-giver-schedule';
+import axios from 'axios';
+import { clear } from 'console';
 
 export const useCareGiverUpsert = () => {
   const [address, setAddress] = useState('');
@@ -11,6 +13,7 @@ export const useCareGiverUpsert = () => {
   const [isFemale, setIsFemale] = useState(true);
   const memoRef = useRef<HTMLTextAreaElement>(null);
   const [businessAreas, setBusinessAreas] = useState([new BusinessArea()]);
+  const [changingImage, setChangingImage] = useState(false);
 
   useEffect(() => {
     if (!memoRef.current) return;
@@ -35,6 +38,27 @@ export const useCareGiverUpsert = () => {
       return;
     }
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
+  };
+
+  const onChangeImage = async (e: any) => {
+    setChangingImage(true);
+
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+
+    try {
+      const axiosInstance = axios.create({
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const response = await axiosInstance.post('/api/care-worker/profile', formData);
+      const url = response.data.Location;
+      setProfileImage(url);
+    } catch {
+      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
   };
 
   const openAddressModal = () => {
@@ -70,5 +94,6 @@ export const useCareGiverUpsert = () => {
     openAddressModal,
     businessAreas,
     setBusinessAreas,
+    onChangeImage,
   };
 };

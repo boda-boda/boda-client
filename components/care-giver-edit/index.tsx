@@ -1,8 +1,6 @@
-import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
-import TimeInput from '../../svgs/time-input-svg';
 import * as S from './styles';
 import { dayList, careInfoList, seoulGuDong } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
@@ -37,8 +35,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     openAddressModal,
     businessAreas,
     setBusinessAreas,
+    onChangeImage,
   } = useCareGiverUpsert();
-  console.log(JSON.stringify(businessAreas, null, 1));
 
   return (
     <>
@@ -51,11 +49,21 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 <tr>
                   <td rowSpan={3} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={profileImage}>
-                        <S.ImageIconContainer isHover={profileImage !== null}>
-                          <ImageDefaultSVG />
-                        </S.ImageIconContainer>
-                      </S.ProfileImage>
+                      <label htmlFor="profile">
+                        <S.ProfileImage src={profileImage}>
+                          <S.ImageIconContainer isHover={profileImage !== null}>
+                            <ImageDefaultSVG />
+                          </S.ImageIconContainer>
+                        </S.ProfileImage>
+                      </label>
+                      <input
+                        id="profile"
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        style={{ display: 'none' }}
+                        onChange={onChangeImage}
+                      />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
