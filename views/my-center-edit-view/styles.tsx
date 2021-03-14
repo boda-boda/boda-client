@@ -204,6 +204,12 @@ export const EditButton = styled.div`
   cursor: pointer;
 `;
 
+export const EditButton2 = styled(EditButton)`
+  color: red;
+  border-color: red;
+  right: 100px;
+`;
+
 export const FinishButtonContainer = styled.div`
   width: 100%;
   margin-top: 40px;

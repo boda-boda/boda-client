@@ -1,4 +1,11 @@
 export class CareCenterMeta {
+  public readonly id: number;
+  public readonly key: string;
+  public readonly type: string;
+  public readonly value: string;
+}
+
+export class CareCenterProperties {
   public readonly id: string;
   public readonly description: string;
   public readonly type: string;
@@ -11,6 +18,7 @@ export class CareCenterMeta {
   public readonly detailAddress: string;
   public readonly phoneNumber: string;
   public readonly profile: string;
+  public readonly careCenterMetas: CareCenterMeta[];
 }
 
 export class CareCenter {
@@ -18,5 +26,5 @@ export class CareCenter {
   public readonly isLoggedIn: boolean;
   public readonly accessToken: string;
   public readonly expiresIn: Date;
-  public readonly careCenter: CareCenterMeta;
+  public readonly careCenter: CareCenterProperties;
 }

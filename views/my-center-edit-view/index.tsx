@@ -11,16 +11,14 @@ import CenterUpdateRequest from './model/center-update-request';
 import { useCareCenter } from '../../context/care-center';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { CareCenterMeta } from '../../model/care-center';
 
 export default function MyCenterView() {
   const router = useRouter();
   const careCenter = useCareCenter();
 
-  const centerImage = [
-    'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg',
-    'https://icatcare.org/app/uploads/2018/06/Layer-1704-1200x630.jpg',
-    'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/kitten-440379.jpg',
-  ];
+  const [imageIndex, setImageIndex] = useState(0);
+  const [centerMetaImages, setCenterMetaImages] = useState([] as CareCenterMeta[]);
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
@@ -43,6 +41,7 @@ export default function MyCenterView() {
     if (!careCenter.careCenter) return;
 
     setCenterUpdateRequest(new CenterUpdateRequest(careCenter.careCenter));
+    setCenterMetaImages(careCenter.careCenter.careCenterMetas);
   }, [careCenter]);
 
   useEffect(() => {
@@ -67,8 +66,6 @@ export default function MyCenterView() {
     }).open();
   };
 
-  const [imageIndex, setImageIndex] = useState(0);
-
   const onChangeImage = async (e: any) => {
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
@@ -87,6 +84,45 @@ export default function MyCenterView() {
       });
     } catch {
       alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
+  };
+
+  const handleUpdateNewMetaImage = async (e: any) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+
+    try {
+      const axiosInstance = axios.create({
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const response = await axiosInstance.post('/api/care-center/image', formData);
+      const careCenterMeta: CareCenterMeta = response.data;
+      setCenterMetaImages([...centerMetaImages, careCenterMeta]);
+      setImageIndex(centerMetaImages.length);
+    } catch {
+      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
+  };
+
+  const handleDeleteCurrentMetaImage = async () => {
+    if (centerMetaImages.length === 0) {
+      alert('등록된 이미지가 없습니다.');
+    }
+
+    if (!window.confirm('현재 선택된 이미지를 삭제하시겠습니까?')) return;
+
+    const id = centerMetaImages[imageIndex]?.id;
+
+    try {
+      await axios.delete(`api/care-center/image/${id}`);
+      const newMetas = centerMetaImages.filter((c) => c.id !== id);
+      setCenterMetaImages(newMetas);
+      setImageIndex(imageIndex > 0 ? imageIndex - 1 : 0);
+    } catch {
+      alert('이미지 삭제에 실패하였습니다.');
     }
   };
 
@@ -216,18 +252,34 @@ export default function MyCenterView() {
               </S.Table>
             </S.Section>
             <S.Section>
+              <label htmlFor="newImage">
+                <S.EditButton>이미지 추가</S.EditButton>
+              </label>
+              <input
+                id="newImage"
+                type="file"
+                accept="image/*"
+                multiple={false}
+                style={{ display: 'none' }}
+                onChange={handleUpdateNewMetaImage}
+              />
+              <S.EditButton2 onClick={handleDeleteCurrentMetaImage}>이미지 삭제</S.EditButton2>
               <S.SectionTitle>센터 이미지</S.SectionTitle>
               <S.CenterImageContainer>
-                <S.CenterImage src={centerImage[imageIndex]} />
+                <S.CenterImage src={centerMetaImages[imageIndex]?.value} />
                 <S.ButtonContainer>
                   <S.ButtonDiv
                     onClick={() =>
-                      setImageIndex((imageIndex + centerImage.length - 1) % centerImage.length)
+                      setImageIndex(
+                        (imageIndex + centerMetaImages.length - 1) % centerMetaImages.length
+                      )
                     }
                   >
                     <SlideLeftButtonSVG />
                   </S.ButtonDiv>
-                  <S.ButtonDiv onClick={() => setImageIndex((imageIndex + 1) % centerImage.length)}>
+                  <S.ButtonDiv
+                    onClick={() => setImageIndex((imageIndex + 1) % centerMetaImages.length)}
+                  >
                     <SlideRightButtonSVG />
                   </S.ButtonDiv>
                 </S.ButtonContainer>

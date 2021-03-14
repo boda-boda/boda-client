@@ -1,7 +1,7 @@
-import { CareCenterMeta } from '../../../model/care-center';
+import { CareCenterProperties } from '../../../model/care-center';
 
 export default class CenterUpdateRequest {
-  public constructor(careCenter: CareCenterMeta) {
+  public constructor(careCenter: CareCenterProperties) {
     this.username = careCenter?.username ? careCenter.username : '';
     this.email = careCenter?.email ? careCenter.email : '';
     this.phoneNumber = careCenter?.phoneNumber ? careCenter.phoneNumber : '';
