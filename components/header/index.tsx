@@ -38,25 +38,7 @@ export default function Header() {
           </Link>
           <S.MenuList>
             <Link href="/search" passHref>
-              <S.MenuItem onClick={() => handleMenuClick(0)}>
-                신규 요양보호사 검색
-                {/* {isMenuModalOn[0] ? (
-                <>
-                  <ArrowUp />
-                  <S.MenuModal>
-                    <Link href="/search" passHref>
-                      <S.StyledLink>요양보호사 검색</S.StyledLink>
-                    </Link>
-                    <S.MenuBar />
-                    <Link href="/" passHref>
-                      <S.StyledLink>보낸 제안서 목록</S.StyledLink>
-                    </Link>
-                  </S.MenuModal>
-                </>
-              ) : (
-                <ArrowDown />
-              )} */}
-              </S.MenuItem>
+              <S.MenuItem onClick={() => handleMenuClick(0)}>신규 요양보호사 검색</S.MenuItem>
             </Link>
             <S.MenuItem
               onClick={() => {

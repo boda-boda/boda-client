@@ -28,6 +28,8 @@ export const Table = styled.table`
     vertical-align: middle;
   }
   th {
+    padding: 23px 12px;
+    vertical-align: top;
     width: 84px;
     background: ${THEME.HEADER_BACKGROUND};
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};

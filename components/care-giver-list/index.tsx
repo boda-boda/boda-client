@@ -6,6 +6,10 @@ import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
 import { dayList, careInfoList } from '../../constant';
+import CareGiverSchedule from '../../model/care-giver-schedule';
+import { DayType } from '../../common/types/date';
+import { render } from 'react-dom';
+import { et } from 'date-fns/locale';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -16,32 +20,17 @@ const SEARCH_TIMES = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 const SEARCH_MINUTES = Array.from(Array(60).keys()).filter((a) => a % 5 === 0);
 
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
+  const [rerender, setRerender] = useState(false);
+
+  const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
 
-  const [startHour, setStartHour] = useState('');
-  const [startMinute, setStartMinute] = useState('');
-  const [endHour, setEndHour] = useState('');
-  const [endMinute, setEndMinute] = useState('');
-
-  const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDayList((selectedDayList) =>
-        selectedDayList.map((selectedDay, selectedDayIndex) => {
-          if (selectedDayIndex === selectedDaysIndex)
-            return selectedDay.filter((selected) => selected !== day);
-          return selectedDay;
-        })
-      );
-      return;
-    }
-    setSelectedDayList((selectedDayList) =>
-      selectedDayList.map((selectedDay, selectedDayIndex) => {
-        if (selectedDayIndex === selectedDaysIndex) return [...selectedDay, day];
-        return selectedDay;
-      })
-    );
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    newSchedules[selectedDaysIndex].toggleDay(day);
+    setSchedules(newSchedules);
   };
+
   const toggleCareInfo = (careInfo: string) => {
     if (selectedCareInfo.includes(careInfo)) {
       setSelectedCareInfo((selectedCareInfo) =>
@@ -51,6 +40,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     }
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
   };
+
+  const handleReset = () => {
+    if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
+
+    setSchedules([new CareGiverSchedule()]);
+    setSelectedCareInfo([]);
+  };
+
   return (
     <>
       <S.CgList>
@@ -88,19 +85,19 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }}>
-                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
+                    {schedules.map((schedule, scheduleIndex) => {
                       return (
                         <S.TimeSelectContainer
-                          isLast={selectedDayList.length - 1 === selectedDaysIndex}
-                          key={`timeselectcontainer-${selectedDaysIndex}`}
+                          isLast={schedules.length - 1 === scheduleIndex}
+                          key={`timeselectcontainer-${scheduleIndex}`}
                         >
                           <S.TdFlexBox>
                             {dayList.map((day) => {
                               return (
                                 <S.ToggleButton
-                                  isSelected={selectedDays.includes(day)}
+                                  isSelected={schedule.isDayIncluded(day)}
                                   className="square"
-                                  onClick={() => toggleDays(selectedDays, selectedDaysIndex, day)}
+                                  onClick={() => toggleDays(scheduleIndex, day)}
                                   key={`dayListItem-${day}`}
                                 >
                                   {day}
@@ -110,59 +107,75 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           </S.TdFlexBox>
                           <S.TdFlexBox>
                             <S.ClockSelectContainer>
-                              <S.ClockSelect onChange={(e) => setStartHour(e.target.value)}>
-                                <option defaultChecked value="">
-                                  시간
-                                </option>
-                                {SEARCH_TIMES.map((t) => (
-                                  <option value={t}>{t}시</option>
-                                ))}
-                              </S.ClockSelect>
-                              <S.ClockSelect onChange={(e) => setStartMinute(e.target.value)}>
-                                <option defaultChecked value="">
-                                  분
-                                </option>
-                                {SEARCH_MINUTES.map((t) => (
-                                  <option value={t}>{t}분</option>
-                                ))}
-                              </S.ClockSelect>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startHour ? schedule.startHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startHour = parseInt(currentHour);
+                                  if (schedule.startHour >= 24) schedule.startHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startMinute ? schedule.startMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startMinute = parseInt(currentMinute);
+                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
                             </S.ClockSelectContainer>
                             부터
                             <S.ClockSelectContainer>
-                              <S.ClockSelect onChange={(e) => setEndHour(e.target.value)}>
-                                <option defaultChecked value="">
-                                  시간
-                                </option>
-                                {SEARCH_TIMES.map((t) => (
-                                  <option value={t}>{t}시</option>
-                                ))}
-                              </S.ClockSelect>
-                              <S.ClockSelect onChange={(e) => setEndMinute(e.target.value)}>
-                                <option defaultChecked value="">
-                                  분
-                                </option>
-                                {SEARCH_MINUTES.map((t) => (
-                                  <option value={t}>{t}분</option>
-                                ))}
-                              </S.ClockSelect>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endHour ? schedule.endHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endHour = parseInt(currentHour);
+                                  if (schedule.endHour >= 24) schedule.endHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endMinute ? schedule.endMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endMinute = parseInt(currentMinute);
+                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
                             </S.ClockSelectContainer>
                             까지
                           </S.TdFlexBox>
-                          {selectedDayList.length - 1 === selectedDaysIndex ? (
+                          {schedules.length - 1 === scheduleIndex ? (
                             <S.AddButton
                               onClick={() => {
-                                setSelectedDayList([...selectedDayList, [] as string[]]);
+                                setSchedules([...schedules, new CareGiverSchedule()]);
                               }}
                             >
                               <PlusIconSVG />
                             </S.AddButton>
                           ) : (
                             <S.AddButton
-                              onClick={() => {
-                                setSelectedDayList((selectedDayList) =>
-                                  selectedDayList.filter((item, i) => i !== selectedDaysIndex)
-                                );
-                              }}
+                              onClick={() =>
+                                setSchedules((schedules) =>
+                                  schedules.filter((_, i) => i !== scheduleIndex)
+                                )
+                              }
                             >
                               <MinusIconSVG />
                             </S.AddButton>
@@ -222,7 +235,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
               </tbody>
             </S.FilterTable>
             <S.ResetButtonContainer>
-              <S.ResetButton>초기화</S.ResetButton>
+              <S.FilterButton onClick={handleReset} isReset>
+                초기화
+              </S.FilterButton>
+              <S.FilterButton onClick={handleReset}>검색</S.FilterButton>
             </S.ResetButtonContainer>
           </S.InnerContent>
         </S.Section>

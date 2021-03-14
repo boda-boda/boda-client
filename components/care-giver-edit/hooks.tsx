@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { DayType } from '../../common/types/date';
+import CareGiverSchedule from '../../model/care-giver-schedule';
 
 export const useCareGiverUpsert = () => {
   const [address, setAddress] = useState('');
@@ -13,24 +15,13 @@ export const useCareGiverUpsert = () => {
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
-  const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDayList((selectedDayList) =>
-        selectedDayList.map((selectedDay, selectedDayIndex) => {
-          if (selectedDayIndex === selectedDaysIndex)
-            return selectedDay.filter((selected) => selected !== day);
-          return selectedDay;
-        })
-      );
-      return;
-    }
-    setSelectedDayList((selectedDayList) =>
-      selectedDayList.map((selectedDay, selectedDayIndex) => {
-        if (selectedDayIndex === selectedDaysIndex) return [...selectedDay, day];
-        return selectedDay;
-      })
-    );
+  const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    newSchedules[selectedDaysIndex].toggleDay(day);
+    setSchedules(newSchedules);
   };
   const openAddressModal = () => {
     if (!window.daum) {
@@ -54,8 +45,10 @@ export const useCareGiverUpsert = () => {
     setMemo,
     setCareers,
     setProfileImage,
-    selectedDayList,
-    setSelectedDayList,
+    selectedCareInfo,
+    setSelectedCareInfo,
+    schedules,
+    setSchedules,
     toggleDays,
     openAddressModal,
   };

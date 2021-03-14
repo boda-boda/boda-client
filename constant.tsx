@@ -1,3 +1,5 @@
+import { DayType } from './common/types/date';
+
 export const CONTENT_WIDTH = 978;
 
 export const THEME = {
@@ -114,7 +116,7 @@ export const FLEX_COLUMN_SPACE_CENTER = `
   align-items:center;
 `;
 
-export const dayList = ['월', '화', '수', '목', '금', '토', '일'];
+export const dayList = ['월', '화', '수', '목', '금', '토', '일'] as DayType[];
 
 export const careInfoList = [
   '석션',
