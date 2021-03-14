@@ -26,7 +26,6 @@ export function useHeader() {
   }, []);
 
   const handleLogout = useCallback(async () => {
-    console.log('Asdf');
     try {
       await axios.post('/api/auth/logout');
     } catch (e) {

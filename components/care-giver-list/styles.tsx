@@ -81,6 +81,16 @@ export const FilterTable = styled.table`
   .right {
     border-right: none;
   }
+  .innerTable {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  table {
+    border: none;
+    padding: none;
+    border-collapse: collapse;
+  }
 `;
 
 export const TdFlexBox = styled.div`

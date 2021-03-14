@@ -5,7 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList } from '../../constant';
+import { dayList, careInfoList, seoulGuDong } from '../../constant';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 import { DayType } from '../../common/types/date';
 
@@ -25,6 +25,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
   const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+
+  const [gu, setGu] = useState('-1');
+  const [dong, setDong] = useState('-1');
 
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
@@ -60,26 +63,35 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 <tr>
                   <th>지역</th>
                   <td>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown defaultValue="">
+                      <option value="" disabled hidden>
                         시/도 선택
                       </option>
-                      <option value="0">서울특별시</option>
-                      <option value="1">경기도</option>
+                      <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown onChange={(e) => setGu(e.target.value)} defaultValue="">
+                      <option value="" disabled hidden>
                         구 선택
                       </option>
-                      <option value="0">양천구</option>
-                      <option value="1">강서구</option>
+                      {seoulGuDong.map((gudong, idx) => (
+                        <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                          {gudong.gu}
+                        </option>
+                      ))}
                     </S.DropDown>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown defaultValue="">
+                      <option value="" disabled>
                         동 선택
                       </option>
-                      <option value="0">목1동</option>
-                      <option value="1">목2동</option>
+                      {gu === '-1'
+                        ? null
+                        : seoulGuDong
+                            .find((gudong) => gudong.gu === gu)
+                            ?.dongs.map((dong, idx) => (
+                              <option key={`${dong}-${idx}`} value={dong}>
+                                {dong}
+                              </option>
+                            ))}
                     </S.DropDown>
                   </td>
                 </tr>
@@ -188,23 +200,32 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </tr>
                 <tr>
                   <th rowSpan={2}>가능 조건</th>
-                  {slicedCareInfoList.map((slicedCareInfo, row) => {
-                    return (
-                      <tr key={`${row}`}>
-                        {slicedCareInfo.map((careInfo, index) => {
+                  <td className="innerTable">
+                    <table>
+                      <tbody>
+                        {slicedCareInfoList.map((slicedCareInfo, row) => {
                           return (
-                            <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
-                              {careInfo}
-                              <S.CheckBox
-                                type="checkbox"
-                                onChange={() => toggleCareInfo(careInfo)}
-                              />
-                            </td>
+                            <tr key={`${row}`}>
+                              {slicedCareInfo.map((careInfo, index) => {
+                                return (
+                                  <td
+                                    className={`available ${index === 4 && 'right'}`}
+                                    key={`${index}`}
+                                  >
+                                    {careInfo}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      onChange={() => toggleCareInfo(careInfo)}
+                                    />
+                                  </td>
+                                );
+                              })}
+                            </tr>
                           );
                         })}
-                      </tr>
-                    );
-                  })}
+                      </tbody>
+                    </table>
+                  </td>
                 </tr>
               </tbody>
             </S.FilterTable>
