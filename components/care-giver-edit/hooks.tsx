@@ -3,7 +3,6 @@ import { DayType } from '../../common/types/date';
 import BusinessArea from '../../model/business-area';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 import axios from 'axios';
-import { clear } from 'console';
 
 export const useCareGiverUpsert = () => {
   const [address, setAddress] = useState('');

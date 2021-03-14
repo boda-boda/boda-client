@@ -1,5 +1,5 @@
 import { createContext, useReducer, useContext } from 'react';
-import CareCenter from '../model/care-center';
+import { CareCenter } from '../model/care-center';
 
 export const CareCenterStateContext = createContext(null);
 export const CareCenterDispatchContext = createContext(null);
