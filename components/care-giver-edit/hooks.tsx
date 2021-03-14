@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { DayType } from '../../common/types/date';
+import CareGiverSchedule from '../../model/care-giver-schedule';
 
 export const useCareGiverUpsert = () => {
   const [address, setAddress] = useState('');
@@ -13,25 +15,25 @@ export const useCareGiverUpsert = () => {
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
-  const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDayList((selectedDayList) =>
-        selectedDayList.map((selectedDay, selectedDayIndex) => {
-          if (selectedDayIndex === selectedDaysIndex)
-            return selectedDay.filter((selected) => selected !== day);
-          return selectedDay;
-        })
+  const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    newSchedules[selectedDaysIndex].toggleDay(day);
+    setSchedules(newSchedules);
+  };
+
+  const toggleCareInfo = (careInfo: string) => {
+    if (selectedCareInfo.includes(careInfo)) {
+      setSelectedCareInfo((selectedCareInfo) =>
+        selectedCareInfo.filter((selected) => selected !== careInfo)
       );
       return;
     }
-    setSelectedDayList((selectedDayList) =>
-      selectedDayList.map((selectedDay, selectedDayIndex) => {
-        if (selectedDayIndex === selectedDaysIndex) return [...selectedDay, day];
-        return selectedDay;
-      })
-    );
+    setSelectedCareInfo([...selectedCareInfo, careInfo]);
   };
+
   const openAddressModal = () => {
     if (!window.daum) {
       alert('주소 검색 서비스 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.');
@@ -54,9 +56,12 @@ export const useCareGiverUpsert = () => {
     setMemo,
     setCareers,
     setProfileImage,
-    selectedDayList,
-    setSelectedDayList,
+    selectedCareInfo,
+    setSelectedCareInfo,
+    schedules,
+    setSchedules,
     toggleDays,
+    toggleCareInfo,
     openAddressModal,
   };
 };

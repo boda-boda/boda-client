@@ -67,9 +67,9 @@ export const FilterTable = styled.table`
   }
   th {
     padding: 23px 12px;
+    vertical-align: top;
     width: 84px;
     background: ${THEME.HEADER_BACKGROUND};
-    vertical-align: top;
   }
   .available {
     border-right: 1px solid ${THEME.GRAY_LINE};
@@ -80,6 +80,16 @@ export const FilterTable = styled.table`
   }
   .right {
     border-right: none;
+  }
+  .innerTable {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  table {
+    border: none;
+    padding: none;
+    border-collapse: collapse;
   }
 `;
 
@@ -125,16 +135,25 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -webkit-user-select: none;
 `;
 
-export const ClockSelect = styled.input`
-  padding: 0 0 0 15px;
+export const ClockSelectContainer = styled.div`
+  position: relative;
   width: 120px;
   height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
   color: ${THEME.GRAY_FONT};
   border-radius: 3px;
   border: 1px solid ${THEME.GRAY_LINE};
   margin-right: 10px;
   margin-left: 20px;
   outline: none;
+`;
+
+export const ClockInput = styled.input`
+  border: none;
+  outline: none;
+  width: 30%;
+  text-align: right;
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const AddButton = styled.div`
@@ -162,17 +181,24 @@ export const ResetButtonContainer = styled.div`
   ${FLEX_ROW_END_CENTER};
 `;
 
-export const ResetButton = styled.button`
+interface ButtonProps {
+  isReset?: boolean;
+}
+
+export const FilterButton = styled.button<ButtonProps>`
   width: 100px;
   height: 36px;
   margin-top: 20px;
+  margin-left: 20px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-  background-color: ${THEME.MAIN};
+  box-shadow: ${(props) => (props.isReset ? 'none' : '0 3px 6px 0 rgba(0, 0, 0, 0.16);')};
+
+  background-color: ${(props) => (props.isReset ? 'white' : THEME.MAIN)};
   outline: none;
   border: none;
-  color: white;
+  color: ${(props) => (props.isReset ? THEME.MAIN : 'white')};
+  border: ${(props) => (props.isReset ? `1px solid ${THEME.MAIN}` : 'none')};
   cursor: pointer;
 `;
 

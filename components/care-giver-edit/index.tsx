@@ -4,15 +4,20 @@ import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import * as S from './styles';
-import { dayList } from '../../constant';
+import { careInfoList, dayList } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
+import CareGiverSchedule from '../../model/care-giver-schedule';
 
 interface CareGiverEditProps {
   isNew: boolean;
 }
+const slicedCareInfoList = [];
+for (let i = 0; i < careInfoList.length; i += 5)
+  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
 
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
+  const [rerender, setRerender] = useState(false);
   const {
     address,
     memo,
@@ -21,11 +26,12 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     memoRef,
     setMemo,
     setCareers,
-    toggleDays,
-    selectedDayList,
-    openAddressModal,
     setProfileImage,
-    setSelectedDayList,
+    schedules,
+    toggleCareInfo,
+    setSchedules,
+    toggleDays,
+    openAddressModal,
   } = useCareGiverUpsert();
 
   return (
@@ -103,114 +109,131 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.SectionTitle>가능 조건</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
-                  <td className="available">
-                    석션
-                    <S.CheckBox type="checkbox" id="checkbox1" />
-                  </td>
-                  <td className="available">
-                    피딩
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    휠체어
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    기저귀
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available right">
-                    재활
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="available">
-                    가사
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    남성
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    치매
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    입주
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available right">
-                    간호조무사
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                </tr>
+                {slicedCareInfoList.map((slicedCareInfo, row) => {
+                  return (
+                    <tr key={`${row}`}>
+                      {slicedCareInfo.map((careInfo, index) => {
+                        return (
+                          <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
+                            {careInfo}
+                            <S.CheckBox type="checkbox" onChange={() => toggleCareInfo(careInfo)} />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </S.Table>
           </S.Section>
           <S.Section>
             <S.SectionTitle>돌봄 스케줄</S.SectionTitle>
             <S.Table>
-              <tr>
-                <td style={{ padding: 0 }}>
-                  {selectedDayList.map((selectedDays, selectedDaysIndex) => {
-                    return (
-                      <S.TimeSelectContainer
-                        isLast={selectedDayList.length - 1 === selectedDaysIndex}
-                        key={`timeselectcontainer-${selectedDaysIndex}`}
-                      >
-                        <S.TdFlexBox>
-                          {dayList.map((day) => {
-                            return (
-                              <S.ToggleButton
-                                isSelected={selectedDays.includes(day)}
-                                className="square"
-                                onClick={() => toggleDays(selectedDays, selectedDaysIndex, day)}
-                                key={`dayListItem-${day}`}
-                              >
-                                {day}
-                              </S.ToggleButton>
-                            );
-                          })}
-                        </S.TdFlexBox>
-                        <S.TdFlexBox>
-                          <S.ClockSelect>
-                            00:00
-                            <TimeInput />
-                          </S.ClockSelect>
-                          부터
-                          <S.ClockSelect>
-                            00:00
-                            <TimeInput />
-                          </S.ClockSelect>
-                          까지
-                        </S.TdFlexBox>
-                        {selectedDayList.length - 1 === selectedDaysIndex ? (
-                          <S.AddButton
-                            onClick={() => {
-                              setSelectedDayList([...selectedDayList, [] as string[]]);
-                            }}
-                          >
-                            <PlusIconSVG />
-                          </S.AddButton>
-                        ) : (
-                          <S.AddButton
-                            onClick={() => {
-                              setSelectedDayList((selectedDayList) =>
-                                selectedDayList.filter((item, i) => i !== selectedDaysIndex)
+              <tbody>
+                <tr>
+                  <td style={{ padding: 0 }}>
+                    {schedules.map((schedule, scheduleIndex) => {
+                      return (
+                        <S.TimeSelectContainer
+                          isLast={schedules.length - 1 === scheduleIndex}
+                          key={`timeselectcontainer-${scheduleIndex}`}
+                        >
+                          <S.TdFlexBox>
+                            {dayList.map((day) => {
+                              return (
+                                <S.ToggleButton
+                                  isSelected={schedule.isDayIncluded(day)}
+                                  className="square"
+                                  onClick={() => toggleDays(scheduleIndex, day)}
+                                  key={`dayListItem-${day}`}
+                                >
+                                  {day}
+                                </S.ToggleButton>
                               );
-                            }}
-                          >
-                            <MinusIconSVG />
-                          </S.AddButton>
-                        )}
-                      </S.TimeSelectContainer>
-                    );
-                  })}
-                </td>
-              </tr>
+                            })}
+                          </S.TdFlexBox>
+                          <S.TdFlexBox>
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startHour ? schedule.startHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startHour = parseInt(currentHour);
+                                  if (schedule.startHour >= 24) schedule.startHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startMinute ? schedule.startMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startMinute = parseInt(currentMinute);
+                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            부터
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endHour ? schedule.endHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endHour = parseInt(currentHour);
+                                  if (schedule.endHour >= 24) schedule.endHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endMinute ? schedule.endMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endMinute = parseInt(currentMinute);
+                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            까지
+                          </S.TdFlexBox>
+
+                          {schedules.length - 1 === scheduleIndex ? (
+                            <S.AddButton
+                              onClick={() => {
+                                setSchedules([...schedules, new CareGiverSchedule()]);
+                              }}
+                            >
+                              <PlusIconSVG />
+                            </S.AddButton>
+                          ) : (
+                            <S.AddButton
+                              onClick={() =>
+                                setSchedules((schedules) =>
+                                  schedules.filter((_, i) => i !== scheduleIndex)
+                                )
+                              }
+                            >
+                              <MinusIconSVG />
+                            </S.AddButton>
+                          )}
+                        </S.TimeSelectContainer>
+                      );
+                    })}
+                  </td>
+                </tr>
+              </tbody>
             </S.Table>
           </S.Section>
           <S.Section>

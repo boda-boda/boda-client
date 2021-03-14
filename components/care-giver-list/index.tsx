@@ -5,35 +5,36 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList } from '../../constant';
+import { dayList, careInfoList, seoulGuDong } from '../../constant';
+import CareGiverSchedule from '../../model/care-giver-schedule';
+import { DayType } from '../../common/types/date';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
 }
 
 const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
+const slicedCareInfoList = [];
+for (let i = 0; i < careInfoList.length; i += 5)
+  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
+const SEARCH_TIMES = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const SEARCH_MINUTES = Array.from(Array(60).keys()).filter((a) => a % 5 === 0);
 
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
+  const [rerender, setRerender] = useState(false);
+
+  const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDayList((selectedDayList) =>
-        selectedDayList.map((selectedDay, selectedDayIndex) => {
-          if (selectedDayIndex === selectedDaysIndex)
-            return selectedDay.filter((selected) => selected !== day);
-          return selectedDay;
-        })
-      );
-      return;
-    }
-    setSelectedDayList((selectedDayList) =>
-      selectedDayList.map((selectedDay, selectedDayIndex) => {
-        if (selectedDayIndex === selectedDaysIndex) return [...selectedDay, day];
-        return selectedDay;
-      })
-    );
+
+  const [gu, setGu] = useState('-1');
+  const [dong, setDong] = useState('-1');
+
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    newSchedules[selectedDaysIndex].toggleDay(day);
+    setSchedules(newSchedules);
   };
+
   const toggleCareInfo = (careInfo: string) => {
     if (selectedCareInfo.includes(careInfo)) {
       setSelectedCareInfo((selectedCareInfo) =>
@@ -43,6 +44,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     }
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
   };
+
+  const handleReset = () => {
+    if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
+
+    setSchedules([new CareGiverSchedule()]);
+    setSelectedCareInfo([]);
+  };
+
   return (
     <>
       <S.CgList>
@@ -54,45 +63,54 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 <tr>
                   <th>지역</th>
                   <td>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown defaultValue="">
+                      <option value="" disabled hidden>
                         시/도 선택
                       </option>
-                      <option value="0">서울특별시</option>
-                      <option value="1">경기도</option>
+                      <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown onChange={(e) => setGu(e.target.value)} defaultValue="">
+                      <option value="" disabled hidden>
                         구 선택
                       </option>
-                      <option value="0">양천구</option>
-                      <option value="1">강서구</option>
+                      {seoulGuDong.map((gudong, idx) => (
+                        <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                          {gudong.gu}
+                        </option>
+                      ))}
                     </S.DropDown>
-                    <S.DropDown defaultValue="-1">
-                      <option value="-1" disabled hidden>
+                    <S.DropDown defaultValue="">
+                      <option value="" disabled>
                         동 선택
                       </option>
-                      <option value="0">목1동</option>
-                      <option value="1">목2동</option>
+                      {gu === '-1'
+                        ? null
+                        : seoulGuDong
+                            .find((gudong) => gudong.gu === gu)
+                            ?.dongs.map((dong, idx) => (
+                              <option key={`${dong}-${idx}`} value={dong}>
+                                {dong}
+                              </option>
+                            ))}
                     </S.DropDown>
                   </td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }}>
-                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
+                    {schedules.map((schedule, scheduleIndex) => {
                       return (
                         <S.TimeSelectContainer
-                          isLast={selectedDayList.length - 1 === selectedDaysIndex}
-                          key={`timeselectcontainer-${selectedDaysIndex}`}
+                          isLast={schedules.length - 1 === scheduleIndex}
+                          key={`timeselectcontainer-${scheduleIndex}`}
                         >
                           <S.TdFlexBox>
                             {dayList.map((day) => {
                               return (
                                 <S.ToggleButton
-                                  isSelected={selectedDays.includes(day)}
+                                  isSelected={schedule.isDayIncluded(day)}
                                   className="square"
-                                  onClick={() => toggleDays(selectedDays, selectedDaysIndex, day)}
+                                  onClick={() => toggleDays(scheduleIndex, day)}
                                   key={`dayListItem-${day}`}
                                 >
                                   {day}
@@ -101,26 +119,76 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             })}
                           </S.TdFlexBox>
                           <S.TdFlexBox>
-                            <S.ClockSelect type="time" />
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startHour ? schedule.startHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startHour = parseInt(currentHour);
+                                  if (schedule.startHour >= 24) schedule.startHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.startMinute ? schedule.startMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startMinute = parseInt(currentMinute);
+                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
                             부터
-                            <S.ClockSelect type="time" />
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endHour ? schedule.endHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endHour = parseInt(currentHour);
+                                  if (schedule.endHour >= 24) schedule.endHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                maxLength={2}
+                                value={schedule.endMinute ? schedule.endMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endMinute = parseInt(currentMinute);
+                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
                             까지
                           </S.TdFlexBox>
-                          {selectedDayList.length - 1 === selectedDaysIndex ? (
+                          {schedules.length - 1 === scheduleIndex ? (
                             <S.AddButton
                               onClick={() => {
-                                setSelectedDayList([...selectedDayList, [] as string[]]);
+                                setSchedules([...schedules, new CareGiverSchedule()]);
                               }}
                             >
                               <PlusIconSVG />
                             </S.AddButton>
                           ) : (
                             <S.AddButton
-                              onClick={() => {
-                                setSelectedDayList((selectedDayList) =>
-                                  selectedDayList.filter((item, i) => i !== selectedDaysIndex)
-                                );
-                              }}
+                              onClick={() =>
+                                setSchedules((schedules) =>
+                                  schedules.filter((_, i) => i !== scheduleIndex)
+                                )
+                              }
                             >
                               <MinusIconSVG />
                             </S.AddButton>
@@ -132,55 +200,40 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </tr>
                 <tr>
                   <th rowSpan={2}>가능 조건</th>
-                  <tr>
-                    <td className="available">
-                      석션
-                      <S.CheckBox type="checkbox" id="checkbox1" />
-                    </td>
-                    <td className="available">
-                      피딩
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      휠체어
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      기저귀
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available right">
-                      재활
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="available">
-                      가사
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      남성
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      치매
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      입주
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available right">
-                      간호조무사
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                  </tr>
+                  <td className="innerTable">
+                    <table>
+                      <tbody>
+                        {slicedCareInfoList.map((slicedCareInfo, row) => {
+                          return (
+                            <tr key={`${row}`}>
+                              {slicedCareInfo.map((careInfo, index) => {
+                                return (
+                                  <td
+                                    className={`available ${index === 4 && 'right'}`}
+                                    key={`${index}`}
+                                  >
+                                    {careInfo}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      onChange={() => toggleCareInfo(careInfo)}
+                                    />
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </td>
                 </tr>
               </tbody>
             </S.FilterTable>
             <S.ResetButtonContainer>
-              <S.ResetButton>초기화</S.ResetButton>
+              <S.FilterButton onClick={handleReset} isReset>
+                초기화
+              </S.FilterButton>
+              <S.FilterButton onClick={handleReset}>검색</S.FilterButton>
             </S.ResetButtonContainer>
           </S.InnerContent>
         </S.Section>
