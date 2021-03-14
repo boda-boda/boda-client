@@ -8,14 +8,15 @@ import Link from 'next/link';
 import { dayList, careInfoList } from '../../constant';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 import { DayType } from '../../common/types/date';
-import { render } from 'react-dom';
-import { et } from 'date-fns/locale';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
 }
 
 const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
+const slicedCareInfoList = [];
+for (let i = 0; i < careInfoList.length; i += 5)
+  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
 const SEARCH_TIMES = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 const SEARCH_MINUTES = Array.from(Array(60).keys()).filter((a) => a % 5 === 0);
 
@@ -187,50 +188,23 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </tr>
                 <tr>
                   <th rowSpan={2}>가능 조건</th>
-                  <tr>
-                    <td className="available">
-                      석션
-                      <S.CheckBox type="checkbox" id="checkbox1" />
-                    </td>
-                    <td className="available">
-                      피딩
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      휠체어
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      기저귀
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available right">
-                      재활
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="available">
-                      가사
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      남성
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      치매
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available">
-                      입주
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                    <td className="available right">
-                      간호조무사
-                      <S.CheckBox type="checkbox" />
-                    </td>
-                  </tr>
+                  {slicedCareInfoList.map((slicedCareInfo, row) => {
+                    return (
+                      <tr key={`${row}`}>
+                        {slicedCareInfo.map((careInfo, index) => {
+                          return (
+                            <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
+                              {careInfo}
+                              <S.CheckBox
+                                type="checkbox"
+                                onChange={() => toggleCareInfo(careInfo)}
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
                 </tr>
               </tbody>
             </S.FilterTable>

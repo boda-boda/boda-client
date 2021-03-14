@@ -23,6 +23,17 @@ export const useCareGiverUpsert = () => {
     newSchedules[selectedDaysIndex].toggleDay(day);
     setSchedules(newSchedules);
   };
+
+  const toggleCareInfo = (careInfo: string) => {
+    if (selectedCareInfo.includes(careInfo)) {
+      setSelectedCareInfo((selectedCareInfo) =>
+        selectedCareInfo.filter((selected) => selected !== careInfo)
+      );
+      return;
+    }
+    setSelectedCareInfo([...selectedCareInfo, careInfo]);
+  };
+
   const openAddressModal = () => {
     if (!window.daum) {
       alert('주소 검색 서비스 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.');
@@ -50,6 +61,7 @@ export const useCareGiverUpsert = () => {
     schedules,
     setSchedules,
     toggleDays,
+    toggleCareInfo,
     openAddressModal,
   };
 };

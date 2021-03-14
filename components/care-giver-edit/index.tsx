@@ -4,7 +4,7 @@ import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import * as S from './styles';
-import { dayList } from '../../constant';
+import { careInfoList, dayList } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import CareGiverSchedule from '../../model/care-giver-schedule';
@@ -12,6 +12,9 @@ import CareGiverSchedule from '../../model/care-giver-schedule';
 interface CareGiverEditProps {
   isNew: boolean;
 }
+const slicedCareInfoList = [];
+for (let i = 0; i < careInfoList.length; i += 5)
+  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
 
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
@@ -24,9 +27,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setMemo,
     setCareers,
     setProfileImage,
-    selectedCareInfo,
-    setSelectedCareInfo,
     schedules,
+    toggleCareInfo,
     setSchedules,
     toggleDays,
     openAddressModal,
@@ -107,50 +109,20 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.SectionTitle>가능 조건</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
-                  <td className="available">
-                    석션
-                    <S.CheckBox type="checkbox" id="checkbox1" />
-                  </td>
-                  <td className="available">
-                    피딩
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    휠체어
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    기저귀
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available right">
-                    재활
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="available">
-                    가사
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    남성
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    치매
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available">
-                    입주
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                  <td className="available right">
-                    간호조무사
-                    <S.CheckBox type="checkbox" />
-                  </td>
-                </tr>
+                {slicedCareInfoList.map((slicedCareInfo, row) => {
+                  return (
+                    <tr key={`${row}`}>
+                      {slicedCareInfo.map((careInfo, index) => {
+                        return (
+                          <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
+                            {careInfo}
+                            <S.CheckBox type="checkbox" onChange={() => toggleCareInfo(careInfo)} />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </S.Table>
           </S.Section>
