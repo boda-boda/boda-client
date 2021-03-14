@@ -10,8 +10,10 @@ import ImageDefaultSVG from '../../svgs/image-default-svg';
 import CenterUpdateRequest from './model/center-update-request';
 import { useCareCenter } from '../../context/care-center';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 export default function MyCenterView() {
+  const router = useRouter();
   const careCenter = useCareCenter();
 
   const centerImage = [
@@ -19,10 +21,9 @@ export default function MyCenterView() {
     'https://icatcare.org/app/uploads/2018/06/Layer-1704-1200x630.jpg',
     'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/kitten-440379.jpg',
   ];
+
   const [memo, setMemo] = useState('');
-  const [profileImage, setProfileImage] = useState(null);
   const memoRef = useRef<HTMLTextAreaElement>(null);
-  const [changingImage, setChangingImage] = useState(false);
 
   const [centerUpdateRequest, setCenterUpdateRequest] = useState(
     new CenterUpdateRequest(careCenter.careCenter)
@@ -69,8 +70,6 @@ export default function MyCenterView() {
   const [imageIndex, setImageIndex] = useState(0);
 
   const onChangeImage = async (e: any) => {
-    setChangingImage(true);
-
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
 
@@ -88,6 +87,23 @@ export default function MyCenterView() {
       });
     } catch {
       alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!window.confirm('수정하시겠습니까?')) return;
+
+    try {
+      await axios.put('/api/care-center/', centerUpdateRequest);
+      alert('수정이 완료되었습니다.');
+      window.location.replace('/mycenter');
+    } catch (e) {
+      if (e.response) {
+      }
+
+      alert('업데이트에 실패했습니다.');
+      console.log(e);
+      Array.from(Object.keys(e)).forEach((a) => console.log(a, e[a]));
     }
   };
 
@@ -156,8 +172,8 @@ export default function MyCenterView() {
                     <th>홈페이지</th>
                     <td className="infovalue">
                       <S.TextInput
-                        value={centerUpdateRequest.homepage}
-                        onChange={handleInputChange('homepage')}
+                        value={centerUpdateRequest.homePage}
+                        onChange={handleInputChange('homePage')}
                         type="text"
                       />
                     </td>
@@ -195,7 +211,9 @@ export default function MyCenterView() {
                       <S.TextArea
                         ref={memoRef}
                         value={centerUpdateRequest.description}
-                        onChange={handleInputChange('description')}
+                        onChange={(e) => {
+                          handleInputChange('description')(e), setMemo(e.target.value);
+                        }}
                       />
                     </td>
                   </tr>
@@ -222,7 +240,7 @@ export default function MyCenterView() {
             </S.Section>
           </S.MyCenterPage>
           <S.FinishButtonContainer>
-            <S.FinishButton>수정 완료</S.FinishButton>
+            <S.FinishButton onClick={handleSubmit}>수정 완료</S.FinishButton>
           </S.FinishButtonContainer>
         </S.InnerContent>
       </>

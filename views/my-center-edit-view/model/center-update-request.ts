@@ -5,7 +5,7 @@ export default class CenterUpdateRequest {
     this.username = careCenter?.username ? careCenter.username : '';
     this.email = careCenter?.email ? careCenter.email : '';
     this.phoneNumber = careCenter?.phoneNumber ? careCenter.phoneNumber : '';
-    this.homepage = careCenter?.homepage ? careCenter.homepage : '';
+    this.homePage = careCenter?.homePage ? careCenter.homePage : '';
     this.zipCode = careCenter?.zipCode ? careCenter.zipCode : '';
     this.address = careCenter?.address ? careCenter.address : '';
     this.detailAddress = careCenter?.detailAddress ? careCenter.detailAddress : '';
@@ -17,7 +17,7 @@ export default class CenterUpdateRequest {
   public email: string;
   public phoneNumber: string;
   public profile: string;
-  public homepage: string;
+  public homePage: string;
   public zipCode: string;
   public address: string;
   public detailAddress: string;
