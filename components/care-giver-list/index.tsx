@@ -12,10 +12,18 @@ interface CareGiverListProps {
 }
 
 const careInfo = ['석션', '휠체어', '기저귀', '목욕', '재활']; //얘네는 임시
+const SEARCH_TIMES = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const SEARCH_MINUTES = Array.from(Array(60).keys()).filter((a) => a % 5 === 0);
 
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+
+  const [startHour, setStartHour] = useState('');
+  const [startMinute, setStartMinute] = useState('');
+  const [endHour, setEndHour] = useState('');
+  const [endMinute, setEndMinute] = useState('');
+
   const toggleDays = (selectedDays: string[], selectedDaysIndex: number, day: string) => {
     if (selectedDays.includes(day)) {
       setSelectedDayList((selectedDayList) =>
@@ -101,9 +109,43 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             })}
                           </S.TdFlexBox>
                           <S.TdFlexBox>
-                            <S.ClockSelect type="time" />
+                            <S.ClockSelectContainer>
+                              <S.ClockSelect onChange={(e) => setStartHour(e.target.value)}>
+                                <option defaultChecked value="">
+                                  시간
+                                </option>
+                                {SEARCH_TIMES.map((t) => (
+                                  <option value={t}>{t}시</option>
+                                ))}
+                              </S.ClockSelect>
+                              <S.ClockSelect onChange={(e) => setStartMinute(e.target.value)}>
+                                <option defaultChecked value="">
+                                  분
+                                </option>
+                                {SEARCH_MINUTES.map((t) => (
+                                  <option value={t}>{t}분</option>
+                                ))}
+                              </S.ClockSelect>
+                            </S.ClockSelectContainer>
                             부터
-                            <S.ClockSelect type="time" />
+                            <S.ClockSelectContainer>
+                              <S.ClockSelect onChange={(e) => setEndHour(e.target.value)}>
+                                <option defaultChecked value="">
+                                  시간
+                                </option>
+                                {SEARCH_TIMES.map((t) => (
+                                  <option value={t}>{t}시</option>
+                                ))}
+                              </S.ClockSelect>
+                              <S.ClockSelect onChange={(e) => setEndMinute(e.target.value)}>
+                                <option defaultChecked value="">
+                                  분
+                                </option>
+                                {SEARCH_MINUTES.map((t) => (
+                                  <option value={t}>{t}분</option>
+                                ))}
+                              </S.ClockSelect>
+                            </S.ClockSelectContainer>
                             까지
                           </S.TdFlexBox>
                           {selectedDayList.length - 1 === selectedDaysIndex ? (
