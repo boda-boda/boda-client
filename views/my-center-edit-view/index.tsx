@@ -98,12 +98,7 @@ export default function MyCenterView() {
       alert('수정이 완료되었습니다.');
       window.location.replace('/mycenter');
     } catch (e) {
-      if (e.response) {
-      }
-
-      alert('업데이트에 실패했습니다.');
-      console.log(e);
-      Array.from(Object.keys(e)).forEach((a) => console.log(a, e[a]));
+      alert('사용자 정보 업데이트에 실패했습니다.');
     }
   };
 
