@@ -1,23 +1,21 @@
-import React, { ReactChild } from 'react';
+import React from 'react';
 import { useSoftRefresh } from '../../common/hooks/auth';
 import Footer from '../footer';
 import Header from '../header';
 import * as S from './styles';
 
 interface LayoutProps {
-  children: ReactChild;
+  children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
   useSoftRefresh();
 
   return (
-    <>
-      <S.Layout>
-        <Header />
-        <S.ContentWrapper>{children}</S.ContentWrapper>
-        <Footer />
-      </S.Layout>
-    </>
+    <S.Layout>
+      <Header />
+      <S.ContentWrapper>{children}</S.ContentWrapper>
+      <Footer />
+    </S.Layout>
   );
 }

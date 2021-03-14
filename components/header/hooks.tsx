@@ -77,15 +77,19 @@ export function useHeader() {
         },
       });
       alert(`${loginResponse.data.careCenter.name}님, 환영합니다`);
-    } catch ({ response }) {
-      switch (response.status) {
-        case 400:
-        case 401:
-        case 404:
-          alert(response.data.message);
-          break;
-        default:
-          alert('예측할 수 없는 오류가 발생하였습니다.');
+    } catch (e) {
+      if (e.response) {
+        switch (e.response.status) {
+          case 400:
+          case 401:
+          case 404:
+            alert(e.response.data?.message);
+            break;
+          default:
+            alert('서버에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
+        }
+      } else {
+        alert('서버에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
       }
       setIsRequestingLogin(false);
       return;

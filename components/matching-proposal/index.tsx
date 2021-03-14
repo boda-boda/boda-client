@@ -1,4 +1,4 @@
-import React, { ReactChild, useState } from 'react';
+import React, { useState } from 'react';
 import { BannerStyleType, ButtonSize, ButtonType } from '../../common/types';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';

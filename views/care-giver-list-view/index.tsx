@@ -31,7 +31,7 @@ export default function CareGiverListView({ isMyCaregiver }: CareGiverListViewPr
               title="요양보호사 검색"
               subtitle="매칭에 필요한 조건을 선택하여 신규 요양보호사를 검색할 수 있습니다."
             />
-            <Category list={['홈', '신규 요양보호사 추가', '요양보호사 검색']} />
+            <Category list={['홈', '신규 요양보호사 검색']} />
           </>
         )}
         <S.CareGiverDetailPage>
