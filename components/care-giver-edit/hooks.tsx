@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { DayType } from '../../common/types/date';
+import BusinessArea from '../../model/business-area';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 
 export const useCareGiverUpsert = () => {
@@ -7,7 +8,9 @@ export const useCareGiverUpsert = () => {
   const [memo, setMemo] = useState('');
   const [careers, setCareers] = useState([['', '', '']]);
   const [profileImage, setProfileImage] = useState((null as unknown) as string);
+  const [isFemale, setIsFemale] = useState(true);
   const memoRef = useRef<HTMLTextAreaElement>(null);
+  const [businessAreas, setBusinessAreas] = useState([new BusinessArea()]);
 
   useEffect(() => {
     if (!memoRef.current) return;
@@ -58,10 +61,14 @@ export const useCareGiverUpsert = () => {
     setProfileImage,
     selectedCareInfo,
     setSelectedCareInfo,
+    isFemale,
+    setIsFemale,
     schedules,
     setSchedules,
     toggleDays,
     toggleCareInfo,
     openAddressModal,
+    businessAreas,
+    setBusinessAreas,
   };
 };

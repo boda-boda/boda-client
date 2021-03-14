@@ -4,10 +4,11 @@ import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import TimeInput from '../../svgs/time-input-svg';
 import * as S from './styles';
-import { careInfoList, dayList } from '../../constant';
+import { dayList, careInfoList, seoulGuDong } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import CareGiverSchedule from '../../model/care-giver-schedule';
+import BusinessArea from '../../model/business-area';
 
 interface CareGiverEditProps {
   isNew: boolean;
@@ -28,11 +29,16 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setCareers,
     setProfileImage,
     schedules,
+    isFemale,
+    setIsFemale,
     toggleCareInfo,
     setSchedules,
     toggleDays,
     openAddressModal,
+    businessAreas,
+    setBusinessAreas,
   } = useCareGiverUpsert();
+  console.log(JSON.stringify(businessAreas, null, 1));
 
   return (
     <>
@@ -64,7 +70,14 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 <tr>
                   <th>성별</th>
                   <td className="infovalue">
-                    <S.TextInput type="text" />
+                    <S.TdFlexBox>
+                      <S.ToggleButton isSelected={isFemale} onClick={(e) => setIsFemale(true)}>
+                        여
+                      </S.ToggleButton>
+                      <S.ToggleButton isSelected={!isFemale} onClick={(e) => setIsFemale(false)}>
+                        남
+                      </S.ToggleButton>
+                    </S.TdFlexBox>
                   </td>
                   <th>연락처</th>
                   <td className="infovalue">
@@ -84,6 +97,89 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                     <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
                   </td>
                 </tr>
+              </tbody>
+            </S.Table>
+          </S.Section>
+          <S.Section>
+            <S.SectionTitle>활동 지역</S.SectionTitle>
+            <S.Table>
+              <tbody>
+                {businessAreas.map((businessArea, businessAreaIndex) => (
+                  <tr key={`businessArea-${businessAreaIndex}`}>
+                    <td>
+                      <S.DropDown
+                        onChange={(e) => {
+                          businessArea.city = e.target.value;
+                          setRerender(!rerender);
+                        }}
+                        value={businessArea.city}
+                        defaultValue={null}
+                      >
+                        <option value={null} hidden>
+                          시/도 선택
+                        </option>
+                        <option value="서울특별시">서울특별시</option>
+                      </S.DropDown>
+                      <S.DropDown
+                        onChange={(e) => {
+                          businessArea.gu = e.target.value;
+                          setRerender(!rerender);
+                        }}
+                        value={businessArea.gu}
+                        defaultValue={null}
+                      >
+                        <option value={null} hidden>
+                          구 선택
+                        </option>
+                        {seoulGuDong.map((gudong, idx) => (
+                          <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                            {gudong.gu}
+                          </option>
+                        ))}
+                      </S.DropDown>
+                      <S.DropDown
+                        onChange={(e) => {
+                          businessArea.dong = e.target.value;
+                          setRerender(!rerender);
+                        }}
+                        value={businessArea.dong}
+                        defaultValue={null}
+                      >
+                        <option value={null}>동 선택</option>
+                        {businessArea.gu === null
+                          ? null
+                          : seoulGuDong
+                              .find((gudong) => gudong.gu === businessArea.gu)
+                              ?.dongs.map((dong, idx) => (
+                                <option key={`${dong}-${idx}`} value={dong}>
+                                  {dong}
+                                </option>
+                              ))}
+                      </S.DropDown>
+                    </td>
+                    <td>
+                      {businessAreas.length - 1 === businessAreaIndex ? (
+                        <S.AddButton
+                          onClick={() => {
+                            setBusinessAreas([...businessAreas, new BusinessArea()]);
+                          }}
+                        >
+                          <PlusIconSVG />
+                        </S.AddButton>
+                      ) : (
+                        <S.AddButton
+                          onClick={() =>
+                            setBusinessAreas((businessAreas) =>
+                              businessAreas.filter((_, i) => i !== businessAreaIndex)
+                            )
+                          }
+                        >
+                          <MinusIconSVG />
+                        </S.AddButton>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </S.Table>
           </S.Section>
@@ -143,7 +239,6 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               return (
                                 <S.ToggleButton
                                   isSelected={schedule.isDayIncluded(day)}
-                                  className="square"
                                   onClick={() => toggleDays(scheduleIndex, day)}
                                   key={`dayListItem-${day}`}
                                 >
@@ -219,11 +314,12 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             </S.AddButton>
                           ) : (
                             <S.AddButton
-                              onClick={() =>
+                              onClick={() => {
                                 setSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
-                                )
-                              }
+                                );
+                                setRerender(!rerender);
+                              }}
                             >
                               <MinusIconSVG />
                             </S.AddButton>

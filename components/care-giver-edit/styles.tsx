@@ -309,10 +309,6 @@ export const FilterTable = styled.table`
 
 export const TdFlexBox = styled.div`
   ${FLEX_ROW_START_CENTER};
-  .square {
-    width: 36px;
-    padding: 0;
-  }
 `;
 
 export const DropDown = styled.select`
@@ -334,7 +330,8 @@ interface ToggleButtonProps {
 }
 
 export const ToggleButton = styled.div<ToggleButtonProps>`
-  padding: 0 15px;
+  width: 36px;
+  padding: 0;
   height: 36px;
   margin-right: 10px;
   border-radius: 3px;
