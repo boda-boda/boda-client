@@ -4,7 +4,7 @@ import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
 import Link from 'next/link';
 import * as S from './styles';
-import useHeader from './hooks';
+import { useConsultRequest, useHeader } from './hooks';
 
 export default function Header() {
   const {
@@ -12,6 +12,8 @@ export default function Header() {
     password,
     careCenter,
     handleLogin,
+    handlePressEnter,
+    isRequestingLogin,
     handleLogout,
     updateUsername,
     updatePassword,
@@ -20,6 +22,8 @@ export default function Header() {
     setIsLoginModalOn,
     handleMenuClick,
   } = useHeader();
+
+  const { contact, handleContactUpdate, handleConsultRequest } = useConsultRequest();
 
   return (
     <>
@@ -124,10 +128,16 @@ export default function Header() {
                 <S.LoginModalSubtitle>
                   <span>보다</span>의 회원이신가요?
                 </S.LoginModalSubtitle>
-                <S.StringInput value={name} onChange={updateUsername} placeholder="아이디 입력" />
+                <S.StringInput
+                  value={name}
+                  onKeyDown={handlePressEnter}
+                  onChange={updateUsername}
+                  placeholder="아이디 입력"
+                />
                 <S.StringInput
                   value={password}
                   onChange={updatePassword}
+                  onKeyDown={handlePressEnter}
                   type="password"
                   placeholder="비밀번호 입력"
                 />
@@ -135,7 +145,9 @@ export default function Header() {
                   <input type="checkbox" id="login-save" />
                   <S.LoginSaveLabel htmlFor="login-save">자동 로그인</S.LoginSaveLabel>
                 </div>
-                <S.LoginModalButton onClick={handleLogin}>로그인</S.LoginModalButton>
+                <S.LoginModalButton disabled={isRequestingLogin} onClick={handleLogin}>
+                  로그인
+                </S.LoginModalButton>
                 <S.LoginModalBar />
                 <S.LoginModalSubtitle>
                   <span>보다</span>가 처음이신가요?
@@ -143,8 +155,15 @@ export default function Header() {
                 <S.LoginModalText>
                   아래에 연락처를 남겨 주시면 상담 연락 드리겠습니다.
                 </S.LoginModalText>
-                <S.StringInput type="string" placeholder="연락처 입력" />
-                <S.LoginModalButton>이용 신청하기</S.LoginModalButton>
+                <S.StringInput
+                  value={contact}
+                  onChange={handleContactUpdate}
+                  type="string"
+                  placeholder="연락처 입력"
+                />
+                <S.LoginModalButton onClick={handleConsultRequest}>
+                  이용 신청하기
+                </S.LoginModalButton>
               </S.LoginModalInnerContent>
             </S.LoginModal>
           </S.LoginModalLayout>
