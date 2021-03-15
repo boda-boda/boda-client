@@ -4,12 +4,14 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
+import { dayList } from '../../constant';
+import { DayType } from '../../common/types/date';
 
 export default function CareGiveDetail() {
   const router = useRouter();
   const [isLoadingCareWorker, setIsLoadingCareWorker] = useState(true);
   const [careWorker, setCareWorker] = useState(new CareWorker());
-  console.log(careWorker);
+  console.log(careWorker.careWorkerSchedules);
 
   useEffect(() => {
     if (!router.query.ID) {
@@ -152,20 +154,26 @@ export default function CareGiveDetail() {
                   );
                 })}
               </tbody>
-              <S.TimeContainer day={0} startTime={9} endTime={13}>
-                <S.TimeItem>
-                  09:00
-                  <br />~<br />
-                  13:00
-                </S.TimeItem>
-              </S.TimeContainer>
-              <S.TimeContainer day={2} startTime={9} endTime={13}>
-                <S.TimeItem>
-                  09:00
-                  <br />~<br />
-                  13:00
-                </S.TimeItem>
-              </S.TimeContainer>
+              {careWorker.careWorkerSchedules?.map((schedule) => {
+                const [startHourString, startMinuteString] = schedule.startAt.split(':');
+                const [startHour, startMinute] = schedule.startAt.split(':').map((a) => parseInt(a)); // prettier-ignore
+                const [endHourString, endMinuteString] = schedule.endAt.split(':');
+                const [endHour, endMinute] = schedule.endAt.split(':').map((a) => parseInt(a));
+
+                return (
+                  <S.TimeContainer
+                    day={dayList.indexOf(schedule.day as DayType)}
+                    startTime={startHour + startMinute / 60}
+                    endTime={endHour + endMinute / 60}
+                  >
+                    <S.TimeItem>
+                      {startHourString}:{startMinuteString}
+                      <br />~<br />
+                      {endHourString}:{endMinuteString}
+                    </S.TimeItem>
+                  </S.TimeContainer>
+                );
+              })}
             </S.TimeTable>
           </S.Section>
           <S.Section>
@@ -177,15 +185,13 @@ export default function CareGiveDetail() {
                   <th className="career">수급자</th>
                   <th className="career right">기간</th>
                 </tr>
-                {careWorker.careWorkerCareers
-                  ? careWorker.careWorkerCareers.map((career, idx) => (
-                      <tr key={`career-${idx}`}>
-                        <td className="career long">{career.workplace}</td>
-                        <td className="career">{career.recipient}</td>
-                        <td className="career right">{career.duration}</td>
-                      </tr>
-                    ))
-                  : null}
+                {careWorker.careWorkerCareers?.map((career, idx) => (
+                  <tr key={`career-${idx}`}>
+                    <td className="career long">{career.workplace}</td>
+                    <td className="career">{career.recipient}</td>
+                    <td className="career right">{career.duration}</td>
+                  </tr>
+                ))}
               </tbody>
             </S.Table>
           </S.Section>

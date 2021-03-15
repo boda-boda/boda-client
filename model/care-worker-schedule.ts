@@ -1,7 +1,7 @@
 import { DayType } from '../common/types/date';
 
 export default class CareWorkerSchedule {
-  private days: DayType[];
+  public days: DayType[];
   public startHour: number;
   public startMinute: number;
   public endHour: number;
