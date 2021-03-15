@@ -1,18 +1,48 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DayType } from '../../common/types/date';
 import BusinessArea from '../../model/business-area';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 import axios from 'axios';
+import CreateCareGiverRequest from './model/create-care-giver-request';
+import Career from './model/career';
+import router, { useRouter } from 'next/router';
 
 export const useCareGiverUpsert = () => {
-  const [address, setAddress] = useState('');
+  const [careWorker, setCareWorker] = useState(new CreateCareGiverRequest());
+  const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
+  const [careWorkerSchedules, setCareWorkerSchedules] = useState([new CareGiverSchedule()]);
+  const [careWorkerCareers, setCareWorkerCareers] = useState([new Career()]);
+  const [careWorkerAreas, setCareWorkerAreas] = useState([new BusinessArea()]);
+
   const [memo, setMemo] = useState('');
-  const [careers, setCareers] = useState([['', '', '']]);
-  const [profileImage, setProfileImage] = useState((null as unknown) as string);
-  const [isFemale, setIsFemale] = useState(true);
   const memoRef = useRef<HTMLTextAreaElement>(null);
-  const [businessAreas, setBusinessAreas] = useState([new BusinessArea()]);
-  const [changingImage, setChangingImage] = useState(false);
+
+  const router = useRouter();
+
+  const handleUpdateCareGiver = useCallback(
+    (key: keyof CreateCareGiverRequest) => (e: any) => {
+      setCareWorker({
+        ...careWorker,
+        [key]: e.target.value,
+      });
+    },
+    [careWorker]
+  );
+
+  const handleUpdateGender = useCallback(
+    (isFemale: boolean) => () => {
+      setCareWorker({ ...careWorker, isFemale });
+    },
+    [careWorker]
+  );
+
+  const handleUpdateAge = useCallback(
+    (e: any) => {
+      const parsedAge = isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value);
+      setCareWorker({ ...careWorker, age: parsedAge });
+    },
+    [careWorker]
+  );
 
   useEffect(() => {
     if (!memoRef.current) return;
@@ -20,28 +50,23 @@ export const useCareGiverUpsert = () => {
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
-  const [schedules, setSchedules] = useState([new CareGiverSchedule()]);
-  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...schedules];
+    const newSchedules = [...careWorkerSchedules];
     newSchedules[selectedDaysIndex].toggleDay(day);
-    setSchedules(newSchedules);
+    setCareWorkerSchedules(newSchedules);
   };
 
-  const toggleCareInfo = (careInfo: string) => {
-    if (selectedCareInfo.includes(careInfo)) {
-      setSelectedCareInfo((selectedCareInfo) =>
+  const toggleCapability = (careInfo: string) => {
+    if (careWorkerCapabilities.includes(careInfo)) {
+      setCareWorkerCapabilities((selectedCareInfo) =>
         selectedCareInfo.filter((selected) => selected !== careInfo)
       );
       return;
     }
-    setSelectedCareInfo([...selectedCareInfo, careInfo]);
+    setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
   };
 
   const onChangeImage = async (e: any) => {
-    setChangingImage(true);
-
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
 
@@ -54,7 +79,10 @@ export const useCareGiverUpsert = () => {
 
       const response = await axiosInstance.post('/api/care-worker/profile', formData);
       const url = response.data.Location;
-      setProfileImage(url);
+      setCareWorker({
+        ...careWorker,
+        profile: url,
+      });
     } catch {
       alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
     }
@@ -68,31 +96,57 @@ export const useCareGiverUpsert = () => {
     new window.daum.Postcode({
       oncomplete: function (data: any) {
         let fullAddress = data.address;
-        setAddress(fullAddress);
+        setCareWorker({
+          ...careWorker,
+          address: fullAddress,
+        });
       },
     }).open();
   };
 
+  const handleClickCreateButton = async () => {
+    const avilableSchedule = careWorkerSchedules.filter((a) => !a.isEmpty());
+    if (avilableSchedule.some((a) => !a.isValidSchedule())) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
+      );
+      return;
+    }
+
+    try {
+      await axios.post('/api/care-worker', {
+        careWorker,
+        careWorkerCapabilities,
+        careWorkerSchedules: avilableSchedule,
+        careWorkerCareers,
+        careWorkerAreas,
+      });
+    } catch (e) {
+      alert('요양보호사 추가에 실패하였습니다.');
+    }
+
+    alert('요양보호사 추가에 성공하였습니다.');
+    router.push('/list');
+  };
+
   return {
-    address,
+    careWorker,
     memo,
-    careers,
-    profileImage,
+    careWorkerCareers,
     memoRef,
     setMemo,
-    setCareers,
-    setProfileImage,
-    selectedCareInfo,
-    setSelectedCareInfo,
-    isFemale,
-    setIsFemale,
-    schedules,
-    setSchedules,
+    setCareWorkerCareers,
+    careWorkerSchedules,
+    toggleCapability,
+    setCareWorkerSchedules,
     toggleDays,
-    toggleCareInfo,
     openAddressModal,
-    businessAreas,
-    setBusinessAreas,
+    careWorkerAreas,
+    setCareWorkerAreas,
     onChangeImage,
+    handleUpdateGender,
+    handleUpdateAge,
+    handleUpdateCareGiver,
+    handleClickCreateButton,
   };
 };

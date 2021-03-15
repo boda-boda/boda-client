@@ -78,7 +78,7 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>돌봄 스케줄</S.SectionTitle>
+            <S.SectionTitle>요양보호사 스케줄</S.SectionTitle>
             <S.TimeTable>
               <tbody>
                 <tr>

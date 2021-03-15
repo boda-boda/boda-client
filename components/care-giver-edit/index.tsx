@@ -7,6 +7,7 @@ import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import CareGiverSchedule from '../../model/care-giver-schedule';
 import BusinessArea from '../../model/business-area';
+import Career from './model/career';
 
 interface CareGiverEditProps {
   isNew: boolean;
@@ -18,24 +19,24 @@ for (let i = 0; i < careInfoList.length; i += 5)
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
   const {
-    address,
+    careWorker,
     memo,
-    careers,
-    profileImage,
+    careWorkerCareers,
     memoRef,
     setMemo,
-    setCareers,
-    setProfileImage,
-    schedules,
-    isFemale,
-    setIsFemale,
-    toggleCareInfo,
-    setSchedules,
+    setCareWorkerCareers,
+    careWorkerSchedules,
+    toggleCapability,
+    setCareWorkerSchedules,
     toggleDays,
     openAddressModal,
-    businessAreas,
-    setBusinessAreas,
+    careWorkerAreas,
+    setCareWorkerAreas,
     onChangeImage,
+    handleUpdateGender,
+    handleUpdateAge,
+    handleUpdateCareGiver,
+    handleClickCreateButton,
   } = useCareGiverUpsert();
 
   return (
@@ -50,8 +51,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <td rowSpan={3} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
-                        <S.ProfileImage src={profileImage}>
-                          <S.ImageIconContainer isHover={profileImage !== null}>
+                        <S.ProfileImage src={careWorker.profile}>
+                          <S.ImageIconContainer isHover={careWorker.profile !== ''}>
                             <ImageDefaultSVG />
                           </S.ImageIconContainer>
                         </S.ProfileImage>
@@ -68,28 +69,42 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   </td>
                   <th>이름</th>
                   <td className="infovalue">
-                    <S.TextInput type="text" />
+                    <S.TextInput
+                      value={careWorker.name}
+                      onChange={handleUpdateCareGiver('name')}
+                      type="text"
+                    />
                   </td>
                   <th>나이</th>
                   <td className="infovalue">
-                    <S.TextInput type="text" />
+                    <S.TextInput value={careWorker.age} onChange={handleUpdateAge} type="text" />
                   </td>
                 </tr>
                 <tr>
                   <th>성별</th>
                   <td className="infovalue">
                     <S.TdFlexBox>
-                      <S.ToggleButton isSelected={isFemale} onClick={(e) => setIsFemale(true)}>
+                      <S.ToggleButton
+                        isSelected={careWorker.isFemale}
+                        onClick={handleUpdateGender(true)}
+                      >
                         여
                       </S.ToggleButton>
-                      <S.ToggleButton isSelected={!isFemale} onClick={(e) => setIsFemale(false)}>
+                      <S.ToggleButton
+                        isSelected={!careWorker.isFemale}
+                        onClick={handleUpdateGender(false)}
+                      >
                         남
                       </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
                   <th>연락처</th>
                   <td className="infovalue">
-                    <S.TextInput type="text" />
+                    <S.TextInput
+                      value={careWorker.phoneNumber}
+                      onChange={handleUpdateCareGiver('phoneNumber')}
+                      type="text"
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -97,7 +112,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <td colSpan={3}>
                     <S.TextInput
                       type="text"
-                      value={address}
+                      value={careWorker.address}
                       readOnly
                       withButton
                       onClick={openAddressModal}
@@ -112,38 +127,41 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                {businessAreas.map((businessArea, businessAreaIndex) => (
+                {careWorkerAreas.map((businessArea, businessAreaIndex) => (
                   <tr key={`businessArea-${businessAreaIndex}`}>
                     <td>
                       <S.DropDown
                         onChange={(e) => {
                           businessArea.city = e.target.value;
+                          businessArea.gu = '';
+                          businessArea.dong = '';
                           setRerender(!rerender);
                         }}
                         value={businessArea.city}
-                        defaultValue={null}
+                        defaultValue={''}
                       >
-                        <option value={null} hidden>
-                          시/도 선택
-                        </option>
+                        <option value={''}>시/도 선택</option>
                         <option value="서울특별시">서울특별시</option>
                       </S.DropDown>
                       <S.DropDown
                         onChange={(e) => {
                           businessArea.gu = e.target.value;
+                          businessArea.dong = '';
                           setRerender(!rerender);
                         }}
                         value={businessArea.gu}
-                        defaultValue={null}
+                        defaultValue={''}
                       >
-                        <option value={null} hidden>
+                        <option value={''} hidden>
                           구 선택
                         </option>
-                        {seoulGuDong.map((gudong, idx) => (
-                          <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
-                            {gudong.gu}
-                          </option>
-                        ))}
+                        {businessArea.city === '서울특별시'
+                          ? seoulGuDong.map((gudong, idx) => (
+                              <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                                {gudong.gu}
+                              </option>
+                            ))
+                          : null}
                       </S.DropDown>
                       <S.DropDown
                         onChange={(e) => {
@@ -151,10 +169,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           setRerender(!rerender);
                         }}
                         value={businessArea.dong}
-                        defaultValue={null}
+                        defaultValue={''}
                       >
-                        <option value={null}>동 선택</option>
-                        {businessArea.gu === null
+                        <option value={''}>동 선택</option>
+                        {!businessArea.gu
                           ? null
                           : seoulGuDong
                               .find((gudong) => gudong.gu === businessArea.gu)
@@ -166,10 +184,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </S.DropDown>
                     </td>
                     <td>
-                      {businessAreas.length - 1 === businessAreaIndex ? (
+                      {careWorkerAreas.length - 1 === businessAreaIndex ? (
                         <S.AddButton
                           onClick={() => {
-                            setBusinessAreas([...businessAreas, new BusinessArea()]);
+                            setCareWorkerAreas([...careWorkerAreas, new BusinessArea()]);
                           }}
                         >
                           <PlusIconSVG />
@@ -177,7 +195,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       ) : (
                         <S.AddButton
                           onClick={() =>
-                            setBusinessAreas((businessAreas) =>
+                            setCareWorkerAreas((businessAreas) =>
                               businessAreas.filter((_, i) => i !== businessAreaIndex)
                             )
                           }
@@ -202,6 +220,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={memo}
                       onChange={(e) => {
                         setMemo(e.target.value);
+                        handleUpdateCareGiver('description')(e);
                       }}
                     />
                   </td>
@@ -220,7 +239,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         return (
                           <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
                             {careInfo}
-                            <S.CheckBox type="checkbox" onChange={() => toggleCareInfo(careInfo)} />
+                            <S.CheckBox
+                              type="checkbox"
+                              onChange={() => toggleCapability(careInfo)}
+                            />
                           </td>
                         );
                       })}
@@ -231,15 +253,15 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>돌봄 스케줄</S.SectionTitle>
+            <S.SectionTitle>요양보호사 스케줄</S.SectionTitle>
             <S.Table>
               <tbody>
                 <tr>
                   <td style={{ padding: 0 }}>
-                    {schedules.map((schedule, scheduleIndex) => {
+                    {careWorkerSchedules.map((schedule, scheduleIndex) => {
                       return (
                         <S.TimeSelectContainer
-                          isLast={schedules.length - 1 === scheduleIndex}
+                          isLast={careWorkerSchedules.length - 1 === scheduleIndex}
                           key={`timeselectcontainer-${scheduleIndex}`}
                         >
                           <S.TdFlexBox>
@@ -312,10 +334,13 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             까지
                           </S.TdFlexBox>
 
-                          {schedules.length - 1 === scheduleIndex ? (
+                          {careWorkerSchedules.length - 1 === scheduleIndex ? (
                             <S.AddButton
                               onClick={() => {
-                                setSchedules([...schedules, new CareGiverSchedule()]);
+                                setCareWorkerSchedules([
+                                  ...careWorkerSchedules,
+                                  new CareGiverSchedule(),
+                                ]);
                               }}
                             >
                               <PlusIconSVG />
@@ -323,7 +348,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           ) : (
                             <S.AddButton
                               onClick={() => {
-                                setSchedules((schedules) =>
+                                setCareWorkerSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
                                 );
                                 setRerender(!rerender);
@@ -350,18 +375,21 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <th className="career">기간</th>
                   <th className="career right"></th>
                 </tr>
-                {careers.map((career, careerIndex) => {
+                {careWorkerCareers.map((career, careerIndex) => {
                   return (
                     <tr key={`career-row-${careerIndex}`}>
                       <td className="career long">
                         <S.TextInput
                           type="text"
-                          value={career[0]}
+                          value={career.place}
                           onChange={(e) => {
-                            setCareers((careers) =>
+                            setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
                                 if (i !== careerIndex) return c;
-                                return [e.target.value, c[1], c[2]];
+                                return {
+                                  ...careers[i],
+                                  place: e.target.value,
+                                };
                               })
                             );
                           }}
@@ -371,12 +399,15 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career">
                         <S.TextInput
                           type="text"
-                          value={career[1]}
+                          value={career.customer}
                           onChange={(e) => {
-                            setCareers((careers) =>
+                            setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
                                 if (i !== careerIndex) return c;
-                                return [c[0], e.target.value, c[2]];
+                                return {
+                                  ...careers[i],
+                                  customer: e.target.value,
+                                };
                               })
                             );
                           }}
@@ -386,12 +417,15 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career">
                         <S.TextInput
                           type="text"
-                          value={career[2]}
+                          value={career.duration}
                           onChange={(e) => {
-                            setCareers((careers) =>
+                            setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
                                 if (i !== careerIndex) return c;
-                                return [c[0], c[1], e.target.value];
+                                return {
+                                  ...careers[i],
+                                  duration: e.target.value,
+                                };
                               })
                             );
                           }}
@@ -399,10 +433,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         />
                       </td>
                       <td className="career right">
-                        {careers.length - 1 === careerIndex ? (
+                        {careWorkerCareers.length - 1 === careerIndex ? (
                           <S.AddButton
                             onClick={() => {
-                              setCareers([...careers, ['', '', '']]);
+                              setCareWorkerCareers([...careWorkerCareers, new Career()]);
                             }}
                           >
                             <PlusIconSVG />
@@ -410,7 +444,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         ) : (
                           <S.AddButton
                             onClick={() => {
-                              setCareers((careers) =>
+                              setCareWorkerCareers((careers) =>
                                 careers.filter((_item, i) => i !== careerIndex)
                               );
                             }}
@@ -427,7 +461,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
           </S.Section>
           <S.FinishButtonContainer>
             {isNew ? (
-              <S.FinishButton>작성 완료</S.FinishButton>
+              <S.FinishButton onClick={handleClickCreateButton}>작성 완료</S.FinishButton>
             ) : (
               <S.FinishButton>수정 완료</S.FinishButton>
             )}

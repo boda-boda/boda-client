@@ -15,8 +15,11 @@ export default class CareGiverSchedule {
     this.endMinute = 0;
   }
 
-  public validateSchedule() {
-    if (this.days.length === 0) return false;
+  public isEmpty() {
+    return this.days.length === 0;
+  }
+
+  public isValidSchedule() {
     if (
       this.startHour === null ||
       this.startMinute === null ||
