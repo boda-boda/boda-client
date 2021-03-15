@@ -112,13 +112,13 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   background-position: center;
 `;
 
-export const PersonalityInfoList = styled.div`
+export const AvailabilityInfoList = styled.div`
   width: 100%;
   height: 60px;
   ${FLEX_ROW_START_CENTER};
 `;
 
-export const PersonalityInfoItem = styled.div`
+export const AvailabilityInfoItem = styled.div`
   padding: 0 15px;
   height: 36px;
   margin-right: 10px;

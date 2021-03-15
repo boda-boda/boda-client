@@ -262,7 +262,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   href={{
                     pathname: '/list/[id]',
                   }}
-                  as={`/list/0`}
+                  as={`/list/${worker.id}`}
                   passHref
                 >
                   <S.StyledLink>

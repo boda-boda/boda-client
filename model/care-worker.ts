@@ -7,8 +7,8 @@ export default class CareWorker {
   public address: string;
   public age: number;
 
-  public careWorkerAreas: Pick<BusinessArea, 'city' | 'dong' | 'gu'>;
-  public careCenterCareers: CareWorkerCareer;
+  public careWorkerAreas: BusinessArea[];
+  public careWorkerCareers: CareWorkerCareer[];
   public careWorkerMetas: CareWorkerMeta[];
   public careWorkerSchedules: CareWorkerSchedule[];
 

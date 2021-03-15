@@ -1,15 +1,40 @@
-import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import CareWorker from '../../model/care-worker';
 import * as S from './styles';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { chunk } from '../../common/lib';
 
 export default function CareGiveDetail() {
+  const router = useRouter();
+  const [isLoadingCareWorker, setIsLoadingCareWorker] = useState(true);
+  const [careWorker, setCareWorker] = useState(new CareWorker());
+  console.log(careWorker);
+
+  useEffect(() => {
+    if (!router.query.ID) {
+      router.push('/list');
+      return;
+    }
+
+    (async () => {
+      try {
+        const response = await axios.get(`/api/care-worker/${router.query.ID}`);
+        setCareWorker(response.data);
+        setIsLoadingCareWorker(false);
+      } catch (e) {
+        alert('실퍃 ㅎ');
+      }
+    })();
+  }, []);
+
   return (
     <>
       <S.CareGiverDetail>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <S.StyledLink href="0/edit">
+            <S.StyledLink href={`${router.query.ID}/edit`}>
               <S.EditButton>세부정보 수정</S.EditButton>
             </S.StyledLink>
             <S.Table>
@@ -17,23 +42,23 @@ export default function CareGiveDetail() {
                 <tr>
                   <td rowSpan={3} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="infovalue">김요양</td>
+                  <td className="infovalue">{careWorker.name}</td>
                   <th>나이</th>
-                  <td className="infovalue">55세</td>
+                  <td className="infovalue">{careWorker.age}세</td>
                 </tr>
                 <tr>
                   <th>성별</th>
-                  <td className="infovalue">여자</td>
+                  <td className="infovalue">{careWorker.gender}</td>
                   <th>연락처</th>
-                  <td className="infovalue">010-0000-0000</td>
+                  <td className="infovalue">{careWorker.phoneNumber}</td>
                 </tr>
                 <tr>
                   <th>지역</th>
-                  <td colSpan={3}>서울특별시 양천구 목동남로</td>
+                  <td colSpan={3}>{careWorker.address}</td>
                 </tr>
               </tbody>
             </S.Table>
@@ -43,7 +68,7 @@ export default function CareGiveDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td className="memo">센터가 작성</td>
+                  <td className="memo">{careWorker.description}</td>
                 </tr>
               </tbody>
             </S.Table>
@@ -52,11 +77,27 @@ export default function CareGiveDetail() {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
-                  <td className="area">서울특별시 양천구 목2동</td>
-                  <td className="area">서울특별시 양천구 목2동</td>
-                  <td className="area right">서울특별시 양천구 목2동</td>
-                </tr>
+                {careWorker.careWorkerAreas
+                  ? chunk(careWorker.careWorkerAreas, 3).map((a, key) => (
+                      <tr key={`a-${key}`}>
+                        {a[0] && (
+                          <td className="area">
+                            {a[0].city} {a[0].gu} {a[0].dong}
+                          </td>
+                        )}
+                        {a[1] && (
+                          <td className="area">
+                            {a[1].city} {a[1].gu} {a[1].dong}
+                          </td>
+                        )}
+                        {a[2] && (
+                          <td className="area right">
+                            {a[2].city} {a[2].gu} {a[2].dong}
+                          </td>
+                        )}
+                      </tr>
+                    ))
+                  : null}
               </tbody>
             </S.Table>
           </S.Section>
@@ -66,12 +107,14 @@ export default function CareGiveDetail() {
               <tbody>
                 <tr>
                   <td className="personality">
-                    <S.PersonalityInfoList>
-                      <S.PersonalityInfoItem>석션</S.PersonalityInfoItem>
-                      <S.PersonalityInfoItem>입주</S.PersonalityInfoItem>
-                      <S.PersonalityInfoItem>휠체어</S.PersonalityInfoItem>
-                      <S.PersonalityInfoItem>기저귀</S.PersonalityInfoItem>
-                    </S.PersonalityInfoList>
+                    <S.AvailabilityInfoList>
+                      {careWorker.careWorkerMetas &&
+                        careWorker.careWorkerMetas.map((meta, i) => (
+                          <S.AvailabilityInfoItem key={`${meta}-${i}`}>
+                            {meta.key}
+                          </S.AvailabilityInfoItem>
+                        ))}
+                    </S.AvailabilityInfoList>
                   </td>
                 </tr>
               </tbody>
@@ -134,16 +177,15 @@ export default function CareGiveDetail() {
                   <th className="career">수급자</th>
                   <th className="career right">기간</th>
                 </tr>
-                <tr>
-                  <td className="career long">성북구 제빵왕 재가센터</td>
-                  <td className="career">윤시윤</td>
-                  <td className="career right">2015.07~</td>
-                </tr>
-                <tr>
-                  <td className="career long">동대문구 의형제 재가센터</td>
-                  <td className="career">강동원</td>
-                  <td className="career right">2013.07~2014.11</td>
-                </tr>
+                {careWorker.careWorkerCareers
+                  ? careWorker.careWorkerCareers.map((career, idx) => (
+                      <tr key={`career-${idx}`}>
+                        <td className="career long">{career.workplace}</td>
+                        <td className="career">{career.recipient}</td>
+                        <td className="career right">{career.duration}</td>
+                      </tr>
+                    ))
+                  : null}
               </tbody>
             </S.Table>
           </S.Section>
