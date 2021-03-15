@@ -5,7 +5,7 @@ import * as S from './styles';
 import { dayList, careInfoList, seoulGuDong } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
-import CareGiverSchedule from '../../model/care-giver-schedule';
+import CareWorkerSchedule from '../../model/care-worker-schedule';
 import BusinessArea from '../../model/business-area';
 import Career from './model/career';
 
@@ -339,7 +339,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               onClick={() => {
                                 setCareWorkerSchedules([
                                   ...careWorkerSchedules,
-                                  new CareGiverSchedule(),
+                                  new CareWorkerSchedule(),
                                 ]);
                               }}
                             >
@@ -381,14 +381,14 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career long">
                         <S.TextInput
                           type="text"
-                          value={career.place}
+                          value={career.workplace}
                           onChange={(e) => {
                             setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
                                 if (i !== careerIndex) return c;
                                 return {
                                   ...careers[i],
-                                  place: e.target.value,
+                                  workplace: e.target.value,
                                 };
                               })
                             );
@@ -399,14 +399,14 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career">
                         <S.TextInput
                           type="text"
-                          value={career.customer}
+                          value={career.recipient}
                           onChange={(e) => {
                             setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
                                 if (i !== careerIndex) return c;
                                 return {
                                   ...careers[i],
-                                  customer: e.target.value,
+                                  recipient: e.target.value,
                                 };
                               })
                             );

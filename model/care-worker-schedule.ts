@@ -1,6 +1,6 @@
 import { DayType } from '../common/types/date';
 
-export default class CareGiverSchedule {
+export default class CareWorkerSchedule {
   private days: DayType[];
   public startHour: number;
   public startMinute: number;

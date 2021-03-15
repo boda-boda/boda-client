@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DayType } from '../../common/types/date';
 import BusinessArea from '../../model/business-area';
-import CareGiverSchedule from '../../model/care-giver-schedule';
+import CareWorkerSchedule from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateCareGiverRequest from './model/create-care-giver-request';
 import Career from './model/career';
@@ -10,7 +10,7 @@ import router, { useRouter } from 'next/router';
 export const useCareGiverUpsert = () => {
   const [careWorker, setCareWorker] = useState(new CreateCareGiverRequest());
   const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
-  const [careWorkerSchedules, setCareWorkerSchedules] = useState([new CareGiverSchedule()]);
+  const [careWorkerSchedules, setCareWorkerSchedules] = useState([new CareWorkerSchedule()]);
   const [careWorkerCareers, setCareWorkerCareers] = useState([new Career()]);
   const [careWorkerAreas, setCareWorkerAreas] = useState([new BusinessArea()]);
 

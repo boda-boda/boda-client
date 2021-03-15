@@ -1,10 +1,10 @@
 export default class Career {
   public constructor() {
-    this.place = '';
-    this.customer = '';
+    this.workplace = '';
+    this.recipient = '';
     this.duration = '';
   }
-  public place: string;
-  public customer: string;
+  public workplace: string;
+  public recipient: string;
   public duration: string;
 }
