@@ -152,9 +152,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                       <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
                     <S.DropDown onChange={(e) => setGu(e.target.value)} defaultValue="">
-                      <option value="" disabled>
-                        구 선택
-                      </option>
+                      <option value="-1">전체</option>
                       {city === '-1'
                         ? null
                         : seoulGuDong.map((gudong, idx) => (
@@ -164,9 +162,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           ))}
                     </S.DropDown>
                     <S.DropDown onChange={(e) => setDong(e.target.value)} defaultValue="">
-                      <option value="" disabled>
-                        동 선택
-                      </option>
+                      <option value="-1">전체</option>
                       {gu === '-1'
                         ? null
                         : seoulGuDong
