@@ -1,7 +1,11 @@
 import { createContext, useReducer, useContext } from 'react';
 import { CareCenter } from '../model/care-center';
 
-export const CareCenterStateContext = createContext(null);
+export const CareCenterStateContext = createContext({
+  isValidating: true,
+  isLoggedIn: false,
+} as any);
+
 export const CareCenterDispatchContext = createContext(null);
 
 const reducer = (state: any, action: any) => {

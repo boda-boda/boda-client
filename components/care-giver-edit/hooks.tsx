@@ -27,7 +27,14 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const memoRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (isNew || !router.query.ID || careCenter.isValidating || !careCenter.isLoggedIn) return;
+    if (
+      isNew ||
+      !router.query.ID ||
+      !careCenter ||
+      careCenter.isValidating ||
+      !careCenter.isLoggedIn
+    )
+      return;
 
     (async () => {
       try {
@@ -177,6 +184,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   };
 
   const handleClickCreateButton = async () => {
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+
     const avilableSchedule = careWorkerSchedules.filter((a) => !a.isEmpty());
     if (avilableSchedule.some((a) => !a.isValidSchedule())) {
       alert(
@@ -188,7 +197,6 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
     try {
       await axios.post('/api/care-worker', {
-        id,
         careWorker,
         careWorkerCapabilities,
         careWorkerSchedules: avilableSchedule,
@@ -202,6 +210,37 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
+    router.push('/list');
+  };
+
+  const handleClickUpdateButton = async () => {
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+
+    const avilableSchedule = careWorkerSchedules.filter((a) => !a.isEmpty());
+    if (avilableSchedule.some((a) => !a.isValidSchedule())) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
+      );
+      return;
+    }
+    setIsRequesting(true);
+
+    try {
+      await axios.put('/api/care-worker', {
+        id,
+        careWorker,
+        careWorkerCapabilities,
+        careWorkerSchedules: avilableSchedule,
+        careWorkerCareers,
+        careWorkerAreas,
+      });
+    } catch (e) {
+      alert('요양보호사 수정에 실패하였습니다.');
+      setIsRequesting(false);
+      return;
+    }
+
+    alert('요양보호사 수정에 성공하였습니다.');
     router.push('/list');
   };
 
@@ -224,6 +263,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     handleUpdateGender,
     handleUpdateAge,
     handleUpdateCareGiver,
+    handleClickUpdateButton,
     handleClickCreateButton,
     isRequesting,
   };

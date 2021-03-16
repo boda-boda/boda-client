@@ -39,6 +39,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleUpdateGender,
     handleUpdateAge,
     handleUpdateCareGiver,
+    handleClickUpdateButton,
     handleClickCreateButton,
   } = useCareGiverUpsert(isNew);
 
@@ -475,7 +476,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 작성 완료
               </S.FinishButton>
             ) : (
-              <S.FinishButton disabled={isRequesting}>수정 완료</S.FinishButton>
+              <S.FinishButton disabled={isRequesting} onClick={handleClickUpdateButton}>
+                수정 완료
+              </S.FinishButton>
             )}
           </S.FinishButtonContainer>
         </S.InnerContent>
