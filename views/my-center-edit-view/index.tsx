@@ -77,7 +77,7 @@ export default function MyCenterView() {
         },
       });
 
-      const response = await axiosInstance.post('/api/care-worker/profile', formData);
+      const response = await axiosInstance.post('/care-worker/profile', formData);
       setCenterUpdateRequest({
         ...centerUpdateRequest,
         profile: response.data.Location,
@@ -98,7 +98,7 @@ export default function MyCenterView() {
         },
       });
 
-      const response = await axiosInstance.post('/api/care-center/image', formData);
+      const response = await axiosInstance.post('/care-center/image', formData);
       const careCenterMeta: CareCenterMeta = response.data;
       setCenterMetaImages([...centerMetaImages, careCenterMeta]);
       setImageIndex(centerMetaImages.length);
@@ -130,7 +130,7 @@ export default function MyCenterView() {
     if (!window.confirm('수정하시겠습니까?')) return;
 
     try {
-      await axios.put('/api/care-center/', centerUpdateRequest);
+      await axios.put('/care-center/', centerUpdateRequest);
       alert('수정이 완료되었습니다.');
       window.location.replace('/mycenter');
     } catch (e) {

@@ -20,7 +20,7 @@ export default function CareGiveDetail() {
 
     (async () => {
       try {
-        const response = await axios.get(`/api/care-worker/${router.query.ID}`);
+        const response = await axios.get(`/care-worker/${router.query.ID}`);
         setCareWorker(response.data);
       } catch (e) {
         router.push('/list');

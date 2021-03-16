@@ -14,7 +14,7 @@ export const useSoftRefresh = () => {
       if (careCenter.expiresIn > new Date()) return; // 현재 토큰이 활성화되어 있으면 요청을 할 이유가 없음
 
       try {
-        const response = await axios.post('/api/auth/refresh');
+        const response = await axios.post('/auth/refresh');
         const statusCode = response.data.statusCode;
 
         // accessToken을 다시 요청할 때 실패시 slient하게 하기 위해 오류 던지지 않고 콘솔로 대체

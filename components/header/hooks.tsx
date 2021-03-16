@@ -27,7 +27,7 @@ export function useHeader() {
 
   const handleLogout = useCallback(async () => {
     try {
-      await axios.post('/api/auth/logout');
+      await axios.post('/auth/logout');
     } catch (e) {
       alert('로그아웃에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
       return;
@@ -62,7 +62,7 @@ export function useHeader() {
     }
 
     try {
-      const loginResponse = await axios.post(`/api/auth/login`, {
+      const loginResponse = await axios.post(`/auth/login`, {
         name,
         password,
       });
@@ -141,7 +141,7 @@ export function useConsultRequest() {
 
   const handleConsultRequest = useCallback(async () => {
     try {
-      await axios.post('/api/consult', {
+      await axios.post('/consult', {
         contact,
       });
     } catch (e) {
