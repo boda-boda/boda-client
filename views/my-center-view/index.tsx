@@ -72,7 +72,7 @@ export default function MyCenterView() {
             <S.Section>
               <S.SectionTitle>센터 이미지</S.SectionTitle>
               <S.CenterImageContainer>
-                <S.CenterImage src={careCenter?.careCenterMetas[imageIndex].value} />
+                <S.CenterImage src={careCenter?.careCenterMetas[imageIndex]?.value} />
                 <S.ButtonContainer>
                   <S.ButtonDiv
                     onClick={() =>
