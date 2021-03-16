@@ -17,6 +17,7 @@ export default function MyCenterView() {
     'https://icatcare.org/app/uploads/2018/06/Layer-1704-1200x630.jpg',
     'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/kitten-440379.jpg',
   ];
+
   const [imageIndex, setImageIndex] = useState(0);
 
   return (
@@ -71,7 +72,7 @@ export default function MyCenterView() {
             <S.Section>
               <S.SectionTitle>센터 이미지</S.SectionTitle>
               <S.CenterImageContainer>
-                <S.CenterImage src={centerImage[imageIndex]} />
+                <S.CenterImage src={careCenter?.careCenterMetas[imageIndex].value} />
                 <S.ButtonContainer>
                   <S.ButtonDiv
                     onClick={() =>

@@ -8,6 +8,7 @@ import Career from './model/career';
 import router, { useRouter } from 'next/router';
 
 export const useCareGiverUpsert = () => {
+  const [isRequesting, setIsRequesting] = useState(false);
   const [careWorker, setCareWorker] = useState(new CreateCareGiverRequest());
   const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
   const [careWorkerSchedules, setCareWorkerSchedules] = useState([new CareWorkerSchedule()]);
@@ -112,6 +113,7 @@ export const useCareGiverUpsert = () => {
       );
       return;
     }
+    setIsRequesting(true);
 
     try {
       await axios.post('/api/care-worker', {
@@ -123,6 +125,8 @@ export const useCareGiverUpsert = () => {
       });
     } catch (e) {
       alert('요양보호사 추가에 실패하였습니다.');
+      setIsRequesting(false);
+      return;
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
@@ -148,5 +152,6 @@ export const useCareGiverUpsert = () => {
     handleUpdateAge,
     handleUpdateCareGiver,
     handleClickCreateButton,
+    isRequesting,
   };
 };
