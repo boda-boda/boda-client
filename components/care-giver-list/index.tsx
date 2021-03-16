@@ -24,6 +24,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const careCenter = useCareCenter();
 
   const [careWorkers, setCareWorkers] = useState([] as CareWorker[]);
+  const [filteredCareWorkers, setFilteredCareWorkers] = useState([] as CareWorker[]);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -32,6 +33,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       try {
         const response = await axios.get('/care-worker');
         setCareWorkers(response.data);
+        setFilteredCareWorkers(response.data);
       } catch (e) {}
     })();
   }, [careCenter]);
@@ -259,7 +261,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
             <S.CardList>
-              {careWorkers.map((worker, idx) => (
+              {filteredCareWorkers.map((worker, idx) => (
                 <Link
                   key={`worker-${idx}`}
                   href={{
