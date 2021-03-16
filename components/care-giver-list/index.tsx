@@ -30,7 +30,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
     (async () => {
       try {
-        const response = await axios.get('/api/care-worker');
+        const response = await axios.get('/care-worker');
         setCareWorkers(response.data);
       } catch (e) {}
     })();

@@ -38,7 +38,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
     (async () => {
       try {
-        const response = await axios.get(`/api/care-worker/${router.query.ID}`);
+        const response = await axios.get(`/care-worker/${router.query.ID}`);
         const c = response.data as CareWorker;
 
         setId(c.id);
@@ -156,7 +156,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         },
       });
 
-      const response = await axiosInstance.post('/api/care-worker/profile', formData);
+      const response = await axiosInstance.post('/care-worker/profile', formData);
       const url = response.data.Location;
       setCareWorker({
         ...careWorker,
@@ -196,7 +196,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setIsRequesting(true);
 
     try {
-      await axios.post('/api/care-worker', {
+      await axios.post('/care-worker', {
         careWorker,
         careWorkerCapabilities,
         careWorkerSchedules: avilableSchedule,
@@ -226,7 +226,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setIsRequesting(true);
 
     try {
-      await axios.put('/api/care-worker', {
+      await axios.put('/care-worker', {
         id,
         careWorker,
         careWorkerCapabilities,
