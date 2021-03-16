@@ -66,9 +66,72 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const handleReset = () => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
+    setCity('-1');
+    setGu('-1');
+    setDong('-1');
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([]);
     setFilteredCareWorkers(careWorkers);
+  };
+
+  const filterArea = (cws: CareWorker[]) => {
+    const result = cws.filter(function (cw: CareWorker) {
+      let flag = false;
+      cw.careWorkerAreas.map((area) => {
+        if (
+          (area.city === city || city === '-1') &&
+          (area.gu === gu || gu === '-1') &&
+          (area.dong === dong || dong === '-1')
+        )
+          flag = true;
+      });
+      return flag;
+    });
+    console.log(
+      '지역',
+      result.map((res) => res.name)
+    );
+    return result;
+  };
+
+  const filterSchedule = (cws: CareWorker[]) => {
+    const result = cws.filter(function (cw: CareWorker) {
+      let flag = true;
+      cw.careWorkerSchedules.map((singleSchedule) => {
+        //여기 아직 미구현
+      });
+      return flag;
+    });
+    console.log(
+      '스케줄',
+      result.map((res) => res.name)
+    );
+    return result;
+  };
+
+  const filterCareInfo = (cws: CareWorker[]) => {
+    const result = cws.filter(function (cw: CareWorker) {
+      let flag = true;
+      selectedCareInfo.map((careInfo) => {
+        if (
+          !cw.careWorkerMetas
+            .filter((meta) => meta.type === 'Capability')
+            .map((meta) => meta.key)
+            .includes(careInfo)
+        )
+          flag = false;
+      });
+      return flag;
+    });
+    console.log(
+      '조건',
+      result.map((res) => res.name)
+    );
+    return result;
+  };
+
+  const handleSearch = () => {
+    setFilteredCareWorkers(filterCareInfo(filterArea(filterSchedule(careWorkers))));
   };
 
   return (
@@ -100,7 +163,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             </option>
                           ))}
                     </S.DropDown>
-                    <S.DropDown defaultValue="">
+                    <S.DropDown onChange={(e) => setDong(e.target.value)} defaultValue="">
                       <option value="" disabled>
                         동 선택
                       </option>
@@ -257,7 +320,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
               <S.FilterButton onClick={handleReset} isReset>
                 초기화
               </S.FilterButton>
-              <S.FilterButton onClick={handleReset}>검색</S.FilterButton>
+              <S.FilterButton onClick={handleSearch}>검색</S.FilterButton>
             </S.ResetButtonContainer>
           </S.InnerContent>
         </S.Section>
