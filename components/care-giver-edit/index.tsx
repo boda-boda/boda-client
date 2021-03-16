@@ -346,7 +346,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               onClick={() => {
                                 setCareWorkerSchedules([
                                   ...careWorkerSchedules,
-                                  new CareWorkerSchedule(),
+                                  CareWorkerSchedule.noArgsConstructor(),
                                 ]);
                               }}
                             >

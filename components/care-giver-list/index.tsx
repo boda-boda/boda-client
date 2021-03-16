@@ -38,7 +38,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
   const [rerender, setRerender] = useState(false);
 
-  const [schedules, setSchedules] = useState([new CareWorkerSchedule()]);
+  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
 
   const [gu, setGu] = useState('-1');
@@ -63,7 +63,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const handleReset = () => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
-    setSchedules([new CareWorkerSchedule()]);
+    setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([]);
   };
 
@@ -192,7 +192,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           {schedules.length - 1 === scheduleIndex ? (
                             <S.AddButton
                               onClick={() => {
-                                setSchedules([...schedules, new CareWorkerSchedule()]);
+                                setSchedules([
+                                  ...schedules,
+                                  CareWorkerSchedule.noArgsConstructor(),
+                                ]);
                               }}
                             >
                               <PlusIconSVG />
