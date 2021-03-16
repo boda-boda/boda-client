@@ -1,8 +1,16 @@
 export default class BusinessArea {
-  public constructor() {
-    this.city = null;
-    this.gu = null;
-    this.dong = null;
+  public static noArgsConstructor() {
+    return new BusinessArea(null, null, null);
+  }
+
+  public static allArgsConstructor(city: string, gu: string, dong: string) {
+    return new BusinessArea(city, gu, dong);
+  }
+
+  public constructor(city: any, gu: any, dong: any) {
+    this.city = city;
+    this.gu = gu;
+    this.dong = dong;
   }
 
   public city: string;

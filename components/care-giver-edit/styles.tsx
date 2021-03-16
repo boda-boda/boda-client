@@ -386,7 +386,7 @@ export const FinishButtonContainer = styled.div`
   ${FLEX_ROW_CENTER_CENTER};
 `;
 
-export const FinishButton = styled.div`
+export const FinishButton = styled.button`
   outline: none;
   border: none;
   width: 306px;

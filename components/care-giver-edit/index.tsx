@@ -12,6 +12,7 @@ import Career from './model/career';
 interface CareGiverEditProps {
   isNew: boolean;
 }
+
 const slicedCareInfoList = [];
 for (let i = 0; i < careInfoList.length; i += 5)
   slicedCareInfoList.push(careInfoList.slice(i, i + 5));
@@ -19,6 +20,7 @@ for (let i = 0; i < careInfoList.length; i += 5)
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
   const {
+    isRequesting,
     careWorker,
     memo,
     careWorkerCareers,
@@ -26,6 +28,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setMemo,
     setCareWorkerCareers,
     careWorkerSchedules,
+    careWorkerCapabilities,
     toggleCapability,
     setCareWorkerSchedules,
     toggleDays,
@@ -37,7 +40,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleUpdateAge,
     handleUpdateCareGiver,
     handleClickCreateButton,
-  } = useCareGiverUpsert();
+  } = useCareGiverUpsert(isNew);
 
   return (
     <>
@@ -187,7 +190,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       {careWorkerAreas.length - 1 === businessAreaIndex ? (
                         <S.AddButton
                           onClick={() => {
-                            setCareWorkerAreas([...careWorkerAreas, new BusinessArea()]);
+                            setCareWorkerAreas([
+                              ...careWorkerAreas,
+                              BusinessArea.noArgsConstructor(),
+                            ]);
                           }}
                         >
                           <PlusIconSVG />
@@ -241,6 +247,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             {careInfo}
                             <S.CheckBox
                               type="checkbox"
+                              checked={careWorkerCapabilities.includes(careInfo)}
                               onChange={() => toggleCapability(careInfo)}
                             />
                           </td>
@@ -436,7 +443,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         {careWorkerCareers.length - 1 === careerIndex ? (
                           <S.AddButton
                             onClick={() => {
-                              setCareWorkerCareers([...careWorkerCareers, new Career()]);
+                              setCareWorkerCareers([
+                                ...careWorkerCareers,
+                                Career.noArgsConstructor(),
+                              ]);
                             }}
                           >
                             <PlusIconSVG />
@@ -461,9 +471,11 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
           </S.Section>
           <S.FinishButtonContainer>
             {isNew ? (
-              <S.FinishButton onClick={handleClickCreateButton}>작성 완료</S.FinishButton>
+              <S.FinishButton disabled={isRequesting} onClick={handleClickCreateButton}>
+                작성 완료
+              </S.FinishButton>
             ) : (
-              <S.FinishButton>수정 완료</S.FinishButton>
+              <S.FinishButton disabled={isRequesting}>수정 완료</S.FinishButton>
             )}
           </S.FinishButtonContainer>
         </S.InnerContent>

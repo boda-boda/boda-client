@@ -6,12 +6,11 @@ import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
 import { dayList } from '../../constant';
 import { DayType } from '../../common/types/date';
+import Link from 'next/link';
 
 export default function CareGiveDetail() {
   const router = useRouter();
-  const [isLoadingCareWorker, setIsLoadingCareWorker] = useState(true);
   const [careWorker, setCareWorker] = useState(new CareWorker());
-  console.log(careWorker.careWorkerSchedules);
 
   useEffect(() => {
     if (!router.query.ID) {
@@ -23,9 +22,8 @@ export default function CareGiveDetail() {
       try {
         const response = await axios.get(`/api/care-worker/${router.query.ID}`);
         setCareWorker(response.data);
-        setIsLoadingCareWorker(false);
       } catch (e) {
-        alert('실퍃 ㅎ');
+        router.push('/list');
       }
     })();
   }, []);
@@ -36,9 +34,11 @@ export default function CareGiveDetail() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <S.StyledLink href={`${router.query.ID}/edit`}>
-              <S.EditButton>세부정보 수정</S.EditButton>
-            </S.StyledLink>
+            <Link href={`${router.query.ID}/edit`} passHref>
+              <S.StyledLink>
+                <S.EditButton>세부정보 수정</S.EditButton>
+              </S.StyledLink>
+            </Link>
             <S.Table>
               <tbody>
                 <tr>

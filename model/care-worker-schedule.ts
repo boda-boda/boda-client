@@ -1,18 +1,31 @@
 import { DayType } from '../common/types/date';
 
 export default class CareWorkerSchedule {
-  public days: DayType[];
+  public static noArgsConstructor() {
+    return new CareWorkerSchedule(0, 0, 0, 0);
+  }
+
+  public static allArgsConstructor(
+    startHour: number,
+    startMinute: number,
+    endHour: number,
+    endMinute: number
+  ) {
+    return new CareWorkerSchedule(startHour, startMinute, endHour, endMinute);
+  }
+
+  public days: string[];
   public startHour: number;
   public startMinute: number;
   public endHour: number;
   public endMinute: number;
 
-  public constructor() {
+  public constructor(startHour: any, startMinute: any, endHour: any, endMinute: any) {
     this.days = [];
-    this.startHour = 0;
-    this.startMinute = 0;
-    this.endHour = 0;
-    this.endMinute = 0;
+    this.startHour = startHour;
+    this.startMinute = startMinute;
+    this.endHour = endHour;
+    this.endMinute = endMinute;
   }
 
   public isEmpty() {
