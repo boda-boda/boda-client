@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
@@ -63,7 +63,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
     setCity('-1');
@@ -72,21 +72,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([]);
     setFilteredCareWorkers(careWorkers);
-  };
+  }, [careWorkers]);
 
   const filterArea = (cws: CareWorker[]) => {
-    const result = cws.filter(function (cw: CareWorker) {
-      let flag = false;
-      cw.careWorkerAreas.map((area) => {
-        if (
+    const result = cws.filter((cw: CareWorker) =>
+      cw.careWorkerAreas.some(
+        (area) =>
           (area.city === city || city === '-1') &&
           (area.gu === gu || gu === '-1') &&
           (area.dong === dong || dong === '-1')
-        )
-          flag = true;
-      });
-      return flag;
-    });
+      )
+    );
+
     console.log(
       '지역',
       result.map((res) => res.name)
@@ -95,13 +92,12 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const filterSchedule = (cws: CareWorker[]) => {
-    const result = cws.filter(function (cw: CareWorker) {
-      let flag = true;
-      cw.careWorkerSchedules.map((singleSchedule) => {
+    const result = cws.filter((cw: CareWorker) =>
+      cw.careWorkerSchedules.every((singleSchedule) => {
         //여기 아직 미구현
-      });
-      return flag;
-    });
+      })
+    );
+
     console.log(
       '스케줄',
       result.map((res) => res.name)
@@ -110,19 +106,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const filterCareInfo = (cws: CareWorker[]) => {
-    const result = cws.filter(function (cw: CareWorker) {
-      let flag = true;
-      selectedCareInfo.map((careInfo) => {
-        if (
-          !cw.careWorkerMetas
-            .filter((meta) => meta.type === 'Capability')
-            .map((meta) => meta.key)
-            .includes(careInfo)
-        )
-          flag = false;
-      });
-      return flag;
-    });
+    const result = cws.filter((cw: CareWorker) =>
+      selectedCareInfo.every((careInfo) =>
+        cw.careWorkerMetas
+          .filter((meta) => meta.type === 'Capability')
+          .map((meta) => meta.key)
+          .includes(careInfo)
+      )
+    );
     console.log(
       '조건',
       result.map((res) => res.name)
