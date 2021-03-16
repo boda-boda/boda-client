@@ -7,8 +7,10 @@ import CreateCareGiverRequest from './model/create-care-giver-request';
 import Career from './model/career';
 import { useRouter } from 'next/router';
 import CareWorker from '../../model/care-worker';
+import { useCareCenter } from '../../context/care-center';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
+  const careCenter = useCareCenter();
   const router = useRouter();
   const [id, setId] = useState('');
 
@@ -25,10 +27,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const memoRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (isNew) return;
-    if (!router.query.ID) {
-      return;
-    }
+    if (isNew || !router.query.ID || careCenter.isValidating || !careCenter.isLoggedIn) return;
 
     (async () => {
       try {
@@ -90,7 +89,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         router.push('/');
       }
     })();
-  }, [router]);
+  }, [router, careCenter]);
 
   const handleUpdateCareGiver = useCallback(
     (key: keyof CreateCareGiverRequest) => (e: any) => {
