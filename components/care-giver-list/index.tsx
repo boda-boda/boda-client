@@ -43,6 +43,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
 
+  const [city, setCity] = useState('-1');
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
 
@@ -67,6 +68,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([]);
+    setFilteredCareWorkers(careWorkers);
   };
 
   return (
@@ -80,21 +82,23 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 <tr>
                   <th>지역</th>
                   <td>
-                    <S.DropDown defaultValue="">
+                    <S.DropDown onChange={(e) => setCity(e.target.value)} defaultValue="">
                       <option value="" disabled hidden>
                         시/도 선택
                       </option>
                       <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
                     <S.DropDown onChange={(e) => setGu(e.target.value)} defaultValue="">
-                      <option value="" disabled hidden>
+                      <option value="" disabled>
                         구 선택
                       </option>
-                      {seoulGuDong.map((gudong, idx) => (
-                        <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
-                          {gudong.gu}
-                        </option>
-                      ))}
+                      {city === '-1'
+                        ? null
+                        : seoulGuDong.map((gudong, idx) => (
+                            <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                              {gudong.gu}
+                            </option>
+                          ))}
                     </S.DropDown>
                     <S.DropDown defaultValue="">
                       <option value="" disabled>

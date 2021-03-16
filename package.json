@@ -26,6 +26,5 @@
     "babel-plugin-styled-components": "^1.12.0",
     "typescript": "^4.1.5"
   },
-  "license": "MIT",
-  "proxy": "http://localhost:4000"
+  "license": "MIT"
 }

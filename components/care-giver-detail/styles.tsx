@@ -168,9 +168,9 @@ export const TimeContainer = styled.div<TimeContainerProps>`
   position: absolute;
   top: calc(40px * (${(props) => props.startTime - 9} + 1));
   width: 12.5%;
-  height: calc(40px * (${(props) => props.endTime - props.startTime + 1}));
+  height: calc(40px * (${(props) => props.endTime - props.startTime}));
   left: calc(12.5% * (${(props) => props.day} + 1) + 2px);
-  padding: 6px;
+  padding: 0 6px;
 `;
 
 export const TimeItem = styled.div`
