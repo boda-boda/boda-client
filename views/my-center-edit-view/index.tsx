@@ -117,7 +117,7 @@ export default function MyCenterView() {
     const id = centerMetaImages[imageIndex]?.id;
 
     try {
-      await axios.delete(`api/care-center/image/${id}`);
+      await axios.delete(`care-center/image/${id}`);
       const newMetas = centerMetaImages.filter((c) => c.id !== id);
       setCenterMetaImages(newMetas);
       setImageIndex(imageIndex > 0 ? imageIndex - 1 : 0);
