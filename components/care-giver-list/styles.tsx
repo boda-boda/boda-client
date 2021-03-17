@@ -4,6 +4,7 @@ import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
+  FLEX_ROW_CENTER_END,
   FLEX_ROW_END_CENTER,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
@@ -303,4 +304,30 @@ export const InfoItemList = styled.div`
 export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
+`;
+
+export const NameFilterList = styled.div`
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  border-bottom: 5px solid ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_END};
+`;
+
+interface NameFilterItemProps {
+  isClicked: boolean;
+  isLeft?: boolean;
+}
+
+export const NameFilterItem = styled.div<NameFilterItemProps>`
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  border-bottom: none;
+  height: ${(props) => (props.isClicked ? '40px' : '35px')};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
+  color: ${(props) => (props.isClicked ? 'white' : THEME.GRAY_FONT)};
+  flex-grow: 1;
+  transition: 0.2s ease;
+  border-radius: 10px 10px 0 0;
+  ${FLEX_ROW_CENTER_CENTER};
 `;

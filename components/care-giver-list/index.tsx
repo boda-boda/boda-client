@@ -5,7 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList, seoulGuDong } from '../../constant';
+import { dayList, careInfoList, seoulGuDong, nameList, nameAsciiList } from '../../constant';
 import CareWorkerSchedule from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
 import axios from 'axios';
@@ -42,10 +42,15 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedNameFilter, setSelectedNameFilter] = useState(-1);
 
   const [city, setCity] = useState('-1');
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
+
+  useEffect(() => {
+    handleSearch();
+  }, [selectedNameFilter]);
 
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
@@ -121,8 +126,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     return result;
   };
 
+  const filterName = (cws: CareWorker[]) => {
+    if (selectedNameFilter === -1) return cws;
+    const result = cws.filter(
+      (cw: CareWorker) =>
+        cw.name[0].charCodeAt(0) >= nameAsciiList[selectedNameFilter][0].charCodeAt(0) &&
+        cw.name[0].charCodeAt(0) <= nameAsciiList[selectedNameFilter][1].charCodeAt(0)
+    );
+    return result;
+  };
+
   const handleSearch = () => {
-    setFilteredCareWorkers(filterSchedule(filterCareInfo(filterArea(careWorkers))));
+    setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
   };
 
   return (
@@ -315,6 +330,28 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
         <S.Section isBackgroundColored={true}>
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
+            <S.NameFilterList>
+              <S.NameFilterItem
+                isClicked={selectedNameFilter === -1}
+                onClick={() => {
+                  setSelectedNameFilter(-1);
+                }}
+                isLeft
+              >
+                전체
+              </S.NameFilterItem>
+              {nameList.map((name, nameIndex) => (
+                <S.NameFilterItem
+                  key={`name-${nameIndex}`}
+                  isClicked={selectedNameFilter === nameIndex}
+                  onClick={() => {
+                    setSelectedNameFilter(nameIndex);
+                  }}
+                >
+                  {name}
+                </S.NameFilterItem>
+              ))}
+            </S.NameFilterList>
             <S.CardList>
               {filteredCareWorkers.map((worker, idx) => (
                 <Link
