@@ -75,25 +75,36 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   }, [careWorkers]);
 
   const filterArea = (cws: CareWorker[]) => {
-    const result = cws.filter((cw: CareWorker) =>
-      cw.careWorkerAreas.some(
-        (area) =>
-          (area.city === city || city === '-1') &&
-          (area.gu === gu || gu === '-1') &&
-          (area.dong === dong || dong === '-1')
-      )
+    const result = cws.filter(
+      (cw: CareWorker) =>
+        cw.careWorkerAreas.length === 0 ||
+        cw.careWorkerAreas.some(
+          (area) =>
+            (area.city === city || city === '-1') &&
+            (area.gu === gu || gu === '-1') &&
+            (area.dong === dong || dong === '-1')
+        )
     );
-
     return result;
   };
 
   const filterSchedule = (cws: CareWorker[]) => {
     const result = cws.filter((cw: CareWorker) =>
-      cw.careWorkerSchedules.every((singleSchedule) => {
-        //여기 아직 미구현
-      })
+      schedules.every((filterSchedule) =>
+        cw.careWorkerSchedules.every((singleSchedule) =>
+          filterSchedule.days.every(
+            (day) =>
+              singleSchedule.day !== day ||
+              parseInt(singleSchedule.startAt.split(':')[0], 10) * 60 +
+                parseInt(singleSchedule.startAt.split(':')[1], 10) >
+                filterSchedule.endHour * 60 + filterSchedule.endMinute ||
+              parseInt(singleSchedule.endAt.split(':')[0], 10) * 60 +
+                parseInt(singleSchedule.endAt.split(':')[1], 10) <
+                filterSchedule.startHour * 60 + filterSchedule.startMinute
+          )
+        )
+      )
     );
-
     return result;
   };
 
@@ -110,7 +121,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const handleSearch = () => {
-    setFilteredCareWorkers(filterCareInfo(filterArea(filterSchedule(careWorkers))));
+    setFilteredCareWorkers(filterSchedule(filterCareInfo(filterArea(careWorkers))));
   };
 
   return (
