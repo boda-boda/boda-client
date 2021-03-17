@@ -4,7 +4,6 @@ import {
   FLEX_COLUMN_CENTER_START,
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
-  FLEX_ROW_CENTER_END,
   FLEX_ROW_CENTER_START,
   THEME,
 } from '../../constant';
@@ -109,6 +108,8 @@ export const CenterImageContainer = styled.div`
   position: relative;
   width: 100%;
   height: 640px;
+  ${FLEX_ROW_CENTER_CENTER};
+  font-size: 24px;
 `;
 
 export const CenterImage = styled.div<ImageProps>`
