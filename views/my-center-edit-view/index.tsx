@@ -12,6 +12,7 @@ import { useCareCenter } from '../../context/care-center';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { CareCenterMeta } from '../../model/care-center';
+import Head from 'next/head';
 
 export default function MyCenterView() {
   const router = useRouter();
@@ -139,158 +140,168 @@ export default function MyCenterView() {
   };
 
   return (
-    <Layout>
-      <>
-        <Banner
-          bannerStyle={BannerStyleType.SECTION}
-          sectionIndex={2}
-          title="나의 센터 정보"
-          subtitle="우리 센터 정보를 등록할 수 있습니다."
-        />
-        <Category list={['홈', '나의 센터 정보']} />
-        <S.InnerContent>
-          <S.MyCenterPage>
-            <S.Section>
-              <S.SectionTitle>센터 정보</S.SectionTitle>
-              <S.Table>
-                <tbody>
-                  <tr>
-                    <td rowSpan={5} className="profile">
-                      <S.ProfileImageContainer>
-                        <label htmlFor="profile">
-                          <S.ProfileImage src={centerUpdateRequest.profile}>
-                            <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
-                              <ImageDefaultSVG />
-                            </S.ImageIconContainer>
-                          </S.ProfileImage>
-                        </label>
-                        <input
-                          id="profile"
-                          type="file"
-                          accept="image/*"
-                          multiple={false}
-                          style={{ display: 'none' }}
-                          onChange={onChangeImage}
+    <>
+      <Head>
+        <title>돌봄: 나의 센터 정보 수정</title>
+      </Head>
+      <Layout>
+        <>
+          <Banner
+            bannerStyle={BannerStyleType.SECTION}
+            sectionIndex={2}
+            title="나의 센터 정보"
+            subtitle="우리 센터 정보를 등록할 수 있습니다."
+          />
+          <Category list={['홈', '나의 센터 정보']} />
+          <S.InnerContent>
+            <S.MyCenterPage>
+              <S.Section>
+                <S.SectionTitle>센터 정보</S.SectionTitle>
+                <S.Table>
+                  <tbody>
+                    <tr>
+                      <td rowSpan={5} className="profile">
+                        <S.ProfileImageContainer>
+                          <label htmlFor="profile">
+                            <S.ProfileImage src={centerUpdateRequest.profile}>
+                              <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
+                                <ImageDefaultSVG />
+                              </S.ImageIconContainer>
+                            </S.ProfileImage>
+                          </label>
+                          <input
+                            id="profile"
+                            type="file"
+                            accept="image/*"
+                            multiple={false}
+                            style={{ display: 'none' }}
+                            onChange={onChangeImage}
+                          />
+                        </S.ProfileImageContainer>
+                      </td>
+                      <th className="">이름</th>
+                      <td className="infovalue">
+                        <S.TextInput
+                          value={centerUpdateRequest.username}
+                          onChange={handleInputChange('username')}
+                          type="text"
                         />
-                      </S.ProfileImageContainer>
-                    </td>
-                    <th className="">이름</th>
-                    <td className="infovalue">
-                      <S.TextInput
-                        value={centerUpdateRequest.username}
-                        onChange={handleInputChange('username')}
-                        type="text"
-                      />
-                    </td>
-                    <th>전화</th>
-                    <td className="infovalue">
-                      <S.TextInput
-                        value={centerUpdateRequest.phoneNumber}
-                        onChange={handleInputChange('phoneNumber')}
-                        type="text"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>이메일</th>
-                    <td className="infovalue">
-                      <S.TextInput
-                        value={centerUpdateRequest.email}
-                        onChange={handleInputChange('email')}
-                        type="text"
-                      />
-                    </td>
-                    <th>홈페이지</th>
-                    <td className="infovalue">
-                      <S.TextInput
-                        value={centerUpdateRequest.homePage}
-                        onChange={handleInputChange('homePage')}
-                        type="text"
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th rowSpan={2}>위치</th>
-                    <td colSpan={3}>
-                      <S.TextInput
-                        type="text"
-                        value={centerUpdateRequest.zipCode}
-                        readOnly
-                        onClick={openAddressModal}
-                      />
-                      <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <S.TextInput type="text" value={centerUpdateRequest.address} long readOnly />
-                    </td>
-                    <td colSpan={2}>
-                      <S.TextInput
-                        type="text"
-                        value={centerUpdateRequest.detailAddress}
-                        readOnly={centerUpdateRequest.address === ''}
-                        long
-                        placeholder="상세주소 입력"
-                        onChange={handleInputChange('detailAddress')}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>센터 소개</th>
-                    <td colSpan={3}>
-                      <S.TextArea
-                        ref={memoRef}
-                        value={centerUpdateRequest.description}
-                        onChange={(e) => {
-                          handleInputChange('description')(e), setMemo(e.target.value);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </S.Table>
-            </S.Section>
-            <S.Section>
-              <label htmlFor="newImage">
-                <S.EditButton>이미지 추가</S.EditButton>
-              </label>
-              <input
-                id="newImage"
-                type="file"
-                accept="image/*"
-                multiple={false}
-                style={{ display: 'none' }}
-                onChange={handleUpdateNewMetaImage}
-              />
-              <S.EditButton2 onClick={handleDeleteCurrentMetaImage}>이미지 삭제</S.EditButton2>
-              <S.SectionTitle>센터 이미지</S.SectionTitle>
-              <S.CenterImageContainer>
-                <S.CenterImage src={centerMetaImages[imageIndex]?.value} />
-                <S.ButtonContainer>
-                  <S.ButtonDiv
-                    onClick={() =>
-                      setImageIndex(
-                        (imageIndex + centerMetaImages.length - 1) % centerMetaImages.length
-                      )
-                    }
-                  >
-                    <SlideLeftButtonSVG />
-                  </S.ButtonDiv>
-                  <S.ButtonDiv
-                    onClick={() => setImageIndex((imageIndex + 1) % centerMetaImages.length)}
-                  >
-                    <SlideRightButtonSVG />
-                  </S.ButtonDiv>
-                </S.ButtonContainer>
-              </S.CenterImageContainer>
-            </S.Section>
-          </S.MyCenterPage>
-          <S.FinishButtonContainer>
-            <S.FinishButton onClick={handleSubmit}>수정 완료</S.FinishButton>
-          </S.FinishButtonContainer>
-        </S.InnerContent>
-      </>
-    </Layout>
+                      </td>
+                      <th>전화</th>
+                      <td className="infovalue">
+                        <S.TextInput
+                          value={centerUpdateRequest.phoneNumber}
+                          onChange={handleInputChange('phoneNumber')}
+                          type="text"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>이메일</th>
+                      <td className="infovalue">
+                        <S.TextInput
+                          value={centerUpdateRequest.email}
+                          onChange={handleInputChange('email')}
+                          type="text"
+                        />
+                      </td>
+                      <th>홈페이지</th>
+                      <td className="infovalue">
+                        <S.TextInput
+                          value={centerUpdateRequest.homePage}
+                          onChange={handleInputChange('homePage')}
+                          type="text"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th rowSpan={2}>위치</th>
+                      <td colSpan={3}>
+                        <S.TextInput
+                          type="text"
+                          value={centerUpdateRequest.zipCode}
+                          readOnly
+                          onClick={openAddressModal}
+                        />
+                        <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <S.TextInput
+                          type="text"
+                          value={centerUpdateRequest.address}
+                          long
+                          readOnly
+                        />
+                      </td>
+                      <td colSpan={2}>
+                        <S.TextInput
+                          type="text"
+                          value={centerUpdateRequest.detailAddress}
+                          readOnly={centerUpdateRequest.address === ''}
+                          long
+                          placeholder="상세주소 입력"
+                          onChange={handleInputChange('detailAddress')}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>센터 소개</th>
+                      <td colSpan={3}>
+                        <S.TextArea
+                          ref={memoRef}
+                          value={centerUpdateRequest.description}
+                          onChange={(e) => {
+                            handleInputChange('description')(e), setMemo(e.target.value);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </S.Table>
+              </S.Section>
+              <S.Section>
+                <label htmlFor="newImage">
+                  <S.EditButton>이미지 추가</S.EditButton>
+                </label>
+                <input
+                  id="newImage"
+                  type="file"
+                  accept="image/*"
+                  multiple={false}
+                  style={{ display: 'none' }}
+                  onChange={handleUpdateNewMetaImage}
+                />
+                <S.EditButton2 onClick={handleDeleteCurrentMetaImage}>이미지 삭제</S.EditButton2>
+                <S.SectionTitle>센터 이미지</S.SectionTitle>
+                <S.CenterImageContainer>
+                  <S.CenterImage src={centerMetaImages[imageIndex]?.value} />
+                  <S.ButtonContainer>
+                    <S.ButtonDiv
+                      onClick={() =>
+                        setImageIndex(
+                          (imageIndex + centerMetaImages.length - 1) % centerMetaImages.length
+                        )
+                      }
+                    >
+                      <SlideLeftButtonSVG />
+                    </S.ButtonDiv>
+                    <S.ButtonDiv
+                      onClick={() => setImageIndex((imageIndex + 1) % centerMetaImages.length)}
+                    >
+                      <SlideRightButtonSVG />
+                    </S.ButtonDiv>
+                  </S.ButtonContainer>
+                </S.CenterImageContainer>
+              </S.Section>
+            </S.MyCenterPage>
+            <S.FinishButtonContainer>
+              <S.FinishButton onClick={handleSubmit}>수정 완료</S.FinishButton>
+            </S.FinishButtonContainer>
+          </S.InnerContent>
+        </>
+      </Layout>
+    </>
   );
 }
