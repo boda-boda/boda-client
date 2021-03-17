@@ -299,6 +299,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                   <td
                                     className={`available ${index === 4 && 'right'}`}
                                     key={`${index}`}
+                                    onClick={() => toggleCareInfo(careInfo)}
                                   >
                                     {careInfo}
                                     <S.CheckBox
