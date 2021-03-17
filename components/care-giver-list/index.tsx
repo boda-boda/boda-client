@@ -5,7 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList, seoulGuDong } from '../../constant';
+import { dayList, careInfoList, seoulGuDong, nameList, nameAsciiList } from '../../constant';
 import CareWorkerSchedule from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
 import axios from 'axios';
@@ -42,10 +42,15 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedNameFilter, setSelectedNameFilter] = useState(-1);
 
   const [city, setCity] = useState('-1');
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
+
+  useEffect(() => {
+    handleSearch();
+  }, [selectedNameFilter]);
 
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
@@ -70,30 +75,41 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setGu('-1');
     setDong('-1');
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
-    setSelectedCareInfo([]);
+    setSelectedCareInfo([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
   const filterArea = (cws: CareWorker[]) => {
-    const result = cws.filter((cw: CareWorker) =>
-      cw.careWorkerAreas.some(
-        (area) =>
-          (area.city === city || city === '-1') &&
-          (area.gu === gu || gu === '-1') &&
-          (area.dong === dong || dong === '-1')
-      )
+    const result = cws.filter(
+      (cw: CareWorker) =>
+        cw.careWorkerAreas.length === 0 ||
+        cw.careWorkerAreas.some(
+          (area) =>
+            (area.city === city || city === '-1') &&
+            (area.gu === gu || gu === '-1') &&
+            (area.dong === dong || dong === '-1')
+        )
     );
-
     return result;
   };
 
   const filterSchedule = (cws: CareWorker[]) => {
     const result = cws.filter((cw: CareWorker) =>
-      cw.careWorkerSchedules.every((singleSchedule) => {
-        //여기 아직 미구현
-      })
+      schedules.every((filterSchedule) =>
+        cw.careWorkerSchedules.every((singleSchedule) =>
+          filterSchedule.days.every(
+            (day) =>
+              singleSchedule.day !== day ||
+              parseInt(singleSchedule.startAt.split(':')[0], 10) * 60 +
+                parseInt(singleSchedule.startAt.split(':')[1], 10) >
+                filterSchedule.endHour * 60 + filterSchedule.endMinute ||
+              parseInt(singleSchedule.endAt.split(':')[0], 10) * 60 +
+                parseInt(singleSchedule.endAt.split(':')[1], 10) <
+                filterSchedule.startHour * 60 + filterSchedule.startMinute
+          )
+        )
+      )
     );
-
     return result;
   };
 
@@ -109,8 +125,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     return result;
   };
 
+  const filterName = (cws: CareWorker[]) => {
+    if (selectedNameFilter === -1) return cws;
+    const result = cws.filter(
+      (cw: CareWorker) =>
+        cw.name[0].charCodeAt(0) >= nameAsciiList[selectedNameFilter][0].charCodeAt(0) &&
+        cw.name[0].charCodeAt(0) <= nameAsciiList[selectedNameFilter][1].charCodeAt(0)
+    );
+    return result;
+  };
+
   const handleSearch = () => {
-    setFilteredCareWorkers(filterCareInfo(filterArea(filterSchedule(careWorkers))));
+    setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
   };
 
   return (
@@ -273,10 +299,12 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                   <td
                                     className={`available ${index === 4 && 'right'}`}
                                     key={`${index}`}
+                                    onClick={() => toggleCareInfo(careInfo)}
                                   >
                                     {careInfo}
                                     <S.CheckBox
                                       type="checkbox"
+                                      checked={selectedCareInfo.includes(careInfo)}
                                       onChange={() => toggleCareInfo(careInfo)}
                                     />
                                   </td>
@@ -302,6 +330,28 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
         <S.Section isBackgroundColored={true}>
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
+            <S.NameFilterList>
+              <S.NameFilterItem
+                isClicked={selectedNameFilter === -1}
+                onClick={() => {
+                  setSelectedNameFilter(-1);
+                }}
+                isLeft
+              >
+                전체
+              </S.NameFilterItem>
+              {nameList.map((name, nameIndex) => (
+                <S.NameFilterItem
+                  key={`name-${nameIndex}`}
+                  isClicked={selectedNameFilter === nameIndex}
+                  onClick={() => {
+                    setSelectedNameFilter(nameIndex);
+                  }}
+                >
+                  {name}
+                </S.NameFilterItem>
+              ))}
+            </S.NameFilterList>
             <S.CardList>
               {filteredCareWorkers.map((worker, idx) => (
                 <Link
@@ -320,38 +370,26 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           {worker.name} ({worker.age}/{worker.gender[0]})
                         </S.BasicInfo>
                         {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
-                        <S.InfoTable>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <S.SVGIconBox>
-                                  <PhoneNumberIconSVG />
-                                </S.SVGIconBox>
-                              </td>
-                              <th>연락처</th>
-                              <td>{worker.phoneNumber}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <S.SVGIconBox>
-                                  <CareInfoIconSVG />
-                                </S.SVGIconBox>
-                              </td>
-                              <th>가능 조건</th>
-                              <td>
-                                <S.InfoItemList>
-                                  {worker.careWorkerMetas.map((meta, index) => {
-                                    return (
-                                      <S.InfoItem key={`careInfoItem-${index}`}>
-                                        {meta.key}
-                                      </S.InfoItem>
-                                    );
-                                  })}
-                                </S.InfoItemList>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </S.InfoTable>
+                        <S.InfoRow>
+                          <S.SVGIconBox>
+                            <PhoneNumberIconSVG />
+                          </S.SVGIconBox>
+                          <S.InfoType>연락처</S.InfoType>
+                          <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                        </S.InfoRow>
+                        <S.InfoRow>
+                          <S.SVGIconBox>
+                            <CareInfoIconSVG />
+                          </S.SVGIconBox>
+                          <S.InfoType>가능 조건</S.InfoType>
+                          <S.InfoItemList>
+                            {worker.careWorkerMetas.map((meta, index) => {
+                              return (
+                                <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
+                              );
+                            })}
+                          </S.InfoItemList>
+                        </S.InfoRow>
                       </S.InfoContainer>
                     </S.Card>
                   </S.StyledLink>

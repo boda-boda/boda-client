@@ -4,9 +4,11 @@ import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
+  FLEX_ROW_CENTER_END,
   FLEX_ROW_END_CENTER,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
+  FLEX_ROW_START_START,
   THEME,
 } from '../../constant';
 
@@ -212,12 +214,13 @@ export const CardList = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 474px;
-  height: 149px;
+  height: 160px;
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
+  ${FLEX_ROW_SPACE_CENTER};
 `;
 
 interface ProfileImageProps {
@@ -247,7 +250,7 @@ export const BasicInfo = styled.div`
   font-size: 20px;
   font-weight: 500;
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 export const Time = styled.div`
@@ -258,31 +261,27 @@ export const Time = styled.div`
   color: ${THEME.GRAY_FONT};
 `;
 
-export const InfoTable = styled.table`
-  position: absolute;
-  left: 145px;
-  top: 62px;
-  border-spacing: 0 5px;
-  th,
-  td {
-    height: 19px;
-  }
-  th {
-    text-align: left;
-    padding: 0 5px;
-    width: 70px;
-    color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
-    font-weight: 500;
-    ${FLEX_ROW_START_CENTER};
-  }
-  td {
-    text-align: left;
-    color: ${THEME.GRAY_FONT};
-  }
+export const InfoRow = styled.div`
+  ${FLEX_ROW_START_START};
+  margin-bottom: 5px;
+`;
+
+export const InfoType = styled.div`
+  min-width: 70px;
+  padding-left: 5px;
+  margin-top: -1px;
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  font-weight: 500;
+`;
+
+export const InfoValue = styled.div`
+  margin-top: -1px;
 `;
 
 export const SVGIconBox = styled.div`
   ${FLEX_ROW_START_CENTER};
+  min-width: 19px;
+  min-height: 19px;
 `;
 
 export const InfoItem = styled.div`
@@ -292,17 +291,43 @@ export const InfoItem = styled.div`
   font-size: 11px;
   color: ${THEME.GRAY_FONT};
   margin-right: 5px;
+  margin-bottom: 5px;
   padding: 0 5px;
   ${FLEX_ROW_CENTER_CENTER};
 `;
 
 export const InfoItemList = styled.div`
-  width: 100%;
-  ${FLEX_ROW_START_CENTER};
-  flex-wrap: nowrap;
+  ${FLEX_ROW_START_START};
+  flex-wrap: wrap;
 `;
 
-export const StyledLink = styled.a`
+export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
+`;
+
+export const NameFilterList = styled.div`
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  border-bottom: 5px solid ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_END};
+`;
+
+interface NameFilterItemProps {
+  isClicked: boolean;
+  isLeft?: boolean;
+}
+
+export const NameFilterItem = styled.div<NameFilterItemProps>`
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  border-bottom: none;
+  height: ${(props) => (props.isClicked ? '40px' : '35px')};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
+  color: ${(props) => (props.isClicked ? 'white' : THEME.GRAY_FONT)};
+  flex-grow: 1;
+  transition: 0.2s ease;
+  border-radius: 10px 10px 0 0;
+  ${FLEX_ROW_CENTER_CENTER};
 `;

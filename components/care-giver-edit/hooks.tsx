@@ -60,11 +60,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
           )
         );
-        setCareWorkerAreas(
-          c.careWorkerAreas.map((area) =>
-            BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
-          )
-        );
+        if (c.careWorkerAreas.length > 0)
+          setCareWorkerAreas(
+            c.careWorkerAreas.map((area) =>
+              BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
+            )
+          );
 
         const allSchedules = c.careWorkerSchedules.reduce((acc, sc) => {
           if (sc.startAt.split(':').length < 3 || sc.endAt.split(':').length < 3) return acc;
@@ -89,8 +90,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
           return acc;
         }, [] as CareWorkerSchedule[]);
-
-        setCareWorkerSchedules(allSchedules);
+        if (allSchedules.length > 0) setCareWorkerSchedules(allSchedules);
       } catch {
         alert('잘못된 접근입니다.');
         router.push('/');

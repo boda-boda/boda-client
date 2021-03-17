@@ -214,7 +214,7 @@ export const EditButton = styled.button`
   cursor: pointer;
 `;
 
-export const StyledLink = styled.a`
+export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
 `;

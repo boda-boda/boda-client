@@ -12,12 +12,6 @@ import { useCareCenter } from '../../context/care-center';
 export default function MyCenterView() {
   const { careCenter } = useCareCenter();
 
-  const centerImage = [
-    'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2020-07/kitten-510651.jpg',
-    'https://icatcare.org/app/uploads/2018/06/Layer-1704-1200x630.jpg',
-    'https://www.humanesociety.org/sites/default/files/styles/1240x698/public/2018/08/kitten-440379.jpg',
-  ];
-
   const [imageIndex, setImageIndex] = useState(0);
 
   return (
@@ -76,12 +70,19 @@ export default function MyCenterView() {
                 <S.ButtonContainer>
                   <S.ButtonDiv
                     onClick={() =>
-                      setImageIndex((imageIndex + centerImage.length - 1) % centerImage.length)
+                      setImageIndex(
+                        (imageIndex + careCenter?.careCenterMetas?.length - 1) %
+                          careCenter?.careCenterMetas?.length
+                      )
                     }
                   >
                     <SlideLeftButtonSVG />
                   </S.ButtonDiv>
-                  <S.ButtonDiv onClick={() => setImageIndex((imageIndex + 1) % centerImage.length)}>
+                  <S.ButtonDiv
+                    onClick={() =>
+                      setImageIndex((imageIndex + 1) % careCenter?.careCenterMetas?.length)
+                    }
+                  >
                     <SlideRightButtonSVG />
                   </S.ButtonDiv>
                 </S.ButtonContainer>
