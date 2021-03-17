@@ -273,6 +273,10 @@ export const InfoType = styled.div`
   font-weight: 500;
 `;
 
+export const InfoValue = styled.div`
+  margin-top: -1px;
+`;
+
 export const SVGIconBox = styled.div`
   ${FLEX_ROW_START_CENTER};
   min-width: 19px;

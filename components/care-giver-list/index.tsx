@@ -70,7 +70,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setGu('-1');
     setDong('-1');
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
-    setSelectedCareInfo([]);
+    setSelectedCareInfo([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
@@ -325,7 +325,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <PhoneNumberIconSVG />
                           </S.SVGIconBox>
                           <S.InfoType>연락처</S.InfoType>
-                          {worker.phoneNumber}
+                          <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
                         </S.InfoRow>
                         <S.InfoRow>
                           <S.SVGIconBox>
