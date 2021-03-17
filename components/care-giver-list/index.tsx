@@ -84,10 +84,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       )
     );
 
-    console.log(
-      '지역',
-      result.map((res) => res.name)
-    );
     return result;
   };
 
@@ -98,10 +94,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       })
     );
 
-    console.log(
-      '스케줄',
-      result.map((res) => res.name)
-    );
     return result;
   };
 
@@ -113,10 +105,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
           .map((meta) => meta.key)
           .includes(careInfo)
       )
-    );
-    console.log(
-      '조건',
-      result.map((res) => res.name)
     );
     return result;
   };
