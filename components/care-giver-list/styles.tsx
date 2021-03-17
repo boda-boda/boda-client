@@ -300,7 +300,7 @@ export const InfoItemList = styled.div`
   flex-wrap: wrap;
 `;
 
-export const StyledLink = styled.a`
+export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
 `;

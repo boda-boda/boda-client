@@ -74,14 +74,18 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <th>이름</th>
                   <td className="infovalue">
                     <S.TextInput
-                      value={careWorker.name}
+                      value={careWorker.name || ''}
                       onChange={handleUpdateCareGiver('name')}
                       type="text"
                     />
                   </td>
                   <th>나이</th>
                   <td className="infovalue">
-                    <S.TextInput value={careWorker.age} onChange={handleUpdateAge} type="text" />
+                    <S.TextInput
+                      value={careWorker.age || ''}
+                      onChange={handleUpdateAge}
+                      type="text"
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -105,7 +109,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <th>연락처</th>
                   <td className="infovalue">
                     <S.TextInput
-                      value={careWorker.phoneNumber}
+                      value={careWorker.phoneNumber || ''}
                       onChange={handleUpdateCareGiver('phoneNumber')}
                       type="text"
                     />
@@ -116,7 +120,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <td colSpan={3}>
                     <S.TextInput
                       type="text"
-                      value={careWorker.address}
+                      value={careWorker.address || ''}
                       readOnly
                       withButton
                       onClick={openAddressModal}
@@ -386,7 +390,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career long">
                         <S.TextInput
                           type="text"
-                          value={career.workplace}
+                          value={career.workplace || ''}
                           onChange={(e) => {
                             setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
@@ -404,7 +408,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career">
                         <S.TextInput
                           type="text"
-                          value={career.recipient}
+                          value={career.recipient || ''}
                           onChange={(e) => {
                             setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {
@@ -422,7 +426,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       <td className="career">
                         <S.TextInput
                           type="text"
-                          value={career.duration}
+                          value={career.duration || ''}
                           onChange={(e) => {
                             setCareWorkerCareers((careers) =>
                               careers.map((c, i) => {

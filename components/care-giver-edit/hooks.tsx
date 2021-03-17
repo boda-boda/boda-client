@@ -60,11 +60,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
           )
         );
-        setCareWorkerAreas(
-          c.careWorkerAreas.map((area) =>
-            BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
-          )
-        );
+        if (c.careWorkerAreas.length > 0)
+          setCareWorkerAreas(
+            c.careWorkerAreas.map((area) =>
+              BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
+            )
+          );
 
         const allSchedules = c.careWorkerSchedules.reduce((acc, sc) => {
           if (sc.startAt.split(':').length < 3 || sc.endAt.split(':').length < 3) return acc;

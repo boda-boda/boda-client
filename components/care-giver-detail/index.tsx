@@ -136,9 +136,9 @@ export default function CareGiveDetail() {
                   <th className="saturday">토</th>
                   <th className="sunday right">일</th>
                 </tr>
-                {[...Array(10)].map((time, index) => {
+                {[...Array(10)].map((_time, index) => {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         {index < 1 ? 0 : ''}
                         {index + 9}:00
