@@ -85,6 +85,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
             (area.dong === dong || dong === '-1')
         )
     );
+    console.log(cws);
     return result;
   };
 

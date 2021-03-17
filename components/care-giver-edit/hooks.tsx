@@ -89,8 +89,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
           return acc;
         }, [] as CareWorkerSchedule[]);
-
-        setCareWorkerSchedules(allSchedules);
+        if (allSchedules.length > 0) setCareWorkerSchedules(allSchedules);
       } catch {
         alert('잘못된 접근입니다.');
         router.push('/');
