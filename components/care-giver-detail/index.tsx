@@ -79,27 +79,26 @@ export default function CareGiveDetail() {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                {careWorker.careWorkerAreas
-                  ? chunk(careWorker.careWorkerAreas, 3).map((a, key) => (
-                      <tr key={`a-${key}`}>
-                        {a[0] && (
-                          <td className="area">
-                            {a[0].city} {a[0].gu} {a[0].dong}
+                <tr>
+                  {careWorker.careWorkerAreas?.length > 0 ? (
+                    chunk(careWorker.careWorkerAreas, 3).map((a, key) =>
+                      a.map((areaItem, areaItemIndex) => {
+                        return (
+                          <td
+                            className={`area ${
+                              areaItemIndex === careWorker.careWorkerAreas.length - 1 && 'right'
+                            }`}
+                            key={`areaItem-${areaItemIndex}`}
+                          >
+                            {areaItem.city} {areaItem.gu} {areaItem.dong}
                           </td>
-                        )}
-                        {a[1] && (
-                          <td className="area">
-                            {a[1].city} {a[1].gu} {a[1].dong}
-                          </td>
-                        )}
-                        {a[2] && (
-                          <td className="area right">
-                            {a[2].city} {a[2].gu} {a[2].dong}
-                          </td>
-                        )}
-                      </tr>
-                    ))
-                  : null}
+                        );
+                      })
+                    )
+                  ) : (
+                    <td>등록된 활동 지역이 없습니다.</td>
+                  )}
+                </tr>
               </tbody>
             </S.Table>
           </S.Section>
@@ -154,7 +153,7 @@ export default function CareGiveDetail() {
                   );
                 })}
               </tbody>
-              {careWorker.careWorkerSchedules?.map((schedule) => {
+              {careWorker.careWorkerSchedules?.map((schedule, scheduleIndex) => {
                 const [startHourString, startMinuteString] = schedule.startAt.split(':');
                 const [startHour, startMinute] = schedule.startAt.split(':').map((a) => parseInt(a)); // prettier-ignore
                 const [endHourString, endMinuteString] = schedule.endAt.split(':');
@@ -162,6 +161,7 @@ export default function CareGiveDetail() {
 
                 return (
                   <S.TimeContainer
+                    key={`schedule-${scheduleIndex}`}
                     day={dayList.indexOf(schedule.day as DayType)}
                     startTime={startHour + startMinute / 60}
                     endTime={endHour + endMinute / 60}
@@ -185,13 +185,21 @@ export default function CareGiveDetail() {
                   <th className="career">수급자</th>
                   <th className="career right">기간</th>
                 </tr>
-                {careWorker.careWorkerCareers?.map((career, idx) => (
-                  <tr key={`career-${idx}`}>
-                    <td className="career long">{career.workplace}</td>
-                    <td className="career">{career.recipient}</td>
-                    <td className="career right">{career.duration}</td>
+                {careWorker.careWorkerCareers?.length > 0 ? (
+                  careWorker.careWorkerCareers.map((career, idx) => (
+                    <tr key={`career-${idx}`}>
+                      <td className="career long">{career.workplace}</td>
+                      <td className="career">{career.recipient}</td>
+                      <td className="career right">{career.duration}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td className="career long"></td>
+                    <td className="career"></td>
+                    <td className="career right"></td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </S.Table>
           </S.Section>
