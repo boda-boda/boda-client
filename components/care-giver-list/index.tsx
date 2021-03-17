@@ -277,6 +277,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                     {careInfo}
                                     <S.CheckBox
                                       type="checkbox"
+                                      checked={selectedCareInfo.includes(careInfo)}
                                       onChange={() => toggleCareInfo(careInfo)}
                                     />
                                   </td>
