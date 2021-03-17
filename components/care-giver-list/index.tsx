@@ -320,38 +320,26 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           {worker.name} ({worker.age}/{worker.gender[0]})
                         </S.BasicInfo>
                         {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
-                        <S.InfoTable>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <S.SVGIconBox>
-                                  <PhoneNumberIconSVG />
-                                </S.SVGIconBox>
-                              </td>
-                              <th>연락처</th>
-                              <td>{worker.phoneNumber}</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <S.SVGIconBox>
-                                  <CareInfoIconSVG />
-                                </S.SVGIconBox>
-                              </td>
-                              <th>가능 조건</th>
-                              <td>
-                                <S.InfoItemList>
-                                  {worker.careWorkerMetas.map((meta, index) => {
-                                    return (
-                                      <S.InfoItem key={`careInfoItem-${index}`}>
-                                        {meta.key}
-                                      </S.InfoItem>
-                                    );
-                                  })}
-                                </S.InfoItemList>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </S.InfoTable>
+                        <S.InfoRow>
+                          <S.SVGIconBox>
+                            <PhoneNumberIconSVG />
+                          </S.SVGIconBox>
+                          <S.InfoType>연락처</S.InfoType>
+                          {worker.phoneNumber}
+                        </S.InfoRow>
+                        <S.InfoRow>
+                          <S.SVGIconBox>
+                            <CareInfoIconSVG />
+                          </S.SVGIconBox>
+                          <S.InfoType>가능 조건</S.InfoType>
+                          <S.InfoItemList>
+                            {worker.careWorkerMetas.map((meta, index) => {
+                              return (
+                                <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
+                              );
+                            })}
+                          </S.InfoItemList>
+                        </S.InfoRow>
                       </S.InfoContainer>
                     </S.Card>
                   </S.StyledLink>

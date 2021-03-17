@@ -7,6 +7,7 @@ import {
   FLEX_ROW_END_CENTER,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
+  FLEX_ROW_START_START,
   THEME,
 } from '../../constant';
 
@@ -212,12 +213,13 @@ export const CardList = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 474px;
-  height: 149px;
+  height: 160px;
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
+  ${FLEX_ROW_SPACE_CENTER};
 `;
 
 interface ProfileImageProps {
@@ -247,7 +249,7 @@ export const BasicInfo = styled.div`
   font-size: 20px;
   font-weight: 500;
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 export const Time = styled.div`
@@ -258,31 +260,23 @@ export const Time = styled.div`
   color: ${THEME.GRAY_FONT};
 `;
 
-export const InfoTable = styled.table`
-  position: absolute;
-  left: 145px;
-  top: 62px;
-  border-spacing: 0 5px;
-  th,
-  td {
-    height: 19px;
-  }
-  th {
-    text-align: left;
-    padding: 0 5px;
-    width: 70px;
-    color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
-    font-weight: 500;
-    ${FLEX_ROW_START_CENTER};
-  }
-  td {
-    text-align: left;
-    color: ${THEME.GRAY_FONT};
-  }
+export const InfoRow = styled.div`
+  ${FLEX_ROW_START_START};
+  margin-bottom: 5px;
+`;
+
+export const InfoType = styled.div`
+  min-width: 70px;
+  padding-left: 5px;
+  margin-top: -1px;
+  color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  font-weight: 500;
 `;
 
 export const SVGIconBox = styled.div`
   ${FLEX_ROW_START_CENTER};
+  min-width: 19px;
+  min-height: 19px;
 `;
 
 export const InfoItem = styled.div`
@@ -292,14 +286,14 @@ export const InfoItem = styled.div`
   font-size: 11px;
   color: ${THEME.GRAY_FONT};
   margin-right: 5px;
+  margin-bottom: 5px;
   padding: 0 5px;
   ${FLEX_ROW_CENTER_CENTER};
 `;
 
 export const InfoItemList = styled.div`
-  width: 100%;
-  ${FLEX_ROW_START_CENTER};
-  flex-wrap: nowrap;
+  ${FLEX_ROW_START_START};
+  flex-wrap: wrap;
 `;
 
 export const StyledLink = styled.a`
