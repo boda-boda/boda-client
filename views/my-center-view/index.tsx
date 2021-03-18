@@ -71,26 +71,32 @@ export default function MyCenterView() {
               <S.Section>
                 <S.SectionTitle>센터 이미지</S.SectionTitle>
                 <S.CenterImageContainer>
-                  <S.CenterImage src={careCenter?.careCenterMetas[imageIndex]?.value} />
-                  <S.ButtonContainer>
-                    <S.ButtonDiv
-                      onClick={() =>
-                        setImageIndex(
-                          (imageIndex + careCenter?.careCenterMetas?.length - 1) %
-                            careCenter?.careCenterMetas?.length
-                        )
-                      }
-                    >
-                      <SlideLeftButtonSVG />
-                    </S.ButtonDiv>
-                    <S.ButtonDiv
-                      onClick={() =>
-                        setImageIndex((imageIndex + 1) % careCenter?.careCenterMetas?.length)
-                      }
-                    >
-                      <SlideRightButtonSVG />
-                    </S.ButtonDiv>
-                  </S.ButtonContainer>
+                  {careCenter?.careCenterMetas?.length > 0 ? (
+                    <>
+                      <S.CenterImage src={careCenter?.careCenterMetas[imageIndex]?.value} />
+                      <S.ButtonContainer>
+                        <S.ButtonDiv
+                          onClick={() =>
+                            setImageIndex(
+                              (imageIndex + careCenter?.careCenterMetas?.length - 1) %
+                                careCenter?.careCenterMetas?.length
+                            )
+                          }
+                        >
+                          <SlideLeftButtonSVG />
+                        </S.ButtonDiv>
+                        <S.ButtonDiv
+                          onClick={() =>
+                            setImageIndex((imageIndex + 1) % careCenter?.careCenterMetas?.length)
+                          }
+                        >
+                          <SlideRightButtonSVG />
+                        </S.ButtonDiv>
+                      </S.ButtonContainer>
+                    </>
+                  ) : (
+                    <>센터 이미지가 없습니다.</>
+                  )}
                 </S.CenterImageContainer>
               </S.Section>
             </S.MyCenterPage>
