@@ -42,7 +42,6 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleClickUpdateButton,
     handleClickCreateButton,
   } = useCareGiverUpsert(isNew);
-  console.log(careWorker);
 
   return (
     <>

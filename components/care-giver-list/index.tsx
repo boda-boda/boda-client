@@ -312,8 +312,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             </S.ClockSelectContainer>
                             까지
                           </S.TdFlexBox>
-                          {schedules.length - 1 === scheduleIndex ? (
-                            <S.AddButton
+                          <S.PlusMinusButtonContainer>
+                            <S.PlusMinusButton
+                              hide={schedules.length - 1 !== scheduleIndex}
+                              disabled={schedules.length - 1 !== scheduleIndex}
                               onClick={() => {
                                 setSchedules([
                                   ...schedules,
@@ -322,18 +324,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                               }}
                             >
                               <PlusIconSVG />
-                            </S.AddButton>
-                          ) : (
-                            <S.AddButton
-                              onClick={() =>
+                            </S.PlusMinusButton>
+                            <S.PlusMinusButton
+                              onClick={() => {
+                                if (schedules.length === 1) return;
                                 setSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
-                                )
-                              }
+                                );
+                              }}
                             >
                               <MinusIconSVG />
-                            </S.AddButton>
-                          )}
+                            </S.PlusMinusButton>
+                          </S.PlusMinusButtonContainer>
                         </S.TimeSelectContainer>
                       );
                     })}
