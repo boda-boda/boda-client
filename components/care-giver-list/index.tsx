@@ -11,6 +11,7 @@ import { DayType } from '../../common/types/date';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
+import cs from 'date-fns/esm/locale/cs/index.js';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -44,6 +45,8 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedNameFilter, setSelectedNameFilter] = useState(-1);
 
+  const [name, setName] = useState('-1');
+
   const [city, setCity] = useState('-1');
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
@@ -75,17 +78,42 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
+  const filterByLetter = (letters: string[], cwName: string) => {
+    console.log(cwName.length);
+    if (letters.length > cwName.length) return false;
+
+    return letters.every(
+      (letter, index) =>
+        cwName[index].charCodeAt(0) >= nameAsciiList[nameList.indexOf(letter)][0].charCodeAt(0) &&
+        cwName[index].charCodeAt(0) <= nameAsciiList[nameList.indexOf(letter)][1].charCodeAt(0)
+    );
+  };
+
+  const filterName = (cws: CareWorker[]) => {
+    const result = cws.filter((cw: CareWorker) => {
+      if (name === '-1') return true;
+      if (name.split('').every((letter) => nameList.includes(letter))) {
+        return filterByLetter(name.split(''), cw.name);
+      }
+      if (name.length > cw.name.length) return false;
+      return name.split('').every((letter, index) => letter === cw.name[index]);
+    });
+    return result;
+  };
+
   const filterArea = (cws: CareWorker[]) => {
-    const result = cws.filter(
-      (cw: CareWorker) =>
-        cw.careWorkerAreas.length === 0 ||
+    const result = cws.filter((cw: CareWorker) => {
+      if (city === '-1') return true;
+      return (
+        cw.careWorkerAreas.length !== 0 &&
         cw.careWorkerAreas.some(
           (area) =>
-            (area.city === city || city === '-1') &&
-            (area.gu === gu || gu === '-1') &&
-            (area.dong === dong || dong === '-1')
+            area.city === city &&
+            (area.gu === gu || gu === '-1' || !area.gu) &&
+            (area.dong === dong || dong === '-1' || !area.dong)
         )
-    );
+      );
+    });
     return result;
   };
 
@@ -121,7 +149,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     return result;
   };
 
-  const filterName = (cws: CareWorker[]) => {
+  const filterNameByLetter = (cws: CareWorker[]) => {
     if (selectedNameFilter === -1) return cws;
     const result = cws.filter(
       (cw: CareWorker) =>
@@ -132,12 +160,16 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const handleSearchOnClickSearchButton = () => {
-    setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
+    setFilteredCareWorkers(
+      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
+    );
     setSelectedNameFilter(-1);
   };
 
   const handleSearchOnClickNameFilterItem = () => {
-    setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
+    setFilteredCareWorkers(
+      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(careWorkers))))
+    );
   };
 
   useEffect(() => {
@@ -154,6 +186,21 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
             <S.FilterTable>
               <tbody>
                 <tr>
+                  <th>이름</th>
+                  <td>
+                    <S.TextInput
+                      onKeyPress={(e: any) => {
+                        if (e.key === 'Enter') {
+                          handleSearchOnClickSearchButton();
+                          return;
+                        }
+                      }}
+                      onChange={(e: any) => {
+                        setName(e.target.value);
+                      }}
+                    ></S.TextInput>
+                  </td>
+
                   <th>지역</th>
                   <td>
                     <S.DropDown onChange={(e) => setCity(e.target.value)} defaultValue="">
@@ -188,7 +235,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td style={{ padding: 0 }}>
+                  <td style={{ padding: 0 }} colSpan={3}>
                     {schedules.map((schedule, scheduleIndex) => {
                       return (
                         <S.TimeSelectContainer
@@ -296,7 +343,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </tr>
                 <tr>
                   <th rowSpan={2}>가능 조건</th>
-                  <td className="innerTable">
+                  <td className="innerTable" colSpan={3}>
                     <table>
                       <tbody>
                         {slicedCareInfoList.map((slicedCareInfo, row) => {

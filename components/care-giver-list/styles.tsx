@@ -87,11 +87,11 @@ export const FilterTable = styled.table`
     padding: 0;
     border-bottom: none;
   }
-
   table {
     border: none;
     padding: none;
     border-collapse: collapse;
+    width: 100%;
   }
 `;
 
@@ -155,6 +155,16 @@ export const ClockInput = styled.input`
   outline: none;
   width: 30%;
   text-align: right;
+  color: ${THEME.GRAY_FONT};
+`;
+
+export const TextInput = styled.input`
+  outline: none;
+  width: 153.3px;
+  height: 36px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  padding: 0 10px;
   color: ${THEME.GRAY_FONT};
 `;
 

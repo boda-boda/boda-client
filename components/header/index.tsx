@@ -48,6 +48,17 @@ export default function Header() {
                   handleMenuClick(-1);
                   return;
                 }
+              }}
+              onMouseEnter={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  return;
+                }
+                handleMenuClick(1);
+              }}
+              onMouseLeave={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  return;
+                }
                 handleMenuClick(1);
               }}
             >
@@ -70,7 +81,20 @@ export default function Header() {
               )}
             </S.MenuItem>
             {careCenter.isLoggedIn ? (
-              <S.MenuItem onClick={() => handleMenuClick(2)}>
+              <S.MenuItem
+                onMouseEnter={() => {
+                  if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                    return;
+                  }
+                  handleMenuClick(2);
+                }}
+                onMouseLeave={() => {
+                  if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                    return;
+                  }
+                  handleMenuClick(2);
+                }}
+              >
                 나의 센터 정보
                 {isMenuModalOn[2] ? (
                   <>
