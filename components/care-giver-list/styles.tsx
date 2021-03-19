@@ -91,6 +91,7 @@ export const FilterTable = styled.table`
     border: none;
     padding: none;
     border-collapse: collapse;
+    width: 100%;
   }
 `;
 
