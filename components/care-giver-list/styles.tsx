@@ -87,7 +87,6 @@ export const FilterTable = styled.table`
     padding: 0;
     border-bottom: none;
   }
-
   table {
     border: none;
     padding: none;
