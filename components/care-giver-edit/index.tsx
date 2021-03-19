@@ -106,7 +106,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
-                  <th>연락처</th>
+                  <th>휴대전화</th>
                   <td className="infovalue">
                     <S.TextInput
                       value={careWorker.phoneNumber || ''}

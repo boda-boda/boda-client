@@ -57,7 +57,7 @@ export default function CareGiveDetail() {
                 <tr>
                   <th>성별</th>
                   <td className="infovalue">{careWorker.gender}</td>
-                  <th>연락처</th>
+                  <th>휴대전화</th>
                   <td className="infovalue">{careWorker.phoneNumber}</td>
                 </tr>
                 <tr>

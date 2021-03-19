@@ -382,7 +382,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           <S.SVGIconBox>
                             <PhoneNumberIconSVG />
                           </S.SVGIconBox>
-                          <S.InfoType>연락처</S.InfoType>
+                          <S.InfoType>휴대전화</S.InfoType>
                           <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
                         </S.InfoRow>
                         <S.InfoRow>
