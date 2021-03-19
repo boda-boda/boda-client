@@ -158,19 +158,20 @@ export const ClockInput = styled.input`
   color: ${THEME.GRAY_FONT};
 `;
 
-interface PlusMinusButtonProps {
-  hide?: boolean;
-}
-
 export const PlusMinusButtonContainer = styled.div`
   display: flex;
 `;
+
+interface PlusMinusButtonProps {
+  hide?: boolean;
+}
 
 export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   width: 36px;
   height: 36px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
+  margin-left: 10px;
   border: 1px solid ${THEME.GRAY_LINE};
   user-select: none;
   -ms-user-select: none;
@@ -178,7 +179,6 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   -webkit-user-select: none;
   cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
   background-color: white;
-
   opacity: ${(props) => (props.hide ? 0 : 1)};
 `;
 

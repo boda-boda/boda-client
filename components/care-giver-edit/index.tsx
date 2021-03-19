@@ -204,8 +204,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </S.DropDown>
                     </td>
                     <td>
-                      {careWorkerAreas.length - 1 === businessAreaIndex ? (
-                        <S.AddButton
+                      <S.PlusMinusButtonContainer>
+                        <S.PlusMinusButton
+                          hide={careWorkerAreas.length - 1 !== businessAreaIndex}
+                          disabled={careWorkerAreas.length - 1 !== businessAreaIndex}
                           onClick={() => {
                             setCareWorkerAreas([
                               ...careWorkerAreas,
@@ -214,18 +216,18 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           }}
                         >
                           <PlusIconSVG />
-                        </S.AddButton>
-                      ) : (
-                        <S.AddButton
-                          onClick={() =>
+                        </S.PlusMinusButton>
+                        <S.PlusMinusButton
+                          onClick={() => {
+                            if (careWorkerAreas.length === 1) return;
                             setCareWorkerAreas((businessAreas) =>
                               businessAreas.filter((_, i) => i !== businessAreaIndex)
-                            )
-                          }
+                            );
+                          }}
                         >
                           <MinusIconSVG />
-                        </S.AddButton>
-                      )}
+                        </S.PlusMinusButton>
+                      </S.PlusMinusButtonContainer>
                     </td>
                   </tr>
                 ))}
@@ -359,7 +361,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           </S.TdFlexBox>
 
                           {careWorkerSchedules.length - 1 === scheduleIndex ? (
-                            <S.AddButton
+                            <S.PlusMinusButton
                               onClick={() => {
                                 setCareWorkerSchedules([
                                   ...careWorkerSchedules,
@@ -368,9 +370,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               }}
                             >
                               <PlusIconSVG />
-                            </S.AddButton>
+                            </S.PlusMinusButton>
                           ) : (
-                            <S.AddButton
+                            <S.PlusMinusButton
                               onClick={() => {
                                 setCareWorkerSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
@@ -379,7 +381,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               }}
                             >
                               <MinusIconSVG />
-                            </S.AddButton>
+                            </S.PlusMinusButton>
                           )}
                         </S.TimeSelectContainer>
                       );
@@ -458,7 +460,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </td>
                       <td className="career right">
                         {careWorkerCareers.length - 1 === careerIndex ? (
-                          <S.AddButton
+                          <S.PlusMinusButton
                             onClick={() => {
                               setCareWorkerCareers([
                                 ...careWorkerCareers,
@@ -467,9 +469,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             }}
                           >
                             <PlusIconSVG />
-                          </S.AddButton>
+                          </S.PlusMinusButton>
                         ) : (
-                          <S.AddButton
+                          <S.PlusMinusButton
                             onClick={() => {
                               setCareWorkerCareers((careers) =>
                                 careers.filter((_item, i) => i !== careerIndex)
@@ -477,7 +479,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             }}
                           >
                             <MinusIconSVG />
-                          </S.AddButton>
+                          </S.PlusMinusButton>
                         )}
                       </td>
                     </tr>
