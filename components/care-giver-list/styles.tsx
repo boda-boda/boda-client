@@ -244,6 +244,7 @@ export const InfoContainer = styled.div`
   padding: 25px 0px 25px 145px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `;
 
 export const BasicInfo = styled.div`

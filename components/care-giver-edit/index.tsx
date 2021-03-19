@@ -37,7 +37,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setCareWorkerAreas,
     onChangeImage,
     handleUpdateGender,
-    handleUpdateAge,
+    handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,
     handleClickCreateButton,
@@ -83,7 +83,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <td className="infovalue">
                     <S.TextInput
                       value={careWorker.birthDay || ''}
-                      onChange={handleUpdateAge}
+                      onChange={handleUpdateBirthday}
                       type="text"
                     />
                   </td>

@@ -1,3 +1,5 @@
+import { WorkerWomanSmall } from '../../../constant';
+
 export default class CreateCareGiverRequest {
   public static allArgsConstructor(
     name: string,
@@ -20,7 +22,7 @@ export default class CreateCareGiverRequest {
   }
 
   public static noArgsConstructor() {
-    return new CreateCareGiverRequest('', true, 0, '', '', '', '');
+    return new CreateCareGiverRequest('', true, 0, '', WorkerWomanSmall, '', '');
   }
 
   public constructor(
@@ -48,15 +50,4 @@ export default class CreateCareGiverRequest {
   public profile: string;
   public address: string;
   public description: string;
-
-  public validate() {}
-
-  private validateBirthDay() {
-    if (this.birthDay.length !== 8) {
-      return '생년월일에 8자리 숫자를 입력해주세요';
-    }
-    if (isNaN(parseInt(this.birthDay))) {
-      return '생년월일에 숫자를 입력해 주세요.';
-    }
-  }
 }
