@@ -4,8 +4,11 @@ import CareWorkerMeta from './care-worker-meta';
 import CareWorkerSingleSchedule from './care-worker-single-schedule';
 
 export default class CareWorker {
+  public zipCode: string;
   public address: string;
+  public detailAddress: string;
   public age: number;
+  public birthDay: string;
 
   public careWorkerAreas: BusinessArea[];
   public careWorkerCareers: CareWorkerCareer[];

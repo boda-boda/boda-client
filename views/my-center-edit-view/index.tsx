@@ -111,6 +111,7 @@ export default function MyCenterView() {
   const handleDeleteCurrentMetaImage = async () => {
     if (centerMetaImages.length === 0) {
       alert('등록된 이미지가 없습니다.');
+      return;
     }
 
     if (!window.confirm('현재 선택된 이미지를 삭제하시겠습니까?')) return;
@@ -215,7 +216,7 @@ export default function MyCenterView() {
                       </td>
                     </tr>
                     <tr>
-                      <th rowSpan={2}>위치</th>
+                      <th rowSpan={2}>주소</th>
                       <td colSpan={3}>
                         <S.TextInput
                           type="text"

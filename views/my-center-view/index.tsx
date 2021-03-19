@@ -56,9 +56,10 @@ export default function MyCenterView() {
                       <td className="infovalue">{careCenter?.homePage}</td>
                     </tr>
                     <tr>
-                      <th>위치</th>
+                      <th>주소</th>
                       <td colSpan={3}>
-                        {careCenter?.address} {careCenter?.detailAddress}
+                        {careCenter?.zipCode && `(${careCenter.zipCode})`} {careCenter?.address}{' '}
+                        {careCenter?.detailAddress}
                       </td>
                     </tr>
                     <tr>

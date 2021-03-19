@@ -4,7 +4,7 @@ import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
 import Link from 'next/link';
 import * as S from './styles';
-import { useConsultRequest, useHeader } from './hooks';
+import { useHeader } from './hooks';
 
 export default function Header() {
   const {
@@ -21,9 +21,10 @@ export default function Header() {
     isLoginModalOn,
     setIsLoginModalOn,
     handleMenuClick,
+    contact,
+    handleContactUpdate,
+    handleConsultRequest,
   } = useHeader();
-
-  const { contact, handleContactUpdate, handleConsultRequest } = useConsultRequest();
 
   return (
     <>

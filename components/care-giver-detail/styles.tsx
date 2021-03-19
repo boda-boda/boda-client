@@ -4,6 +4,7 @@ import {
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_END_CENTER,
+  FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
   THEME,
 } from '../../constant';
@@ -27,19 +28,26 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding: 15px 0px;
 `;
 
 export const SectionTitle = styled.div`
   font-size: 22px;
   font-weight: 500;
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  /* ${FLEX_ROW_SPACE_CENTER}
+  width : 100%; */
+
+  span {
+    color: ${THEME.GRAY_FONT};
+    font-size: 14px;
+    margin-left: 0.5rem;
+  }
 `;
 
 export const Table = styled.table`
   width: 100%;
-  margin-top: 24px;
+  margin-top: 10px;
   border-top: 2px solid ${THEME.MAIN};
   border-collapse: collapse;
   th,
@@ -131,7 +139,7 @@ export const AvailabilityInfoItem = styled.div`
 export const TimeTable = styled.table`
   position: relative;
   width: 100%;
-  margin-top: 24px;
+  margin-top: 10px;
   border-top: 2px solid ${THEME.MAIN};
   border-collapse: collapse;
   th,
@@ -202,7 +210,7 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 33px;
+  top: 13px;
   right: 0;
   padding: 11px 10px;
   height: 36px;

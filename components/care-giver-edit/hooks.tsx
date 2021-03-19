@@ -8,6 +8,7 @@ import Career from './model/career';
 import { useRouter } from 'next/router';
 import CareWorker from '../../model/care-worker';
 import { useCareCenter } from '../../context/care-center';
+import { WorkerManSmall, WorkerWomanSmall } from '../../constant';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -20,6 +21,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const [careWorkerSchedules, setCareWorkerSchedules] = useState([
     CareWorkerSchedule.noArgsConstructor(),
   ]);
+
   const [careWorkerCareers, setCareWorkerCareers] = useState([Career.noArgsConstructor()]);
   const [careWorkerAreas, setCareWorkerAreas] = useState([BusinessArea.noArgsConstructor()]);
 
@@ -46,10 +48,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           CreateCareGiverRequest.allArgsConstructor(
             c.name,
             c.gender !== '남성',
-            c.age,
+            c.birthDay,
             c.phoneNumber,
             c.profile,
+            c.zipCode,
             c.address,
+            c.detailAddress,
             c.description
           )
         );
@@ -110,15 +114,23 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const handleUpdateGender = useCallback(
     (isFemale: boolean) => () => {
-      setCareWorker({ ...careWorker, isFemale });
+      if (careWorker.profile !== WorkerManSmall && careWorker.profile !== WorkerWomanSmall) {
+        setCareWorker({ ...careWorker, isFemale });
+        return;
+      }
+
+      setCareWorker({
+        ...careWorker,
+        isFemale,
+        profile: isFemale ? WorkerWomanSmall : WorkerManSmall,
+      });
     },
     [careWorker]
   );
 
-  const handleUpdateAge = useCallback(
+  const handleUpdateBirthday = useCallback(
     (e: any) => {
-      const parsedAge = isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value);
-      setCareWorker({ ...careWorker, age: parsedAge });
+      setCareWorker({ ...careWorker, birthDay: e.target.value });
     },
     [careWorker]
   );
@@ -158,10 +170,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
       const response = await axiosInstance.post('/care-worker/profile', formData);
       const url = response.data.Location;
-      setCareWorker({
-        ...careWorker,
-        profile: url,
-      });
+      setCareWorker({ ...careWorker, profile: url });
     } catch {
       alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
     }
@@ -173,12 +182,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       return;
     }
     new window.daum.Postcode({
-      oncomplete: function (data: any) {
-        let fullAddress = data.address;
-        setCareWorker({
-          ...careWorker,
-          address: fullAddress,
-        });
+      oncomplete: (data: any) => {
+        setCareWorker({ ...careWorker, address: data.roadAddress, zipCode: data.zonecode });
       },
     }).open();
   };
@@ -261,7 +266,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setCareWorkerAreas,
     onChangeImage,
     handleUpdateGender,
-    handleUpdateAge,
+    handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,
     handleClickCreateButton,
