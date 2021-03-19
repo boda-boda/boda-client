@@ -33,7 +33,7 @@ export default function Header() {
           <Link href="/" passHref>
             <S.StyledLink>
               <S.Logo>
-                <S.LogoImg src="https://user-images.githubusercontent.com/52532871/110198039-f07d4a80-7e92-11eb-9501-241d562b71b1.png" />
+                <S.LogoImg src="/logo.png" />
               </S.Logo>
             </S.StyledLink>
           </Link>
