@@ -215,7 +215,7 @@ export default function MyCenterView() {
                       </td>
                     </tr>
                     <tr>
-                      <th rowSpan={2}>위치</th>
+                      <th rowSpan={2}>주소</th>
                       <td colSpan={3}>
                         <S.TextInput
                           type="text"

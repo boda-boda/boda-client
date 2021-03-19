@@ -62,7 +62,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   <td className="left">
                     <S.InfoInput></S.InfoInput>
                   </td>
-                  <th>위치</th>
+                  <th>주소</th>
                   <td className="right">
                     <S.InfoInput></S.InfoInput>
                   </td>
@@ -237,7 +237,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>위치</th>
+                  <th>주소</th>
                   <td colSpan={3} className="select wide">
                     <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
                       <option value="-1" disabled hidden>

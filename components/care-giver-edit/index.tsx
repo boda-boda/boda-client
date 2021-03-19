@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
@@ -42,6 +42,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleClickUpdateButton,
     handleClickCreateButton,
   } = useCareGiverUpsert(isNew);
+  console.log(careWorker);
 
   return (
     <>
@@ -52,7 +53,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={careWorker.profile}>
@@ -116,16 +117,31 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>지역</th>
+                  <th rowSpan={2}>주소</th>
                   <td colSpan={3}>
                     <S.TextInput
                       type="text"
-                      value={careWorker.address || ''}
+                      value={careWorker.zipCode || ''}
                       readOnly
                       withButton
                       onClick={openAddressModal}
                     />
                     <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <S.TextInput type="text" value={careWorker.address} long readOnly />
+                  </td>
+                  <td colSpan={3}>
+                    <S.TextInput
+                      type="text"
+                      value={careWorker.detailAddress}
+                      readOnly={careWorker.address === ''}
+                      long
+                      placeholder="상세주소 입력"
+                      onChange={handleUpdateCareGiver('detailAddress')}
+                    />
                   </td>
                 </tr>
               </tbody>

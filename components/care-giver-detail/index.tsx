@@ -51,7 +51,7 @@ export default function CareGiveDetail() {
                   <td className="infovalue">{careWorker.name}</td>
                   <th>생년월일</th>
                   <td className="infovalue">
-                    {careWorker.birthDay} ({careWorker.age}세)
+                    {careWorker.birthDay ? `${careWorker.birthDay} (${careWorker.age}세)` : ''}
                   </td>
                 </tr>
                 <tr>
@@ -61,8 +61,11 @@ export default function CareGiveDetail() {
                   <td className="infovalue">{careWorker.phoneNumber}</td>
                 </tr>
                 <tr>
-                  <th>지역</th>
-                  <td colSpan={3}>{careWorker.address}</td>
+                  <th>주소</th>
+                  <td colSpan={3}>
+                    {careWorker.zipCode && `(${careWorker.zipCode})`} {careWorker.address}{' '}
+                    {careWorker.detailAddress}
+                  </td>
                 </tr>
               </tbody>
             </S.Table>

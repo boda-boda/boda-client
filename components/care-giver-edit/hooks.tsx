@@ -51,7 +51,9 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             c.birthDay,
             c.phoneNumber,
             c.profile,
+            c.zipCode,
             c.address,
+            c.detailAddress,
             c.description
           )
         );
@@ -180,12 +182,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       return;
     }
     new window.daum.Postcode({
-      oncomplete: function (data: any) {
-        let fullAddress = data.address;
-        setCareWorker((careWorker) => {
-          careWorker.address = fullAddress;
-          return careWorker;
-        });
+      oncomplete: (data: any) => {
+        setCareWorker({ ...careWorker, address: data.roadAddress, zipCode: data.zonecode });
       },
     }).open();
   };
