@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fadeIn, fadeOut } from '../../common/animation/index';
 
 import {
   THEME,
@@ -47,6 +48,7 @@ export const MenuList = styled.div`
 export const MenuItem = styled.div`
   position: relative;
   margin-left: 38px;
+  height: 50px;
   color: white;
   font-size: 16px;
   display: flex;
@@ -61,7 +63,7 @@ export const MenuItem = styled.div`
 export const MenuModal = styled.div`
   position: absolute;
   width: 100%;
-  top: 40px;
+  top: 50px;
   right: 0;
   z-index: 20;
   border-radius: 5px;
@@ -71,6 +73,7 @@ export const MenuModal = styled.div`
   font-size: 14px;
   cursor: default;
   ${FLEX_COLUMN_CENTER_CENTER};
+  animation: 1s ${fadeIn} ease-in-out;
 `;
 
 export const MenuBar = styled.div`
