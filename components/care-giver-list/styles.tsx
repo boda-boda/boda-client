@@ -158,7 +158,15 @@ export const ClockInput = styled.input`
   color: ${THEME.GRAY_FONT};
 `;
 
-export const AddButton = styled.div`
+interface PlusMinusButtonProps {
+  hide?: boolean;
+}
+
+export const PlusMinusButtonContainer = styled.div`
+  display: flex;
+`;
+
+export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   width: 36px;
   height: 36px;
   ${FLEX_ROW_CENTER_CENTER};
@@ -168,7 +176,10 @@ export const AddButton = styled.div`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  cursor: pointer;
+  cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
+  background-color: white;
+
+  opacity: ${(props) => (props.hide ? 0 : 1)};
 `;
 
 export const CheckBox = styled.input`
