@@ -106,7 +106,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
-                  <th>연락처</th>
+                  <th>휴대전화</th>
                   <td className="infovalue">
                     <S.TextInput
                       value={careWorker.phoneNumber || ''}
@@ -204,8 +204,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       </S.DropDown>
                     </td>
                     <td>
-                      {careWorkerAreas.length - 1 === businessAreaIndex ? (
-                        <S.AddButton
+                      <S.PlusMinusButtonContainer>
+                        <S.PlusMinusButton
+                          hide={careWorkerAreas.length - 1 !== businessAreaIndex}
+                          disabled={careWorkerAreas.length - 1 !== businessAreaIndex}
                           onClick={() => {
                             setCareWorkerAreas([
                               ...careWorkerAreas,
@@ -214,18 +216,19 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           }}
                         >
                           <PlusIconSVG />
-                        </S.AddButton>
-                      ) : (
-                        <S.AddButton
-                          onClick={() =>
+                        </S.PlusMinusButton>
+                        <S.XGap />
+                        <S.PlusMinusButton
+                          onClick={() => {
+                            if (careWorkerAreas.length === 1) return;
                             setCareWorkerAreas((businessAreas) =>
                               businessAreas.filter((_, i) => i !== businessAreaIndex)
-                            )
-                          }
+                            );
+                          }}
                         >
                           <MinusIconSVG />
-                        </S.AddButton>
-                      )}
+                        </S.PlusMinusButton>
+                      </S.PlusMinusButtonContainer>
                     </td>
                   </tr>
                 ))}
@@ -357,9 +360,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             </S.ClockSelectContainer>
                             까지
                           </S.TdFlexBox>
-
-                          {careWorkerSchedules.length - 1 === scheduleIndex ? (
-                            <S.AddButton
+                          <S.PlusMinusButtonContainer>
+                            <S.PlusMinusButton
+                              hide={careWorkerSchedules.length - 1 !== scheduleIndex}
+                              disabled={careWorkerSchedules.length - 1 !== scheduleIndex}
                               onClick={() => {
                                 setCareWorkerSchedules([
                                   ...careWorkerSchedules,
@@ -368,10 +372,11 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               }}
                             >
                               <PlusIconSVG />
-                            </S.AddButton>
-                          ) : (
-                            <S.AddButton
+                            </S.PlusMinusButton>
+                            <S.XGap />
+                            <S.PlusMinusButton
                               onClick={() => {
+                                if (careWorkerSchedules.length === 1) return;
                                 setCareWorkerSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
                                 );
@@ -379,8 +384,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               }}
                             >
                               <MinusIconSVG />
-                            </S.AddButton>
-                          )}
+                            </S.PlusMinusButton>
+                          </S.PlusMinusButtonContainer>
                         </S.TimeSelectContainer>
                       );
                     })}
@@ -397,7 +402,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <th className="career long">근무지</th>
                   <th className="career">수급자</th>
                   <th className="career">기간</th>
-                  <th className="career right"></th>
+                  <th className="career right">추가/제거</th>
                 </tr>
                 {careWorkerCareers.map((career, careerIndex) => {
                   return (
@@ -457,8 +462,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         />
                       </td>
                       <td className="career right">
-                        {careWorkerCareers.length - 1 === careerIndex ? (
-                          <S.AddButton
+                        <S.PlusMinusButtonContainer>
+                          <S.PlusMinusButton
+                            hide={careWorkerCareers.length - 1 !== careerIndex}
+                            disabled={careWorkerCareers.length - 1 !== careerIndex}
                             onClick={() => {
                               setCareWorkerCareers([
                                 ...careWorkerCareers,
@@ -467,18 +474,19 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             }}
                           >
                             <PlusIconSVG />
-                          </S.AddButton>
-                        ) : (
-                          <S.AddButton
+                          </S.PlusMinusButton>
+                          <S.XGap />
+                          <S.PlusMinusButton
                             onClick={() => {
+                              if (careWorkerCareers.length === 1) return;
                               setCareWorkerCareers((careers) =>
                                 careers.filter((_item, i) => i !== careerIndex)
                               );
                             }}
                           >
                             <MinusIconSVG />
-                          </S.AddButton>
-                        )}
+                          </S.PlusMinusButton>
+                        </S.PlusMinusButtonContainer>
                       </td>
                     </tr>
                   );
