@@ -76,16 +76,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   }, [careWorkers]);
 
   const filterArea = (cws: CareWorker[]) => {
-    const result = cws.filter(
-      (cw: CareWorker) =>
-        cw.careWorkerAreas.length === 0 ||
+    const result = cws.filter((cw: CareWorker) => {
+      if (city === '-1') return true;
+      return (
+        cw.careWorkerAreas.length !== 0 &&
         cw.careWorkerAreas.some(
           (area) =>
-            (area.city === city || city === '-1') &&
-            (area.gu === gu || gu === '-1') &&
-            (area.dong === dong || dong === '-1')
+            area.city === city &&
+            (area.gu === gu || gu === '-1' || !area.gu) &&
+            (area.dong === dong || dong === '-1' || !area.dong)
         )
-    );
+      );
+    });
     return result;
   };
 
