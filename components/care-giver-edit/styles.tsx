@@ -382,7 +382,6 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
   border: 1px solid ${THEME.GRAY_LINE};
-  margin-left: 10px;
 
   user-select: none;
   -ms-user-select: none;
@@ -412,4 +411,8 @@ export const FinishButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
+`;
+
+export const XGap = styled.div`
+  width: 10px;
 `;
