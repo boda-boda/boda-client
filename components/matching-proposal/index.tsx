@@ -151,7 +151,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       <option value="5">5등급</option>
                     </S.DropDown>
                   </td>
-                  <th>나이</th>
+                  <th>생년월일</th>
                   <td className="right">
                     <S.InfoInput></S.InfoInput>
                   </td>

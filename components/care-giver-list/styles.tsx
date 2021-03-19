@@ -26,7 +26,7 @@ interface SectionProps {
 export const Section = styled.div<SectionProps>`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
-  padding: 60px 0;
+  padding: 30px 0;
   background: ${(props) => (props.isBackgroundColored ? THEME.BACKGROUND : 'white')};
 `;
 
@@ -49,13 +49,13 @@ interface TimeSeleceContainerProps {
 
 export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
   ${FLEX_ROW_SPACE_CENTER};
-  padding: 12px;
+  padding: 10px;
   border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
 `;
 
 export const FilterTable = styled.table`
   width: 100%;
-  margin-top: 24px;
+  margin-top: 12px;
   border-top: 2px solid ${THEME.MAIN};
   border-collapse: collapse;
   th,

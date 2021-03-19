@@ -10,6 +10,32 @@ export function useHeader() {
   const [isRequestingLogin, setIsRequestingLogin] = useState(false);
   const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
   const [isLoginModalOn, setIsLoginModalOn] = useState(false);
+  const [contact, setContact] = useState('');
+  const handleContactUpdate = useCallback((e: any) => {
+    setContact(e.target.value);
+  }, []);
+
+  const handleConsultRequest = useCallback(async () => {
+    if (!contact) {
+      alert('연락처를 입력해 주세요.');
+      return;
+    }
+
+    try {
+      await axios.post('/consult', {
+        contact,
+      });
+    } catch (e) {
+      alert(
+        '서버에 오류가 발생하였습니다. 하단의 메일 혹은 전화로 문의 주시면 정말 감사드리겠습니다.'
+      );
+      setIsLoginModalOn(false);
+      return;
+    }
+
+    alert('요청이 완료되었습니다.');
+    setIsLoginModalOn(false);
+  }, [contact]);
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -37,6 +63,7 @@ export function useHeader() {
       type: 'LOGOUT',
     });
     router.replace('/');
+    alert('로그아웃 되었습니다.');
   }, []);
 
   const handleLogin = useCallback(async () => {
@@ -129,31 +156,6 @@ export function useHeader() {
     careCenter,
     setIsLoginModalOn,
     handleMenuClick,
-  };
-}
-
-export function useConsultRequest() {
-  const [contact, setContact] = useState('');
-
-  const handleContactUpdate = useCallback((e: any) => {
-    setContact(e.target.value);
-  }, []);
-
-  const handleConsultRequest = useCallback(async () => {
-    try {
-      await axios.post('/consult', {
-        contact,
-      });
-    } catch (e) {
-      alert(
-        '서버에 오류가 발생하였습니다. 하단의 메일 혹은 전화로 문의 주시면 정말 감사드리겠습니다.'
-      );
-    }
-
-    alert('요청이 완료되었습니다.');
-  }, [contact]);
-
-  return {
     contact,
     handleContactUpdate,
     handleConsultRequest,

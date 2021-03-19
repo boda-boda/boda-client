@@ -46,7 +46,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           CreateCareGiverRequest.allArgsConstructor(
             c.name,
             c.gender !== '남성',
-            c.age,
+            c.birthDay,
             c.phoneNumber,
             c.profile,
             c.address,
@@ -118,7 +118,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleUpdateAge = useCallback(
     (e: any) => {
       const parsedAge = isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value);
-      setCareWorker({ ...careWorker, age: parsedAge });
+      setCareWorker({ ...careWorker, birthDay: parsedAge });
     },
     [careWorker]
   );

@@ -79,10 +79,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       type="text"
                     />
                   </td>
-                  <th>나이</th>
+                  <th>생년월일</th>
                   <td className="infovalue">
                     <S.TextInput
-                      value={careWorker.age || ''}
+                      value={careWorker.birthDay || ''}
                       onChange={handleUpdateAge}
                       type="text"
                     />

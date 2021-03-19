@@ -2,7 +2,7 @@ export default class CreateCareGiverRequest {
   public static allArgsConstructor(
     name: string,
     isFemale: boolean,
-    age: number,
+    birthDay: string,
     phoneNumber: string,
     profile: string,
     address: string,
@@ -11,7 +11,7 @@ export default class CreateCareGiverRequest {
     return new CreateCareGiverRequest(
       name,
       isFemale,
-      age,
+      birthDay,
       phoneNumber,
       profile,
       address,
@@ -26,7 +26,7 @@ export default class CreateCareGiverRequest {
   public constructor(
     name: any,
     isFemale: any,
-    age: any,
+    birthDay: any,
     phoneNumber: any,
     profile: any,
     address: any,
@@ -34,7 +34,7 @@ export default class CreateCareGiverRequest {
   ) {
     this.name = name;
     this.isFemale = isFemale;
-    this.age = age;
+    this.birthDay = birthDay;
     this.phoneNumber = phoneNumber;
     this.profile = profile;
     this.address = address;
@@ -43,9 +43,20 @@ export default class CreateCareGiverRequest {
 
   public name: string;
   public isFemale: boolean;
-  public age: number;
+  public birthDay: string;
   public phoneNumber: string;
   public profile: string;
   public address: string;
   public description: string;
+
+  public validate() {}
+
+  private validateBirthDay() {
+    if (this.birthDay.length !== 8) {
+      return '생년월일에 8자리 숫자를 입력해주세요';
+    }
+    if (isNaN(parseInt(this.birthDay))) {
+      return '생년월일에 숫자를 입력해 주세요.';
+    }
+  }
 }

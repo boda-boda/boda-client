@@ -6,6 +6,7 @@ import CareWorkerSingleSchedule from './care-worker-single-schedule';
 export default class CareWorker {
   public address: string;
   public age: number;
+  public birthDay: string;
 
   public careWorkerAreas: BusinessArea[];
   public careWorkerCareers: CareWorkerCareer[];

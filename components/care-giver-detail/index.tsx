@@ -49,8 +49,10 @@ export default function CareGiveDetail() {
                   </td>
                   <th>이름</th>
                   <td className="infovalue">{careWorker.name}</td>
-                  <th>나이</th>
-                  <td className="infovalue">{careWorker.age}세</td>
+                  <th>생년월일</th>
+                  <td className="infovalue">
+                    {careWorker.birthDay} ({careWorker.age}세)
+                  </td>
                 </tr>
                 <tr>
                   <th>성별</th>
@@ -122,7 +124,10 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>요양보호사 스케줄</S.SectionTitle>
+            <S.SectionTitle>
+              요양보호사 스케줄
+              <span>요양보호사의 일정을 기록합니다</span>
+            </S.SectionTitle>
             <S.TimeTable>
               <tbody>
                 <tr>

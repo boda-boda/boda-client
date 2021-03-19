@@ -48,10 +48,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
 
-  useEffect(() => {
-    handleSearch();
-  }, [selectedNameFilter]);
-
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
     newSchedules[selectedDaysIndex].toggleDay(day);
@@ -135,9 +131,19 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     return result;
   };
 
-  const handleSearch = () => {
+  const handleSearchOnClickSearchButton = () => {
+    setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
+    setSelectedNameFilter(-1);
+  };
+
+  const handleSearchOnClickNameFilterItem = () => {
     setFilteredCareWorkers(filterName(filterSchedule(filterCareInfo(filterArea(careWorkers)))));
   };
+
+  useEffect(() => {
+    if (selectedNameFilter === -1) handleSearchOnClickSearchButton();
+    else handleSearchOnClickNameFilterItem();
+  }, [selectedNameFilter]);
 
   return (
     <>
@@ -323,7 +329,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
               <S.FilterButton onClick={handleReset} isReset>
                 초기화
               </S.FilterButton>
-              <S.FilterButton onClick={handleSearch}>검색</S.FilterButton>
+              <S.FilterButton onClick={handleSearchOnClickSearchButton}>검색</S.FilterButton>
             </S.ResetButtonContainer>
           </S.InnerContent>
         </S.Section>
