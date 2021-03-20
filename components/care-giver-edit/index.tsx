@@ -220,7 +220,12 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         <S.XGap />
                         <S.PlusMinusButton
                           onClick={() => {
-                            if (careWorkerAreas.length === 1) return;
+                            if (careWorkerAreas.length === 1) {
+                              setCareWorkerAreas([
+                                ...careWorkerAreas,
+                                BusinessArea.noArgsConstructor(),
+                              ]);
+                            }
                             setCareWorkerAreas((businessAreas) =>
                               businessAreas.filter((_, i) => i !== businessAreaIndex)
                             );
@@ -376,7 +381,12 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                             <S.XGap />
                             <S.PlusMinusButton
                               onClick={() => {
-                                if (careWorkerSchedules.length === 1) return;
+                                if (careWorkerSchedules.length === 1) {
+                                  setCareWorkerSchedules([
+                                    ...careWorkerSchedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }
                                 setCareWorkerSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
                                 );
@@ -478,7 +488,12 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           <S.XGap />
                           <S.PlusMinusButton
                             onClick={() => {
-                              if (careWorkerCareers.length === 1) return;
+                              if (careWorkerCareers.length === 1) {
+                                setCareWorkerCareers([
+                                  ...careWorkerCareers,
+                                  Career.noArgsConstructor(),
+                                ]);
+                              }
                               setCareWorkerCareers((careers) =>
                                 careers.filter((_item, i) => i !== careerIndex)
                               );

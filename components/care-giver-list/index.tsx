@@ -332,7 +332,12 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             </S.PlusMinusButton>
                             <S.PlusMinusButton
                               onClick={() => {
-                                if (schedules.length === 1) return;
+                                if (schedules.length === 1) {
+                                  setSchedules([
+                                    ...schedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }
                                 setSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
                                 );
