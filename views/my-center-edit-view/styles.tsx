@@ -171,6 +171,7 @@ export const CenterImage = styled.div<ImageProps>`
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
   transition: 0.2s ease;
 `;
 export const ButtonContainer = styled.div`
