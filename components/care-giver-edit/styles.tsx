@@ -241,7 +241,7 @@ interface TextInputProps {
 
 export const TextInput = styled.input<TextInputProps>`
   outline: none;
-  width: ${(props) => (props.withButton ? css`calc(100% - 90px)` : props.long ? '100%' : '200px')};
+  width: ${(props) => (props.long ? '100%' : '200px')};
   height: 36px;
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};

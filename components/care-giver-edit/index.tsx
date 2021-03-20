@@ -122,8 +122,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       type="text"
                       value={careWorker.zipCode || ''}
                       readOnly
-                      withButton
                       onClick={openAddressModal}
+                      withButton
                     />
                     <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
                   </td>
