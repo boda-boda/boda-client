@@ -2,12 +2,18 @@ import { AppProps } from 'next/app';
 import { CareCenterProvider } from '../context/care-center';
 import axios from 'axios';
 import Head from 'next/head';
+import { useEffect } from 'react';
+import { disableReactDevTools } from '../common/lib/devtool';
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_HOST;
 axios.defaults.withCredentials = true;
 axios.defaults.headers['Content-Type'] = 'application/json';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    disableReactDevTools();
+  }, []);
+
   return (
     <CareCenterProvider
       careCenter={{
