@@ -79,7 +79,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   }, [careWorkers]);
 
   const filterByLetter = (letters: string[], cwName: string) => {
-    console.log(cwName.length);
     if (letters.length > cwName.length) return false;
 
     return letters.every(
@@ -160,6 +159,12 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const handleSearchOnClickSearchButton = () => {
+    if (schedules.some((a) => !a.isValidSchedule())) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
+      );
+      return;
+    }
     setFilteredCareWorkers(
       filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
     );
@@ -327,7 +332,12 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             </S.PlusMinusButton>
                             <S.PlusMinusButton
                               onClick={() => {
-                                if (schedules.length === 1) return;
+                                if (schedules.length === 1) {
+                                  setSchedules([
+                                    ...schedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }
                                 setSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
                                 );

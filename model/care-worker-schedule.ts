@@ -40,10 +40,9 @@ export default class CareWorkerSchedule {
       this.endMinute === null
     )
       return false;
-
     if (this.startHour > this.endHour) return false;
     if (this.endHour === this.startHour) {
-      if (this.startMinute >= this.endMinute) return false;
+      if (this.startMinute > this.endMinute) return false;
     }
 
     return true;

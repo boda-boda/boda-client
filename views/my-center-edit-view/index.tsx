@@ -223,6 +223,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.zipCode}
                           readOnly
                           onClick={openAddressModal}
+                          withButton
                         />
                         <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
                       </td>

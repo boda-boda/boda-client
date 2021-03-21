@@ -60,7 +60,11 @@ export const MenuItem = styled.div`
   cursor: pointer;
 `;
 
-export const MenuModal = styled.div`
+interface MenuModalProps {
+  isMenuModalOn?: boolean;
+}
+
+export const MenuModal = styled.div<MenuModalProps>`
   position: absolute;
   width: 100%;
   top: 50px;
@@ -73,7 +77,9 @@ export const MenuModal = styled.div`
   font-size: 14px;
   cursor: default;
   ${FLEX_COLUMN_CENTER_CENTER};
-  animation: 1s ${fadeIn} ease-in-out;
+  visibility: ${(props) => (props.isMenuModalOn ? 'visible' : 'hidden')};
+  animation: ${(props) => (props.isMenuModalOn ? fadeIn : fadeOut)} 0.2s linear;
+  transition: visibility 0.2s linear;
 `;
 
 export const MenuBar = styled.div`

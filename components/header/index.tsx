@@ -64,21 +64,19 @@ export default function Header() {
             >
               나의 요양보호사 관리
               {!careCenter.isValidating && careCenter.isLoggedIn && isMenuModalOn[1] ? (
-                <>
-                  <ArrowUp />
-                  <S.MenuModal>
-                    <Link href="/list" passHref>
-                      <S.StyledLink>요양보호사 목록</S.StyledLink>
-                    </Link>
-                    <S.MenuBar />
-                    <Link href="/new" passHref>
-                      <S.StyledLink>요양보호사 추가</S.StyledLink>
-                    </Link>
-                  </S.MenuModal>
-                </>
+                <ArrowUp />
               ) : (
                 <ArrowDown />
               )}
+              <S.MenuModal isMenuModalOn={isMenuModalOn[1]}>
+                <Link href="/list" passHref>
+                  <S.StyledLink>요양보호사 목록</S.StyledLink>
+                </Link>
+                <S.MenuBar />
+                <Link href="/new" passHref>
+                  <S.StyledLink>요양보호사 추가</S.StyledLink>
+                </Link>
+              </S.MenuModal>
             </S.MenuItem>
             {careCenter.isLoggedIn ? (
               <S.MenuItem
@@ -96,20 +94,14 @@ export default function Header() {
                 }}
               >
                 나의 센터 정보
-                {isMenuModalOn[2] ? (
-                  <>
-                    <ArrowUp />
-                    <S.MenuModal>
-                      <Link href="/mycenter" passHref>
-                        <S.StyledLink>나의 센터 정보</S.StyledLink>
-                      </Link>
-                      <S.MenuBar />
-                      <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
-                    </S.MenuModal>
-                  </>
-                ) : (
-                  <ArrowDown />
-                )}
+                {isMenuModalOn[2] ? <ArrowUp /> : <ArrowDown />}
+                <S.MenuModal isMenuModalOn={isMenuModalOn[2]}>
+                  <Link href="/mycenter" passHref>
+                    <S.StyledLink>나의 센터 정보</S.StyledLink>
+                  </Link>
+                  <S.MenuBar />
+                  <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
+                </S.MenuModal>
               </S.MenuItem>
             ) : (
               <S.MenuItem
