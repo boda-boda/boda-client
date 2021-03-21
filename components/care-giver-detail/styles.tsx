@@ -39,7 +39,7 @@ export const SectionTitle = styled.div`
   width : 100%; */
 
   span {
-    color: ${THEME.GRAY_FONT};
+    color: ${THEME.PLACEHOLDER_UNACTIVE};
     font-size: 14px;
     margin-left: 0.5rem;
   }
@@ -114,7 +114,7 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   width: 118px;
   height: 118px;
   border-radius: 10px;
-  background: ${THEME.BACKGROUND};
+  background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;

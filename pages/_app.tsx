@@ -28,6 +28,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           property="og:image"
           content="https://user-images.githubusercontent.com/52532871/111497282-51a2f900-8784-11eb-93ff-1b699a13b582.png"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=1" />
       </Head>
       <Component {...pageProps} />
     </CareCenterProvider>

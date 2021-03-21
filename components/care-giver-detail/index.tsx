@@ -129,7 +129,7 @@ export default function CareGiveDetail() {
           <S.Section>
             <S.SectionTitle>
               요양보호사 스케줄
-              <span>요양보호사의 일정을 기록합니다</span>
+              <span>요양보호사의 일정을 기록합니다.</span>
             </S.SectionTitle>
             <S.TimeTable>
               <tbody>
