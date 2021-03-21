@@ -1,6 +1,6 @@
 import { DayType } from '../common/types/date';
 
-export default class CareWorkerSchedule {
+export class CareWorkerSchedule {
   public static noArgsConstructor() {
     return new CareWorkerSchedule(0, 0, 0, 0);
   }
@@ -27,41 +27,31 @@ export default class CareWorkerSchedule {
     this.endHour = endHour;
     this.endMinute = endMinute;
   }
-
-  public isEmpty() {
-    return this.days.length === 0;
-  }
-
-  public isValidSchedule() {
-    if (
-      this.startHour === null ||
-      this.startMinute === null ||
-      this.endHour === null ||
-      this.endMinute === null
-    )
-      return false;
-    if (this.startHour > this.endHour) return false;
-    if (this.endHour === this.startHour) {
-      if (this.startMinute > this.endMinute) return false;
-    }
-
-    return true;
-  }
-
-  private addDay(day: DayType) {
-    this.days.push(day);
-  }
-
-  public isDayIncluded(day: DayType) {
-    return this.days.includes(day);
-  }
-
-  private removeFromDay(targetDay: DayType) {
-    this.days = this.days.filter((day) => day !== targetDay);
-  }
-
-  public toggleDay(day: DayType) {
-    if (this.days.includes(day)) this.removeFromDay(day);
-    else this.addDay(day);
-  }
 }
+
+export const toggleDayOfCareWorkerSchedule = (
+  careWorkerSchedule: CareWorkerSchedule,
+  day: DayType
+) => {
+  if (careWorkerSchedule.days.includes(day))
+    careWorkerSchedule.days = careWorkerSchedule.days.filter((includedDay) => includedDay !== day);
+  else careWorkerSchedule.days.push(day);
+
+  return careWorkerSchedule;
+};
+
+export const isCareWorkerScheduleValid = (careWorkerSchedule: CareWorkerSchedule) => {
+  if (
+    careWorkerSchedule.startHour === null ||
+    careWorkerSchedule.startMinute === null ||
+    careWorkerSchedule.endHour === null ||
+    careWorkerSchedule.endMinute === null
+  )
+    return false;
+  if (careWorkerSchedule.startHour > careWorkerSchedule.endHour) return false;
+  if (careWorkerSchedule.endHour === careWorkerSchedule.startHour) {
+    if (careWorkerSchedule.startMinute > careWorkerSchedule.endMinute) return false;
+  }
+
+  return true;
+};

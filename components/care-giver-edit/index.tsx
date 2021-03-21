@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import { dayList, careInfoList, seoulGuDong } from '../../constant';
+import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import CareWorkerSchedule from '../../model/care-worker-schedule';
@@ -14,8 +14,8 @@ interface CareGiverEditProps {
 }
 
 const slicedCareInfoList = [];
-for (let i = 0; i < careInfoList.length; i += 5)
-  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
+for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
+  slicedCareInfoList.push(CARE_INFO_LIST.slice(i, i + 5));
 
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
@@ -177,7 +177,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           구 선택
                         </option>
                         {businessArea.city === '서울특별시'
-                          ? seoulGuDong.map((gudong, idx) => (
+                          ? SEOUL_GU_DONG.map((gudong, idx) => (
                               <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
                                 {gudong.gu}
                               </option>
@@ -194,13 +194,13 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         <option value={''}>동 선택</option>
                         {!businessArea.gu
                           ? null
-                          : seoulGuDong
-                              .find((gudong) => gudong.gu === businessArea.gu)
-                              ?.dongs.map((dong, idx) => (
-                                <option key={`${dong}-${idx}`} value={dong}>
-                                  {dong}
-                                </option>
-                              ))}
+                          : SEOUL_GU_DONG.find(
+                              (gudong) => gudong.gu === businessArea.gu
+                            )?.dongs.map((dong, idx) => (
+                              <option key={`${dong}-${idx}`} value={dong}>
+                                {dong}
+                              </option>
+                            ))}
                       </S.DropDown>
                     </td>
                     <td>
@@ -297,10 +297,10 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                           key={`timeselectcontainer-${scheduleIndex}`}
                         >
                           <S.TdFlexBox>
-                            {dayList.map((day) => {
+                            {DAY_LIST.map((day) => {
                               return (
                                 <S.ToggleButton
-                                  isSelected={schedule.isDayIncluded(day)}
+                                  isSelected={schedule.days.includes(day)}
                                   onClick={() => toggleDays(scheduleIndex, day)}
                                   key={`dayListItem-${day}`}
                                 >

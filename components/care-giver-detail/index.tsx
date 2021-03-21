@@ -4,7 +4,7 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { dayList } from '../../constant';
+import { DAY_LIST } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 
@@ -170,7 +170,7 @@ export default function CareGiveDetail() {
                 return (
                   <S.TimeContainer
                     key={`schedule-${scheduleIndex}`}
-                    day={dayList.indexOf(schedule.day as DayType)}
+                    day={DAY_LIST.indexOf(schedule.day as DayType)}
                     startTime={startHour + startMinute / 60}
                     endTime={endHour + endMinute / 60}
                   >
