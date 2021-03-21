@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CareWorker from '../../model/care-worker';
 import * as S from './styles';
 import axios from 'axios';
@@ -29,6 +29,20 @@ export default function CareGiveDetail() {
     })();
   }, [router.query.ID, careCenter]);
 
+  const handleDeleteCareWorker = useCallback(async () => {
+    if (!window.confirm('해당 요양보호사를 삭제하시겠습니까?')) return;
+
+    try {
+      await axios.delete(`/care-worker/${router.query.ID}`);
+    } catch (e) {
+      alert('서버 오류로 삭제에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
+      return;
+    }
+
+    alert('삭제에 성공하였습니다.');
+    router.push('/');
+  }, [router.query.ID]);
+
   return (
     <>
       <S.CareGiverDetail>
@@ -40,6 +54,7 @@ export default function CareGiveDetail() {
                 <S.EditButton>세부정보 수정</S.EditButton>
               </S.StyledLink>
             </Link>
+            <S.DeleteButton onClick={handleDeleteCareWorker}>요양보호사 삭제</S.DeleteButton>
             <S.Table>
               <tbody>
                 <tr>
