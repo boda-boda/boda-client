@@ -6,7 +6,6 @@ export const Layout = styled.div`
   height: 100%;
   min-width: ${CONTENT_WIDTH + 100}px;
   min-height: 100vh;
-  overflow: scroll;
 
   display: flex;
   flex-direction: column;
