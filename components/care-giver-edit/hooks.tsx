@@ -58,12 +58,14 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           )
         );
         setMemo(c.description);
+
         setCareWorkerCapabilities(c.careWorkerMetas.map((meta) => meta.key));
-        setCareWorkerCareers(
-          c.careWorkerCareers.map((career) =>
-            Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
-          )
-        );
+        if (c.careWorkerCareers.length > 0)
+          setCareWorkerCareers(
+            c.careWorkerCareers.map((career) =>
+              Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
+            )
+          );
         if (c.careWorkerAreas.length > 0)
           setCareWorkerAreas(
             c.careWorkerAreas.map((area) =>
