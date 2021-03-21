@@ -7,14 +7,15 @@ import { chunk } from '../../common/lib';
 import { DAY_LIST } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
+import { useCareCenter } from '../../context/care-center';
 
 export default function CareGiveDetail() {
   const router = useRouter();
+  const careCenter = useCareCenter();
   const [careWorker, setCareWorker] = useState(new CareWorker());
 
   useEffect(() => {
-    if (!router.query.ID) {
-      router.push('/list');
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
       return;
     }
 
@@ -26,7 +27,7 @@ export default function CareGiveDetail() {
         router.push('/list');
       }
     })();
-  }, []);
+  }, [router.query.ID, careCenter]);
 
   return (
     <>
