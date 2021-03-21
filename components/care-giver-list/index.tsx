@@ -84,6 +84,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setCity('-1');
     setGu('-1');
     setDong('-1');
+    setSelectedConsonantFilter(-1);
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
     setFilteredCareWorkers(careWorkers);
