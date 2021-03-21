@@ -5,7 +5,7 @@ import * as S from './styles';
 import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
-import CareWorkerSchedule from '../../model/care-worker-schedule';
+import { CareWorkerSchedule } from '../../model/care-worker-schedule';
 import BusinessArea from '../../model/business-area';
 import Career from './model/career';
 
