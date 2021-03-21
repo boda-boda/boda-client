@@ -412,7 +412,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                   <th className="career long">근무지</th>
                   <th className="career">수급자</th>
                   <th className="career">기간</th>
-                  <th className="career right">추가/제거</th>
+                  <th className="career short right">추가/제거</th>
                 </tr>
                 {careWorkerCareers.map((career, careerIndex) => {
                   return (

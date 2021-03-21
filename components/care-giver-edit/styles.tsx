@@ -75,7 +75,10 @@ export const Table = styled.table`
     border-right: 1px solid ${THEME.GRAY_LINE};
   }
   .long {
-    width: 50%;
+    width: 40%;
+  }
+  .short {
+    width: 10%;
   }
   th.career {
     padding: 13px 0;

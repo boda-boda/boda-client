@@ -39,7 +39,7 @@ export const SectionTitle = styled.div`
   width : 100%; */
 
   span {
-    color: ${THEME.GRAY_FONT};
+    color: ${THEME.PLACEHOLDER_UNACTIVE};
     font-size: 14px;
     margin-left: 0.5rem;
   }

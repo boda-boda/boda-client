@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { CONTENT_WIDTH } from '../../constant';
 
 export const Layout = styled.div`
   width: 100%;
@@ -12,6 +13,7 @@ export const Layout = styled.div`
 
 export const ContentWrapper = styled.div`
   width: 100%;
+  min-width: ${CONTENT_WIDTH}px;
   margin-top: 84px;
   display: flex;
   flex-direction: column;
