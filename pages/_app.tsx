@@ -11,7 +11,7 @@ axios.defaults.headers['Content-Type'] = 'application/json';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    disableReactDevTools();
+    if (process.env.NODE_ENV !== 'development') disableReactDevTools();
   }, []);
 
   return (
