@@ -1,4 +1,4 @@
-import { WorkerWomanSmall } from '../../../constant';
+import { WORKER_WOMAN_SMALL_IMAGE_URL } from '../../../constant';
 
 export default class CreateCareGiverRequest {
   public static allArgsConstructor(
@@ -26,7 +26,17 @@ export default class CreateCareGiverRequest {
   }
 
   public static noArgsConstructor() {
-    return new CreateCareGiverRequest('', true, 0, '', WorkerWomanSmall, '', '', '', '');
+    return new CreateCareGiverRequest(
+      '',
+      true,
+      0,
+      '',
+      WORKER_WOMAN_SMALL_IMAGE_URL,
+      '',
+      '',
+      '',
+      ''
+    );
   }
 
   public constructor(

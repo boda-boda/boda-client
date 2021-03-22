@@ -5,27 +5,49 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
-import { dayList, careInfoList, seoulGuDong, nameList, nameAsciiList } from '../../constant';
-import CareWorkerSchedule from '../../model/care-worker-schedule';
+import {
+  DAY_LIST,
+  CARE_INFO_LIST,
+  SEOUL_GU_DONG,
+  KOREAN_CONSONANT_LIST,
+  KOREAN_ASCII_LIST,
+  LOCALSTORAGE_KEY,
+} from '../../constant';
+import {
+  CareWorkerSchedule,
+  isCareWorkerScheduleValid,
+  toggleDayOfCareWorkerSchedule,
+} from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
-import cs from 'date-fns/esm/locale/cs/index.js';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
 }
 
 const slicedCareInfoList = [];
-for (let i = 0; i < careInfoList.length; i += 5)
-  slicedCareInfoList.push(careInfoList.slice(i, i + 5));
+for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
+  slicedCareInfoList.push(CARE_INFO_LIST.slice(i, i + 5));
 
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const careCenter = useCareCenter();
 
+  const [rerender, setRerender] = useState(false);
+
   const [careWorkers, setCareWorkers] = useState([] as CareWorker[]);
   const [filteredCareWorkers, setFilteredCareWorkers] = useState([] as CareWorker[]);
+
+  const [name, setName] = useState('');
+  const [city, setCity] = useState('-1');
+  const [gu, setGu] = useState('-1');
+  const [dong, setDong] = useState('-1');
+  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
+  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
+
+  const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -39,21 +61,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     })();
   }, [careCenter]);
 
-  const [rerender, setRerender] = useState(false);
-
-  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
-  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedNameFilter, setSelectedNameFilter] = useState(-1);
-
-  const [name, setName] = useState('-1');
-
-  const [city, setCity] = useState('-1');
-  const [gu, setGu] = useState('-1');
-  const [dong, setDong] = useState('-1');
-
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
-    newSchedules[selectedDaysIndex].toggleDay(day);
+    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
     setSchedules(newSchedules);
   };
 
@@ -70,9 +80,11 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const handleReset = useCallback(() => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
+    setName('');
     setCity('-1');
     setGu('-1');
     setDong('-1');
+    setSelectedConsonantFilter(-1);
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
     setFilteredCareWorkers(careWorkers);
@@ -83,15 +95,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
     return letters.every(
       (letter, index) =>
-        cwName[index].charCodeAt(0) >= nameAsciiList[nameList.indexOf(letter)][0].charCodeAt(0) &&
-        cwName[index].charCodeAt(0) <= nameAsciiList[nameList.indexOf(letter)][1].charCodeAt(0)
+        cwName[index].charCodeAt(0) >=
+          KOREAN_ASCII_LIST[KOREAN_CONSONANT_LIST.indexOf(letter)][0].charCodeAt(0) &&
+        cwName[index].charCodeAt(0) <=
+          KOREAN_ASCII_LIST[KOREAN_CONSONANT_LIST.indexOf(letter)][1].charCodeAt(0)
     );
   };
 
   const filterName = (cws: CareWorker[]) => {
     const result = cws.filter((cw: CareWorker) => {
       if (name === '-1') return true;
-      if (name.split('').every((letter) => nameList.includes(letter))) {
+      if (name.split('').every((letter) => KOREAN_CONSONANT_LIST.includes(letter))) {
         return filterByLetter(name.split(''), cw.name);
       }
       if (name.length > cw.name.length) return false;
@@ -149,17 +163,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const filterNameByLetter = (cws: CareWorker[]) => {
-    if (selectedNameFilter === -1) return cws;
+    if (selectedConsonantFilter === -1) return cws;
     const result = cws.filter(
       (cw: CareWorker) =>
-        cw.name[0].charCodeAt(0) >= nameAsciiList[selectedNameFilter][0].charCodeAt(0) &&
-        cw.name[0].charCodeAt(0) <= nameAsciiList[selectedNameFilter][1].charCodeAt(0)
+        cw.name[0].charCodeAt(0) >= KOREAN_ASCII_LIST[selectedConsonantFilter][0].charCodeAt(0) &&
+        cw.name[0].charCodeAt(0) <= KOREAN_ASCII_LIST[selectedConsonantFilter][1].charCodeAt(0)
     );
     return result;
   };
 
   const handleSearchOnClickSearchButton = () => {
-    if (schedules.some((a) => !a.isValidSchedule())) {
+    if (schedules.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
@@ -168,19 +182,43 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setFilteredCareWorkers(
       filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
     );
-    setSelectedNameFilter(-1);
+    setSelectedConsonantFilter(-1);
   };
 
-  const handleSearchOnClickNameFilterItem = () => {
+  const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
-      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(careWorkers))))
+      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
     );
   };
 
   useEffect(() => {
-    if (selectedNameFilter === -1) handleSearchOnClickSearchButton();
-    else handleSearchOnClickNameFilterItem();
-  }, [selectedNameFilter]);
+    if (selectedConsonantFilter === -1) handleSearchOnClickSearchButton();
+    else handleSearchOnClickConsonantFilterItem();
+  }, [selectedConsonantFilter, isLocalStorageLoaded]);
+
+  // 로컬 스토리지에
+  // prettier-ignore
+  useEffect(() => {
+    if(!filteredCareWorkers.length || isLocalStorageLoaded) return; // 이미 가져왔으면 안 함, careWorker가 없는 상황에는 안함
+    const savedSearchParams = localStorage.getItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
+    if (savedSearchParams === null) return; // 저장된게 없으면 안 가져옴 (오류 방지)
+
+    const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter } = JSON.parse(savedSearchParams) as any;
+    setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter)
+    setIsLocalStorageLoaded(true);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
+
+  // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
+  useEffect(() => {
+    if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
+
+    const timeout = setTimeout(() => {
+      localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+        name,city,gu,dong,schedules,selectedCareInfo, selectedConsonantFilter
+      })) // prettier-ignore
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, rerender]);
 
   return (
     <>
@@ -194,6 +232,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   <th>이름</th>
                   <td>
                     <S.TextInput
+                      value={name}
                       onKeyPress={(e: any) => {
                         if (e.key === 'Enter') {
                           handleSearchOnClickSearchButton();
@@ -208,33 +247,41 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
                   <th>지역</th>
                   <td>
-                    <S.DropDown onChange={(e) => setCity(e.target.value)} defaultValue="">
+                    <S.DropDown
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      defaultValue=""
+                    >
                       <option value="" disabled hidden>
                         시/도 선택
                       </option>
                       <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
-                    <S.DropDown onChange={(e) => setGu(e.target.value)} defaultValue="">
+                    <S.DropDown value={gu} onChange={(e) => setGu(e.target.value)} defaultValue="">
                       <option value="-1">전체</option>
                       {city === '-1'
                         ? null
-                        : seoulGuDong.map((gudong, idx) => (
+                        : SEOUL_GU_DONG.map((gudong, idx) => (
                             <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
                               {gudong.gu}
                             </option>
                           ))}
                     </S.DropDown>
-                    <S.DropDown onChange={(e) => setDong(e.target.value)} defaultValue="">
+                    <S.DropDown
+                      value={dong}
+                      onChange={(e) => setDong(e.target.value)}
+                      defaultValue=""
+                    >
                       <option value="-1">전체</option>
                       {gu === '-1'
                         ? null
-                        : seoulGuDong
-                            .find((gudong) => gudong.gu === gu)
-                            ?.dongs.map((dong, idx) => (
+                        : SEOUL_GU_DONG.find((gudong) => gudong.gu === gu)?.dongs.map(
+                            (dong, idx) => (
                               <option key={`${dong}-${idx}`} value={dong}>
                                 {dong}
                               </option>
-                            ))}
+                            )
+                          )}
                     </S.DropDown>
                   </td>
                 </tr>
@@ -248,10 +295,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           key={`timeselectcontainer-${scheduleIndex}`}
                         >
                           <S.TdFlexBox>
-                            {dayList.map((day) => {
+                            {DAY_LIST.map((day) => {
                               return (
                                 <S.ToggleButton
-                                  isSelected={schedule.isDayIncluded(day)}
+                                  isSelected={schedule.days.includes(day)}
                                   className="square"
                                   onClick={() => toggleDays(scheduleIndex, day)}
                                   key={`dayListItem-${day}`}
@@ -395,28 +442,28 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
         <S.Section isBackgroundColored={true}>
           <S.InnerContent>
             <S.SectionTitle>검색 결과</S.SectionTitle>
-            <S.NameFilterList>
-              <S.NameFilterItem
-                isClicked={selectedNameFilter === -1}
+            <S.ConsonantFilterList>
+              <S.ConsonantFilterItem
+                isClicked={selectedConsonantFilter === -1}
                 onClick={() => {
-                  setSelectedNameFilter(-1);
+                  setSelectedConsonantFilter(-1);
                 }}
                 isLeft
               >
                 전체
-              </S.NameFilterItem>
-              {nameList.map((name, nameIndex) => (
-                <S.NameFilterItem
+              </S.ConsonantFilterItem>
+              {KOREAN_CONSONANT_LIST.map((name, nameIndex) => (
+                <S.ConsonantFilterItem
                   key={`name-${nameIndex}`}
-                  isClicked={selectedNameFilter === nameIndex}
+                  isClicked={selectedConsonantFilter === nameIndex}
                   onClick={() => {
-                    setSelectedNameFilter(nameIndex);
+                    setSelectedConsonantFilter(nameIndex);
                   }}
                 >
                   {name}
-                </S.NameFilterItem>
+                </S.ConsonantFilterItem>
               ))}
-            </S.NameFilterList>
+            </S.ConsonantFilterList>
             <S.CardList>
               {filteredCareWorkers.map((worker, idx) => (
                 <Link

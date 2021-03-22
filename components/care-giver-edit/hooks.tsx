@@ -1,14 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DayType } from '../../common/types/date';
 import BusinessArea from '../../model/business-area';
-import CareWorkerSchedule from '../../model/care-worker-schedule';
+import {
+  CareWorkerSchedule,
+  toggleDayOfCareWorkerSchedule,
+  isCareWorkerScheduleValid,
+} from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateCareGiverRequest from './model/create-care-giver-request';
 import Career from './model/career';
 import { useRouter } from 'next/router';
 import CareWorker from '../../model/care-worker';
 import { useCareCenter } from '../../context/care-center';
-import { WorkerManSmall, WorkerWomanSmall } from '../../constant';
+import { WORKER_MAN_SMALL_IMAGE_URL, WORKER_WOMAN_SMALL_IMAGE_URL } from '../../constant';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -116,7 +120,10 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const handleUpdateGender = useCallback(
     (isFemale: boolean) => () => {
-      if (careWorker.profile !== WorkerManSmall && careWorker.profile !== WorkerWomanSmall) {
+      if (
+        careWorker.profile !== WORKER_MAN_SMALL_IMAGE_URL &&
+        careWorker.profile !== WORKER_WOMAN_SMALL_IMAGE_URL
+      ) {
         setCareWorker({ ...careWorker, isFemale });
         return;
       }
@@ -124,7 +131,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       setCareWorker({
         ...careWorker,
         isFemale,
-        profile: isFemale ? WorkerWomanSmall : WorkerManSmall,
+        profile: isFemale ? WORKER_WOMAN_SMALL_IMAGE_URL : WORKER_MAN_SMALL_IMAGE_URL,
       });
     },
     [careWorker]
@@ -145,7 +152,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...careWorkerSchedules];
-    newSchedules[selectedDaysIndex].toggleDay(day);
+    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
     setCareWorkerSchedules(newSchedules);
   };
 
@@ -193,8 +200,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleClickCreateButton = async () => {
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => !a.isEmpty());
-    if (avilableSchedule.some((a) => !a.isValidSchedule())) {
+    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
+    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
@@ -223,8 +230,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleClickUpdateButton = async () => {
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => !a.isEmpty());
-    if (avilableSchedule.some((a) => !a.isValidSchedule())) {
+    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
+    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );

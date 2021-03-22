@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CareWorker from '../../model/care-worker';
 import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { dayList } from '../../constant';
+import { DAY_LIST } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
+import { useCareCenter } from '../../context/care-center';
 
 export default function CareGiveDetail() {
   const router = useRouter();
+  const careCenter = useCareCenter();
   const [careWorker, setCareWorker] = useState(new CareWorker());
 
   useEffect(() => {
-    if (!router.query.ID) {
-      router.push('/list');
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
       return;
     }
 
@@ -26,7 +27,21 @@ export default function CareGiveDetail() {
         router.push('/list');
       }
     })();
-  }, []);
+  }, [router.query.ID, careCenter]);
+
+  const handleDeleteCareWorker = useCallback(async () => {
+    if (!window.confirm('해당 요양보호사를 삭제하시겠습니까?')) return;
+
+    try {
+      await axios.delete(`/care-worker/${router.query.ID}`);
+    } catch (e) {
+      alert('서버 오류로 삭제에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
+      return;
+    }
+
+    alert('삭제에 성공하였습니다.');
+    router.push('/');
+  }, [router.query.ID]);
 
   return (
     <>
@@ -39,6 +54,7 @@ export default function CareGiveDetail() {
                 <S.EditButton>세부정보 수정</S.EditButton>
               </S.StyledLink>
             </Link>
+            <S.DeleteButton onClick={handleDeleteCareWorker}>요양보호사 삭제</S.DeleteButton>
             <S.Table>
               <tbody>
                 <tr>
@@ -170,7 +186,7 @@ export default function CareGiveDetail() {
                 return (
                   <S.TimeContainer
                     key={`schedule-${scheduleIndex}`}
-                    day={dayList.indexOf(schedule.day as DayType)}
+                    day={DAY_LIST.indexOf(schedule.day as DayType)}
                     startTime={startHour + startMinute / 60}
                     endTime={endHour + endMinute / 60}
                   >

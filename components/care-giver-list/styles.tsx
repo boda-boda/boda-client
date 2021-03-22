@@ -332,7 +332,7 @@ export const StyledLink = styled.span`
   text-decoration: none;
 `;
 
-export const NameFilterList = styled.div`
+export const ConsonantFilterList = styled.div`
   width: 100%;
   height: 40px;
   margin-top: 20px;
@@ -345,7 +345,7 @@ interface NameFilterItemProps {
   isLeft?: boolean;
 }
 
-export const NameFilterItem = styled.div<NameFilterItemProps>`
+export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
   border-left: ${(props) => !props.isLeft && 'none'};
   border-bottom: none;
