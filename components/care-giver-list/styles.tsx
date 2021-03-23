@@ -85,7 +85,13 @@ export const FilterTable = styled.table`
   }
   .innerTable {
     padding: 0;
+    /* border-bottom: none; */
+  }
+  .last {
     border-bottom: none;
+  }
+  .innerTableHeader {
+    padding: 12px 12px;
   }
   table {
     border: none;
