@@ -109,7 +109,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
         return filterByLetter(name.split(''), cw.name);
       }
       if (name.length > cw.name.length) return false;
-      return name.split('').every((letter, index) => letter === cw.name[index]);
+      return cw.name.includes(name);
     });
     return result;
   };
@@ -201,8 +201,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   useEffect(() => {
     if(!filteredCareWorkers.length || isLocalStorageLoaded) return; // 이미 가져왔으면 안 함, careWorker가 없는 상황에는 안함
     const savedSearchParams = localStorage.getItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
-    if (savedSearchParams === null) return; // 저장된게 없으면 안 가져옴 (오류 방지)
-
+    if (savedSearchParams === null) {
+      setIsLocalStorageLoaded(true);
+      return; // 저장된게 없으면 안 가져옴 (오류 방지)
+    }
     const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter } = JSON.parse(savedSearchParams) as any;
     setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter)
     setIsLocalStorageLoaded(true);
