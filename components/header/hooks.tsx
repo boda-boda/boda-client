@@ -146,7 +146,7 @@ export function useHeader() {
 
   const handleSendEmail = async () => {
     try {
-      await axios.post(`/auth/reset-password`, {
+      await axios.post(`/auth/reset-password/email`, {
         email: forgotEmail,
       });
       alert('이메일을 발송했습니다. 메일함을 확인해주세요.');

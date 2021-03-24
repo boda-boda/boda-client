@@ -4,8 +4,17 @@ import Banner from '../../components/banner';
 import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
+import { useResetPassword } from './hooks';
 
 export default function ResetPassword() {
+  const {
+    password,
+    checkPassword,
+    onChangePassword,
+    onClickResetPassword,
+    onChangeCheckPassword,
+  } = useResetPassword();
+
   return (
     <>
       <Head>
@@ -28,9 +37,19 @@ export default function ResetPassword() {
                 안전한 이용을 위해 알파벳, 숫자, 특수문자(!, @, #, * 등)가 혼합된 10자 이상의
                 비밀번호 설정을 권장합니다.
               </S.Text>
-              <S.StringInput type="password" placeholder="새 비밀번호" />
-              <S.StringInput type="password" placeholder="새 비밀번호 확인" />
-              <S.SubmitButton>확인</S.SubmitButton>
+              <S.StringInput
+                value={password}
+                onChange={onChangePassword}
+                type="password"
+                placeholder="새 비밀번호"
+              />
+              <S.StringInput
+                value={checkPassword}
+                onChange={onChangeCheckPassword}
+                type="password"
+                placeholder="새 비밀번호 확인"
+              />
+              <S.SubmitButton onClick={onClickResetPassword}>확인</S.SubmitButton>
             </S.ResetPassword>
           </S.InnerContent>
         </>
