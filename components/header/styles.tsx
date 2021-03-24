@@ -160,11 +160,28 @@ export const LoginModalText = styled.div`
   color: ${THEME.GRAY_FONT};
 `;
 
+export const ForgotPasswordText = styled.div`
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 500;
+  color: ${THEME.GRAY_FONT};
+  cursor: pointer;
+  span {
+    font-weight: 800;
+    font-size: 12px;
+    color: ${THEME.MAIN};
+    margin-right: 5px;
+  }
+  :hover {
+    text-decoration: underline;
+  }
+`;
+
 export const LoginModalBar = styled.div`
   width: 100%;
   height: 1px;
   border-bottom: 1px solid ${THEME.GRAY_LINE};
-  margin: 40px 0;
+  margin: 30px 0;
 `;
 
 export const LoginModalButton = styled.button`

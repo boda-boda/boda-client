@@ -24,6 +24,11 @@ export default function Header() {
     contact,
     handleContactUpdate,
     handleConsultRequest,
+    forgotPassword,
+    setForgotPassword,
+    forgotEmail,
+    setForgotEmail,
+    handleSendEmail,
   } = useHeader();
 
   return (
@@ -123,30 +128,60 @@ export default function Header() {
                 onClick={() => setIsLoginModalOn(false)}
               />
               <S.LoginModalInnerContent>
-                <S.LoginModalTitle>로그인 및 이용 신청</S.LoginModalTitle>
-                <S.LoginModalSubtitle>
-                  <span>보다</span>의 회원이신가요?
-                </S.LoginModalSubtitle>
-                <S.StringInput
-                  value={name}
-                  onKeyDown={handlePressEnter}
-                  onChange={updateUsername}
-                  placeholder="아이디 입력"
-                />
-                <S.StringInput
-                  value={password}
-                  onChange={updatePassword}
-                  onKeyDown={handlePressEnter}
-                  type="password"
-                  placeholder="비밀번호 입력"
-                />
-                <div style={{ marginBottom: '21px' }}>
-                  <input type="checkbox" id="login-save" />
-                  <S.LoginSaveLabel htmlFor="login-save">자동 로그인</S.LoginSaveLabel>
-                </div>
-                <S.LoginModalButton disabled={isRequestingLogin} onClick={handleLogin}>
-                  로그인
-                </S.LoginModalButton>
+                {forgotPassword ? (
+                  <>
+                    <S.LoginModalTitle>로그인 및 이용 신청</S.LoginModalTitle>
+                    <S.LoginModalSubtitle>
+                      <span>비밀번호</span>를 잊어버리셨나요?
+                    </S.LoginModalSubtitle>
+                    <S.LoginModalText>
+                      회원가입하신 이메일을 입력해주세요.
+                      <br />
+                      비밀번호를 재설정할 수 있는 링크를 보내드립니다.
+                    </S.LoginModalText>
+                    <S.StringInput
+                      value={forgotEmail}
+                      onChange={(e) => {
+                        setForgotEmail(e.target.value);
+                      }}
+                      placeholder="이메일 입력"
+                    />
+                    <S.LoginModalButton onClick={handleSendEmail}>확인</S.LoginModalButton>
+                    <S.ForgotPasswordText onClick={() => setForgotPassword(false)}>
+                      <span>{'>'}</span>로그인하러 가기
+                    </S.ForgotPasswordText>
+                  </>
+                ) : (
+                  <>
+                    <S.LoginModalTitle>로그인 및 이용 신청</S.LoginModalTitle>
+                    <S.LoginModalSubtitle>
+                      <span>보다</span>의 회원이신가요?
+                    </S.LoginModalSubtitle>
+                    <S.StringInput
+                      value={name}
+                      onKeyDown={handlePressEnter}
+                      onChange={updateUsername}
+                      placeholder="아이디 입력"
+                    />
+                    <S.StringInput
+                      value={password}
+                      onChange={updatePassword}
+                      onKeyDown={handlePressEnter}
+                      type="password"
+                      placeholder="비밀번호 입력"
+                    />
+                    <div style={{ marginBottom: '21px' }}>
+                      <input type="checkbox" id="login-save" />
+                      <S.LoginSaveLabel htmlFor="login-save">자동 로그인</S.LoginSaveLabel>
+                    </div>
+                    <S.LoginModalButton disabled={isRequestingLogin} onClick={handleLogin}>
+                      로그인
+                    </S.LoginModalButton>
+                    <S.ForgotPasswordText onClick={() => setForgotPassword(true)}>
+                      <span>!</span>비밀번호를 잊어버리셨나요?
+                    </S.ForgotPasswordText>
+                  </>
+                )}
                 <S.LoginModalBar />
                 <S.LoginModalSubtitle>
                   <span>보다</span>가 처음이신가요?
