@@ -131,11 +131,34 @@ export default function CareGiveDetail() {
                   <td className="personality">
                     <S.AvailabilityInfoList>
                       {careWorker.careWorkerMetas &&
-                        careWorker.careWorkerMetas.map((meta, i) => (
-                          <S.AvailabilityInfoItem key={`${meta}-${i}`}>
-                            {meta.key}
-                          </S.AvailabilityInfoItem>
-                        ))}
+                        careWorker.careWorkerMetas
+                          .filter((meta) => meta.type === 'Capability')
+                          .map((meta, i) => (
+                            <S.AvailabilityInfoItem key={`${meta}-${i}`}>
+                              {meta.key}
+                            </S.AvailabilityInfoItem>
+                          ))}
+                    </S.AvailabilityInfoList>
+                  </td>
+                </tr>
+              </tbody>
+            </S.Table>
+          </S.Section>
+          <S.Section>
+            <S.SectionTitle>종교</S.SectionTitle>
+            <S.Table>
+              <tbody>
+                <tr>
+                  <td className="personality">
+                    <S.AvailabilityInfoList>
+                      {careWorker.careWorkerMetas &&
+                        careWorker.careWorkerMetas
+                          .filter((meta) => meta.type === 'Religion')
+                          .map((meta, i) => (
+                            <S.AvailabilityInfoItem key={`${meta}-${i}`}>
+                              {meta.key}
+                            </S.AvailabilityInfoItem>
+                          ))}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG } from '../../constant';
+import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG, RELIGION_LIST } from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import { CareWorkerSchedule } from '../../model/care-worker-schedule';
@@ -17,6 +17,10 @@ const slicedCareInfoList = [];
 for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
   slicedCareInfoList.push(CARE_INFO_LIST.slice(i, i + 5));
 
+const slicedReligionList = [];
+for (let i = 0; i < RELIGION_LIST.length; i += 5)
+  slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
+
 export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
   const {
@@ -29,7 +33,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setCareWorkerCareers,
     careWorkerSchedules,
     careWorkerCapabilities,
+    careWorkerReligions,
     toggleCapability,
+    toggleReligion,
     setCareWorkerSchedules,
     toggleDays,
     openAddressModal,
@@ -274,6 +280,31 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               type="checkbox"
                               checked={careWorkerCapabilities.includes(careInfo)}
                               onChange={() => toggleCapability(careInfo)}
+                            />
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </S.Table>
+          </S.Section>
+          <S.Section>
+            <S.SectionTitle>종교</S.SectionTitle>
+            <S.Table>
+              <tbody>
+                {slicedReligionList.map((slicedReligion, row) => {
+                  return (
+                    <tr key={`${row}`}>
+                      {slicedReligion.map((religion, index) => {
+                        return (
+                          <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
+                            {religion}
+                            <S.CheckBox
+                              type="checkbox"
+                              checked={careWorkerReligions.includes(religion)}
+                              onChange={() => toggleReligion(religion)}
                             />
                           </td>
                         );
