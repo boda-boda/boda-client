@@ -20,9 +20,7 @@ export default function Main() {
         <title>돌봄</title>
       </Head>
       <Layout>
-        <>
-          <Banner bannerStyle={BannerStyleType.AD} />
-        </>
+        <></>
       </Layout>
     </>
   );
