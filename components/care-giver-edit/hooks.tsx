@@ -22,6 +22,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const [careWorker, setCareWorker] = useState(CreateCareGiverRequest.noArgsConstructor());
   const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
+  const [careWorkerReligions, setCareWorkerReligions] = useState([] as string[]);
   const [careWorkerSchedules, setCareWorkerSchedules] = useState([
     CareWorkerSchedule.noArgsConstructor(),
   ]);
@@ -63,7 +64,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         );
         setMemo(c.description);
 
-        setCareWorkerCapabilities(c.careWorkerMetas.map((meta) => meta.key));
+        setCareWorkerCapabilities(
+          c.careWorkerMetas.filter((meta) => meta.type == 'Capability').map((meta) => meta.key)
+        );
+        setCareWorkerReligions(
+          c.careWorkerMetas.filter((meta) => meta.type == 'Religion').map((meta) => meta.key)
+        );
         if (c.careWorkerCareers.length > 0)
           setCareWorkerCareers(
             c.careWorkerCareers.map((career) =>
@@ -166,6 +172,16 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
   };
 
+  const toggleReligion = (religion: string) => {
+    if (careWorkerReligions.includes(religion)) {
+      setCareWorkerReligions((selectedReligion) =>
+        selectedReligion.filter((selected) => selected !== religion)
+      );
+      return;
+    }
+    setCareWorkerReligions([...careWorkerReligions, religion]);
+  };
+
   const onChangeImage = async (e: any) => {
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
@@ -213,6 +229,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       await axios.post('/care-worker', {
         careWorker,
         careWorkerCapabilities,
+        careWorkerReligions,
         careWorkerSchedules: avilableSchedule,
         careWorkerCareers,
         careWorkerAreas,
@@ -244,6 +261,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         id,
         careWorker,
         careWorkerCapabilities,
+        careWorkerReligions,
         careWorkerSchedules: avilableSchedule,
         careWorkerCareers,
         careWorkerAreas,
@@ -267,7 +285,9 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setCareWorkerCareers,
     careWorkerSchedules,
     careWorkerCapabilities,
+    careWorkerReligions,
     toggleCapability,
+    toggleReligion,
     setCareWorkerSchedules,
     toggleDays,
     openAddressModal,

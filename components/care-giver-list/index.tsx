@@ -12,6 +12,7 @@ import {
   KOREAN_CONSONANT_LIST,
   KOREAN_ASCII_LIST,
   LOCALSTORAGE_KEY,
+  RELIGION_LIST,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -31,6 +32,10 @@ const slicedCareInfoList = [];
 for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
   slicedCareInfoList.push(CARE_INFO_LIST.slice(i, i + 5));
 
+const slicedReligionList = [];
+for (let i = 0; i < RELIGION_LIST.length; i += 5)
+  slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
+
 export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const careCenter = useCareCenter();
 
@@ -45,6 +50,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [dong, setDong] = useState('-1');
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
+  const [selectedReligion, setSelectedReligion] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
@@ -77,6 +83,16 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setSelectedCareInfo([...selectedCareInfo, careInfo]);
   };
 
+  const toggleReligion = (religion: string) => {
+    if (selectedReligion.includes(religion)) {
+      setSelectedReligion((selectedReligion) =>
+        selectedReligion.filter((selected) => selected !== religion)
+      );
+      return;
+    }
+    setSelectedReligion([...selectedReligion, religion]);
+  };
+
   const handleReset = useCallback(() => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
@@ -87,6 +103,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     setSelectedConsonantFilter(-1);
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
+    setSelectedReligion([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
@@ -161,7 +178,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     );
     return result;
   };
-
+  const filterReligion = (cws: CareWorker[]) => {
+    const result = cws.filter((cw: CareWorker) =>
+      selectedReligion.every((religion) =>
+        cw.careWorkerMetas
+          .filter((meta) => meta.type === 'Religion')
+          .map((meta) => meta.key)
+          .includes(religion)
+      )
+    );
+    return result;
+  };
   const filterNameByLetter = (cws: CareWorker[]) => {
     if (selectedConsonantFilter === -1) return cws;
     const result = cws.filter(
@@ -180,14 +207,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       return;
     }
     setFilteredCareWorkers(
-      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
+      filterNameByLetter(
+        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+      )
     );
     setSelectedConsonantFilter(-1);
   };
 
   const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
-      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
+      filterNameByLetter(
+        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+      )
     );
   };
 
@@ -401,7 +432,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th rowSpan={2}>가능 조건</th>
+                  <th>가능 조건</th>
                   <td className="innerTable" colSpan={3}>
                     <table>
                       <tbody>
@@ -411,7 +442,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                               {slicedCareInfo.map((careInfo, index) => {
                                 return (
                                   <td
-                                    className={`available ${index === 4 && 'right'}`}
+                                    className={`available ${index === 4 && 'right'} ${
+                                      row === slicedCareInfoList.length - 1 && 'last'
+                                    }`}
                                     key={`${index}`}
                                     onClick={() => toggleCareInfo(careInfo)}
                                   >
@@ -420,6 +453,39 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                       type="checkbox"
                                       checked={selectedCareInfo.includes(careInfo)}
                                       onChange={() => toggleCareInfo(careInfo)}
+                                    />
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <th className="innerTableHeader">종교</th>
+                  <td className="innerTable" colSpan={3}>
+                    <table>
+                      <tbody>
+                        {slicedReligionList.map((slicedReligion, row) => {
+                          return (
+                            <tr key={`${row}`}>
+                              {slicedReligion.map((religion, index) => {
+                                return (
+                                  <td
+                                    className={`available ${index === 4 && 'right'} ${
+                                      row === slicedReligionList.length - 1 && 'last'
+                                    }`}
+                                    key={`${index}`}
+                                    onClick={() => toggleReligion(religion)}
+                                  >
+                                    {religion}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      checked={selectedReligion.includes(religion)}
+                                      onChange={() => toggleReligion(religion)}
                                     />
                                   </td>
                                 );
