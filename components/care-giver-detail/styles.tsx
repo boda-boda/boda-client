@@ -221,8 +221,10 @@ export const EditButton = styled.button`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background: ${THEME.MAIN};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
@@ -240,8 +242,10 @@ export const DeleteButton = styled.button`
   color: ${THEME.RED};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background: ${THEME.RED};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;

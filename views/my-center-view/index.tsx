@@ -9,11 +9,22 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 import Head from 'next/head';
+import { useEditPassword } from './hooks';
 
 export default function MyCenterView() {
   const { careCenter } = useCareCenter();
-
   const [imageIndex, setImageIndex] = useState(0);
+  const {
+    isPasswordModalOn,
+    setPasswordModalOn,
+    password,
+    originalPassword,
+    checkPassword,
+    onChangeOriginalPassword,
+    onChangePassword,
+    onClickEditPassword,
+    onChangeCheckPassword,
+  } = useEditPassword();
 
   return (
     <>
@@ -35,6 +46,9 @@ export default function MyCenterView() {
                 <Link href="mycenter/edit">
                   <S.EditButton>센터정보 수정</S.EditButton>
                 </Link>
+                <S.PasswordEditButton onClick={() => setPasswordModalOn(true)}>
+                  비밀번호 변경
+                </S.PasswordEditButton>
                 <S.SectionTitle>센터 정보</S.SectionTitle>
                 <S.Table>
                   <tbody>
@@ -102,6 +116,38 @@ export default function MyCenterView() {
               </S.Section>
             </S.MyCenterPage>
           </S.InnerContent>
+          {isPasswordModalOn && (
+            <S.PasswordModalLayout>
+              <S.PasswordModal>
+                <S.ResetPassword>
+                  <S.Title>새 비밀번호 설정</S.Title>
+                  <S.Text>
+                    안전한 이용을 위해 알파벳, 숫자, 특수문자(!, @, #, * 등)가 혼합된 10자 이상의
+                    비밀번호 설정을 권장합니다.
+                  </S.Text>
+                  <S.StringInput
+                    value={originalPassword}
+                    onChange={onChangeOriginalPassword}
+                    type="password"
+                    placeholder="현재 비밀번호"
+                  />
+                  <S.StringInput
+                    value={password}
+                    onChange={onChangePassword}
+                    type="password"
+                    placeholder="새 비밀번호"
+                  />
+                  <S.StringInput
+                    value={checkPassword}
+                    onChange={onChangeCheckPassword}
+                    type="password"
+                    placeholder="새 비밀번호 확인"
+                  />
+                  <S.SubmitButton onClick={onClickEditPassword}>확인</S.SubmitButton>
+                </S.ResetPassword>
+              </S.PasswordModal>
+            </S.PasswordModalLayout>
+          )}
         </>
       </Layout>
     </>
