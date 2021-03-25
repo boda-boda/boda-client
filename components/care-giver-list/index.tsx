@@ -182,7 +182,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     const result = cws.filter((cw: CareWorker) =>
       selectedReligion.every((religion) =>
         cw.careWorkerMetas
-          .filter((meta) => meta.type === 'Capability')
+          .filter((meta) => meta.type === 'Religion')
           .map((meta) => meta.key)
           .includes(religion)
       )
@@ -207,14 +207,18 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       return;
     }
     setFilteredCareWorkers(
-      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
+      filterNameByLetter(
+        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+      )
     );
     setSelectedConsonantFilter(-1);
   };
 
   const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
-      filterNameByLetter(filterSchedule(filterCareInfo(filterArea(filterName(careWorkers)))))
+      filterNameByLetter(
+        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+      )
     );
   };
 
@@ -469,9 +473,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           return (
                             <tr key={`${row}`}>
                               {slicedReligion.map((religion, index) => {
-                                {
-                                  console.log(slicedReligion.length);
-                                }
                                 return (
                                   <td
                                     className={`available ${index === 4 && 'right'} ${
