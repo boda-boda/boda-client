@@ -40,6 +40,8 @@ export function useHeader() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
+  const [forgotEmail, setForgotEmail] = useState('');
+
   const careCenter = useCareCenter();
   const careCenterDispatch = useCareCenterDispatch();
 
@@ -142,6 +144,33 @@ export function useHeader() {
     );
   };
 
+  const handleSendEmail = async () => {
+    try {
+      await axios.post(`/auth/reset-password/email`, {
+        email: forgotEmail,
+      });
+      alert('이메일을 발송했습니다. 메일함을 확인해주세요.');
+    } catch (e) {
+      if (e.response) {
+        switch (e.response.status) {
+          case 400:
+            alert('이메일 형식이 잘못되었습니다.');
+            break;
+          case 401:
+            alert('이메일 형식이 잘못되었습니다.');
+            break;
+          case 404:
+            alert('등록되지 않은 이메일입니다.');
+            break;
+          default:
+            alert('서버에 오류가 발생하였습니다. 잠시후 다시 시도해주세요.');
+        }
+      }
+    }
+  };
+
+  const [forgotPassword, setForgotPassword] = useState(false);
+
   return {
     name,
     password,
@@ -159,5 +188,10 @@ export function useHeader() {
     contact,
     handleContactUpdate,
     handleConsultRequest,
+    forgotPassword,
+    setForgotPassword,
+    forgotEmail,
+    setForgotEmail,
+    handleSendEmail,
   };
 }

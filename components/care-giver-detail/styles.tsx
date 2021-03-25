@@ -215,6 +215,7 @@ export const EditButton = styled.button`
   padding: 11px 10px;
   height: 36px;
   border-radius: 3px;
+  outline: none;
   border: 1px solid ${THEME.MAIN};
   background-color: white;
   color: ${THEME.MAIN};
@@ -233,6 +234,7 @@ export const DeleteButton = styled.button`
   padding: 11px 10px;
   height: 36px;
   border-radius: 3px;
+  outline: none;
   border: 1px solid ${THEME.RED};
   background-color: white;
   color: ${THEME.RED};

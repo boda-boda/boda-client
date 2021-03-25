@@ -278,7 +278,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 수정에 성공하였습니다.');
-    router.push('/list');
+    router.push(`/list/${router.query.ID}`);
   };
 
   return {
