@@ -293,6 +293,10 @@ export const AddressButton = styled.button`
   margin-left: 10px;
   background: white;
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 interface TimeSeleceContainerProps {
@@ -442,6 +446,10 @@ export const FinishButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const XGap = styled.div`
