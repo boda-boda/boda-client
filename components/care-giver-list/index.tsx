@@ -283,11 +283,9 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     <S.DropDown
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      defaultValue=""
+                      defaultValue="-1"
                     >
-                      <option value="" disabled hidden>
-                        시/도 선택
-                      </option>
+                      <option value="-1">시/도 선택</option>
                       <option value="서울특별시">서울특별시</option>
                     </S.DropDown>
                     <S.DropDown value={gu} onChange={(e) => setGu(e.target.value)} defaultValue="">
@@ -306,7 +304,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                       defaultValue=""
                     >
                       <option value="-1">전체</option>
-                      {gu === '-1'
+                      {city === '-1' || gu === '-1'
                         ? null
                         : SEOUL_GU_DONG.find((gudong) => gudong.gu === gu)?.dongs.map(
                             (dong, idx) => (
@@ -448,12 +446,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                     key={`${index}`}
                                     onClick={() => toggleCareInfo(careInfo)}
                                   >
-                                    {careInfo}
-                                    <S.CheckBox
-                                      type="checkbox"
-                                      checked={selectedCareInfo.includes(careInfo)}
-                                      onChange={() => toggleCareInfo(careInfo)}
-                                    />
+                                    <div className="hoverDiv">
+                                      {careInfo}
+                                      <S.CheckBox
+                                        type="checkbox"
+                                        checked={selectedCareInfo.includes(careInfo)}
+                                        onChange={() => toggleCareInfo(careInfo)}
+                                      />
+                                    </div>
                                   </td>
                                 );
                               })}
@@ -481,12 +481,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                     key={`${index}`}
                                     onClick={() => toggleReligion(religion)}
                                   >
-                                    {religion}
-                                    <S.CheckBox
-                                      type="checkbox"
-                                      checked={selectedReligion.includes(religion)}
-                                      onChange={() => toggleReligion(religion)}
-                                    />
+                                    <div className="hoverDiv">
+                                      {religion}
+                                      <S.CheckBox
+                                        type="checkbox"
+                                        checked={selectedReligion.includes(religion)}
+                                        onChange={() => toggleReligion(religion)}
+                                      />
+                                    </div>
                                   </td>
                                 );
                               })}
@@ -534,15 +536,15 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
             </S.ConsonantFilterList>
             <S.CardList>
               {filteredCareWorkers.map((worker, idx) => (
-                <Link
-                  key={`worker-${idx}`}
-                  href={{
-                    pathname: '/list/[id]',
-                  }}
-                  as={`/list/${worker.id}`}
-                  passHref
-                >
-                  <S.StyledLink>
+                <S.StyledLink>
+                  <Link
+                    key={`worker-${idx}`}
+                    href={{
+                      pathname: '/list/[id]',
+                    }}
+                    as={`/list/${worker.id}`}
+                    passHref
+                  >
                     <S.Card>
                       <S.ProfileImage src={worker.profile} />
                       <S.InfoContainer>
@@ -572,8 +574,8 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                         </S.InfoRow>
                       </S.InfoContainer>
                     </S.Card>
-                  </S.StyledLink>
-                </Link>
+                  </Link>
+                </S.StyledLink>
               ))}
             </S.CardList>
           </S.InnerContent>

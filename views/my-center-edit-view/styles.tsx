@@ -100,6 +100,10 @@ export const AddressButton = styled.button`
   margin-left: 10px;
   background: white;
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const Section = styled.div`
@@ -142,6 +146,10 @@ export const TextInput = styled.input<TextInputProps>`
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
   cursor: ${(props) => props.withButton && 'pointer'};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -154,6 +162,10 @@ export const TextArea = styled.textarea`
   resize: none;
   overflow-y: hidden;
   color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export const CenterImageContainer = styled.div`
@@ -188,8 +200,12 @@ export const ButtonDiv = styled.div`
   width: 50px;
   height: 50px;
   opacity: 0.25;
-  background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  background-color: ${THEME.PLACEHOLDER_UNACTIVE};
   cursor: pointer;
+  :hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  }
 `;
 
 export const EditButton = styled.div`
@@ -203,12 +219,20 @@ export const EditButton = styled.div`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const EditButton2 = styled(EditButton)`
   color: red;
   border-color: red;
   right: 100px;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const FinishButtonContainer = styled.div`
@@ -230,4 +254,8 @@ export const FinishButton = styled.div`
   font-size: 16px;
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;

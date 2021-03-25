@@ -64,10 +64,12 @@ export const Table = styled.table`
     padding: 0;
   }
   .available {
+    padding: 0;
     border-right: 1px solid ${THEME.GRAY_LINE};
     width: 10%;
     position: relative;
     font-size: 16px;
+    cursor: pointer;
   }
   .career {
     width: 25%;
@@ -91,6 +93,14 @@ export const Table = styled.table`
   }
   .infovalue {
     width: 330px;
+  }
+  .hoverDiv {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    :hover {
+      background-color: ${THEME.HOVER_PURPLE};
+    }
   }
 `;
 
@@ -251,6 +261,10 @@ export const TextInput = styled.input<TextInputProps>`
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
   cursor: ${(props) => props.withButton && 'pointer'};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -263,6 +277,10 @@ export const TextArea = styled.textarea`
   resize: none;
   overflow-y: hidden;
   color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export const AddressButton = styled.button`
@@ -275,6 +293,10 @@ export const AddressButton = styled.button`
   margin-left: 10px;
   background: white;
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 interface TimeSeleceContainerProps {
@@ -347,6 +369,12 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const ClockSelectContainer = styled.div`
@@ -393,6 +421,10 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
   background-color: white;
   opacity: ${(props) => (props.hide ? 0 : 1)};
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const FinishButtonContainer = styled.div`
@@ -414,6 +446,10 @@ export const FinishButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const XGap = styled.div`

@@ -77,8 +77,18 @@ export const FilterTable = styled.table`
     border-right: 1px solid ${THEME.GRAY_LINE};
     width: 10%;
     position: relative;
+    padding: 0;
     font-weight: 400;
     color: ${THEME.GRAY_FONT};
+    cursor: pointer;
+  }
+  .hoverDiv {
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    :hover {
+      background-color: ${THEME.HOVER_PURPLE};
+    }
   }
   .right {
     border-right: none;
@@ -118,6 +128,7 @@ export const DropDown = styled.select`
   outline: none;
   border: 1px solid ${THEME.GRAY_LINE};
   color: ${THEME.GRAY_FONT};
+  cursor: pointer;
   option {
     color: ${THEME.GRAY_FONT};
   }
@@ -141,6 +152,12 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const ClockSelectContainer = styled.div`
@@ -154,6 +171,9 @@ export const ClockSelectContainer = styled.div`
   margin-right: 10px;
   margin-left: 20px;
   outline: none;
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+  }
 `;
 
 export const ClockInput = styled.input`
@@ -172,11 +192,11 @@ export const TextInput = styled.input`
   border: solid 1px ${THEME.GRAY_BORDER};
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
-
-interface PlusMinusButtonProps {
-  hide?: boolean;
-}
 
 export const PlusMinusButtonContainer = styled.div`
   display: flex;
@@ -200,6 +220,10 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
   background-color: white;
   opacity: ${(props) => (props.hide ? 0 : 1)};
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const CheckBox = styled.input`
@@ -233,6 +257,10 @@ export const FilterButton = styled.button<ButtonProps>`
   color: ${(props) => (props.isReset ? THEME.MAIN : 'white')};
   border: ${(props) => (props.isReset ? `1px solid ${THEME.MAIN}` : 'none')};
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const CardList = styled.div`
@@ -252,6 +280,10 @@ export const Card = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   ${FLEX_ROW_SPACE_CENTER};
+  :hover {
+    /* border: solid 1px ${THEME.MAIN}; */
+    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 interface ProfileImageProps {
@@ -362,4 +394,10 @@ export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   transition: 0.2s ease;
   border-radius: 10px 10px 0 0;
   ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;

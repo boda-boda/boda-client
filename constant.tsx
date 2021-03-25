@@ -17,6 +17,7 @@ export const THEME = {
   PLACEHOLDER_ACTIVE_LOCATION_END: '#001d36',
   GRAY_BORDER: '#c4c4c4',
   GRAY_FONT: '#4e515c',
+  HOVER_PURPLE: '#f8f5fa',
 };
 
 export const FLEX_ROW_CENTER_START = `
@@ -180,3 +181,6 @@ export const WORKER_WOMAN_SMALL_IMAGE_URL =
 export const LOCALSTORAGE_KEY = {
   MY_CARE_WORKER_SEARCH_PARAMS: 'MY_CARE_WORKER_SEARCH_PARAMS',
 };
+
+export const CAPABILITY = 'Capability';
+export const RELIGION = 'Religion';

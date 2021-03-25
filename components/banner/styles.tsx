@@ -78,8 +78,13 @@ export const ButtonDiv = styled.div`
   width: 50px;
   height: 50px;
   opacity: 0.25;
-  background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  background-color: ${THEME.PLACEHOLDER_UNACTIVE};
   cursor: pointer;
+  transition: 0.3s;
+  :hover {
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    background-color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  }
 `;
 
 export const IndicatorContainer = styled.div`

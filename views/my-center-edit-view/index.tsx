@@ -235,6 +235,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.address}
                           long
                           readOnly
+                          disabled
                         />
                       </td>
                       <td colSpan={2}>
