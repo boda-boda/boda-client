@@ -221,13 +221,16 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleClickCreateButton = async () => {
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
-    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
+    const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
+    if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
       return;
     }
+
+    const availableAreas = careWorkerAreas.filter((a) => a.city);
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
     setIsRequesting(true);
 
     try {
@@ -235,9 +238,9 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: avilableSchedule,
-        careWorkerCareers,
-        careWorkerAreas,
+        careWorkerSchedules: availableSchedule,
+        careWorkerCareers: availableCareers,
+        careWorkerAreas: availableAreas,
       });
     } catch (e) {
       alert('요양보호사 추가에 실패하였습니다.');
@@ -252,14 +255,16 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleClickUpdateButton = async () => {
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
-    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
+    const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
+    if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
       return;
     }
-    setIsRequesting(true);
+
+    const availableAreas = careWorkerAreas.filter((a) => a.city);
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
 
     try {
       await axios.put('/care-worker', {
@@ -267,9 +272,9 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: avilableSchedule,
-        careWorkerCareers,
-        careWorkerAreas,
+        careWorkerSchedules: availableSchedule,
+        careWorkerCareers: availableCareers,
+        careWorkerAreas: availableAreas,
       });
     } catch (e) {
       alert('요양보호사 수정에 실패하였습니다.');
