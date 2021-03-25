@@ -117,7 +117,11 @@ export default function MyCenterView() {
             </S.MyCenterPage>
           </S.InnerContent>
           {isPasswordModalOn && (
-            <S.PasswordModalLayout>
+            <S.PasswordModalLayout
+              onClick={(e) => {
+                if (e.currentTarget === e.target) setPasswordModalOn(false);
+              }}
+            >
               <S.PasswordModal>
                 <S.ResetPassword>
                   <S.Title>새 비밀번호 설정</S.Title>
