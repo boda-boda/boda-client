@@ -198,7 +198,6 @@ export const StyledLink = styled.a`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
   padding: 15px;
-  transition: 0.3s;
   :hover {
     font-weight: bold;
   }
@@ -208,7 +207,6 @@ export const LogoutButton = styled.div`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
   padding: 15px;
-  transition: 0.3s;
   cursor: pointer;
   :hover {
     font-weight: bold;

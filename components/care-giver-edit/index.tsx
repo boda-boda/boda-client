@@ -136,7 +136,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                 </tr>
                 <tr>
                   <td>
-                    <S.TextInput type="text" value={careWorker.address} long readOnly />
+                    <S.TextInput type="text" value={careWorker.address} long readOnly disabled />
                   </td>
                   <td colSpan={3}>
                     <S.TextInput
@@ -274,13 +274,19 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                     <tr key={`${row}`}>
                       {slicedCareInfo.map((careInfo, index) => {
                         return (
-                          <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
-                            {careInfo}
-                            <S.CheckBox
-                              type="checkbox"
-                              checked={careWorkerCapabilities.includes(careInfo)}
-                              onChange={() => toggleCapability(careInfo)}
-                            />
+                          <td
+                            className={`available ${index === 4 && 'right'}`}
+                            key={`${index}`}
+                            onClick={() => toggleCapability(careInfo)}
+                          >
+                            <div className="hoverDiv">
+                              {careInfo}
+                              <S.CheckBox
+                                type="checkbox"
+                                checked={careWorkerCapabilities.includes(careInfo)}
+                                onChange={() => toggleCapability(careInfo)}
+                              />
+                            </div>
                           </td>
                         );
                       })}
@@ -299,13 +305,19 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                     <tr key={`${row}`}>
                       {slicedReligion.map((religion, index) => {
                         return (
-                          <td className={`available ${index === 4 && 'right'}`} key={`${index}`}>
-                            {religion}
-                            <S.CheckBox
-                              type="checkbox"
-                              checked={careWorkerReligions.includes(religion)}
-                              onChange={() => toggleReligion(religion)}
-                            />
+                          <td
+                            className={`available ${index === 4 && 'right'}`}
+                            key={`${index}`}
+                            onClick={() => toggleReligion(religion)}
+                          >
+                            <div className="hoverDiv">
+                              {religion}
+                              <S.CheckBox
+                                type="checkbox"
+                                checked={careWorkerReligions.includes(religion)}
+                                onChange={() => toggleReligion(religion)}
+                              />
+                            </div>
                           </td>
                         );
                       })}

@@ -198,10 +198,6 @@ export const TextInput = styled.input`
   }
 `;
 
-interface PlusMinusButtonProps {
-  hide?: boolean;
-}
-
 export const PlusMinusButtonContainer = styled.div`
   display: flex;
 `;
