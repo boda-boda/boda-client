@@ -17,6 +17,7 @@ export const THEME = {
   PLACEHOLDER_ACTIVE_LOCATION_END: '#001d36',
   GRAY_BORDER: '#c4c4c4',
   GRAY_FONT: '#4e515c',
+  HOVER_PURPLE: '#f8f5fa',
 };
 
 export const FLEX_ROW_CENTER_START = `

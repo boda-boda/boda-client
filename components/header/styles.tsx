@@ -55,6 +55,12 @@ export const MenuItem = styled.div`
   -webkit-user-select: none;
   -moz-user-select: none;
   cursor: pointer;
+  transition: 0.3s;
+  :hover {
+    font-weight: bold;
+    /* font-size: 17px;
+    margin-left: 32px; */
+  }
 `;
 
 interface MenuModalProps {
@@ -192,11 +198,19 @@ export const StyledLink = styled.a`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
   padding: 15px;
+  transition: 0.3s;
+  :hover {
+    font-weight: bold;
+  }
 `;
 
 export const LogoutButton = styled.div`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
   padding: 15px;
+  transition: 0.3s;
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+  }
 `;
