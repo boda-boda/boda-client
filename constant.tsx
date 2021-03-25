@@ -181,3 +181,6 @@ export const WORKER_WOMAN_SMALL_IMAGE_URL =
 export const LOCALSTORAGE_KEY = {
   MY_CARE_WORKER_SEARCH_PARAMS: 'MY_CARE_WORKER_SEARCH_PARAMS',
 };
+
+export const CAPABILITY = 'Capability';
+export const RELIGION = 'Religion';

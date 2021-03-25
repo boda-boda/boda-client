@@ -4,7 +4,7 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { DAY_LIST } from '../../constant';
+import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
@@ -132,9 +132,9 @@ export default function CareGiveDetail() {
                     <S.AvailabilityInfoList>
                       {careWorker.careWorkerMetas &&
                         careWorker.careWorkerMetas
-                          .filter((meta) => meta.type === 'Capability')
+                          .filter((meta) => meta.type === CAPABILITY)
                           .map((meta, i) => (
-                            <S.AvailabilityInfoItem key={`${meta}-${i}`}>
+                            <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
                               {meta.key}
                             </S.AvailabilityInfoItem>
                           ))}
@@ -153,9 +153,9 @@ export default function CareGiveDetail() {
                     <S.AvailabilityInfoList>
                       {careWorker.careWorkerMetas &&
                         careWorker.careWorkerMetas
-                          .filter((meta) => meta.type === 'Religion')
+                          .filter((meta) => meta.type === RELIGION)
                           .map((meta, i) => (
-                            <S.AvailabilityInfoItem key={`${meta}-${i}`}>
+                            <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
                               {meta.key}
                             </S.AvailabilityInfoItem>
                           ))}

@@ -12,7 +12,12 @@ import Career from './model/career';
 import { useRouter } from 'next/router';
 import CareWorker from '../../model/care-worker';
 import { useCareCenter } from '../../context/care-center';
-import { WORKER_MAN_SMALL_IMAGE_URL, WORKER_WOMAN_SMALL_IMAGE_URL } from '../../constant';
+import {
+  CAPABILITY,
+  RELIGION,
+  WORKER_MAN_SMALL_IMAGE_URL,
+  WORKER_WOMAN_SMALL_IMAGE_URL,
+} from '../../constant';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -65,10 +70,10 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         setMemo(c.description);
 
         setCareWorkerCapabilities(
-          c.careWorkerMetas.filter((meta) => meta.type == 'Capability').map((meta) => meta.key)
+          c.careWorkerMetas.filter((meta) => meta.type == CAPABILITY).map((meta) => meta.key)
         );
         setCareWorkerReligions(
-          c.careWorkerMetas.filter((meta) => meta.type == 'Religion').map((meta) => meta.key)
+          c.careWorkerMetas.filter((meta) => meta.type == RELIGION).map((meta) => meta.key)
         );
         if (c.careWorkerCareers.length > 0)
           setCareWorkerCareers(

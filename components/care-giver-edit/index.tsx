@@ -271,7 +271,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
               <tbody>
                 {slicedCareInfoList.map((slicedCareInfo, row) => {
                   return (
-                    <tr key={`${row}`}>
+                    <tr key={`CareInfo-${row}`}>
                       {slicedCareInfo.map((careInfo, index) => {
                         return (
                           <td
@@ -302,7 +302,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
               <tbody>
                 {slicedReligionList.map((slicedReligion, row) => {
                   return (
-                    <tr key={`${row}`}>
+                    <tr key={`Religion-${row}`}>
                       {slicedReligion.map((religion, index) => {
                         return (
                           <td
