@@ -5,6 +5,7 @@ import {
   CareWorkerSchedule,
   toggleDayOfCareWorkerSchedule,
   isCareWorkerScheduleValid,
+  isCareWorkerScheduleRangeValid,
 } from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateCareGiverRequest from './model/create-care-giver-request';
@@ -248,6 +249,13 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       return;
     }
 
+    if (availableSchedule.some((a) => !isCareWorkerScheduleRangeValid(a))) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n 스케줄은 9시와 18시 사이로 입력해주세요.'
+      );
+      return;
+    }
+
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
@@ -279,6 +287,13 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
+      );
+      return;
+    }
+
+    if (availableSchedule.some((a) => !isCareWorkerScheduleRangeValid(a))) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n 스케줄은 9시와 18시 사이로 입력해주세요.'
       );
       return;
     }

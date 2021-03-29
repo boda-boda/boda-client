@@ -55,3 +55,14 @@ export const isCareWorkerScheduleValid = (careWorkerSchedule: CareWorkerSchedule
 
   return true;
 };
+
+export const isCareWorkerScheduleRangeValid = (careWorkerSchedule: CareWorkerSchedule) => {
+  if (
+    careWorkerSchedule.startHour < 9 ||
+    careWorkerSchedule.endHour > 18 ||
+    (careWorkerSchedule.endHour === 18 && careWorkerSchedule.endMinute > 0)
+  )
+    return false;
+
+  return true;
+};

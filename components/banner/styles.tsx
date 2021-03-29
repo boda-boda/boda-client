@@ -16,7 +16,7 @@ interface BannerProps {
 export const Banner = styled.div<BannerProps>`
   position: relative;
   width: 100%;
-  height: ${(props) => (props.bannerStyle === BannerStyleType.SECTION ? '200px' : '404px')};
+  height: ${(props) => (props.bannerStyle === BannerStyleType.SECTION ? '200px' : '300px')};
   background: ${THEME.HEADER_BACKGROUND};
 `;
 
