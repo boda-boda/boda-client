@@ -156,7 +156,7 @@ export default function Header() {
                   <>
                     <S.LoginModalTitle>로그인 및 이용 신청</S.LoginModalTitle>
                     <S.LoginModalSubtitle>
-                      <span>보다</span>의 회원이신가요?
+                      <span>돌봄</span>의 회원이신가요?
                     </S.LoginModalSubtitle>
                     <S.StringInput
                       value={name}
@@ -185,7 +185,7 @@ export default function Header() {
                 )}
                 <S.LoginModalBar />
                 <S.LoginModalSubtitle>
-                  <span>보다</span>가 처음이신가요?
+                  <span>돌봄</span>이 처음이신가요?
                 </S.LoginModalSubtitle>
                 <S.LoginModalText>
                   아래에 연락처를 남겨 주시면 상담 연락 드리겠습니다.
