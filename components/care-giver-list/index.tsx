@@ -534,50 +534,56 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 </S.ConsonantFilterItem>
               ))}
             </S.ConsonantFilterList>
-            <S.CardList>
-              {filteredCareWorkers.map((worker, idx) => (
-                <S.StyledLink>
-                  <Link
-                    key={`worker-${idx}`}
-                    href={{
-                      pathname: '/list/[id]',
-                    }}
-                    as={`/list/${worker.id}`}
-                    passHref
-                  >
-                    <S.Card>
-                      <S.ProfileImage src={worker.profile} />
-                      <S.InfoContainer>
-                        <S.BasicInfo>
-                          {worker.name} ({worker.age}/{worker.gender[0]})
-                        </S.BasicInfo>
-                        {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
-                        <S.InfoRow>
-                          <S.SVGIconBox>
-                            <PhoneNumberIconSVG />
-                          </S.SVGIconBox>
-                          <S.InfoType>휴대전화</S.InfoType>
-                          <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
-                        </S.InfoRow>
-                        <S.InfoRow>
-                          <S.SVGIconBox>
-                            <CareInfoIconSVG />
-                          </S.SVGIconBox>
-                          <S.InfoType>가능 조건</S.InfoType>
-                          <S.InfoItemList>
-                            {worker.careWorkerMetas.map((meta, index) => {
-                              return (
-                                <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
-                              );
-                            })}
-                          </S.InfoItemList>
-                        </S.InfoRow>
-                      </S.InfoContainer>
-                    </S.Card>
-                  </Link>
-                </S.StyledLink>
-              ))}
-            </S.CardList>
+            {filteredCareWorkers.length === 0 ? (
+              <S.EmptyCardContainer>
+                <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
+              </S.EmptyCardContainer>
+            ) : (
+              <S.CardList>
+                {filteredCareWorkers.map((worker, idx) => (
+                  <S.StyledLink>
+                    <Link
+                      key={`worker-${idx}`}
+                      href={{
+                        pathname: '/list/[id]',
+                      }}
+                      as={`/list/${worker.id}`}
+                      passHref
+                    >
+                      <S.Card>
+                        <S.ProfileImage src={worker.profile} />
+                        <S.InfoContainer>
+                          <S.BasicInfo>
+                            {worker.name} ({worker.age}/{worker.gender[0]})
+                          </S.BasicInfo>
+                          {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
+                          <S.InfoRow>
+                            <S.SVGIconBox>
+                              <PhoneNumberIconSVG />
+                            </S.SVGIconBox>
+                            <S.InfoType>휴대전화</S.InfoType>
+                            <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                          </S.InfoRow>
+                          <S.InfoRow>
+                            <S.SVGIconBox>
+                              <CareInfoIconSVG />
+                            </S.SVGIconBox>
+                            <S.InfoType>가능 조건</S.InfoType>
+                            <S.InfoItemList>
+                              {worker.careWorkerMetas.map((meta, index) => {
+                                return (
+                                  <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
+                                );
+                              })}
+                            </S.InfoItemList>
+                          </S.InfoRow>
+                        </S.InfoContainer>
+                      </S.Card>
+                    </Link>
+                  </S.StyledLink>
+                ))}
+              </S.CardList>
+            )}
           </S.InnerContent>
         </S.Section>
       </S.CgList>

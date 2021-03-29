@@ -289,6 +289,24 @@ export const Card = styled.div`
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
   }
 `;
+export const EmptyCardContainer = styled.div`
+  width: 100%;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  flex-wrap: wrap;
+  margin-top: -6px;
+`;
+export const EmptyCard = styled.div`
+  position: relative;
+  width: 474px;
+  height: 160px;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: white;
+  font-size: 20px;
+  ${FLEX_COLUMN_CENTER_CENTER};
+`;
 
 interface ProfileImageProps {
   src: string;
