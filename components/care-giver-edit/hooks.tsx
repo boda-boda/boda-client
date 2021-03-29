@@ -41,11 +41,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const handleDeleteCurrentAddress = async () => {
     if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
 
-    try {
-      setCareWorker({ ...careWorker, address: '', zipCode: '' });
-    } catch {
-      alert('주소 삭제에 실패하였습니다.');
-    }
+    setCareWorker({ ...careWorker, address: '', zipCode: '' });
   };
 
   useEffect(() => {
