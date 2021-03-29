@@ -24,6 +24,7 @@ export default function MyCenterView() {
     onChangePassword,
     onClickEditPassword,
     onChangeCheckPassword,
+    isUpdatingPassword,
   } = useEditPassword();
 
   return (
@@ -147,7 +148,9 @@ export default function MyCenterView() {
                     type="password"
                     placeholder="새 비밀번호 확인"
                   />
-                  <S.SubmitButton onClick={onClickEditPassword}>확인</S.SubmitButton>
+                  <S.SubmitButton disabled={isUpdatingPassword} onClick={onClickEditPassword}>
+                    확인
+                  </S.SubmitButton>
                 </S.ResetPassword>
               </S.PasswordModal>
             </S.PasswordModalLayout>
