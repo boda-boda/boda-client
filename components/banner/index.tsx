@@ -13,9 +13,9 @@ interface BannerProps {
 
 export default function Banner({ bannerStyle, sectionIndex, title, subtitle }: BannerProps) {
   const adImage = [
-    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/19e59735-2856-4f4f-82e5-64dce914fe34_banner_1.png',
-    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/e70bb710-9654-4ad0-b0fa-99c2b53f8fe5_banner02.png',
-    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/aefa7116-8410-4941-8432-87f8c64fd01e_banner_3.png',
+    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/b5c83ed7-c584-49b6-9fd9-eca99242b7e4_banner_1.png',
+    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/84e26d72-8282-4044-9b98-6e15d2ea0f67_banner_2.png',
+    'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/efad3dba-99b2-4aab-8623-717635cec72e_banner_3.png',
   ];
   const sectionImage = [
     'https://user-images.githubusercontent.com/52532871/107974985-bc80d900-6ffa-11eb-9582-e9be403b60d2.png',
