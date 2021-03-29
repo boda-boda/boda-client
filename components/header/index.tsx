@@ -22,6 +22,7 @@ export default function Header() {
     setIsLoginModalOn,
     handleMenuClick,
     contact,
+    setContact,
     handleContactUpdate,
     handleConsultRequest,
     forgotPassword,
@@ -125,7 +126,11 @@ export default function Header() {
             <S.LoginModal>
               <CloseIconSVG
                 style={{ position: 'absolute', top: '20px', right: '20px', cursor: 'pointer' }}
-                onClick={() => setIsLoginModalOn(false)}
+                onClick={() => {
+                  setIsLoginModalOn(false);
+                  setForgotPassword(false);
+                  setContact('');
+                }}
               />
               <S.LoginModalInnerContent>
                 {forgotPassword ? (

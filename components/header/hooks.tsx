@@ -34,6 +34,7 @@ export function useHeader() {
     }
 
     alert('요청이 완료되었습니다.');
+    setContact('');
     setIsLoginModalOn(false);
   }, [contact]);
 
@@ -186,6 +187,7 @@ export function useHeader() {
     setIsLoginModalOn,
     handleMenuClick,
     contact,
+    setContact,
     handleContactUpdate,
     handleConsultRequest,
     forgotPassword,
