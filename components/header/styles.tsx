@@ -167,19 +167,22 @@ export const LoginModalText = styled.div`
 `;
 
 export const ForgotPasswordText = styled.div`
+  font-weight: 800;
   font-size: 12px;
   margin-top: 10px;
-  font-weight: 500;
-  color: ${THEME.GRAY_FONT};
+  color: ${THEME.MAIN};
+  text-decoration: none;
   cursor: pointer;
-  span {
-    font-weight: 800;
-    font-size: 12px;
-    color: ${THEME.MAIN};
-    margin-right: 5px;
-  }
   :hover {
-    text-decoration: underline;
+    span {
+      text-decoration: underline;
+    }
+  }
+  span {
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: 5px;
+    color: ${THEME.GRAY_FONT};
   }
 `;
 

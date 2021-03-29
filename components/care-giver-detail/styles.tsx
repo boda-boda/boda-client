@@ -28,7 +28,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding: 15px 0px;
+  padding-top: 40px;
+  padding-bottom: 20px;
 `;
 
 export const SectionTitle = styled.div`
@@ -210,7 +211,7 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 13px;
+  top: 33px;
   right: 0;
   padding: 11px 10px;
   height: 36px;
@@ -221,15 +222,17 @@ export const EditButton = styled.button`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background: ${THEME.MAIN};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
 export const DeleteButton = styled.button`
   position: absolute;
-  top: 13px;
+  top: 33px;
   right: 110px;
   padding: 11px 10px;
   height: 36px;
@@ -240,8 +243,10 @@ export const DeleteButton = styled.button`
   color: ${THEME.RED};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background: ${THEME.RED};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;

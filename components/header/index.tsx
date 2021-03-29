@@ -148,7 +148,8 @@ export default function Header() {
                     />
                     <S.LoginModalButton onClick={handleSendEmail}>확인</S.LoginModalButton>
                     <S.ForgotPasswordText onClick={() => setForgotPassword(false)}>
-                      <span>{'>'}</span>로그인하러 가기
+                      {'>'}
+                      <span>로그인하러 가기</span>
                     </S.ForgotPasswordText>
                   </>
                 ) : (
@@ -178,7 +179,7 @@ export default function Header() {
                       로그인
                     </S.LoginModalButton>
                     <S.ForgotPasswordText onClick={() => setForgotPassword(true)}>
-                      <span>!</span>비밀번호를 잊어버리셨나요?
+                      !<span>비밀번호를 잊어버리셨나요?</span>
                     </S.ForgotPasswordText>
                   </>
                 )}
