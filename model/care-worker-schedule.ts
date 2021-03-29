@@ -42,14 +42,6 @@ export const toggleDayOfCareWorkerSchedule = (
 
 export const isCareWorkerScheduleValid = (careWorkerSchedule: CareWorkerSchedule) => {
   if (
-    careWorkerSchedule.startHour === null &&
-    careWorkerSchedule.startMinute === null &&
-    careWorkerSchedule.endHour === null &&
-    careWorkerSchedule.endMinute === null
-  )
-    return true;
-
-  if (
     careWorkerSchedule.startHour === null ||
     careWorkerSchedule.startMinute === null ||
     careWorkerSchedule.endHour === null ||
@@ -57,6 +49,14 @@ export const isCareWorkerScheduleValid = (careWorkerSchedule: CareWorkerSchedule
   )
     return false;
 
+  if (careWorkerSchedule.startHour > careWorkerSchedule.endHour) return false;
+  if (careWorkerSchedule.endHour === careWorkerSchedule.startHour) {
+    if (careWorkerSchedule.startMinute > careWorkerSchedule.endMinute) return false;
+  }
+  return true;
+};
+
+export const isCareWorkerScheduleValidListPage = (careWorkerSchedule: CareWorkerSchedule) => {
   if (careWorkerSchedule.startHour > careWorkerSchedule.endHour) return false;
   if (careWorkerSchedule.endHour === careWorkerSchedule.startHour) {
     if (careWorkerSchedule.startMinute > careWorkerSchedule.endMinute) return false;

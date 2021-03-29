@@ -17,7 +17,7 @@ import {
 } from '../../constant';
 import {
   CareWorkerSchedule,
-  isCareWorkerScheduleValid,
+  isCareWorkerScheduleValidListPage,
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
@@ -201,7 +201,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   };
 
   const handleSearchOnClickSearchButton = () => {
-    if (schedules.some((a) => !isCareWorkerScheduleValid(a))) {
+    if (schedules.some((a) => !isCareWorkerScheduleValidListPage(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
