@@ -67,7 +67,9 @@ export default function CareGiveDetail() {
                   <td className="infovalue">{careWorker.name}</td>
                   <th>생년월일</th>
                   <td className="infovalue">
-                    {careWorker.birthDay ? `${careWorker.birthDay} (${careWorker.age}세)` : ''}
+                    {careWorker.birthDay && careWorker.age
+                      ? `${careWorker.birthDay} (${careWorker.age}세)`
+                      : ''}
                   </td>
                 </tr>
                 <tr>
