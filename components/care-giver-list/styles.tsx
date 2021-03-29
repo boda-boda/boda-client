@@ -297,7 +297,7 @@ export const EmptyCardContainer = styled.div`
 `;
 export const EmptyCard = styled.div`
   position: relative;
-  width: 474px;
+  width: 100%;
   height: 160px;
   padding: 25px;
   border-radius: 10px;
