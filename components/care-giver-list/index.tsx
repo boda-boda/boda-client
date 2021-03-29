@@ -207,6 +207,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       );
       return;
     }
+
     setFilteredCareWorkers(
       filterNameByLetter(
         filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
