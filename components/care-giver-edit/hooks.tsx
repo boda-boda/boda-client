@@ -38,6 +38,16 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
 
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    try {
+      setCareWorker({ ...careWorker, address: '', zipCode: '' });
+    } catch {
+      alert('주소 삭제에 실패하였습니다.');
+    }
+  };
+
   useEffect(() => {
     if (
       isNew ||
@@ -288,6 +298,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   return {
     careWorker,
+    setCareWorker,
     memo,
     careWorkerCareers,
     memoRef,
@@ -310,5 +321,6 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     handleClickUpdateButton,
     handleClickCreateButton,
     isRequesting,
+    handleDeleteCurrentAddress,
   };
 };

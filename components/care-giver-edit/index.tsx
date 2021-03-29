@@ -26,6 +26,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const {
     isRequesting,
     careWorker,
+    setCareWorker,
     memo,
     careWorkerCareers,
     memoRef,
@@ -47,6 +48,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleUpdateCareGiver,
     handleClickUpdateButton,
     handleClickCreateButton,
+    handleDeleteCurrentAddress,
   } = useCareGiverUpsert(isNew);
 
   return (
@@ -135,6 +137,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       withButton
                     />
                     <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
                   </td>
                 </tr>
                 <tr>

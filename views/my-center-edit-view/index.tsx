@@ -38,6 +38,23 @@ export default function MyCenterView() {
     [centerUpdateRequest]
   );
 
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    const id = centerMetaImages[imageIndex]?.id;
+
+    try {
+      setCenterUpdateRequest({
+        ...centerUpdateRequest,
+        zipCode: '',
+        address: '',
+        detailAddress: '',
+      });
+    } catch {
+      alert('주소 삭제에 실패하였습니다.');
+    }
+  };
+
   useEffect(() => {
     if (!careCenter.careCenter) return;
 
@@ -230,6 +247,9 @@ export default function MyCenterView() {
                           withButton
                         />
                         <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                        <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                          주소 초기화
+                        </S.AddressDeleteButton>
                       </td>
                     </tr>
                     <tr>
