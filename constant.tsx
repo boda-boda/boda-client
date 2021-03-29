@@ -166,7 +166,7 @@ export const CARE_INFO_LIST = [
   '간호조무사',
 ];
 
-export const RELIGION_LIST = ['기독교', '불교', '천주교', '무교', '기타'];
+export const RELIGION_LIST = ['기독교', '불교', '천주교', '기타', '무교'];
 
 export const PERSONALITY_INFO_LIST = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
 

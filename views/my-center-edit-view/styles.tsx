@@ -106,6 +106,22 @@ export const AddressButton = styled.button`
   }
 `;
 
+export const AddressDeleteButton = styled.button`
+  outline: none;
+  border: 1px solid red;
+  width: 100px;
+  height: 36px;
+  border-radius: 3px;
+  margin-left: 10px;
+  background: white;
+  color: red;
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
 export const Section = styled.div`
   position: relative;
   width: 100%;
