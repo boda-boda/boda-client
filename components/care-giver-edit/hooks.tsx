@@ -18,6 +18,7 @@ import {
   WORKER_MAN_SMALL_IMAGE_URL,
   WORKER_WOMAN_SMALL_IMAGE_URL,
 } from '../../constant';
+import { validateCareWorker } from '../../common/lib/validate';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -64,7 +65,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           CreateCareGiverRequest.allArgsConstructor(
             c.name,
             c.gender !== '남성',
-            c.birthDay,
+            c.birthDay?.split('-').join(''),
             c.phoneNumber,
             c.profile,
             c.zipCode,
@@ -167,52 +168,64 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
-  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...careWorkerSchedules];
-    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
-    setCareWorkerSchedules(newSchedules);
-  };
+  const toggleDays = useCallback(
+    (selectedDaysIndex: number, day: DayType) => {
+      const newSchedules = [...careWorkerSchedules];
+      toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
+      setCareWorkerSchedules(newSchedules);
+    },
+    [careWorkerSchedules]
+  );
 
-  const toggleCapability = (careInfo: string) => {
-    if (careWorkerCapabilities.includes(careInfo)) {
-      setCareWorkerCapabilities((selectedCareInfo) =>
-        selectedCareInfo.filter((selected) => selected !== careInfo)
-      );
-      return;
-    }
-    setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
-  };
+  const toggleCapability = useCallback(
+    (careInfo: string) => {
+      if (careWorkerCapabilities.includes(careInfo)) {
+        setCareWorkerCapabilities((selectedCareInfo) =>
+          selectedCareInfo.filter((selected) => selected !== careInfo)
+        );
+        return;
+      }
+      setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
+    },
+    [careWorkerCapabilities]
+  );
 
-  const toggleReligion = (religion: string) => {
-    if (careWorkerReligions.includes(religion)) {
-      setCareWorkerReligions((selectedReligion) =>
-        selectedReligion.filter((selected) => selected !== religion)
-      );
-      return;
-    }
-    setCareWorkerReligions([...careWorkerReligions, religion]);
-  };
+  const toggleReligion = useCallback(
+    (religion: string) => {
+      if (careWorkerReligions.includes(religion)) {
+        setCareWorkerReligions((selectedReligion) =>
+          selectedReligion.filter((selected) => selected !== religion)
+        );
+        return;
+      }
+      setCareWorkerReligions([...careWorkerReligions, religion]);
+    },
+    [careWorkerReligions]
+  );
 
-  const onChangeImage = async (e: any) => {
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
+  const onChangeImage = useCallback(
+    async (e: any) => {
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
 
-    try {
-      const axiosInstance = axios.create({
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      try {
+        const axiosInstance = axios.create({
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
 
-      const response = await axiosInstance.post('/care-worker/profile', formData);
-      const url = response.data.Location;
-      setCareWorker({ ...careWorker, profile: url });
-    } catch {
-      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
-    }
-  };
+        const response = await axiosInstance.post('/care-worker/profile', formData);
+        const url = response.data.Location;
+        setCareWorker({ ...careWorker, profile: url });
+      } catch {
+        alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+      }
+    },
+    [careWorker]
+  );
 
-  const openAddressModal = () => {
+  const openAddressModal = useCallback(() => {
     if (!window.daum) {
       alert('주소 검색 서비스 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.');
       return;
@@ -222,10 +235,10 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         setCareWorker({ ...careWorker, address: data.roadAddress, zipCode: data.zonecode });
       },
     }).open();
-  };
+  }, [careWorker]);
 
   const handleClickCreateButton = async () => {
-    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    if (!validateCareWorker(careWorker)) return;
 
     const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
     if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
@@ -235,6 +248,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       return;
     }
 
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
     setIsRequesting(true);
@@ -249,7 +263,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorkerAreas: availableAreas,
       });
     } catch (e) {
-      alert('요양보호사 추가에 실패하였습니다.');
+      alert('요양보호사 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
     }
@@ -259,7 +273,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   };
 
   const handleClickUpdateButton = async () => {
-    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    if (!validateCareWorker(careWorker)) return;
 
     const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
     if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
@@ -269,6 +283,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
       return;
     }
 
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
 
@@ -283,7 +298,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorkerAreas: availableAreas,
       });
     } catch (e) {
-      alert('요양보호사 수정에 실패하였습니다.');
+      alert('요양보호사 수정에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
     }
