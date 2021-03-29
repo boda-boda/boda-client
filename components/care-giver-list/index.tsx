@@ -13,6 +13,7 @@ import {
   KOREAN_ASCII_LIST,
   LOCALSTORAGE_KEY,
   RELIGION_LIST,
+  CAPABILITY,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -569,12 +570,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                               <CareInfoIconSVG />
                             </S.SVGIconBox>
                             <S.InfoType>가능 조건</S.InfoType>
+
                             <S.InfoItemList>
-                              {worker.careWorkerMetas.map((meta, index) => {
-                                return (
-                                  <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
-                                );
-                              })}
+                              {worker.careWorkerMetas
+                                ?.filter((meta) => meta.type === CAPABILITY)
+                                .map((meta, index) => {
+                                  return (
+                                    <S.InfoItem key={`careInfoItem-${index}`}>
+                                      {meta.key}
+                                    </S.InfoItem>
+                                  );
+                                })}
                             </S.InfoItemList>
                           </S.InfoRow>
                         </S.InfoContainer>
