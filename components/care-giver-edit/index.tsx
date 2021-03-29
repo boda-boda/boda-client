@@ -83,6 +83,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.name || ''}
                       onChange={handleUpdateCareGiver('name')}
                       type="text"
+                      placeholder="이름을 입력해주세요"
                     />
                   </td>
                   <th>생년월일</th>
@@ -91,6 +92,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.birthDay || ''}
                       onChange={handleUpdateBirthday}
                       type="text"
+                      placeholder="예시) 19601231"
                     />
                   </td>
                 </tr>
@@ -118,6 +120,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.phoneNumber || ''}
                       onChange={handleUpdateCareGiver('phoneNumber')}
                       type="text"
+                      placeholder="예시) 01012345678"
                     />
                   </td>
                 </tr>
@@ -259,6 +262,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         setMemo(e.target.value);
                         handleUpdateCareGiver('description')(e);
                       }}
+                      placeholder="메모를 입력해주세요"
                     />
                   </td>
                 </tr>
