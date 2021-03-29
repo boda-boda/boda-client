@@ -192,6 +192,10 @@ export const TextInput = styled.input`
   border: solid 1px ${THEME.GRAY_BORDER};
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
   :focus {
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
