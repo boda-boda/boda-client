@@ -420,14 +420,15 @@ export const NeedLogin = styled.div`
   background: rgba(0, 0, 0, 0.1);
   z-index: 1;
   ${FLEX_COLUMN_CENTER_CENTER};
-  margin-top: 10px;
+  top: 5px;
+  left: 0;
 `;
 
 export const NeedLoginModal = styled.div`
-  width: 30rem;
-  height: 10rem;
+  width: 300px;
+  height: 100px;
   background: white;
-  border-radius: 1rem;
+  border-radius: 10px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   color: ${THEME.GRAY_FONT};
   font-size: 22px;
