@@ -27,8 +27,20 @@ interface SectionProps {
 export const Section = styled.div<SectionProps>`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
-  padding: 30px 0;
   background: ${(props) => (props.isBackgroundColored ? THEME.BACKGROUND : 'white')};
+  position: relative;
+`;
+
+interface BlurProps {
+  isBlur?: boolean;
+}
+
+export const InnerSection = styled.div<BlurProps>`
+  width: 100%;
+  height: 100%;
+  padding: 30px 0;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  filter: ${(props) => props.isBlur && `blur(4px)`};
 `;
 
 export const InnerContent = styled.div`
@@ -266,17 +278,12 @@ export const FilterButton = styled.button<ButtonProps>`
 
 export const CardList = styled.div`
   width: 100%;
-  position: relative;
   ${FLEX_ROW_SPACE_CENTER};
   flex-wrap: wrap;
   margin-top: -6px;
 `;
 
-interface CardProps {
-  blur?: boolean;
-}
-
-export const Card = styled.div<CardProps>`
+export const Card = styled.div`
   position: relative;
   width: 474px;
   height: 160px;
@@ -286,7 +293,6 @@ export const Card = styled.div<CardProps>`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   ${FLEX_ROW_SPACE_CENTER};
-  filter: ${(props) => props.blur && `blur(4px)`};
   :hover {
     /* border: solid 1px ${THEME.MAIN}; */
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
@@ -415,23 +421,27 @@ export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
 
 export const NeedLogin = styled.div`
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.1);
   z-index: 1;
+  background-color: rgba(0, 0, 0, 0.1);
   ${FLEX_COLUMN_CENTER_CENTER};
-  top: 5px;
-  left: 0;
 `;
 
 export const NeedLoginModal = styled.div`
-  width: 300px;
-  height: 100px;
+  width: 978px;
+  height: 329px;
   background: white;
   border-radius: 10px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   color: ${THEME.GRAY_FONT};
-  font-size: 22px;
+  font-size: 36px;
   font-weight: 500;
+  padding: 0 250px;
+  text-align: center;
+  word-break: keep-all;
+  filter: blur(0px);
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
