@@ -4,12 +4,13 @@ import {
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
-  FLEX_ROW_CENTER_END,
+  FLEX_ROW_END_END,
   FLEX_ROW_END_CENTER,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
   FLEX_ROW_START_START,
   THEME,
+  FLEX_ROW_START_END,
 } from '../../constant';
 
 export const CgList = styled.div`
@@ -153,10 +154,10 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -moz-user-select: none;
   -webkit-user-select: none;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    color: ${(props) => !props.isSelected && THEME.MAIN};
   }
 `;
 
@@ -265,12 +266,17 @@ export const FilterButton = styled.button<ButtonProps>`
 
 export const CardList = styled.div`
   width: 100%;
+  position: relative;
   ${FLEX_ROW_SPACE_CENTER};
   flex-wrap: wrap;
   margin-top: -6px;
 `;
 
-export const Card = styled.div`
+interface CardProps {
+  blur?: boolean;
+}
+
+export const Card = styled.div<CardProps>`
   position: relative;
   width: 474px;
   height: 160px;
@@ -280,6 +286,7 @@ export const Card = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   ${FLEX_ROW_SPACE_CENTER};
+  filter: ${(props) => props.blur && `blur(4px)`};
   :hover {
     /* border: solid 1px ${THEME.MAIN}; */
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
@@ -340,6 +347,7 @@ export const InfoType = styled.div`
 
 export const InfoValue = styled.div`
   margin-top: -1px;
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const SVGIconBox = styled.div`
@@ -375,7 +383,7 @@ export const ConsonantFilterList = styled.div`
   height: 40px;
   margin-top: 20px;
   border-bottom: 5px solid ${THEME.MAIN};
-  ${FLEX_ROW_CENTER_END};
+  ${FLEX_ROW_START_END};
 `;
 
 interface NameFilterItemProps {
@@ -385,7 +393,8 @@ interface NameFilterItemProps {
 
 export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
-  border-left: ${(props) => !props.isLeft && 'none'};
+  margin-left: ${(props) => !props.isLeft && '-1px'};
+  outline-offset: -1px;
   border-bottom: none;
   height: ${(props) => (props.isClicked ? '40px' : '35px')};
   background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
@@ -395,9 +404,33 @@ export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   border-radius: 10px 10px 0 0;
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  z-index: ${(props) => props.isClicked && 1};
   :hover {
-    font-weight: bold;
+    color: ${(props) => !props.isClicked && THEME.MAIN};
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    border-bottom: none;
+    z-index: 1;
   }
+`;
+
+export const NeedLogin = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  margin-top: 10px;
+`;
+
+export const NeedLoginModal = styled.div`
+  width: 30rem;
+  height: 10rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  color: ${THEME.GRAY_FONT};
+  font-size: 22px;
+  font-weight: 500;
+  ${FLEX_COLUMN_CENTER_CENTER};
 `;
