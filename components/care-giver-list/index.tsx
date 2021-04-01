@@ -274,9 +274,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       setIsLocalStorageLoaded(true);
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
-    const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
-    setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
-    setIsLocalStorageLoaded(true);
+    try { 
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+      setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
+      setIsLocalStorageLoaded(true);
+    }
+    catch {
+      localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
+    }
   }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
