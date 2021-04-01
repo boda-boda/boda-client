@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
+  FLEX_COLUMN_CENTER_END,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_CENTER_END,
@@ -422,4 +423,65 @@ export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
+`;
+
+export const CareWorkersPerPageContainer = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  ${FLEX_COLUMN_CENTER_END}
+`;
+
+export const CareWorkersPerPageDropDown = styled.select`
+  width: 112px;
+  height: 36px;
+  padding: 0 0 0 10px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
+  cursor: pointer;
+  option {
+    color: ${THEME.GRAY_FONT};
+  }
+`;
+
+export const PagenationContainer = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  ${FLEX_ROW_CENTER_CENTER}
+`;
+
+interface PagenationItemProps {
+  isClicked?: boolean;
+  isLeft?: boolean;
+}
+
+export const PagenationItem = styled.div<PagenationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
+  color: ${(props) => (props.isClicked ? 'white' : 'black')};
+  font-size: 14px;
+  padding-bottom: 1px;
+  cursor: pointer;
+  user-select: none;
+  :hover {
+    font-weight: bold;
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const PagenationItemArrow = styled.div<PagenationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  border: 1px solid ${THEME.GRAY_LINE};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  cursor: pointer;
+  user-select: none;
 `;

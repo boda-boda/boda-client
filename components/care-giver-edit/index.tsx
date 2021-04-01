@@ -94,6 +94,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.birthDay || ''}
                       onChange={handleUpdateBirthday}
                       type="text"
+                      maxLength={8}
                       placeholder="예시) 19601231"
                     />
                   </td>
@@ -122,6 +123,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.phoneNumber || ''}
                       onChange={handleUpdateCareGiver('phoneNumber')}
                       type="text"
+                      maxLength={11}
                       placeholder="예시) 01012345678"
                     />
                   </td>

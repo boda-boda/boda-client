@@ -17,6 +17,7 @@ import {
 } from '../../constant';
 import {
   CareWorkerSchedule,
+  isCareWorkerScheduleValid,
   isCareWorkerScheduleValidListPage,
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
@@ -24,6 +25,9 @@ import { DayType } from '../../common/types/date';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
+import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
+import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
+import { range } from '../../common/lib';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -53,8 +57,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
+
+  const indexOfLastCareworker = currentPage * careWorkersPerPage;
+  const indexOfFirstCareworker = indexOfLastCareworker - careWorkersPerPage;
+  const currentPageCareWorkers = filteredCareWorkers.slice(
+    indexOfFirstCareworker,
+    indexOfLastCareworker
+  );
+
+  const getPagenationBarNumbers = useCallback(() => {
+    const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
+
+    if (currentPage > 2 && currentPage < maxPageNumber - 1) {
+      return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
+    } else if (currentPage <= 2) {
+      return range(1, Math.min(maxPageNumber, 5));
+    } else {
+      return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
+    }
+  }, [currentPage, careWorkersPerPage, filteredCareWorkers]);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -238,9 +263,14 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       setIsLocalStorageLoaded(true);
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
-    const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter } = JSON.parse(savedSearchParams) as any;
-    setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter)
-    setIsLocalStorageLoaded(true);
+    try { 
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+      setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
+      setIsLocalStorageLoaded(true);
+    }
+    catch {
+      localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
+    }
   }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
@@ -248,12 +278,31 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
 
     const timeout = setTimeout(() => {
-      localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-        name,city,gu,dong,schedules,selectedCareInfo, selectedConsonantFilter
-      })) // prettier-ignore
+      const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
+
+      if (!availableSchedule.length) {
+        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+        })) // prettier-ignore
+      } else {
+        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+        })) // prettier-ignore
+      }
     }, 500);
     return () => clearTimeout(timeout);
-  }, [name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, rerender]);
+  }, [
+    name,
+    city,
+    gu,
+    dong,
+    schedules,
+    selectedCareInfo,
+    selectedConsonantFilter,
+    currentPage,
+    careWorkersPerPage,
+    rerender,
+  ]);
 
   return (
     <>
@@ -345,24 +394,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <S.ClockSelectContainer>
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.startHour ? schedule.startHour : 0}
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startHour = parseInt(currentHour);
-                                  if (schedule.startHour >= 24) schedule.startHour = 23;
+                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                    schedule.startHour = 23;
+                                  if (schedule.startHour >= 100)
+                                    schedule.startHour = Math.floor(schedule.startHour / 10);
                                   setRerender(!rerender);
                                 }}
                               />
                               시
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.startMinute ? schedule.startMinute : 0}
                                 onChange={(e) => {
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startMinute = parseInt(currentMinute);
-                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
+                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                    schedule.startMinute = 59;
+                                  if (schedule.startMinute >= 100)
+                                    schedule.startMinute = Math.floor(schedule.startMinute / 10);
+
                                   setRerender(!rerender);
                                 }}
                               />
@@ -372,24 +426,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <S.ClockSelectContainer>
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.endHour ? schedule.endHour : 0}
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endHour = parseInt(currentHour);
-                                  if (schedule.endHour >= 24) schedule.endHour = 23;
+                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                    schedule.endHour = 23;
+                                  if (schedule.endHour >= 100)
+                                    schedule.endHour = Math.floor(schedule.endHour / 10);
                                   setRerender(!rerender);
                                 }}
                               />
                               시
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.endMinute ? schedule.endMinute : 0}
                                 onChange={(e) => {
+                                  console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
-                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
+                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                    schedule.endMinute = 59;
+                                  if (schedule.endMinute >= 100)
+                                    schedule.endMinute = Math.floor(schedule.endMinute / 10);
                                   setRerender(!rerender);
                                 }}
                               />
@@ -530,19 +589,32 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   isClicked={selectedConsonantFilter === nameIndex}
                   onClick={() => {
                     setSelectedConsonantFilter(nameIndex);
+                    setCurrentPage(1);
                   }}
                 >
                   {name}
                 </S.ConsonantFilterItem>
               ))}
             </S.ConsonantFilterList>
-            {filteredCareWorkers.length === 0 ? (
+            <S.CareWorkersPerPageContainer>
+              <S.CareWorkersPerPageDropDown
+                value={careWorkersPerPage}
+                onChange={(e) => {
+                  setCareWorkersPerPage(Number(e.target.value) as number);
+                  setCurrentPage(1);
+                }}
+              >
+                <option value="10">10명 씩 보기</option>
+                <option value="20">20명 씩 보기</option>
+              </S.CareWorkersPerPageDropDown>
+            </S.CareWorkersPerPageContainer>
+            {currentPageCareWorkers.length === 0 ? (
               <S.EmptyCardContainer>
                 <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
               </S.EmptyCardContainer>
             ) : (
               <S.CardList>
-                {filteredCareWorkers.map((worker, idx) => (
+                {currentPageCareWorkers.map((worker, idx) => (
                   <S.StyledLink>
                     <Link
                       key={`worker-${idx}`}
@@ -589,6 +661,36 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     </Link>
                   </S.StyledLink>
                 ))}
+                <S.PagenationContainer>
+                  <S.PagenationItem
+                    isLeft
+                    key={'first-page-btn'}
+                    onClick={() => {
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <DoubleArrowLeftSVG />
+                  </S.PagenationItem>
+                  {getPagenationBarNumbers().map((pageNumber) => (
+                    <S.PagenationItem
+                      key={`page-${pageNumber}`}
+                      onClick={() => {
+                        setCurrentPage(pageNumber as number);
+                      }}
+                      isClicked={currentPage === pageNumber}
+                    >
+                      {pageNumber}
+                    </S.PagenationItem>
+                  ))}
+                  <S.PagenationItem key={'last-page-btn'}>
+                    <DoubleArrowRightSVG
+                      key={'last-page-btn'}
+                      onClick={() => {
+                        setCurrentPage(Math.ceil(filteredCareWorkers.length / careWorkersPerPage));
+                      }}
+                    />
+                  </S.PagenationItem>
+                </S.PagenationContainer>
               </S.CardList>
             )}
           </S.InnerContent>
