@@ -17,6 +17,7 @@ import {
 } from '../../constant';
 import {
   CareWorkerSchedule,
+  isCareWorkerScheduleValid,
   isCareWorkerScheduleValidListPage,
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
@@ -277,9 +278,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
 
     const timeout = setTimeout(() => {
-      localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-        name,city,gu,dong,schedules,selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
-      })) // prettier-ignore
+      const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
+
+      if (!availableSchedule.length) {
+        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+        })) // prettier-ignore
+      } else {
+        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+        })) // prettier-ignore
+      }
     }, 500);
     return () => clearTimeout(timeout);
   }, [
@@ -385,24 +394,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <S.ClockSelectContainer>
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.startHour ? schedule.startHour : 0}
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startHour = parseInt(currentHour);
-                                  if (schedule.startHour >= 24) schedule.startHour = 23;
+                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                    schedule.startHour = 23;
+                                  if (schedule.startHour >= 100)
+                                    schedule.startHour = Math.floor(schedule.startHour / 10);
                                   setRerender(!rerender);
                                 }}
                               />
                               시
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.startMinute ? schedule.startMinute : 0}
                                 onChange={(e) => {
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startMinute = parseInt(currentMinute);
-                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
+                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                    schedule.startMinute = 59;
+                                  if (schedule.startMinute >= 100)
+                                    schedule.startMinute = Math.floor(schedule.startMinute / 10);
+
                                   setRerender(!rerender);
                                 }}
                               />
@@ -412,24 +426,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                             <S.ClockSelectContainer>
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.endHour ? schedule.endHour : 0}
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endHour = parseInt(currentHour);
-                                  if (schedule.endHour >= 24) schedule.endHour = 23;
+                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                    schedule.endHour = 23;
+                                  if (schedule.endHour >= 100)
+                                    schedule.endHour = Math.floor(schedule.endHour / 10);
                                   setRerender(!rerender);
                                 }}
                               />
                               시
                               <S.ClockInput
                                 type="text"
-                                maxLength={2}
                                 value={schedule.endMinute ? schedule.endMinute : 0}
                                 onChange={(e) => {
+                                  console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
-                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
+                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                    schedule.endMinute = 59;
+                                  if (schedule.endMinute >= 100)
+                                    schedule.endMinute = Math.floor(schedule.endMinute / 10);
                                   setRerender(!rerender);
                                 }}
                               />
@@ -656,7 +675,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     <S.PagenationItem
                       key={`page-${pageNumber}`}
                       onClick={() => {
-                        setCurrentPage(pageNumber);
+                        setCurrentPage(pageNumber as number);
                       }}
                       isClicked={currentPage === pageNumber}
                     >
