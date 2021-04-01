@@ -182,5 +182,7 @@ export const LOCALSTORAGE_KEY = {
   MY_CARE_WORKER_SEARCH_PARAMS: 'MY_CARE_WORKER_SEARCH_PARAMS',
 };
 
+export const PAGENATION_LIST = [0, 1, 2, 3, 4];
+
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';

@@ -24,6 +24,8 @@ import { DayType } from '../../common/types/date';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
+import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
+import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -53,8 +55,42 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
+
+  const indexOfLastCareworker = currentPage * careWorkersPerPage;
+  const indexOfFirstCareworker = indexOfLastCareworker - careWorkersPerPage;
+  const currentPageCareWorkers = filteredCareWorkers.slice(
+    indexOfFirstCareworker,
+    indexOfLastCareworker
+  );
+
+  const getPageNumbers = (totalCareWorkers) => {
+    const pageNumbers = [] as Number[];
+    const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
+
+    if (currentPage > 2 && currentPage < maxPageNumber - 1) {
+      for (
+        let i = Math.max(1, currentPage - 2);
+        i <= Math.min(maxPageNumber, currentPage + 2);
+        i++
+      ) {
+        pageNumbers.push(i);
+      }
+    } else if (currentPage <= 2) {
+      for (let i = 1; i <= Math.min(maxPageNumber, 5); i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      for (let i = Math.max(maxPageNumber - 4, 1); i <= maxPageNumber; i++) {
+        pageNumbers.push(i);
+      }
+    }
+
+    return pageNumbers;
+  };
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -238,8 +274,8 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       setIsLocalStorageLoaded(true);
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
-    const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter } = JSON.parse(savedSearchParams) as any;
-    setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter)
+    const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+    setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
     setIsLocalStorageLoaded(true);
   }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
 
@@ -249,11 +285,22 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
 
     const timeout = setTimeout(() => {
       localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-        name,city,gu,dong,schedules,selectedCareInfo, selectedConsonantFilter
+        name,city,gu,dong,schedules,selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
       })) // prettier-ignore
     }, 500);
     return () => clearTimeout(timeout);
-  }, [name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, rerender]);
+  }, [
+    name,
+    city,
+    gu,
+    dong,
+    schedules,
+    selectedCareInfo,
+    selectedConsonantFilter,
+    currentPage,
+    careWorkersPerPage,
+    rerender,
+  ]);
 
   return (
     <>
@@ -530,19 +577,29 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   isClicked={selectedConsonantFilter === nameIndex}
                   onClick={() => {
                     setSelectedConsonantFilter(nameIndex);
+                    setCurrentPage(1);
                   }}
                 >
                   {name}
                 </S.ConsonantFilterItem>
               ))}
             </S.ConsonantFilterList>
-            {filteredCareWorkers.length === 0 ? (
+            <S.CareWorkersPerPageContainer>
+              <S.CareWorkersPerPageDropDown
+                value={careWorkersPerPage}
+                onChange={(e) => setCareWorkersPerPage(Number(e.target.value) as number)}
+              >
+                <option value="10">10명 씩 보기</option>
+                <option value="20">20명 씩 보기</option>
+              </S.CareWorkersPerPageDropDown>
+            </S.CareWorkersPerPageContainer>
+            {currentPageCareWorkers.length === 0 ? (
               <S.EmptyCardContainer>
                 <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
               </S.EmptyCardContainer>
             ) : (
               <S.CardList>
-                {filteredCareWorkers.map((worker, idx) => (
+                {currentPageCareWorkers.map((worker, idx) => (
                   <S.StyledLink>
                     <Link
                       key={`worker-${idx}`}
@@ -589,6 +646,36 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     </Link>
                   </S.StyledLink>
                 ))}
+                <S.PagenationContainer>
+                  <S.PagenationItem
+                    isLeft
+                    key={'first-page-btn'}
+                    onClick={() => {
+                      setCurrentPage(1);
+                    }}
+                  >
+                    <DoubleArrowLeftSVG />
+                  </S.PagenationItem>
+                  {getPageNumbers(filteredCareWorkers.length).map((pageNumber) => (
+                    <S.PagenationItem
+                      key={`page-${pageNumber}`}
+                      onClick={() => {
+                        setCurrentPage(pageNumber as number);
+                      }}
+                      isClicked={currentPage === pageNumber}
+                    >
+                      {pageNumber}
+                    </S.PagenationItem>
+                  ))}
+                  <S.PagenationItem key={'last-page-btn'}>
+                    <DoubleArrowRightSVG
+                      key={'last-page-btn'}
+                      onClick={() => {
+                        setCurrentPage(Math.ceil(filteredCareWorkers.length / careWorkersPerPage));
+                      }}
+                    />
+                  </S.PagenationItem>
+                </S.PagenationContainer>
               </S.CardList>
             )}
           </S.InnerContent>
