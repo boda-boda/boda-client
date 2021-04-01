@@ -587,7 +587,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
             <S.CareWorkersPerPageContainer>
               <S.CareWorkersPerPageDropDown
                 value={careWorkersPerPage}
-                onChange={(e) => setCareWorkersPerPage(Number(e.target.value) as number)}
+                onChange={(e) => {
+                  setCareWorkersPerPage(Number(e.target.value) as number);
+                  setCurrentPage(1);
+                }}
               >
                 <option value="10">10명 씩 보기</option>
                 <option value="20">20명 씩 보기</option>
