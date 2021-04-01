@@ -9,3 +9,5 @@ export function chunk(arr: any[], len: number) {
 
   return chunks;
 }
+
+export const range = (start: number, end: number) => Array.from(Array(end + 1).keys()).slice(start);

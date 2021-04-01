@@ -26,6 +26,7 @@ import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
+import { range } from '../../common/lib';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -67,30 +68,17 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     indexOfLastCareworker
   );
 
-  const getPageNumbers = (totalCareWorkers) => {
-    const pageNumbers = [] as Number[];
+  const getPagenationBarNumbers = useCallback(() => {
     const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
 
     if (currentPage > 2 && currentPage < maxPageNumber - 1) {
-      for (
-        let i = Math.max(1, currentPage - 2);
-        i <= Math.min(maxPageNumber, currentPage + 2);
-        i++
-      ) {
-        pageNumbers.push(i);
-      }
+      return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
     } else if (currentPage <= 2) {
-      for (let i = 1; i <= Math.min(maxPageNumber, 5); i++) {
-        pageNumbers.push(i);
-      }
+      return range(1, Math.min(maxPageNumber, 5));
     } else {
-      for (let i = Math.max(maxPageNumber - 4, 1); i <= maxPageNumber; i++) {
-        pageNumbers.push(i);
-      }
+      return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
     }
-
-    return pageNumbers;
-  };
+  }, [currentPage, careWorkersPerPage, filteredCareWorkers]);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -664,7 +652,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   >
                     <DoubleArrowLeftSVG />
                   </S.PagenationItem>
-                  {getPageNumbers(filteredCareWorkers.length).map((pageNumber) => (
+                  {getPagenationBarNumbers().map((pageNumber) => (
                     <S.PagenationItem
                       key={`page-${pageNumber}`}
                       onClick={() => {
