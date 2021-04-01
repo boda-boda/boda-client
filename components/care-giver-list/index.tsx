@@ -656,7 +656,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     <S.PagenationItem
                       key={`page-${pageNumber}`}
                       onClick={() => {
-                        setCurrentPage(pageNumber as number);
+                        setCurrentPage(pageNumber);
                       }}
                       isClicked={currentPage === pageNumber}
                     >
