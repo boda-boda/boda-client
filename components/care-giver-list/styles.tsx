@@ -447,7 +447,7 @@ export const CareWorkersPerPageDropDown = styled.select`
 
 export const PagenationContainer = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 10px;
   ${FLEX_ROW_CENTER_CENTER}
 `;
@@ -461,9 +461,9 @@ export const PagenationItem = styled.div<PagenationItemProps>`
   height: 30px;
   width: 30px;
   ${FLEX_COLUMN_CENTER_CENTER}
-  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
-  border-left: ${(props) => !props.isLeft && 'none'};
-  background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : 'none')};
+  margin-left: ${(props) => !props.isLeft && '10px'};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
   font-size: 14px;
   padding-bottom: 1px;

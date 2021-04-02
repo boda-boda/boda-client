@@ -184,3 +184,5 @@ export const LOCALSTORAGE_KEY = {
 
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';
+
+export const PAGENATION_LENGTH = 5;

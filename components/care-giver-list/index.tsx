@@ -14,6 +14,7 @@ import {
   LOCALSTORAGE_KEY,
   RELIGION_LIST,
   CAPABILITY,
+  PAGENATION_LENGTH,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -28,6 +29,10 @@ import CareWorker from '../../model/care-worker';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
 import { range } from '../../common/lib';
+import RightArrowIconSVG from '../../svgs/right-arrow-icon-svg';
+import SlideLeftButtonSVG from '../../svgs/slide-left-button-svg';
+import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
+import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -58,6 +63,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPagenatoinGroup, setCurrentPagenatoinGroup] = useState(0);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
@@ -68,19 +74,24 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     indexOfFirstCareworker,
     indexOfLastCareworker
   );
+  const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
+
+  // const getPagenationBarNumbers = useCallback(() => {
+  //   if (currentPage > 2 && currentPage < maxPageNumber - 1) {
+  //     return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
+  //   } else if (currentPage <= 2) {
+  //     return range(1, Math.min(maxPageNumber, 5));
+  //   } else {
+  //     return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
+  //   }
+  // }, [currentPage, careWorkersPerPage, maxPageNumber]);
 
   const getPagenationBarNumbers = useCallback(() => {
-    const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
-
-    if (currentPage > 2 && currentPage < maxPageNumber - 1) {
-      return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
-    } else if (currentPage <= 2) {
-      return range(1, Math.min(maxPageNumber, 5));
-    } else {
-      return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
-    }
-  }, [currentPage, careWorkersPerPage, filteredCareWorkers]);
-
+    return range(
+      currentPagenatoinGroup * PAGENATION_LENGTH + 1,
+      Math.min((currentPagenatoinGroup + 1) * PAGENATION_LENGTH, maxPageNumber)
+    );
+  }, [currentPagenatoinGroup, maxPageNumber]);
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
 
@@ -602,9 +613,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 onChange={(e) => {
                   setCareWorkersPerPage(Number(e.target.value) as number);
                   setCurrentPage(1);
+                  setCurrentPagenatoinGroup(0);
                 }}
               >
-                <option value="10">10명 씩 보기</option>
+                <option value="3">10명 씩 보기</option>
                 <option value="20">20명 씩 보기</option>
               </S.CareWorkersPerPageDropDown>
             </S.CareWorkersPerPageContainer>
@@ -667,9 +679,21 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     key={'first-page-btn'}
                     onClick={() => {
                       setCurrentPage(1);
+                      setCurrentPagenatoinGroup(0);
                     }}
                   >
                     <DoubleArrowLeftSVG />
+                  </S.PagenationItem>
+                  <S.PagenationItem
+                    key={'previous-pageset-btn'}
+                    onClick={() => {
+                      const pagenationGroup = Math.max(0, currentPagenatoinGroup - 1);
+
+                      setCurrentPage(Math.max(currentPagenatoinGroup * PAGENATION_LENGTH, 1));
+                      setCurrentPagenatoinGroup(pagenationGroup);
+                    }}
+                  >
+                    <SingleArrowLeftSVG />
                   </S.PagenationItem>
                   {getPagenationBarNumbers().map((pageNumber) => (
                     <S.PagenationItem
@@ -682,11 +706,30 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                       {pageNumber}
                     </S.PagenationItem>
                   ))}
+                  <S.PagenationItem
+                    key={'next-pageset-btn'}
+                    onClick={() => {
+                      const pagenationGroup = Math.min(
+                        Math.floor(maxPageNumber / PAGENATION_LENGTH),
+                        currentPagenatoinGroup + 1
+                      );
+                      setCurrentPage(
+                        Math.max(
+                          pagenationGroup * PAGENATION_LENGTH + 1,
+                          getPagenationBarNumbers().slice(-1)[0]
+                        )
+                      );
+                      setCurrentPagenatoinGroup(pagenationGroup);
+                    }}
+                  >
+                    <SingleArrowRightSVG />
+                  </S.PagenationItem>
                   <S.PagenationItem key={'last-page-btn'}>
                     <DoubleArrowRightSVG
                       key={'last-page-btn'}
                       onClick={() => {
-                        setCurrentPage(Math.ceil(filteredCareWorkers.length / careWorkersPerPage));
+                        setCurrentPage(maxPageNumber);
+                        setCurrentPagenatoinGroup(Math.floor(maxPageNumber / PAGENATION_LENGTH));
                       }}
                     />
                   </S.PagenationItem>
