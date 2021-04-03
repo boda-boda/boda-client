@@ -14,6 +14,7 @@ import {
   LOCALSTORAGE_KEY,
   RELIGION_LIST,
   CAPABILITY,
+  PAGINATION_LENGTH,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -28,6 +29,8 @@ import CareWorker from '../../model/care-worker';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
 import { range } from '../../common/lib';
+import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
+import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 
 interface CareGiverListProps {
   isMyCaregiver: boolean;
@@ -58,6 +61,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
@@ -68,19 +72,25 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     indexOfFirstCareworker,
     indexOfLastCareworker
   );
+  const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
 
-  const getPagenationBarNumbers = useCallback(() => {
-    const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
+  // Pagination 원래방식, 원래는 현재 페이지가 중앙에, 바뀐 코드는 현재 페이지 상관없이 다음 버튼(single arrow) 눌러야 넘어감
+  // const getPagenationBarNumbers = useCallback(() => {
+  //   if (currentPage > 2 && currentPage < maxPageNumber - 1) {
+  //     return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
+  //   } else if (currentPage <= 2) {
+  //     return range(1, Math.min(maxPageNumber, 5));
+  //   } else {
+  //     return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
+  //   }
+  // }, [currentPage, careWorkersPerPage, maxPageNumber]);
 
-    if (currentPage > 2 && currentPage < maxPageNumber - 1) {
-      return range(Math.max(1, currentPage - 2), Math.min(maxPageNumber, currentPage + 2));
-    } else if (currentPage <= 2) {
-      return range(1, Math.min(maxPageNumber, 5));
-    } else {
-      return range(Math.max(maxPageNumber - 4, 1), maxPageNumber);
-    }
-  }, [currentPage, careWorkersPerPage, filteredCareWorkers]);
-
+  const getPaginationBarNumbers = useCallback(() => {
+    return range(
+      currentPaginationGroup * PAGINATION_LENGTH + 1,
+      Math.min((currentPaginationGroup + 1) * PAGINATION_LENGTH, maxPageNumber)
+    );
+  }, [currentPaginationGroup, maxPageNumber]);
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
 
@@ -602,6 +612,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 onChange={(e) => {
                   setCareWorkersPerPage(Number(e.target.value) as number);
                   setCurrentPage(1);
+                  setCurrentPaginationGroup(0);
                 }}
               >
                 <option value="10">10명 씩 보기</option>
@@ -661,18 +672,30 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                     </Link>
                   </S.StyledLink>
                 ))}
-                <S.PagenationContainer>
-                  <S.PagenationItem
+                <S.PaginationContainer>
+                  <S.PaginationItem
                     isLeft
                     key={'first-page-btn'}
                     onClick={() => {
                       setCurrentPage(1);
+                      setCurrentPaginationGroup(0);
                     }}
                   >
                     <DoubleArrowLeftSVG />
-                  </S.PagenationItem>
-                  {getPagenationBarNumbers().map((pageNumber) => (
-                    <S.PagenationItem
+                  </S.PaginationItem>
+                  <S.PaginationItem
+                    key={'previous-pageset-btn'}
+                    onClick={() => {
+                      const paginationGroup = Math.max(0, currentPaginationGroup - 1);
+
+                      setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
+                      setCurrentPaginationGroup(paginationGroup);
+                    }}
+                  >
+                    <SingleArrowLeftSVG />
+                  </S.PaginationItem>
+                  {getPaginationBarNumbers().map((pageNumber) => (
+                    <S.PaginationItem
                       key={`page-${pageNumber}`}
                       onClick={() => {
                         setCurrentPage(pageNumber as number);
@@ -680,17 +703,36 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                       isClicked={currentPage === pageNumber}
                     >
                       {pageNumber}
-                    </S.PagenationItem>
+                    </S.PaginationItem>
                   ))}
-                  <S.PagenationItem key={'last-page-btn'}>
+                  <S.PaginationItem
+                    key={'next-pageset-btn'}
+                    onClick={() => {
+                      const paginationGroup = Math.min(
+                        Math.floor(maxPageNumber / PAGINATION_LENGTH),
+                        currentPaginationGroup + 1
+                      );
+                      setCurrentPage(
+                        Math.max(
+                          paginationGroup * PAGINATION_LENGTH + 1,
+                          getPaginationBarNumbers().slice(-1)[0]
+                        )
+                      );
+                      setCurrentPaginationGroup(paginationGroup);
+                    }}
+                  >
+                    <SingleArrowRightSVG />
+                  </S.PaginationItem>
+                  <S.PaginationItem key={'last-page-btn'}>
                     <DoubleArrowRightSVG
                       key={'last-page-btn'}
                       onClick={() => {
-                        setCurrentPage(Math.ceil(filteredCareWorkers.length / careWorkersPerPage));
+                        setCurrentPage(maxPageNumber);
+                        setCurrentPaginationGroup(Math.floor(maxPageNumber / PAGINATION_LENGTH));
                       }}
                     />
-                  </S.PagenationItem>
-                </S.PagenationContainer>
+                  </S.PaginationItem>
+                </S.PaginationContainer>
               </S.CardList>
             )}
           </S.InnerContent>

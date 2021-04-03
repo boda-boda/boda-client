@@ -445,25 +445,25 @@ export const CareWorkersPerPageDropDown = styled.select`
   }
 `;
 
-export const PagenationContainer = styled.div`
+export const PaginationContainer = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 10px;
   ${FLEX_ROW_CENTER_CENTER}
 `;
 
-interface PagenationItemProps {
+interface PaginationItemProps {
   isClicked?: boolean;
   isLeft?: boolean;
 }
 
-export const PagenationItem = styled.div<PagenationItemProps>`
+export const PaginationItem = styled.div<PaginationItemProps>`
   height: 30px;
   width: 30px;
   ${FLEX_COLUMN_CENTER_CENTER}
-  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
-  border-left: ${(props) => !props.isLeft && 'none'};
-  background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : 'none')};
+  margin-left: ${(props) => !props.isLeft && '10px'};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
   font-size: 14px;
   padding-bottom: 1px;
@@ -476,7 +476,7 @@ export const PagenationItem = styled.div<PagenationItemProps>`
   }
 `;
 
-export const PagenationItemArrow = styled.div<PagenationItemProps>`
+export const PaginationItemArrow = styled.div<PaginationItemProps>`
   height: 30px;
   width: 30px;
   ${FLEX_COLUMN_CENTER_CENTER}
