@@ -398,10 +398,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startHour = parseInt(currentHour);
-                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
-                                    schedule.startHour = 23;
                                   if (schedule.startHour >= 100)
                                     schedule.startHour = Math.floor(schedule.startHour / 10);
+                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                    schedule.startHour = 23;
                                   setRerender(!rerender);
                                 }}
                               />
@@ -412,11 +412,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 onChange={(e) => {
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.startMinute = parseInt(currentMinute);
-                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
-                                    schedule.startMinute = 59;
                                   if (schedule.startMinute >= 100)
                                     schedule.startMinute = Math.floor(schedule.startMinute / 10);
-
+                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                    schedule.startMinute = 59;
                                   setRerender(!rerender);
                                 }}
                               />
@@ -430,10 +429,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 onChange={(e) => {
                                   const currentHour = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endHour = parseInt(currentHour);
-                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
-                                    schedule.endHour = 23;
                                   if (schedule.endHour >= 100)
                                     schedule.endHour = Math.floor(schedule.endHour / 10);
+                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                    schedule.endHour = 23;
                                   setRerender(!rerender);
                                 }}
                               />
@@ -445,10 +444,10 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                   console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
-                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
-                                    schedule.endMinute = 59;
                                   if (schedule.endMinute >= 100)
                                     schedule.endMinute = Math.floor(schedule.endMinute / 10);
+                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                    schedule.endMinute = 59;
                                   setRerender(!rerender);
                                 }}
                               />
