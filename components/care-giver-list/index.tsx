@@ -91,6 +91,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       Math.min((currentPaginationGroup + 1) * PAGINATION_LENGTH, maxPageNumber)
     );
   }, [currentPaginationGroup, maxPageNumber]);
+
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
 
@@ -275,7 +276,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     }
     try { 
       const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
-      setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
+      setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
       setIsLocalStorageLoaded(true);
     }
     catch {
@@ -452,7 +453,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 type="text"
                                 value={schedule.endMinute ? schedule.endMinute : 0}
                                 onChange={(e) => {
-                                  console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
                                   if (schedule.endMinute >= 60 && schedule.endMinute < 100)
