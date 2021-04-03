@@ -5,20 +5,22 @@ import SlideLeftButton from '../../svgs/slide-left-button-svg';
 import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
 import { useHeader } from '../../components/header/hooks';
+import Link from 'next/link';
 
 const Header = ({ nowSection, setNowSection, sectionRefs }) => {
   const [isTop, setIstop] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [offset, setOffset] = useState(500);
   function logit() {
     setIstop(window.pageYOffset === 0 || isMobile);
     switch (true) {
-      case sectionRefs[2].current.offsetTop - 500 < window.pageYOffset:
+      case sectionRefs[2].current.offsetTop - offset < window.pageYOffset:
         setNowSection(2);
         break;
-      case sectionRefs[1].current.offsetTop - 500 < window.pageYOffset:
+      case sectionRefs[1].current.offsetTop - offset < window.pageYOffset:
         setNowSection(1);
         break;
-      case sectionRefs[0].current.offsetTop - 500 < window.pageYOffset:
+      case sectionRefs[0].current.offsetTop - offset < window.pageYOffset:
         setNowSection(0);
         break;
       default:
@@ -39,6 +41,7 @@ const Header = ({ nowSection, setNowSection, sectionRefs }) => {
   });
   useEffect(() => {
     setIsMobile(window.screen.width < 750);
+    if (window.screen.width < 750) setOffset(200);
   }, []);
   return (
     <S.Header isTop={isTop}>
@@ -171,9 +174,11 @@ export default function Landing() {
                 isLeft={jumbotronInfo[jumbotronIndex].isLeft}
                 dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
               ></S.JumboTitle>
-              <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-                돌봄 바로가기 <RightArrowIconWhite />
-              </S.ContactButton>
+              <Link href="https://dol-bom.com">
+                <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
+                  돌봄 바로가기 <RightArrowIconWhite />
+                </S.ContactButton>
+              </Link>
             </S.InnerContent>
           </S.InnerContentContainer>
           <S.ButtonContainer>

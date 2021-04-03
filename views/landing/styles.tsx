@@ -51,11 +51,14 @@ interface JumbotronProps {
   url?: string;
 }
 
-export const Jumbotron = styled.div`
+export const Jumbotron = styled.div<JumbotronProps>`
   position: relative;
   width: 100%;
   height: 800px;
   background-color: #1e0130;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    height: 600px;
+  }
 `;
 
 export const InnerContentContainer = styled.div`
@@ -103,7 +106,7 @@ export const JumboTitle = styled.div<DirectionProps>`
     text-align: center;
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 32px;
+    font-size: 28px;
   }
 `;
 
@@ -118,6 +121,7 @@ export const ContactButton = styled.div<DirectionProps>`
   border-radius: 3px;
   background: none;
   z-index: 1;
+  text-decoration: none;
   cursor: pointer;
   transition: 0.2s ease;
   :hover {
@@ -223,7 +227,7 @@ export const NaviItem = styled.div<HeaderProps>`
   color: ${(props) => (props.isTop ? 'white' : props.isSelected ? THEME.MAIN : THEME.GRAY_FONT)};
   margin-left: 30px;
   font-size: 20px;
-  font-weight: ${(props) => (props.isTop ? 500 : 700)};
+  font-weight: ${(props) => (props.isTop ? 400 : 500)};
   cursor: pointer;
 `;
 
@@ -305,7 +309,7 @@ interface ScrollProps {
 }
 
 export const MoniterContainer = styled.div<ScrollProps>`
-  width: 700px;
+  width: 698px;
   height: 562px;
   position: relative;
   animation: ${(props) =>
@@ -318,8 +322,9 @@ export const MoniterContainer = styled.div<ScrollProps>`
         `};
   animation-fill-mode: forwards;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    transform: scale(0.5);
-    margin-top: -50px;
+    width: 349px;
+    height: 281px;
+    margin-top: 70px;
   }
 `;
 
@@ -327,8 +332,8 @@ export const MonitorMokup = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 698px;
-  height: 562px;
+  width: 100%;
+  height: 100%;
   background-image: url('https://user-images.githubusercontent.com/52532871/113481179-07837c80-94d3-11eb-8e3e-c0bd349d41bd.png');
   background-repeat: no-repeat;
   background-position: center;
@@ -341,10 +346,10 @@ interface ImageProps {
 
 export const MoniterInnerImage = styled.div<ImageProps>`
   position: absolute;
-  top: 77px;
-  left: 96px;
-  width: 503px;
-  height: 284px;
+  top: 13%;
+  left: 13%;
+  width: 73.5%;
+  height: 52%;
   background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
@@ -495,7 +500,7 @@ export const EndSection = styled.div`
     ${FLEX_COLUMN_START_CENTER};
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    padding: 50px 40px;
+    padding: 50px 20px;
   }
 `;
 
