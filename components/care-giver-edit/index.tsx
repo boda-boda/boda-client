@@ -26,6 +26,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
   const {
     isRequesting,
     careWorker,
+    setCareWorker,
     memo,
     careWorkerCareers,
     memoRef,
@@ -47,6 +48,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     handleUpdateCareGiver,
     handleClickUpdateButton,
     handleClickCreateButton,
+    handleDeleteCurrentAddress,
   } = useCareGiverUpsert(isNew);
 
   return (
@@ -83,6 +85,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.name || ''}
                       onChange={handleUpdateCareGiver('name')}
                       type="text"
+                      placeholder="이름을 입력해주세요"
                     />
                   </td>
                   <th>생년월일</th>
@@ -91,6 +94,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.birthDay || ''}
                       onChange={handleUpdateBirthday}
                       type="text"
+                      maxLength={8}
+                      placeholder="예시) 19601231"
                     />
                   </td>
                 </tr>
@@ -118,6 +123,8 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.phoneNumber || ''}
                       onChange={handleUpdateCareGiver('phoneNumber')}
                       type="text"
+                      maxLength={11}
+                      placeholder="예시) 01012345678"
                     />
                   </td>
                 </tr>
@@ -132,6 +139,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       withButton
                     />
                     <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
                   </td>
                 </tr>
                 <tr>
@@ -168,7 +178,9 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         }}
                         value={businessArea.city || ''}
                       >
-                        <option value={''}>시/도 선택</option>
+                        <option value={null} hidden>
+                          시/도 선택
+                        </option>
                         <option value="서울특별시">서울특별시</option>
                       </S.DropDown>
                       <S.DropDown
@@ -179,16 +191,18 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         }}
                         value={businessArea.gu || ''}
                       >
-                        <option value={''} hidden>
+                        <option value={null} hidden>
                           구 선택
                         </option>
-                        {businessArea.city === '서울특별시'
-                          ? SEOUL_GU_DONG.map((gudong, idx) => (
-                              <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
-                                {gudong.gu}
-                              </option>
-                            ))
-                          : null}
+                        {businessArea.city === '서울특별시' ? (
+                          <option value={''}>전체</option>
+                        ) : null}
+                        {businessArea.city &&
+                          SEOUL_GU_DONG.map((gudong, idx) => (
+                            <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                              {gudong.gu}
+                            </option>
+                          ))}
                       </S.DropDown>
                       <S.DropDown
                         onChange={(e) => {
@@ -197,16 +211,16 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         }}
                         value={businessArea.dong || ''}
                       >
-                        <option value={''}>동 선택</option>
-                        {!businessArea.gu
-                          ? null
-                          : SEOUL_GU_DONG.find(
-                              (gudong) => gudong.gu === businessArea.gu
-                            )?.dongs.map((dong, idx) => (
+                        <option value={null}>동 선택</option>
+                        {businessArea.dong ? <option value={''}>전체</option> : null}
+                        {businessArea.gu &&
+                          SEOUL_GU_DONG.find((gudong) => gudong.gu === businessArea.gu)?.dongs.map(
+                            (dong, idx) => (
                               <option key={`${dong}-${idx}`} value={dong}>
                                 {dong}
                               </option>
-                            ))}
+                            )
+                          )}
                       </S.DropDown>
                     </td>
                     <td>
@@ -259,6 +273,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                         setMemo(e.target.value);
                         handleUpdateCareGiver('description')(e);
                       }}
+                      placeholder="메모를 입력해주세요"
                     />
                   </td>
                 </tr>

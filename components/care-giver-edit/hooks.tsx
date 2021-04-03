@@ -5,6 +5,7 @@ import {
   CareWorkerSchedule,
   toggleDayOfCareWorkerSchedule,
   isCareWorkerScheduleValid,
+  isCareWorkerScheduleRangeValid,
 } from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateCareGiverRequest from './model/create-care-giver-request';
@@ -18,6 +19,7 @@ import {
   WORKER_MAN_SMALL_IMAGE_URL,
   WORKER_WOMAN_SMALL_IMAGE_URL,
 } from '../../constant';
+import { validateCareWorker } from '../../common/lib/validate';
 
 export const useCareGiverUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -37,6 +39,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setCareWorker({ ...careWorker, address: '', zipCode: '' });
+  };
 
   useEffect(() => {
     if (
@@ -58,7 +66,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           CreateCareGiverRequest.allArgsConstructor(
             c.name,
             c.gender !== '남성',
-            c.birthDay,
+            c.birthDay?.split('-').join(''),
             c.phoneNumber,
             c.profile,
             c.zipCode,
@@ -161,52 +169,64 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
-  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...careWorkerSchedules];
-    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
-    setCareWorkerSchedules(newSchedules);
-  };
+  const toggleDays = useCallback(
+    (selectedDaysIndex: number, day: DayType) => {
+      const newSchedules = [...careWorkerSchedules];
+      toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
+      setCareWorkerSchedules(newSchedules);
+    },
+    [careWorkerSchedules]
+  );
 
-  const toggleCapability = (careInfo: string) => {
-    if (careWorkerCapabilities.includes(careInfo)) {
-      setCareWorkerCapabilities((selectedCareInfo) =>
-        selectedCareInfo.filter((selected) => selected !== careInfo)
-      );
-      return;
-    }
-    setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
-  };
+  const toggleCapability = useCallback(
+    (careInfo: string) => {
+      if (careWorkerCapabilities.includes(careInfo)) {
+        setCareWorkerCapabilities((selectedCareInfo) =>
+          selectedCareInfo.filter((selected) => selected !== careInfo)
+        );
+        return;
+      }
+      setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
+    },
+    [careWorkerCapabilities]
+  );
 
-  const toggleReligion = (religion: string) => {
-    if (careWorkerReligions.includes(religion)) {
-      setCareWorkerReligions((selectedReligion) =>
-        selectedReligion.filter((selected) => selected !== religion)
-      );
-      return;
-    }
-    setCareWorkerReligions([...careWorkerReligions, religion]);
-  };
+  const toggleReligion = useCallback(
+    (religion: string) => {
+      if (careWorkerReligions.includes(religion)) {
+        setCareWorkerReligions((selectedReligion) =>
+          selectedReligion.filter((selected) => selected !== religion)
+        );
+        return;
+      }
+      setCareWorkerReligions([...careWorkerReligions, religion]);
+    },
+    [careWorkerReligions]
+  );
 
-  const onChangeImage = async (e: any) => {
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
+  const onChangeImage = useCallback(
+    async (e: any) => {
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
 
-    try {
-      const axiosInstance = axios.create({
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      try {
+        const axiosInstance = axios.create({
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
 
-      const response = await axiosInstance.post('/care-worker/profile', formData);
-      const url = response.data.Location;
-      setCareWorker({ ...careWorker, profile: url });
-    } catch {
-      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
-    }
-  };
+        const response = await axiosInstance.post('/care-worker/profile', formData);
+        const url = response.data.Location;
+        setCareWorker({ ...careWorker, profile: url });
+      } catch {
+        alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+      }
+    },
+    [careWorker]
+  );
 
-  const openAddressModal = () => {
+  const openAddressModal = useCallback(() => {
     if (!window.daum) {
       alert('주소 검색 서비스 연결이 원활하지 않습니다. 잠시 후 다시 시도해주세요.');
       return;
@@ -216,18 +236,29 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         setCareWorker({ ...careWorker, address: data.roadAddress, zipCode: data.zonecode });
       },
     }).open();
-  };
+  }, [careWorker]);
 
   const handleClickCreateButton = async () => {
-    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    if (!validateCareWorker(careWorker)) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
-    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
+    const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
+    if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
       return;
     }
+
+    if (availableSchedule.some((a) => !isCareWorkerScheduleRangeValid(a))) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n 스케줄은 9시와 18시 사이로 입력해주세요.'
+      );
+      return;
+    }
+
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    const availableAreas = careWorkerAreas.filter((a) => a.city);
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
     setIsRequesting(true);
 
     try {
@@ -235,12 +266,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: avilableSchedule,
-        careWorkerCareers,
-        careWorkerAreas,
+        careWorkerSchedules: availableSchedule,
+        careWorkerCareers: availableCareers,
+        careWorkerAreas: availableAreas,
       });
     } catch (e) {
-      alert('요양보호사 추가에 실패하였습니다.');
+      alert('요양보호사 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
     }
@@ -250,16 +281,26 @@ export const useCareGiverUpsert = (isNew: boolean) => {
   };
 
   const handleClickUpdateButton = async () => {
-    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    if (!validateCareWorker(careWorker)) return;
 
-    const avilableSchedule = careWorkerSchedules.filter((a) => a.days.length === 0);
-    if (avilableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
+    const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
+    if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
       alert(
         '요양보호사 스케줄 양식에 오류가 있습니다. \n\n시작시간은 종료시간을 넘어갈 수 없습니다.'
       );
       return;
     }
-    setIsRequesting(true);
+
+    if (availableSchedule.some((a) => !isCareWorkerScheduleRangeValid(a))) {
+      alert(
+        '요양보호사 스케줄 양식에 오류가 있습니다. \n\n 스케줄은 9시와 18시 사이로 입력해주세요.'
+      );
+      return;
+    }
+
+    if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
+    const availableAreas = careWorkerAreas.filter((a) => a.city);
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
 
     try {
       await axios.put('/care-worker', {
@@ -267,12 +308,12 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: avilableSchedule,
-        careWorkerCareers,
-        careWorkerAreas,
+        careWorkerSchedules: availableSchedule,
+        careWorkerCareers: availableCareers,
+        careWorkerAreas: availableAreas,
       });
     } catch (e) {
-      alert('요양보호사 수정에 실패하였습니다.');
+      alert('요양보호사 수정에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
     }
@@ -283,6 +324,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   return {
     careWorker,
+    setCareWorker,
     memo,
     careWorkerCareers,
     memoRef,
@@ -305,5 +347,6 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     handleClickUpdateButton,
     handleClickCreateButton,
     isRequesting,
+    handleDeleteCurrentAddress,
   };
 };

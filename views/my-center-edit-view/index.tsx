@@ -38,6 +38,17 @@ export default function MyCenterView() {
     [centerUpdateRequest]
   );
 
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setCenterUpdateRequest({
+      ...centerUpdateRequest,
+      zipCode: '',
+      address: '',
+      detailAddress: '',
+    });
+  };
+
   useEffect(() => {
     if (!careCenter.careCenter) return;
 
@@ -186,6 +197,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.username}
                           onChange={handleInputChange('username')}
                           type="text"
+                          placeholder="센터의 이름을 입력해주세요"
                         />
                       </td>
                       <th>전화</th>
@@ -194,6 +206,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.phoneNumber}
                           onChange={handleInputChange('phoneNumber')}
                           type="text"
+                          placeholder="전화번호를 입력해주세요"
                         />
                       </td>
                     </tr>
@@ -204,6 +217,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.email}
                           onChange={handleInputChange('email')}
                           type="text"
+                          placeholder="이메일 주소를 입력해주세요"
                         />
                       </td>
                       <th>홈페이지</th>
@@ -212,6 +226,7 @@ export default function MyCenterView() {
                           value={centerUpdateRequest.homePage}
                           onChange={handleInputChange('homePage')}
                           type="text"
+                          placeholder="홈페이지 주소를 입력해주세요"
                         />
                       </td>
                     </tr>
@@ -226,6 +241,9 @@ export default function MyCenterView() {
                           withButton
                         />
                         <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                        <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                          주소 초기화
+                        </S.AddressDeleteButton>
                       </td>
                     </tr>
                     <tr>
@@ -258,6 +276,7 @@ export default function MyCenterView() {
                           onChange={(e) => {
                             handleInputChange('description')(e), setMemo(e.target.value);
                           }}
+                          placeholder="센터의 소개글을 작성해주세요"
                         />
                       </td>
                     </tr>

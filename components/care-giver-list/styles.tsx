@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
+  FLEX_COLUMN_CENTER_END,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_END_END,
@@ -205,9 +206,12 @@ export const TextInput = styled.input`
   border: solid 1px ${THEME.GRAY_BORDER};
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+  }
   :focus {
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
   }
 `;
 
@@ -233,9 +237,9 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
   background-color: white;
   opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: 0.2s ease;
   :hover {
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -262,7 +266,7 @@ export const FilterButton = styled.button<ButtonProps>`
   margin-left: 20px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
-  box-shadow: ${(props) => (props.isReset ? 'none' : '0 3px 6px 0 rgba(0, 0, 0, 0.16);')};
+  box-shadow: ${(props) => (props.isReset ? 'none' : '0 3px 6px 0 rgba(0, 0, 0, 0.16)')};
 
   background-color: ${(props) => (props.isReset ? 'white' : THEME.MAIN)};
   outline: none;
@@ -270,9 +274,13 @@ export const FilterButton = styled.button<ButtonProps>`
   color: ${(props) => (props.isReset ? THEME.MAIN : 'white')};
   border: ${(props) => (props.isReset ? `1px solid ${THEME.MAIN}` : 'none')};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    background-color: ${(props) => props.isReset && THEME.MAIN};
+    color: ${(props) => props.isReset && 'white'};
+    border: ${(props) => props.isReset && 'none'};
+    box-shadow: ${(props) =>
+      props.isReset ? '0 3px 6px 0 rgba(0, 0, 0, 0.16)' : '0 3px 6px 0 rgba(0, 0, 0, 0.3)'};
   }
 `;
 
@@ -297,6 +305,24 @@ export const Card = styled.div`
     /* border: solid 1px ${THEME.MAIN}; */
     box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
   }
+`;
+export const EmptyCardContainer = styled.div`
+  width: 100%;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  flex-wrap: wrap;
+  margin-top: -6px;
+`;
+export const EmptyCard = styled.div`
+  position: relative;
+  width: 100%;
+  height: 160px;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: white;
+  font-size: 20px;
+  ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
 interface ProfileImageProps {
@@ -444,4 +470,65 @@ export const NeedLoginModal = styled.div`
   word-break: keep-all;
   filter: blur(0px);
   ${FLEX_COLUMN_CENTER_CENTER};
+`;
+
+export const CareWorkersPerPageContainer = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  ${FLEX_COLUMN_CENTER_END}
+`;
+
+export const CareWorkersPerPageDropDown = styled.select`
+  width: 112px;
+  height: 36px;
+  padding: 0 0 0 10px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
+  cursor: pointer;
+  option {
+    color: ${THEME.GRAY_FONT};
+  }
+`;
+
+export const PaginationContainer = styled.div`
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  ${FLEX_ROW_CENTER_CENTER}
+`;
+
+interface PaginationItemProps {
+  isClicked?: boolean;
+  isLeft?: boolean;
+}
+
+export const PaginationItem = styled.div<PaginationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : 'none')};
+  margin-left: ${(props) => !props.isLeft && '10px'};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
+  color: ${(props) => (props.isClicked ? 'white' : 'black')};
+  font-size: 14px;
+  padding-bottom: 1px;
+  cursor: pointer;
+  user-select: none;
+  :hover {
+    font-weight: bold;
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const PaginationItemArrow = styled.div<PaginationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  border: 1px solid ${THEME.GRAY_LINE};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  cursor: pointer;
+  user-select: none;
 `;

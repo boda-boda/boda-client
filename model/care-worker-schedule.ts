@@ -48,10 +48,29 @@ export const isCareWorkerScheduleValid = (careWorkerSchedule: CareWorkerSchedule
     careWorkerSchedule.endMinute === null
   )
     return false;
+
   if (careWorkerSchedule.startHour > careWorkerSchedule.endHour) return false;
   if (careWorkerSchedule.endHour === careWorkerSchedule.startHour) {
     if (careWorkerSchedule.startMinute > careWorkerSchedule.endMinute) return false;
   }
+  return true;
+};
+
+export const isCareWorkerScheduleValidListPage = (careWorkerSchedule: CareWorkerSchedule) => {
+  if (careWorkerSchedule.startHour > careWorkerSchedule.endHour) return false;
+  if (careWorkerSchedule.endHour === careWorkerSchedule.startHour) {
+    if (careWorkerSchedule.startMinute > careWorkerSchedule.endMinute) return false;
+  }
+  return true;
+};
+
+export const isCareWorkerScheduleRangeValid = (careWorkerSchedule: CareWorkerSchedule) => {
+  if (
+    careWorkerSchedule.startHour < 9 ||
+    careWorkerSchedule.endHour > 18 ||
+    (careWorkerSchedule.endHour === 18 && careWorkerSchedule.endMinute > 0)
+  )
+    return false;
 
   return true;
 };
