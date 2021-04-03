@@ -616,7 +616,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   setCurrentPagenatoinGroup(0);
                 }}
               >
-                <option value="3">10명 씩 보기</option>
+                <option value="10">10명 씩 보기</option>
                 <option value="20">20명 씩 보기</option>
               </S.CareWorkersPerPageDropDown>
             </S.CareWorkersPerPageContainer>
