@@ -49,6 +49,7 @@ export const InnerContent = styled.div`
   height: 100%;
   color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
+  position: relative;
 `;
 
 export const SectionTitle = styled.div`
@@ -298,12 +299,14 @@ export const Card = styled.div`
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
+  margin-bottom: -10px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   ${FLEX_ROW_SPACE_CENTER};
+  transition: 0.2s ease;
   :hover {
     /* border: solid 1px ${THEME.MAIN}; */
-    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.3);
   }
 `;
 export const EmptyCardContainer = styled.div`
@@ -474,7 +477,9 @@ export const NeedLoginModal = styled.div`
 
 export const CareWorkersPerPageContainer = styled.div`
   width: 100%;
-  margin-top: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
   ${FLEX_COLUMN_CENTER_END}
 `;
 
@@ -508,18 +513,18 @@ export const PaginationItem = styled.div<PaginationItemProps>`
   height: 30px;
   width: 30px;
   ${FLEX_COLUMN_CENTER_CENTER}
-  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : 'none')};
   margin-left: ${(props) => !props.isLeft && '10px'};
   background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
+  border-radius: 3px;
   font-size: 14px;
   padding-bottom: 1px;
   cursor: pointer;
   user-select: none;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
-    border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.HEADER_BACKGROUND)};
+    box-shadow: ${(props) => props.isClicked && '0 0px 6px 0 rgba(0, 0, 0, 0.25)'};
   }
 `;
 

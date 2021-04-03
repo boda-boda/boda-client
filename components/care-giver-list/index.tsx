@@ -599,6 +599,19 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
           <S.InnerSection isBlur={careCenter.isValidating || !careCenter.isLoggedIn}>
             <S.InnerContent>
               <S.SectionTitle>검색 결과</S.SectionTitle>
+              <S.CareWorkersPerPageContainer>
+                <S.CareWorkersPerPageDropDown
+                  value={careWorkersPerPage}
+                  onChange={(e) => {
+                    setCareWorkersPerPage(Number(e.target.value) as number);
+                    setCurrentPage(1);
+                    setCurrentPaginationGroup(0);
+                  }}
+                >
+                  <option value="10">10명 씩 보기</option>
+                  <option value="20">20명 씩 보기</option>
+                </S.CareWorkersPerPageDropDown>
+              </S.CareWorkersPerPageContainer>
               <S.ConsonantFilterList>
                 <S.ConsonantFilterItem
                   isClicked={selectedConsonantFilter === -1}
@@ -622,19 +635,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                   </S.ConsonantFilterItem>
                 ))}
               </S.ConsonantFilterList>
-              <S.CareWorkersPerPageContainer>
-                <S.CareWorkersPerPageDropDown
-                  value={careWorkersPerPage}
-                  onChange={(e) => {
-                    setCareWorkersPerPage(Number(e.target.value) as number);
-                    setCurrentPage(1);
-                    setCurrentPaginationGroup(0);
-                  }}
-                >
-                  <option value="10">10명 씩 보기</option>
-                  <option value="20">20명 씩 보기</option>
-                </S.CareWorkersPerPageDropDown>
-              </S.CareWorkersPerPageContainer>
               <S.CardList>
                 {!careCenter.isValidating && careCenter.isLoggedIn ? (
                   currentPageCareWorkers.length === 0 ? (
