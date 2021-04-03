@@ -9,7 +9,7 @@ import { CareWorkerSchedule } from '../../model/care-worker-schedule';
 import BusinessArea from '../../model/business-area';
 import Career from './model/career';
 
-interface CareGiverEditProps {
+interface CareGiverEditDemoProps {
   isNew: boolean;
 }
 
@@ -21,7 +21,7 @@ const slicedReligionList = [];
 for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
 
-export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
+export default function CareGiveEditDemo({ isNew }: CareGiverEditDemoProps) {
   const [rerender, setRerender] = useState(false);
   const {
     isRequesting,

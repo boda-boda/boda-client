@@ -9,7 +9,7 @@ import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 
-export default function CareGiveDetailDemo() {
+export default function CareGiveDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
   const [careWorker, setCareWorker] = useState(new CareWorker());
