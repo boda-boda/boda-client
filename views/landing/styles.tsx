@@ -324,7 +324,7 @@ export const MoniterContainer = styled.div<ScrollProps>`
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     width: 349px;
     height: 281px;
-    margin-top: 70px;
+    margin-top: 30px;
   }
 `;
 
@@ -366,6 +366,13 @@ export const SectionTitle = styled.div`
     font-size: 44px;
     font-weight: 800;
   }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 28px;
+    line-height: 150%;
+    span {
+      font-size: 36px;
+    }
+  }
 `;
 
 export const SectionSubtitle = styled.div`
@@ -373,6 +380,9 @@ export const SectionSubtitle = styled.div`
   font-size: 24px;
   font-weight: 300;
   margin-top: 20px;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    font-size: 20px;
+  }
 `;
 
 export const ExpansionTitle = styled.div<ScrollProps>`
@@ -576,6 +586,9 @@ export const Footer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 70px;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    margin-top: 30px;
+  }
 `;
 
 export const FooterText = styled.div`
