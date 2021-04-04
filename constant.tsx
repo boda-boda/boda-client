@@ -1,4 +1,9 @@
 import { DayType } from './common/types/date';
+import BusinessArea from './model/business-area';
+import CareWorker from './model/care-worker';
+import CareWorkerCareer from './model/care-worker-career';
+import CareWorkerMeta from './model/care-worker-meta';
+import CareWorkerSingleSchedule from './model/care-worker-single-schedule';
 
 export const CONTENT_WIDTH = 978;
 
@@ -76,6 +81,13 @@ export const FLEX_ROW_START_START = `
   align-items:flex-start;
 `;
 
+export const FLEX_ROW_START_END = `
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-start;
+  align-items:flex-end;
+`;
+
 export const FLEX_ROW_END_START = `
   display: flex;
   flex-direction: row;
@@ -87,6 +99,13 @@ export const FLEX_ROW_END_CENTER = `
   flex-direction:row;
   justify-content:flex-end;
   align-items:center;
+`;
+
+export const FLEX_ROW_END_END = `
+  display:flex;
+  flex-direction:row;
+  justify-content:flex-end;
+  align-items:flex-end;
 `;
 
 export const FLEX_ROW_SPACE_CENTER = `
@@ -185,4 +204,152 @@ export const LOCALSTORAGE_KEY = {
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';
 
+export const dummyCareWorkers = [
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '피딩', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '기저귀', value: '' },
+      { type: 'Capability', key: '치매', value: '' },
+      { type: 'Capability', key: '입주', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '박명순',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158115-757f3800-9276-11eb-998b-52be47e42dda.jpeg',
+  },
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '피딩', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '재활', value: '' },
+      { type: 'Capability', key: '가사', value: '' },
+      { type: 'Capability', key: '입주', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '정형미',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158118-7748fb80-9276-11eb-9ae7-d204c7fea22c.jpeg',
+  },
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '재활', value: '' },
+      { type: 'Capability', key: '가사', value: '' },
+      { type: 'Capability', key: '입주', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '유재숙',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158119-7748fb80-9276-11eb-9b1d-f7faebed9745.jpeg',
+  },
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '피딩', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '재활', value: '' },
+      { type: 'Capability', key: '가사', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '정준희',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158120-77e19200-9276-11eb-9c5c-a7c6c3e5b905.jpeg',
+  },
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '재활', value: '' },
+      { type: 'Capability', key: '가사', value: '' },
+      { type: 'Capability', key: '입주', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '유재숙',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158119-7748fb80-9276-11eb-9b1d-f7faebed9745.jpeg',
+  },
+  {
+    zipCode: '08101',
+    address: '서울시 양천구 목동남로 4길 81',
+    detailAddress: '105동 101호',
+    age: 52,
+    birthDay: '19700121',
+    careWorkerAreas: [] as BusinessArea[],
+    careWorkerCareers: [] as CareWorkerCareer[],
+    careWorkerMetas: [
+      { type: 'Capability', key: '석션', value: '' },
+      { type: 'Capability', key: '피딩', value: '' },
+      { type: 'Capability', key: '휠체어', value: '' },
+      { type: 'Capability', key: '재활', value: '' },
+      { type: 'Capability', key: '가사', value: '' },
+    ] as CareWorkerMeta[],
+    careWorkerSchedules: [] as CareWorkerSingleSchedule[],
+    description: 'ㅁㄴㅇㄹ',
+    gender: '여',
+    id: 'ㅁㄴㅇㄹ',
+    name: '정준희',
+    phoneNumber: '010-1234-1234',
+    profile:
+      'https://user-images.githubusercontent.com/52532871/113158120-77e19200-9276-11eb-9c5c-a7c6c3e5b905.jpeg',
+  },
+] as CareWorker[];
 export const PAGINATION_LENGTH = 5;

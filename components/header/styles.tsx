@@ -204,6 +204,14 @@ export const LoginModalButton = styled.button`
   font-size: 14px;
   background-color: ${THEME.MAIN};
   cursor: pointer;
+  :disabled {
+    background-color: ${THEME.GRAY_BORDER};
+  }
+`;
+
+export const SpinnerContainer = styled.div`
+  ${FLEX_COLUMN_CENTER_CENTER}
+  transform:scale(0.5);
 `;
 
 export const LoginSaveLabel = styled.label`
