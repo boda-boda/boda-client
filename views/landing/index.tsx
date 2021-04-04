@@ -86,7 +86,8 @@ const Header = ({ nowSection, setNowSection, sectionRefs }) => {
 export default function Landing() {
   const jumbotronInfo = [
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115607.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498372-4eab5500-9547-11eb-8c46-555aee277adb.jpg',
       text: `요양보호사가 필요할 때<br />
       여기저기 전화는 NO
       <br />
@@ -94,7 +95,8 @@ export default function Landing() {
       isLeft: false,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115678.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498373-50751880-9547-11eb-8a79-909a9a6e34f3.jpg',
       text: `매칭에 꼭 필요한 조건 검색으로<br />
       수급자 어르신과 딱 맞는<br />
       요양보호사를 찾을 수 있을 거에요.`,
