@@ -130,18 +130,21 @@ export default function Landing() {
   ];
   const expansionInfo = [
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202009/jv12099686.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498634-9501b380-9549-11eb-9b55-2a58646a51bf.jpg',
       title: `나의 센터 요양보호사<br/>관리하기`,
       subtitle: `일을 하다가 그만 두신 분, 연락만 했던 요양보호사 정보를 한 곳에 모아 관리할 수 있어요.
       소중한 정보를 안전하고 효율적으로 관리하세요.`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/19/883/332/0/1178566015.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498866-cbd8c900-954b-11eb-8a54-1c5efad68c9f.jpg',
       title: `요양보호사<br/>탐색하기`,
       subtitle: `요양보호사가 필요할 때 바로 검색하고 찾아보세요! 매칭에 필요한 정보와 칭찬후기로 원하는 요양보호사를 찾을 수 있을 겁니다.`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115627.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
       title: `쉿!<br/>아직 준비중입니다.`,
       subtitle: `돌봄만의 획기적인 서비스를 기대주세요.`,
     },
