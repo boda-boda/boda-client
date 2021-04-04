@@ -2,6 +2,7 @@ import React from 'react';
 import ArrowDown from '../../svgs/arrow-down-svg';
 import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
+import SpinnerSVG from '../../svgs/spinner-svg';
 import Link from 'next/link';
 import * as S from './styles';
 import { useHeader } from './hooks';
@@ -14,6 +15,7 @@ export default function Header() {
     handleLogin,
     handlePressEnter,
     isRequestingLogin,
+    isRequestingEmail,
     handleLogout,
     updateUsername,
     updatePassword,
@@ -151,7 +153,15 @@ export default function Header() {
                       }}
                       placeholder="이메일 입력"
                     />
-                    <S.LoginModalButton onClick={handleSendEmail}>확인</S.LoginModalButton>
+                    <S.LoginModalButton onClick={handleSendEmail} disabled={isRequestingEmail}>
+                      {isRequestingEmail ? (
+                        <S.SpinnerContainer>
+                          <SpinnerSVG />
+                        </S.SpinnerContainer>
+                      ) : (
+                        '확인'
+                      )}
+                    </S.LoginModalButton>
                     <S.ForgotPasswordText onClick={() => setForgotPassword(false)}>
                       {'>'}
                       <span>로그인하러 가기</span>
