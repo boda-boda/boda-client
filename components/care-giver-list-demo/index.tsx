@@ -23,9 +23,6 @@ import {
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
-import axios from 'axios';
-import { useCareCenter } from '../../context/care-center';
-import CareWorker from '../../model/care-worker';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
 import { range } from '../../common/lib';
@@ -80,7 +77,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 1,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -97,7 +94,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 2,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -114,7 +111,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 3,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -131,7 +128,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 4,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -148,7 +145,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 5,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -165,7 +162,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 6,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -182,7 +179,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 7,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -199,7 +196,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 8,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -216,7 +213,7 @@ const CARE_WORKERS_DEMO = [
     careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
   },
   {
-    id: 0,
+    id: 9,
     name: '나는종교가있소',
     gender: '여성',
     age: 63,
@@ -630,7 +627,6 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
                                 type="text"
                                 value={schedule.endMinute ? schedule.endMinute : 0}
                                 onChange={(e) => {
-                                  console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
                                   if (schedule.endMinute >= 60 && schedule.endMinute < 100)
@@ -809,6 +805,11 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
                       key={`worker-${idx}`}
                       href={{
                         pathname: '/demo/[id]',
+                        query: {
+                          careWorker: JSON.stringify(
+                            CARE_WORKERS_DEMO.filter((worker) => worker.id === idx)[0]
+                          ),
+                        },
                       }}
                       as={`/demo/${worker.id}`}
                       passHref
