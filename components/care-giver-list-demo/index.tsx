@@ -15,6 +15,7 @@ import {
   RELIGION_LIST,
   CAPABILITY,
   PAGINATION_LENGTH,
+  CARE_WORKERS_DEMO,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -40,196 +41,6 @@ for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
 const slicedReligionList = [];
 for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
-
-const CARE_WORKERS_DEMO = [
-  {
-    id: 0,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 0,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 1,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 2,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 3,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 4,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 5,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 6,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 7,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 8,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-  {
-    id: 9,
-    name: '나는종교가있소',
-    gender: '여성',
-    age: 63,
-    phoneNumber: '010-0000-0000',
-    profile:
-      'https://avatars.githubusercontent.com/u/41494099?s=460&u=a35f30bae3d4b988cc4ebd5923b2c79f657e77d7&v=4',
-    careWorkerAreas: [{ city: '서울특별시', gu: '강동구', dong: '길동' }],
-    careWorkerMetas: [
-      { type: 'Capability', key: '석션' },
-      { type: 'Capability', key: '피딩' },
-      { type: 'Capability', key: '휠체어' },
-      { type: 'Religion', key: '무교' },
-    ],
-    careWorkerSchedules: [{ day: '일', startAt: '10:00', endAt: '13:30' }],
-  },
-];
 
 export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps) {
   const [rerender, setRerender] = useState(false);
@@ -805,11 +616,6 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
                       key={`worker-${idx}`}
                       href={{
                         pathname: '/demo/[id]',
-                        query: {
-                          careWorker: JSON.stringify(
-                            CARE_WORKERS_DEMO.filter((worker) => worker.id === idx)[0]
-                          ),
-                        },
                       }}
                       as={`/demo/${worker.id}`}
                       passHref

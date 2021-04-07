@@ -1,15 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
-import { withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
+import { CAPABILITY, CARE_WORKERS_DEMO, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 
-function CareGiveDetailDemo({ router: { query } }) {
-  let careWorker;
+export default function CareGiveDetailDemo() {
+  const router = useRouter();
+  var pageId = router.asPath.replace(/[^0-9]/g, '');
+  var careWorker = CARE_WORKERS_DEMO[pageId];
 
-  query.careWorker ? (careWorker = JSON.parse(query.careWorker)) : '';
+  const getCareWorker = useCallback(() => {
+    careWorker = CARE_WORKERS_DEMO[pageId];
+    if (!careWorker) careWorker = CARE_WORKERS_DEMO[0];
+  }, []);
 
+  console.log(pageId);
+  console.log(router);
   const handleDeleteCareWorkerDemo = useCallback(async () => {
     if (!window.confirm('데모 버젼에서는 요양보호사를 삭제할 수 없습니다.')) return;
   }, []);
@@ -20,13 +27,12 @@ function CareGiveDetailDemo({ router: { query } }) {
 
   return (
     <>
+      {getCareWorker()}
       <S.CareGiverDetail>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-
             <S.EditButton onClick={handleEditCareWorkerDemo}>세부정보 수정</S.EditButton>
-
             <S.DeleteButton onClick={handleDeleteCareWorkerDemo}>요양보호사 삭제</S.DeleteButton>
             <S.Table>
               <tbody>
@@ -230,5 +236,3 @@ function CareGiveDetailDemo({ router: { query } }) {
     </>
   );
 }
-
-export default withRouter(CareGiveDetailDemo);
