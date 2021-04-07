@@ -452,7 +452,6 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                                 type="text"
                                 value={schedule.endMinute ? schedule.endMinute : 0}
                                 onChange={(e) => {
-                                  console.log(e.target.value);
                                   const currentMinute = e.target.value.replace(/[^0-9]/g, '');
                                   schedule.endMinute = parseInt(currentMinute);
                                   if (schedule.endMinute >= 60 && schedule.endMinute < 100)

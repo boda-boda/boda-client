@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
 import { CAPABILITY, CARE_WORKERS_DEMO, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
+import Link from 'next/link';
 
 export default function CareGiveDetailDemo() {
   const router = useRouter();
@@ -15,16 +16,6 @@ export default function CareGiveDetailDemo() {
     if (!careWorker) careWorker = CARE_WORKERS_DEMO[0];
   }, []);
 
-  console.log(pageId);
-  console.log(router);
-  const handleDeleteCareWorkerDemo = useCallback(async () => {
-    if (!window.confirm('데모 버젼에서는 요양보호사를 삭제할 수 없습니다.')) return;
-  }, []);
-
-  const handleEditCareWorkerDemo = useCallback(async () => {
-    if (!window.confirm('데모 버젼에서는 요양보호사 정보를 수정할 수 없습니다.')) return;
-  }, []);
-
   return (
     <>
       {getCareWorker()}
@@ -32,8 +23,11 @@ export default function CareGiveDetailDemo() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <S.EditButton onClick={handleEditCareWorkerDemo}>세부정보 수정</S.EditButton>
-            <S.DeleteButton onClick={handleDeleteCareWorkerDemo}>요양보호사 삭제</S.DeleteButton>
+            <Link href={`/demo`} passHref>
+              <S.StyledLink>
+                <S.EditButton>목록 보기</S.EditButton>
+              </S.StyledLink>
+            </Link>
             <S.Table>
               <tbody>
                 <tr>
