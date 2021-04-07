@@ -8,6 +8,7 @@ export function useHeader() {
   const router = useRouter();
 
   const [isRequestingLogin, setIsRequestingLogin] = useState(false);
+  const [isRequestingEmail, setIsRequestingEmail] = useState(false);
   const [isMenuModalOn, setIsMenuModalOn] = useState([false, false, false]);
   const [isLoginModalOn, setIsLoginModalOn] = useState(false);
   const [contact, setContact] = useState('');
@@ -147,11 +148,14 @@ export function useHeader() {
 
   const handleSendEmail = async () => {
     try {
-      await axios.post(`/auth/reset-password/email`, {
+      setIsRequestingEmail(true);
+      const response = await axios.post(`/auth/reset-password/email`, {
         email: forgotEmail,
       });
+      setIsRequestingEmail(false);
       alert('이메일을 발송했습니다. 메일함을 확인해주세요.');
     } catch (e) {
+      setIsRequestingEmail(false);
       if (e.response) {
         switch (e.response.status) {
           case 400:
@@ -183,6 +187,7 @@ export function useHeader() {
     isMenuModalOn,
     isLoginModalOn,
     isRequestingLogin,
+    isRequestingEmail,
     careCenter,
     setIsLoginModalOn,
     handleMenuClick,

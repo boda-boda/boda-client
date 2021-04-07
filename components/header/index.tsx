@@ -2,6 +2,7 @@ import React from 'react';
 import ArrowDown from '../../svgs/arrow-down-svg';
 import ArrowUp from '../../svgs/arrow-up-svg';
 import CloseIconSVG from '../../svgs/close-icon-svg';
+import SpinnerSVG from '../../svgs/spinner-svg';
 import Link from 'next/link';
 import * as S from './styles';
 import { useHeader } from './hooks';
@@ -14,6 +15,7 @@ export default function Header() {
     handleLogin,
     handlePressEnter,
     isRequestingLogin,
+    isRequestingEmail,
     handleLogout,
     updateUsername,
     updatePassword,
@@ -70,19 +72,21 @@ export default function Header() {
             >
               나의 요양보호사 관리
               {!careCenter.isValidating && careCenter.isLoggedIn && isMenuModalOn[1] ? (
-                <ArrowUp />
+                <>
+                  <ArrowUp />
+                  <S.MenuModal isMenuModalOn={isMenuModalOn[1]}>
+                    <Link href="/list" passHref>
+                      <S.StyledLink>요양보호사 목록</S.StyledLink>
+                    </Link>
+                    <S.MenuBar />
+                    <Link href="/new" passHref>
+                      <S.StyledLink>요양보호사 추가</S.StyledLink>
+                    </Link>
+                  </S.MenuModal>
+                </>
               ) : (
                 <ArrowDown />
               )}
-              <S.MenuModal isMenuModalOn={isMenuModalOn[1]}>
-                <Link href="/list" passHref>
-                  <S.StyledLink>요양보호사 목록</S.StyledLink>
-                </Link>
-                <S.MenuBar />
-                <Link href="/new" passHref>
-                  <S.StyledLink>요양보호사 추가</S.StyledLink>
-                </Link>
-              </S.MenuModal>
             </S.MenuItem>
             {careCenter.isLoggedIn ? (
               <S.MenuItem
@@ -100,14 +104,20 @@ export default function Header() {
                 }}
               >
                 나의 센터 정보
-                {isMenuModalOn[2] ? <ArrowUp /> : <ArrowDown />}
-                <S.MenuModal isMenuModalOn={isMenuModalOn[2]}>
-                  <Link href="/mycenter" passHref>
-                    <S.StyledLink>나의 센터 정보</S.StyledLink>
-                  </Link>
-                  <S.MenuBar />
-                  <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
-                </S.MenuModal>
+                {isMenuModalOn[2] ? (
+                  <>
+                    <ArrowUp />
+                    <S.MenuModal isMenuModalOn={isMenuModalOn[2]}>
+                      <Link href="/mycenter" passHref>
+                        <S.StyledLink>나의 센터 정보</S.StyledLink>
+                      </Link>
+                      <S.MenuBar />
+                      <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
+                    </S.MenuModal>
+                  </>
+                ) : (
+                  <ArrowDown />
+                )}
               </S.MenuItem>
             ) : (
               <S.MenuItem
@@ -151,7 +161,15 @@ export default function Header() {
                       }}
                       placeholder="이메일 입력"
                     />
-                    <S.LoginModalButton onClick={handleSendEmail}>확인</S.LoginModalButton>
+                    <S.LoginModalButton onClick={handleSendEmail} disabled={isRequestingEmail}>
+                      {isRequestingEmail ? (
+                        <S.SpinnerContainer>
+                          <SpinnerSVG />
+                        </S.SpinnerContainer>
+                      ) : (
+                        '확인'
+                      )}
+                    </S.LoginModalButton>
                     <S.ForgotPasswordText onClick={() => setForgotPassword(false)}>
                       {'>'}
                       <span>로그인하러 가기</span>

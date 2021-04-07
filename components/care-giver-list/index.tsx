@@ -13,6 +13,7 @@ import {
   KOREAN_ASCII_LIST,
   LOCALSTORAGE_KEY,
   RELIGION_LIST,
+  dummyCareWorkers,
   CAPABILITY,
   PAGINATION_LENGTH,
 } from '../../constant';
@@ -91,6 +92,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
       Math.min((currentPaginationGroup + 1) * PAGINATION_LENGTH, maxPageNumber)
     );
   }, [currentPaginationGroup, maxPageNumber]);
+
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
 
@@ -275,7 +277,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     }
     try { 
       const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
-      setName(name); setCity(city); setGu(gu); setDong(dong); setSchedules(schedules); setSelectedCareInfo(selectedCareInfo); setSelectedConsonantFilter(selectedConsonantFilter); setCurrentPage(currentPage); setCareWorkersPerPage(careWorkersPerPage);
+      setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
       setIsLocalStorageLoaded(true);
     }
     catch {
@@ -318,60 +320,51 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
     <>
       <S.CgList>
         <S.Section isBackgroundColored={false}>
-          <S.InnerContent>
-            <S.SectionTitle>요양보호사 검색</S.SectionTitle>
-            <S.FilterTable>
-              <tbody>
-                <tr>
-                  <th>이름</th>
-                  <td>
-                    <S.TextInput
-                      value={name}
-                      onKeyPress={(e: any) => {
-                        if (e.key === 'Enter') {
-                          handleSearchOnClickSearchButton();
-                          return;
-                        }
-                      }}
-                      onChange={(e: any) => {
-                        setName(e.target.value);
-                      }}
-                    ></S.TextInput>
-                  </td>
+          <S.InnerSection>
+            <S.InnerContent>
+              <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+              <S.FilterTable>
+                <tbody>
+                  <tr>
+                    <th>이름</th>
+                    <td>
+                      <S.TextInput
+                        value={name}
+                        onKeyPress={(e: any) => {
+                          if (e.key === 'Enter') {
+                            handleSearchOnClickSearchButton();
+                            return;
+                          }
+                        }}
+                        onChange={(e: any) => {
+                          setName(e.target.value);
+                        }}
+                      ></S.TextInput>
+                    </td>
 
-                  <th>지역</th>
-                  <td>
-                    <S.DropDown
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      defaultValue="-1"
-                    >
-                      <option value="-1">시/도 선택</option>
-                      <option value="서울특별시">서울특별시</option>
-                    </S.DropDown>
-                    <S.DropDown value={gu} onChange={(e) => setGu(e.target.value)} defaultValue="">
-                      <option value="-1">전체</option>
-                      {city === '-1'
-                        ? null
-                        : SEOUL_GU_DONG.map((gudong, idx) => (
-                            <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
-                              {gudong.gu}
-                            </option>
-                          ))}
-                    </S.DropDown>
-                    <S.DropDown
-                      value={dong}
-                      onChange={(e) => setDong(e.target.value)}
-                      defaultValue=""
-                    >
-                      <option value="-1">전체</option>
-                      {city === '-1' || gu === '-1'
-                        ? null
-                        : SEOUL_GU_DONG.find((gudong) => gudong.gu === gu)?.dongs.map(
-                            (dong, idx) => (
-                              <option key={`${dong}-${idx}`} value={dong}>
-                                {dong}
+                    <th>지역</th>
+                    <td>
+                      <S.DropDown
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        defaultValue="-1"
+                      >
+                        <option value="-1">시/도 선택</option>
+                        <option value="서울특별시">서울특별시</option>
+                      </S.DropDown>
+                      <S.DropDown
+                        value={gu}
+                        onChange={(e) => setGu(e.target.value)}
+                        defaultValue=""
+                      >
+                        <option value="-1">전체</option>
+                        {city === '-1'
+                          ? null
+                          : SEOUL_GU_DONG.map((gudong, idx) => (
+                              <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
+                                {gudong.gu}
                               </option>
+<<<<<<< HEAD
                             )
                           )}
                     </S.DropDown>
@@ -508,139 +501,407 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                           return (
                             <tr key={`${row}`}>
                               {slicedCareInfo.map((careInfo, index) => {
+=======
+                            ))}
+                      </S.DropDown>
+                      <S.DropDown
+                        value={dong}
+                        onChange={(e) => setDong(e.target.value)}
+                        defaultValue=""
+                      >
+                        <option value="-1">전체</option>
+                        {city === '-1' || gu === '-1'
+                          ? null
+                          : SEOUL_GU_DONG.find((gudong) => gudong.gu === gu)?.dongs.map(
+                              (dong, idx) => (
+                                <option key={`${dong}-${idx}`} value={dong}>
+                                  {dong}
+                                </option>
+                              )
+                            )}
+                      </S.DropDown>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>돌봄 시간</th>
+                    <td style={{ padding: 0 }} colSpan={3}>
+                      {schedules.map((schedule, scheduleIndex) => {
+                        return (
+                          <S.TimeSelectContainer
+                            isLast={schedules.length - 1 === scheduleIndex}
+                            key={`timeselectcontainer-${scheduleIndex}`}
+                          >
+                            <S.TdFlexBox>
+                              {DAY_LIST.map((day) => {
+>>>>>>> 60789b789509074b7866bd13ff386c09071c1224
                                 return (
-                                  <td
-                                    className={`available ${index === 4 && 'right'} ${
-                                      row === slicedCareInfoList.length - 1 && 'last'
-                                    }`}
-                                    key={`${index}`}
-                                    onClick={() => toggleCareInfo(careInfo)}
+                                  <S.ToggleButton
+                                    isSelected={schedule.days.includes(day)}
+                                    className="square"
+                                    onClick={() => toggleDays(scheduleIndex, day)}
+                                    key={`dayListItem-${day}`}
                                   >
-                                    <div className="hoverDiv">
-                                      {careInfo}
-                                      <S.CheckBox
-                                        type="checkbox"
-                                        checked={selectedCareInfo.includes(careInfo)}
-                                        onChange={() => toggleCareInfo(careInfo)}
-                                      />
-                                    </div>
-                                  </td>
+                                    {day}
+                                  </S.ToggleButton>
                                 );
                               })}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <th className="innerTableHeader">종교</th>
-                  <td className="innerTable" colSpan={3}>
-                    <table>
-                      <tbody>
-                        {slicedReligionList.map((slicedReligion, row) => {
-                          return (
-                            <tr key={`${row}`}>
-                              {slicedReligion.map((religion, index) => {
-                                return (
-                                  <td
-                                    className={`available ${index === 4 && 'right'} ${
-                                      row === slicedReligionList.length - 1 && 'last'
-                                    }`}
-                                    key={`${index}`}
-                                    onClick={() => toggleReligion(religion)}
-                                  >
-                                    <div className="hoverDiv">
-                                      {religion}
-                                      <S.CheckBox
-                                        type="checkbox"
-                                        checked={selectedReligion.includes(religion)}
-                                        onChange={() => toggleReligion(religion)}
-                                      />
-                                    </div>
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </S.FilterTable>
-            <S.ResetButtonContainer>
-              <S.FilterButton onClick={handleReset} isReset>
-                초기화
-              </S.FilterButton>
-              <S.FilterButton onClick={handleSearchOnClickSearchButton}>검색</S.FilterButton>
-            </S.ResetButtonContainer>
-          </S.InnerContent>
+                            </S.TdFlexBox>
+                            <S.TdFlexBox>
+                              <S.ClockSelectContainer>
+                                <S.ClockInput
+                                  type="text"
+                                  value={schedule.startHour ? schedule.startHour : 0}
+                                  onChange={(e) => {
+                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                    schedule.startHour = parseInt(currentHour);
+                                    if (schedule.startHour >= 100)
+                                      schedule.startHour = Math.floor(schedule.startHour / 10);
+                                    if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                      schedule.startHour = 23;
+                                    setRerender(!rerender);
+                                  }}
+                                />
+                                시
+                                <S.ClockInput
+                                  type="text"
+                                  value={schedule.startMinute ? schedule.startMinute : 0}
+                                  onChange={(e) => {
+                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                    schedule.startMinute = parseInt(currentMinute);
+                                    if (schedule.startMinute >= 100)
+                                      schedule.startMinute = Math.floor(schedule.startMinute / 10);
+                                    if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                      schedule.startMinute = 59;
+                                    setRerender(!rerender);
+                                  }}
+                                />
+                                분
+                              </S.ClockSelectContainer>
+                              부터
+                              <S.ClockSelectContainer>
+                                <S.ClockInput
+                                  type="text"
+                                  value={schedule.endHour ? schedule.endHour : 0}
+                                  onChange={(e) => {
+                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                    schedule.endHour = parseInt(currentHour);
+                                    if (schedule.endHour >= 100)
+                                      schedule.endHour = Math.floor(schedule.endHour / 10);
+                                    if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                      schedule.endHour = 23;
+                                    setRerender(!rerender);
+                                  }}
+                                />
+                                시
+                                <S.ClockInput
+                                  type="text"
+                                  value={schedule.endMinute ? schedule.endMinute : 0}
+                                  onChange={(e) => {
+                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                    schedule.endMinute = parseInt(currentMinute);
+                                    if (schedule.endMinute >= 100)
+                                      schedule.endMinute = Math.floor(schedule.endMinute / 10);
+                                    if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                      schedule.endMinute = 59;
+                                    setRerender(!rerender);
+                                  }}
+                                />
+                                분
+                              </S.ClockSelectContainer>
+                              까지
+                            </S.TdFlexBox>
+                            <S.PlusMinusButtonContainer>
+                              <S.PlusMinusButton
+                                hide={schedules.length - 1 !== scheduleIndex}
+                                disabled={schedules.length - 1 !== scheduleIndex}
+                                onClick={() => {
+                                  setSchedules([
+                                    ...schedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }}
+                              >
+                                <PlusIconSVG />
+                              </S.PlusMinusButton>
+                              <S.PlusMinusButton
+                                onClick={() => {
+                                  if (schedules.length === 1) {
+                                    setSchedules([
+                                      ...schedules,
+                                      CareWorkerSchedule.noArgsConstructor(),
+                                    ]);
+                                  }
+                                  setSchedules((schedules) =>
+                                    schedules.filter((_, i) => i !== scheduleIndex)
+                                  );
+                                }}
+                              >
+                                <MinusIconSVG />
+                              </S.PlusMinusButton>
+                            </S.PlusMinusButtonContainer>
+                          </S.TimeSelectContainer>
+                        );
+                      })}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>가능 조건</th>
+                    <td className="innerTable" colSpan={3}>
+                      <table>
+                        <tbody>
+                          {slicedCareInfoList.map((slicedCareInfo, row) => {
+                            return (
+                              <tr key={`${row}`}>
+                                {slicedCareInfo.map((careInfo, index) => {
+                                  return (
+                                    <td
+                                      className={`available ${index === 4 && 'right'} ${
+                                        row === slicedCareInfoList.length - 1 && 'last'
+                                      }`}
+                                      key={`${index}`}
+                                      onClick={() => toggleCareInfo(careInfo)}
+                                    >
+                                      <div className="hoverDiv">
+                                        {careInfo}
+                                        <S.CheckBox
+                                          type="checkbox"
+                                          checked={selectedCareInfo.includes(careInfo)}
+                                          onChange={() => toggleCareInfo(careInfo)}
+                                        />
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="innerTableHeader">종교</th>
+                    <td className="innerTable" colSpan={3}>
+                      <table>
+                        <tbody>
+                          {slicedReligionList.map((slicedReligion, row) => {
+                            return (
+                              <tr key={`${row}`}>
+                                {slicedReligion.map((religion, index) => {
+                                  return (
+                                    <td
+                                      className={`available ${index === 4 && 'right'} ${
+                                        row === slicedReligionList.length - 1 && 'last'
+                                      }`}
+                                      key={`${index}`}
+                                      onClick={() => toggleReligion(religion)}
+                                    >
+                                      <div className="hoverDiv">
+                                        {religion}
+                                        <S.CheckBox
+                                          type="checkbox"
+                                          checked={selectedReligion.includes(religion)}
+                                          onChange={() => toggleReligion(religion)}
+                                        />
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </S.FilterTable>
+              <S.ResetButtonContainer>
+                <S.FilterButton onClick={handleReset} isReset>
+                  초기화
+                </S.FilterButton>
+                <S.FilterButton onClick={handleSearchOnClickSearchButton}>검색</S.FilterButton>
+              </S.ResetButtonContainer>
+            </S.InnerContent>
+          </S.InnerSection>
         </S.Section>
         <S.Section isBackgroundColored={true}>
-          <S.InnerContent>
-            <S.SectionTitle>검색 결과</S.SectionTitle>
-            <S.ConsonantFilterList>
-              <S.ConsonantFilterItem
-                isClicked={selectedConsonantFilter === -1}
-                onClick={() => {
-                  setSelectedConsonantFilter(-1);
-                }}
-                isLeft
-              >
-                전체
-              </S.ConsonantFilterItem>
-              {KOREAN_CONSONANT_LIST.map((name, nameIndex) => (
-                <S.ConsonantFilterItem
-                  key={`name-${nameIndex}`}
-                  isClicked={selectedConsonantFilter === nameIndex}
-                  onClick={() => {
-                    setSelectedConsonantFilter(nameIndex);
+          {careCenter.isValidating ||
+            (!careCenter.isLoggedIn && (
+              <S.NeedLogin>
+                <S.NeedLoginModal>
+                  자세한 내용은 회원가입 및 로그인 후에 확인 가능합니다.
+                </S.NeedLoginModal>
+              </S.NeedLogin>
+            ))}
+          <S.InnerSection isBlur={careCenter.isValidating || !careCenter.isLoggedIn}>
+            <S.InnerContent>
+              <S.SectionTitle>검색 결과</S.SectionTitle>
+              <S.CareWorkersPerPageContainer>
+                <S.CareWorkersPerPageDropDown
+                  value={careWorkersPerPage}
+                  onChange={(e) => {
+                    setCareWorkersPerPage(Number(e.target.value) as number);
                     setCurrentPage(1);
+                    setCurrentPaginationGroup(0);
                   }}
                 >
-                  {name}
+                  <option value="10">10명 씩 보기</option>
+                  <option value="20">20명 씩 보기</option>
+                </S.CareWorkersPerPageDropDown>
+              </S.CareWorkersPerPageContainer>
+              <S.ConsonantFilterList>
+                <S.ConsonantFilterItem
+                  isClicked={selectedConsonantFilter === -1}
+                  onClick={() => {
+                    setSelectedConsonantFilter(-1);
+                    setCurrentPage(1);
+                  }}
+                  isLeft
+                >
+                  전체
                 </S.ConsonantFilterItem>
-              ))}
-            </S.ConsonantFilterList>
-            <S.CareWorkersPerPageContainer>
-              <S.CareWorkersPerPageDropDown
-                value={careWorkersPerPage}
-                onChange={(e) => {
-                  setCareWorkersPerPage(Number(e.target.value) as number);
-                  setCurrentPage(1);
-                  setCurrentPaginationGroup(0);
-                }}
-              >
-                <option value="10">10명 씩 보기</option>
-                <option value="20">20명 씩 보기</option>
-              </S.CareWorkersPerPageDropDown>
-            </S.CareWorkersPerPageContainer>
-            {currentPageCareWorkers.length === 0 ? (
-              <S.EmptyCardContainer>
-                <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
-              </S.EmptyCardContainer>
-            ) : (
+                {KOREAN_CONSONANT_LIST.map((name, nameIndex) => (
+                  <S.ConsonantFilterItem
+                    key={`name-${nameIndex}`}
+                    isClicked={selectedConsonantFilter === nameIndex}
+                    onClick={() => {
+                      setSelectedConsonantFilter(nameIndex);
+                    }}
+                  >
+                    {name}
+                  </S.ConsonantFilterItem>
+                ))}
+              </S.ConsonantFilterList>
               <S.CardList>
-                {currentPageCareWorkers.map((worker, idx) => (
-                  <S.StyledLink>
-                    <Link
-                      key={`worker-${idx}`}
-                      href={{
-                        pathname: '/list/[id]',
-                      }}
-                      as={`/list/${worker.id}`}
-                      passHref
-                    >
+                {!careCenter.isValidating && careCenter.isLoggedIn ? (
+                  currentPageCareWorkers.length === 0 ? (
+                    <S.EmptyCardContainer>
+                      <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
+                    </S.EmptyCardContainer>
+                  ) : (
+                    <S.CardList>
+                      {currentPageCareWorkers.map((worker, idx) => (
+                        <S.StyledLink>
+                          <Link
+                            key={`worker-${idx}`}
+                            href={{
+                              pathname: '/list/[id]',
+                            }}
+                            as={`/list/${worker.id}`}
+                            passHref
+                          >
+                            <S.Card>
+                              <S.ProfileImage src={worker.profile} />
+                              <S.InfoContainer>
+                                <S.BasicInfo>
+                                  {worker.name} ({worker.age}/{worker.gender[0]})
+                                </S.BasicInfo>
+                                {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <PhoneNumberIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>휴대전화</S.InfoType>
+                                  <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                                </S.InfoRow>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <CareInfoIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>가능 조건</S.InfoType>
+
+                                  <S.InfoItemList>
+                                    {worker.careWorkerMetas
+                                      ?.filter((meta) => meta.type === CAPABILITY)
+                                      .map((meta, index) => {
+                                        return (
+                                          <S.InfoItem key={`careInfoItem-${index}`}>
+                                            {meta.key}
+                                          </S.InfoItem>
+                                        );
+                                      })}
+                                  </S.InfoItemList>
+                                </S.InfoRow>
+                              </S.InfoContainer>
+                            </S.Card>
+                          </Link>
+                        </S.StyledLink>
+                      ))}
+                      <S.PaginationContainer>
+                        <S.PaginationItem
+                          isLeft
+                          key={'first-page-btn'}
+                          onClick={() => {
+                            setCurrentPage(1);
+                            setCurrentPaginationGroup(0);
+                          }}
+                        >
+                          <DoubleArrowLeftSVG />
+                        </S.PaginationItem>
+                        <S.PaginationItem
+                          key={'previous-pageset-btn'}
+                          onClick={() => {
+                            const paginationGroup = Math.max(0, currentPaginationGroup - 1);
+
+                            setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
+                            setCurrentPaginationGroup(paginationGroup);
+                          }}
+                        >
+                          <SingleArrowLeftSVG />
+                        </S.PaginationItem>
+                        {getPaginationBarNumbers().map((pageNumber) => (
+                          <S.PaginationItem
+                            key={`page-${pageNumber}`}
+                            onClick={() => {
+                              setCurrentPage(pageNumber as number);
+                            }}
+                            isClicked={currentPage === pageNumber}
+                          >
+                            {pageNumber}
+                          </S.PaginationItem>
+                        ))}
+                        <S.PaginationItem
+                          key={'next-pageset-btn'}
+                          onClick={() => {
+                            const paginationGroup = Math.min(
+                              Math.floor(maxPageNumber / PAGINATION_LENGTH),
+                              currentPaginationGroup + 1
+                            );
+                            setCurrentPage(
+                              Math.max(
+                                paginationGroup * PAGINATION_LENGTH + 1,
+                                getPaginationBarNumbers().slice(-1)[0]
+                              )
+                            );
+                            setCurrentPaginationGroup(paginationGroup);
+                          }}
+                        >
+                          <SingleArrowRightSVG />
+                        </S.PaginationItem>
+                        <S.PaginationItem key={'last-page-btn'}>
+                          <DoubleArrowRightSVG
+                            key={'last-page-btn'}
+                            onClick={() => {
+                              setCurrentPage(maxPageNumber);
+                              setCurrentPaginationGroup(
+                                Math.floor(maxPageNumber / PAGINATION_LENGTH)
+                              );
+                            }}
+                          />
+                        </S.PaginationItem>
+                      </S.PaginationContainer>
+                    </S.CardList>
+                  )
+                ) : (
+                  <>
+                    {dummyCareWorkers.map((worker, idx) => (
                       <S.Card>
                         <S.ProfileImage src={worker.profile} />
                         <S.InfoContainer>
                           <S.BasicInfo>
                             {worker.name} ({worker.age}/{worker.gender[0]})
                           </S.BasicInfo>
-                          {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
                           <S.InfoRow>
                             <S.SVGIconBox>
                               <PhoneNumberIconSVG />
@@ -653,88 +914,22 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                               <CareInfoIconSVG />
                             </S.SVGIconBox>
                             <S.InfoType>가능 조건</S.InfoType>
-
                             <S.InfoItemList>
-                              {worker.careWorkerMetas
-                                ?.filter((meta) => meta.type === CAPABILITY)
-                                .map((meta, index) => {
-                                  return (
-                                    <S.InfoItem key={`careInfoItem-${index}`}>
-                                      {meta.key}
-                                    </S.InfoItem>
-                                  );
-                                })}
+                              {worker.careWorkerMetas.map((meta, index) => {
+                                return (
+                                  <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
+                                );
+                              })}
                             </S.InfoItemList>
                           </S.InfoRow>
                         </S.InfoContainer>
                       </S.Card>
-                    </Link>
-                  </S.StyledLink>
-                ))}
-                <S.PaginationContainer>
-                  <S.PaginationItem
-                    isLeft
-                    key={'first-page-btn'}
-                    onClick={() => {
-                      setCurrentPage(1);
-                      setCurrentPaginationGroup(0);
-                    }}
-                  >
-                    <DoubleArrowLeftSVG />
-                  </S.PaginationItem>
-                  <S.PaginationItem
-                    key={'previous-pageset-btn'}
-                    onClick={() => {
-                      const paginationGroup = Math.max(0, currentPaginationGroup - 1);
-
-                      setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
-                      setCurrentPaginationGroup(paginationGroup);
-                    }}
-                  >
-                    <SingleArrowLeftSVG />
-                  </S.PaginationItem>
-                  {getPaginationBarNumbers().map((pageNumber) => (
-                    <S.PaginationItem
-                      key={`page-${pageNumber}`}
-                      onClick={() => {
-                        setCurrentPage(pageNumber as number);
-                      }}
-                      isClicked={currentPage === pageNumber}
-                    >
-                      {pageNumber}
-                    </S.PaginationItem>
-                  ))}
-                  <S.PaginationItem
-                    key={'next-pageset-btn'}
-                    onClick={() => {
-                      const paginationGroup = Math.min(
-                        Math.floor(maxPageNumber / PAGINATION_LENGTH),
-                        currentPaginationGroup + 1
-                      );
-                      setCurrentPage(
-                        Math.max(
-                          paginationGroup * PAGINATION_LENGTH + 1,
-                          getPaginationBarNumbers().slice(-1)[0]
-                        )
-                      );
-                      setCurrentPaginationGroup(paginationGroup);
-                    }}
-                  >
-                    <SingleArrowRightSVG />
-                  </S.PaginationItem>
-                  <S.PaginationItem key={'last-page-btn'}>
-                    <DoubleArrowRightSVG
-                      key={'last-page-btn'}
-                      onClick={() => {
-                        setCurrentPage(maxPageNumber);
-                        setCurrentPaginationGroup(Math.floor(maxPageNumber / PAGINATION_LENGTH));
-                      }}
-                    />
-                  </S.PaginationItem>
-                </S.PaginationContainer>
+                    ))}
+                  </>
+                )}
               </S.CardList>
-            )}
-          </S.InnerContent>
+            </S.InnerContent>
+          </S.InnerSection>
         </S.Section>
       </S.CgList>
     </>
