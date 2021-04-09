@@ -75,26 +75,32 @@ export default function CareGiveDetailDemo() {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
-                  {careWorker.careWorkerAreas?.length > 0 ? (
-                    chunk(careWorker.careWorkerAreas, 3).map((a, key) =>
-                      a.map((areaItem, areaItemIndex) => {
-                        return (
-                          <td
-                            className={`area ${
-                              areaItemIndex === careWorker.careWorkerAreas.length - 1 && 'right'
-                            }`}
-                            key={`areaItem-${areaItemIndex}`}
-                          >
-                            {areaItem.city} {areaItem.gu} {areaItem.dong}
-                          </td>
-                        );
-                      })
-                    )
-                  ) : (
+                {careWorker.careWorkerAreas?.length > 0 ? (
+                  chunk(careWorker.careWorkerAreas, 3).map((row, key) => {
+                    return (
+                      <tr key={`${key}`}>
+                        {row.map((areaItem, areaItemIndex) => {
+                          return (
+                            <td
+                              className={
+                                key === 0
+                                  ? `area ${areaItemIndex === row.length - 1 && 'right'}`
+                                  : `area ${(areaItemIndex + 1) % 3 === 0 && 'right'}`
+                              }
+                              key={`areaItem-${areaItemIndex}`}
+                            >
+                              {areaItem.city} {areaItem.gu} {areaItem.dong}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
                     <td>등록된 활동 지역이 없습니다.</td>
-                  )}
-                </tr>
+                  </tr>
+                )}
               </tbody>
             </S.Table>
           </S.Section>
