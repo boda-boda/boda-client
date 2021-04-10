@@ -1,60 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import CareWorker from '../../model/care-worker';
 import * as S from './styles';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
+import { CAPABILITY, CARE_WORKERS_DEMO, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
-import { useCareCenter } from '../../context/care-center';
 
-export default function CareGiveDetail() {
+export default function CareGiveDetailDemo() {
   const router = useRouter();
-  const careCenter = useCareCenter();
-  const [careWorker, setCareWorker] = useState(new CareWorker());
+  var pageId = router.asPath.replace(/[^0-9]/g, '');
+  var careWorker = CARE_WORKERS_DEMO[pageId];
 
-  useEffect(() => {
-    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
-      return;
-    }
-
-    (async () => {
-      try {
-        const response = await axios.get(`/care-worker/${router.query.ID}`);
-        setCareWorker(response.data);
-      } catch (e) {
-        router.push('/list');
-      }
-    })();
-  }, [router.query.ID, careCenter]);
-
-  const handleDeleteCareWorker = useCallback(async () => {
-    if (!window.confirm('해당 요양보호사를 삭제하시겠습니까?')) return;
-
-    try {
-      await axios.delete(`/care-worker/${router.query.ID}`);
-    } catch (e) {
-      alert('서버 오류로 삭제에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
-      return;
-    }
-
-    alert('삭제에 성공하였습니다.');
-    router.push('/');
-  }, [router.query.ID]);
+  const getCareWorker = useCallback(() => {
+    careWorker = CARE_WORKERS_DEMO[pageId];
+    if (!careWorker) careWorker = CARE_WORKERS_DEMO[0];
+  }, []);
 
   return (
     <>
+      {getCareWorker()}
       <S.CareGiverDetail>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <Link href={`${router.query.ID}/edit`} passHref>
+            <Link href={`/demo`} passHref>
               <S.StyledLink>
-                <S.EditButton>세부정보 수정</S.EditButton>
+                <S.EditButton>목록 보기</S.EditButton>
               </S.StyledLink>
             </Link>
-            <S.DeleteButton onClick={handleDeleteCareWorker}>요양보호사 삭제</S.DeleteButton>
             <S.Table>
               <tbody>
                 <tr>
