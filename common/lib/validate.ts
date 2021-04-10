@@ -1,4 +1,5 @@
 import CreateCareGiverRequest from '../../components/care-giver-edit/model/create-care-giver-request';
+import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
 
 export const isStringOnlyDigit = (str: string) => {
   return str.match(/^[0-9]*$/);
@@ -44,6 +45,22 @@ export const validateCareWorker = (createCareGiverRequest: CreateCareGiverReques
 
   if (validateBirthday(birthDay)) {
     alert(validateBirthday(birthDay));
+    return false;
+  }
+
+  return true;
+};
+
+export const validateCareCenter = (createCareCenterRequest: CenterUpdateRequest) => {
+  const { username, phoneNumber } = createCareCenterRequest;
+
+  if (!username) {
+    alert('이름을 입력해 주세요.');
+    return false;
+  }
+
+  if (validatePhoneNumber(phoneNumber)) {
+    alert(validatePhoneNumber(phoneNumber));
     return false;
   }
 

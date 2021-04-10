@@ -13,6 +13,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { CareCenterMeta } from '../../model/care-center';
 import Head from 'next/head';
+import { validateCareCenter } from '../../common/lib/validate';
 
 export default function MyCenterView() {
   const router = useRouter();
@@ -141,6 +142,7 @@ export default function MyCenterView() {
 
   const handleSubmit = async () => {
     if (!window.confirm('수정하시겠습니까?')) return;
+    if (!validateCareCenter(centerUpdateRequest)) return;
 
     try {
       await axios.put('/care-center/', centerUpdateRequest);
