@@ -293,8 +293,10 @@ export const AddressButton = styled.button`
   margin-left: 10px;
   background: white;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background-color: ${THEME.MAIN};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
@@ -309,8 +311,10 @@ export const AddressDeleteButton = styled.button`
   background: white;
   color: red;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    background-color: ${THEME.RED};
+    color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
@@ -386,8 +390,8 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -moz-user-select: none;
   -webkit-user-select: none;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }

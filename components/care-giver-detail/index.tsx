@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CareWorker from '../../model/care-worker';
 import * as S from './styles';
 import axios from 'axios';
@@ -9,10 +9,55 @@ import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 
+const dummyCompliment = [
+  {
+    title: '오태식씨를 칭찬합니다',
+    date: new Date(),
+    centerID: '64aefb6c-a59a-4432-b9a0-d5f29ed2d653',
+    centerName: '돌봄',
+    content:
+      '병진이형 나가있으라고 말했잖아 내가 별 수 없게 현실이었어 감수하고 12, 000원 빼가 정준하 벌스라도 훔쳐갈 애가 명절 때 대입 자금 활짝 웃어 멀쩡합니다 베이식 형처럼 할거 매일 시켜 먹었다이가 외식을 치즈 콰트로 피어싱도 뚫어',
+  },
+  {
+    title: '최고의 전문가 오태식',
+    date: new Date(),
+    centerID: 'asdf',
+    centerName: '서울시 성북구 래원센터',
+    content: `해바라기 식당에 바로 앞에 직장 에어팟 한 개에 집착 왜 발악해 신참<br />
+      새파랗게 어린 자식들 거의 다 배신자 코펜하겐 수입 담배 가루 워싱턴<br />
+      난 신짜오야 진짜 우황청심환 심장 만신창이와 술 취한 마술사의 아구창<br />
+      삼지창은 간지 쫙 수강신청 언제적 산신령 먼 친척이 사실 여보 친정`,
+  },
+];
+
 export default function CareGiveDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
   const [careWorker, setCareWorker] = useState(new CareWorker());
+  const [isEditingCompliment, setIsEditingCompliment] = useState(false);
+  const [myCompliment, setMyCompliment] = useState(null);
+  const [myComplimentTitle, setMyComplimentTitle] = useState('');
+  const [myComplimentContent, setMyComplimentContent] = useState('');
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    contentRef.current!.style.height = 'auto';
+    contentRef.current!.style.height = (contentRef.current!.scrollHeight + 10).toString() + 'px';
+  }, [myComplimentContent]);
+
+  useEffect(() => {
+    if (!careCenter.careCenter) return;
+    setMyCompliment(
+      dummyCompliment.find((compliment) => compliment.centerID === careCenter.careCenter.id) || null
+    );
+  });
+
+  useEffect(() => {
+    if (!myCompliment) return;
+    setMyComplimentTitle(myCompliment.title);
+    setMyComplimentContent(myCompliment.content);
+  }, [myCompliment]);
 
   useEffect(() => {
     if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
@@ -28,6 +73,15 @@ export default function CareGiveDetail() {
       }
     })();
   }, [router.query.ID, careCenter]);
+
+  const handleEditCompliment = () => {
+    setIsEditingCompliment(true);
+  };
+
+  const handleApplyCompliment = () => {
+    setIsEditingCompliment(false);
+    //update 칭찬
+  };
 
   const handleDeleteCareWorker = useCallback(async () => {
     if (!window.confirm('해당 요양보호사를 삭제하시겠습니까?')) return;
@@ -249,6 +303,73 @@ export default function CareGiveDetail() {
                     <td className="career right"></td>
                   </tr>
                 )}
+              </tbody>
+            </S.Table>
+          </S.Section>
+          <S.Section>
+            <S.SectionTitle>칭찬</S.SectionTitle>
+            <S.Table>
+              <tbody>
+                <tr>
+                  <td style={{ background: '#f4f4f4', position: 'relative' }}>
+                    {isEditingCompliment ? (
+                      <>
+                        <S.ComplimentTitleInput
+                          type="text"
+                          placeholder="칭찬 제목"
+                          value={myComplimentTitle || ''}
+                          onChange={(e) => setMyComplimentTitle(e.target.value)}
+                        />
+                        <S.ComplimentContentInput
+                          ref={contentRef}
+                          placeholder="칭찬 내용"
+                          value={myComplimentContent || ''}
+                          onChange={(e) => setMyComplimentContent(e.target.value)}
+                        />
+                        <S.ComplimentApplyButton onClick={handleApplyCompliment}>
+                          저장하기
+                        </S.ComplimentApplyButton>
+                      </>
+                    ) : myCompliment ? (
+                      <>
+                        <S.ComplimentEditButton onClick={handleEditCompliment}>
+                          수정하기
+                        </S.ComplimentEditButton>
+                        <S.ComplimentTitle>{myCompliment.title}</S.ComplimentTitle>
+                        <S.ComplimentDate>
+                          {myCompliment.date.toDateString()} · {careCenter.careCenter.username}
+                        </S.ComplimentDate>
+                        <S.ComplimentContent
+                          dangerouslySetInnerHTML={{ __html: myCompliment.content }}
+                        ></S.ComplimentContent>
+                      </>
+                    ) : (
+                      <>
+                        <S.ComplimentEditButton onClick={handleEditCompliment}>
+                          작성하기
+                        </S.ComplimentEditButton>
+                        아직 작성한 칭찬이 없습니다.
+                        <br />
+                        요양보호사를 칭찬해보세요!
+                      </>
+                    )}
+                  </td>
+                </tr>
+                {dummyCompliment.map((compliment, index) => {
+                  return (
+                    <tr key={`compliment-${index}`}>
+                      <td>
+                        <S.ComplimentTitle>{compliment.title}</S.ComplimentTitle>
+                        <S.ComplimentDate>
+                          {compliment.date.toDateString()} · {compliment.centerName}
+                        </S.ComplimentDate>
+                        <S.ComplimentContent
+                          dangerouslySetInnerHTML={{ __html: compliment.content }}
+                        ></S.ComplimentContent>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </S.Table>
           </S.Section>

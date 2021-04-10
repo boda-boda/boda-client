@@ -758,7 +758,7 @@ export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
                 ) : (
                   <>
                     {dummyCareWorkers.map((worker, idx) => (
-                      <S.Card>
+                      <S.Card key={`dummy-${idx}`}>
                         <S.ProfileImage src={worker.profile} />
                         <S.InfoContainer>
                           <S.BasicInfo>
