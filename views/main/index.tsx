@@ -5,7 +5,7 @@ import { BannerStyleType } from '../../common/types';
 import CareGiverList from '../../components/care-giver-list';
 import Head from 'next/head';
 
-export default function Main() {
+function Main() {
   return (
     <>
       <Head>
@@ -22,3 +22,5 @@ export default function Main() {
     </>
   );
 }
+
+export default Main;

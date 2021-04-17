@@ -204,6 +204,8 @@ export const LOCALSTORAGE_KEY = {
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';
 
+export const PRIVATE_ROUTES = ['/', '/new', '/list', '/list/[ID]', '/list/[ID]/edit', 'mycenter'];
+
 export const dummyCareWorkers = [
   {
     zipCode: '08101',
