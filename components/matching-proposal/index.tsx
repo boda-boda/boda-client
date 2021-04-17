@@ -138,7 +138,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitleContainer>
-              <S.SectionTitle>기본 정보</S.SectionTitle>
+              <S.SectionTitle>센터 정보</S.SectionTitle>
               <S.CenterInfoUpdateButton onClick={handleUpdateCareCenterInfo}>
                 기본 센터 정보로 저장하기
               </S.CenterInfoUpdateButton>
