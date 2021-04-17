@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BannerStyleType, ButtonSize, ButtonType } from '../../common/types';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
@@ -10,31 +10,117 @@ import { DefaultButton } from '../default-button/styles';
 import Footer from '../footer';
 import Header from '../header';
 import * as S from './styles';
+import { CARE_INFO_LIST, RELIGION_LIST, WORKER_MAN_SMALL_IMAGE_URL } from '../../constant';
+import ImageDefaultSVG from '../../svgs/image-default-svg';
+import axios from 'axios';
+import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
+import { useCareCenter } from '../../context/care-center';
+import { validateCareCenter } from '../../common/lib/validate';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
 
-const gender = ['여자', '남자'];
 const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-const careInfoList = [
-  '석션',
-  '휠체어',
-  '기저귀',
-  '목욕',
-  '재활',
-  '청소',
-  '음식',
-  '남성 수급자',
-  '치매교육 이수',
-];
-const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
 
 export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
   const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
+
+  const careCenter = useCareCenter();
+
+  const [memo, setMemo] = useState('');
+  const memoRef = useRef<HTMLTextAreaElement>(null);
+
+  const [centerUpdateRequest, setCenterUpdateRequest] = useState(
+    new CenterUpdateRequest(careCenter.careCenter)
+  );
+
+  const handleInputChange = useCallback(
+    (key: keyof CenterUpdateRequest) => (e: any) => {
+      setCenterUpdateRequest({
+        ...centerUpdateRequest,
+        [key]: e.target.value,
+      });
+    },
+    [centerUpdateRequest]
+  );
+
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setCenterUpdateRequest({
+      ...centerUpdateRequest,
+      zipCode: '',
+      address: '',
+      detailAddress: '',
+    });
+  };
+
+  useEffect(() => {
+    if (!careCenter.careCenter) return;
+
+    setCenterUpdateRequest(new CenterUpdateRequest(careCenter.careCenter));
+  }, [careCenter]);
+
+  useEffect(() => {
+    if (!memoRef.current) return;
+    memoRef.current!.style.height = 'auto';
+    memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
+  }, [memo]);
+
+  const openAddressModal = () => {
+    if (!window.daum) {
+      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
+      return;
+    }
+    new window.daum.Postcode({
+      oncomplete: function (data: any) {
+        setCenterUpdateRequest({
+          ...centerUpdateRequest,
+          zipCode: data.zonecode,
+          address: data.roadAddress,
+        });
+      },
+    }).open();
+  };
+
+  const onChangeImage = async (e: any) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+
+    try {
+      const axiosInstance = axios.create({
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const response = await axiosInstance.post('/care-worker/profile', formData);
+      setCenterUpdateRequest({
+        ...centerUpdateRequest,
+        profile: response.data.Location,
+      });
+    } catch {
+      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
+  };
+
+  const handleUpdateCareCenterInfo = async () => {
+    if (!window.confirm('기본 센터 정보로 저장 하시겠습니까?')) return;
+    if (!validateCareCenter(centerUpdateRequest)) return;
+
+    try {
+      await axios.put('/care-center/', centerUpdateRequest);
+      alert('수정이 완료되었습니다.');
+      window.location.replace('');
+    } catch (e) {
+      alert('사용자 정보 업데이트에 실패했습니다.');
+    }
+  };
+
   return (
     <>
       <S.MatchingProposalContent>
@@ -42,49 +128,119 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>기본 정보</S.SectionTitle>
-              <DefaultButtonContainter
-                content="기본 센터 정보로 저장하기"
-                type={ButtonType.LOAD}
-                width="178px"
-                height="36px"
-                active={false}
-              ></DefaultButtonContainter>
+              <S.CenterInfoUpdateButton onClick={handleUpdateCareCenterInfo}>
+                기본 센터 정보로 저장하기
+              </S.CenterInfoUpdateButton>
             </S.SectionTitleContainer>
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={5} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <label htmlFor="profile">
+                        <S.ProfileImage src={centerUpdateRequest.profile}>
+                          <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
+                            <ImageDefaultSVG />
+                          </S.ImageIconContainer>
+                        </S.ProfileImage>
+                      </label>
+                      <input
+                        id="profile"
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        style={{ display: 'none' }}
+                        onChange={onChangeImage}
+                      />
                     </S.ProfileImageContainer>
                   </td>
-                  <th>이름</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th className="">이름</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.username}
+                      onChange={handleInputChange('username')}
+                      type="text"
+                      placeholder="센터의 이름을 입력해주세요"
+                    />
                   </td>
-                  <th>주소</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                  <th>전화</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.phoneNumber}
+                      onChange={handleInputChange('phoneNumber')}
+                      type="text"
+                      placeholder="전화번호를 입력해주세요"
+                    />
                   </td>
                 </tr>
                 <tr>
-                  <th>전화</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th>이메일</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.email}
+                      onChange={handleInputChange('email')}
+                      type="text"
+                      placeholder="이메일 주소를 입력해주세요"
+                    />
                   </td>
                   <th>홈페이지</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.homePage}
+                      onChange={handleInputChange('homePage')}
+                      type="text"
+                      placeholder="홈페이지 주소를 입력해주세요"
+                    />
                   </td>
                 </tr>
                 <tr>
-                  <th>팩스</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th rowSpan={2}>주소</th>
+                  <td colSpan={3}>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.zipCode}
+                      readOnly
+                      onClick={openAddressModal}
+                      withButton
+                    />
+                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
                   </td>
-                  <th>이메일</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                </tr>
+                <tr>
+                  <td>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.address}
+                      long
+                      readOnly
+                      disabled
+                    />
+                  </td>
+                  <td colSpan={2}>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.detailAddress}
+                      readOnly={centerUpdateRequest.address === ''}
+                      long
+                      placeholder="상세주소 입력"
+                      onChange={handleInputChange('detailAddress')}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>센터 소개</th>
+                  <td colSpan={3}>
+                    <S.TextArea
+                      ref={memoRef}
+                      value={centerUpdateRequest.description}
+                      onChange={(e) => {
+                        handleInputChange('description')(e), setMemo(e.target.value);
+                      }}
+                      placeholder="센터의 소개글을 작성해주세요"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -106,7 +262,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <td rowSpan={8} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <S.ProfileImage src="https://i.pinimg.com/originals/e1/83/18/e183187a03eee04333591dfcbe467f7f.png" />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
@@ -151,7 +307,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       <option value="5">5등급</option>
                     </S.DropDown>
                   </td>
-                  <th>생년월일</th>
+                  <th>나이</th>
                   <td className="right">
                     <S.InfoInput></S.InfoInput>
                   </td>
@@ -201,12 +357,12 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                             </S.TdFlexBox>
                             <S.TdFlexBox>
                               <S.ClockSelect>
-                                00:00
+                                12:00
                                 <TimeInput />
                               </S.ClockSelect>
                               부터
                               <S.ClockSelect className="clock-right">
-                                00:00
+                                15:00
                                 <TimeInput />
                               </S.ClockSelect>
                               까지
@@ -252,6 +408,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       </option>
                       <option value="0">양천구</option>
                       <option value="1">강서구</option>
+                      <option value="2">서대문구</option>
                     </S.DropDown>
                     <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
                       <option value="-1" disabled hidden>
@@ -259,6 +416,8 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       </option>
                       <option value="0">목1동</option>
                       <option value="1">목2동</option>
+                      <option value="2">홍은동</option>
+                      <option value="3">홍제동</option>
                     </S.DropDown>
                     <S.InfoInput Size={ButtonSize.LONG} placeholder="세부 주소"></S.InfoInput>
                   </td>
@@ -273,7 +432,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   <th>요구 사항</th>
                   <td colSpan={3} className="wide overtd">
                     <S.TdFlexBox>
-                      {careInfoList.map((careInfo, index) => {
+                      {CARE_INFO_LIST.map((careInfo, index) => {
                         return (
                           <S.ToggleButton
                             className="overitems"
@@ -297,19 +456,16 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>요구 성격</th>
+                  <th>종교</th>
                   <td colSpan={3} className="wide">
                     <S.TdFlexBox>
-                      {personalityInfoList.map((personalityInfo, index) => {
+                      {RELIGION_LIST.map((religion, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo.indexOf(personalityInfo) !== -1}
+                            isSelected={selectedPersonalityInfo.indexOf(religion) !== -1}
                             onClick={() => {
-                              if (selectedPersonalityInfo.indexOf(personalityInfo) === -1) {
-                                setSelectedPersonalityInfo([
-                                  ...selectedPersonalityInfo,
-                                  personalityInfo,
-                                ]);
+                              if (selectedPersonalityInfo.indexOf(religion) === -1) {
+                                setSelectedPersonalityInfo([...selectedPersonalityInfo, religion]);
                               } else {
                                 setSelectedPersonalityInfo((selectedPersonalityInfo) =>
                                   selectedPersonalityInfo.filter(
@@ -320,7 +476,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                             }}
                             key={`personalityInfoListItem-${index}`}
                           >
-                            {personalityInfo}
+                            {religion}
                           </S.ToggleButton>
                         );
                       })}
