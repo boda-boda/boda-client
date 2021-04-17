@@ -38,7 +38,7 @@ export default function Header() {
     <>
       <S.Header>
         <S.InnerContent>
-          <Link href="/" passHref>
+          <Link href={careCenter.isLoggedIn ? '/search' : '/'} passHref>
             <S.StyledLink>
               <S.Logo>
                 <S.LogoImg src="/logo.png" />
