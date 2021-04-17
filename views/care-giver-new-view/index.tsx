@@ -6,7 +6,7 @@ import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
 
-export default function CareGiverEditView() {
+export default function CareGiverNewView() {
   return (
     <>
       <Head>

@@ -1,90 +1,257 @@
-import React, { useState } from 'react';
-import { BannerStyleType, ButtonSize, ButtonType } from '../../common/types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ButtonSize, ButtonType } from '../../common/types';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
-import Banner from '../banner';
-import Category from '../category';
-import TimeInput from '../../svgs/time-input-svg';
 import DefaultButtonContainter from '../default-button';
-import { DefaultButton } from '../default-button/styles';
-import Footer from '../footer';
-import Header from '../header';
 import * as S from './styles';
+import {
+  CARE_INFO_LIST,
+  DAY_LIST,
+  FAMILY_TYPE,
+  NURSING_GRADE,
+  RELIGION_LIST,
+  WORKER_MAN_SMALL_IMAGE_URL,
+} from '../../constant';
+import ImageDefaultSVG from '../../svgs/image-default-svg';
+import axios from 'axios';
+import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
+import { useCareCenter } from '../../context/care-center';
+import { validateCareCenter } from '../../common/lib/validate';
+import {
+  CareWorkerSchedule,
+  toggleDayOfCareWorkerSchedule,
+} from '../../model/care-worker-schedule';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
 
-const gender = ['여자', '남자'];
-const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-const careInfoList = [
-  '석션',
-  '휠체어',
-  '기저귀',
-  '목욕',
-  '재활',
-  '청소',
-  '음식',
-  '남성 수급자',
-  '치매교육 이수',
-];
-const personalityInfoList = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
-
 export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
+  const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
+  const [selectedFamilyType, setSelectedFamilyType] = useState('');
+  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
+
+  const careCenter = useCareCenter();
+  const [rerender, setRerender] = useState(false);
+
+  const [memo, setMemo] = useState('');
+  const memoRef = useRef<HTMLTextAreaElement>(null);
+
+  const [centerUpdateRequest, setCenterUpdateRequest] = useState(
+    new CenterUpdateRequest(careCenter.careCenter)
+  );
+
+  const handleInputChange = useCallback(
+    (key: keyof CenterUpdateRequest) => (e: any) => {
+      setCenterUpdateRequest({
+        ...centerUpdateRequest,
+        [key]: e.target.value,
+      });
+    },
+    [centerUpdateRequest]
+  );
+
+  const handleDeleteCurrentAddress = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setCenterUpdateRequest({
+      ...centerUpdateRequest,
+      zipCode: '',
+      address: '',
+      detailAddress: '',
+    });
+  };
+
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
+    setSchedules(newSchedules);
+  };
+
+  useEffect(() => {
+    if (!careCenter.careCenter) return;
+
+    setCenterUpdateRequest(new CenterUpdateRequest(careCenter.careCenter));
+  }, [careCenter]);
+
+  useEffect(() => {
+    if (!memoRef.current) return;
+    memoRef.current!.style.height = 'auto';
+    memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
+  }, [memo]);
+
+  const openAddressModal = () => {
+    if (!window.daum) {
+      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
+      return;
+    }
+    new window.daum.Postcode({
+      oncomplete: function (data: any) {
+        setCenterUpdateRequest({
+          ...centerUpdateRequest,
+          zipCode: data.zonecode,
+          address: data.roadAddress,
+        });
+      },
+    }).open();
+  };
+
+  const onChangeImage = async (e: any) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+
+    try {
+      const axiosInstance = axios.create({
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const response = await axiosInstance.post('/care-worker/profile', formData);
+      setCenterUpdateRequest({
+        ...centerUpdateRequest,
+        profile: response.data.Location,
+      });
+    } catch {
+      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
+    }
+  };
+
+  const handleUpdateCareCenterInfo = async () => {
+    if (!window.confirm('기본 센터 정보로 저장 하시겠습니까?')) return;
+    if (!validateCareCenter(centerUpdateRequest)) return;
+
+    try {
+      await axios.put('/care-center/', centerUpdateRequest);
+      alert('수정이 완료되었습니다.');
+      window.location.replace('');
+    } catch (e) {
+      alert('사용자 정보 업데이트에 실패했습니다.');
+    }
+  };
+
   return (
     <>
       <S.MatchingProposalContent>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitleContainer>
-              <S.SectionTitle>기본 정보</S.SectionTitle>
-              <DefaultButtonContainter
-                content="기본 센터 정보로 저장하기"
-                type={ButtonType.LOAD}
-                width="178px"
-                height="36px"
-                active={false}
-              ></DefaultButtonContainter>
+              <S.SectionTitle>센터 정보</S.SectionTitle>
+              <S.CenterInfoUpdateButton onClick={handleUpdateCareCenterInfo}>
+                기본 센터 정보로 저장하기
+              </S.CenterInfoUpdateButton>
             </S.SectionTitleContainer>
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={5} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <label htmlFor="profile">
+                        <S.ProfileImage src={centerUpdateRequest.profile}>
+                          <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
+                            <ImageDefaultSVG />
+                          </S.ImageIconContainer>
+                        </S.ProfileImage>
+                      </label>
+                      <input
+                        id="profile"
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        style={{ display: 'none' }}
+                        onChange={onChangeImage}
+                      />
                     </S.ProfileImageContainer>
                   </td>
-                  <th>이름</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th className="">이름</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.username}
+                      onChange={handleInputChange('username')}
+                      type="text"
+                      placeholder="센터의 이름을 입력해주세요"
+                    />
                   </td>
-                  <th>주소</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                  <th>전화</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.phoneNumber}
+                      onChange={handleInputChange('phoneNumber')}
+                      type="text"
+                      placeholder="전화번호를 입력해주세요"
+                    />
                   </td>
                 </tr>
                 <tr>
-                  <th>전화</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th>이메일</th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.email}
+                      onChange={handleInputChange('email')}
+                      type="text"
+                      placeholder="이메일 주소를 입력해주세요"
+                    />
                   </td>
                   <th>홈페이지</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={centerUpdateRequest.homePage}
+                      onChange={handleInputChange('homePage')}
+                      type="text"
+                      placeholder="홈페이지 주소를 입력해주세요"
+                    />
                   </td>
                 </tr>
                 <tr>
-                  <th>팩스</th>
-                  <td className="left">
-                    <S.InfoInput></S.InfoInput>
+                  <th rowSpan={2}>주소</th>
+                  <td colSpan={3}>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.zipCode}
+                      readOnly
+                      onClick={openAddressModal}
+                      withButton
+                    />
+                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
                   </td>
-                  <th>이메일</th>
-                  <td className="right">
-                    <S.InfoInput></S.InfoInput>
+                </tr>
+                <tr>
+                  <td>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.address}
+                      long
+                      readOnly
+                      disabled
+                    />
+                  </td>
+                  <td colSpan={2}>
+                    <S.TextInput
+                      type="text"
+                      value={centerUpdateRequest.detailAddress}
+                      readOnly={centerUpdateRequest.address === ''}
+                      long
+                      placeholder="상세주소 입력"
+                      onChange={handleInputChange('detailAddress')}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>센터 소개</th>
+                  <td colSpan={3}>
+                    <S.TextArea
+                      ref={memoRef}
+                      value={centerUpdateRequest.description}
+                      onChange={(e) => {
+                        handleInputChange('description')(e), setMemo(e.target.value);
+                      }}
+                      placeholder="센터의 소개글을 작성해주세요"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -104,9 +271,9 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={8} className="recipientProfile">
+                  <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/close-up-of-cat-wearing-sunglasses-while-sitting-royalty-free-image-1571755145.jpg" />
+                      <S.ProfileImage src="https://i.pinimg.com/originals/e1/83/18/e183187a03eee04333591dfcbe467f7f.png" />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
@@ -140,140 +307,188 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>등급</th>
                   <td className="select left">
-                    <S.DropDown Size={ButtonSize.LONG} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        등급 선택
-                      </option>
-                      <option value="1">1등급</option>
-                      <option value="2">2등급</option>
-                      <option value="3">3등급</option>
-                      <option value="4">4등급</option>
-                      <option value="5">5등급</option>
+                    <S.DropDown>
+                      <option value={''}>요양등급 선택</option>
+                      {NURSING_GRADE.map((grade, idx) => (
+                        <option key={`${grade}-${idx}`} value={grade}>
+                          {grade}
+                        </option>
+                      ))}
                     </S.DropDown>
                   </td>
-                  <th>생년월일</th>
+                  <th>나이</th>
                   <td className="right">
                     <S.InfoInput></S.InfoInput>
                   </td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td style={{ padding: 0 }} colSpan={3} className="wide">
-                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
+                  <td style={{ padding: 0 }} colSpan={3}>
+                    {schedules.map((schedule, scheduleIndex) => {
                       return (
-                        <>
-                          <S.TimeSelectContainer
-                            isLast={selectedDayList.length - 1 === selectedDaysIndex}
-                          >
-                            <S.TdFlexBox>
-                              {dayList.map((day) => {
-                                return (
-                                  <S.ToggleButton
-                                    isSelected={selectedDays.indexOf(day) !== -1}
-                                    onClick={() => {
-                                      if (selectedDays.indexOf(day) === -1) {
-                                        setSelectedDayList((selectedDayList) =>
-                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
-                                            if (selectedDayIndex === selectedDaysIndex)
-                                              return [...selectedDay, day];
-                                            return selectedDay;
-                                          })
-                                        );
-                                      } else {
-                                        setSelectedDayList((selectedDayList) =>
-                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
-                                            if (selectedDayIndex === selectedDaysIndex)
-                                              return selectedDay.filter(
-                                                (selected) => selected !== day
-                                              );
-                                            return selectedDay;
-                                          })
-                                        );
-                                      }
-                                    }}
-                                    key={`dayListItem-${day}`}
-                                    className="square"
-                                  >
-                                    {day}
-                                  </S.ToggleButton>
+                        <S.TimeSelectContainer
+                          isLast={schedules.length - 1 === scheduleIndex}
+                          key={`timeselectcontainer-${scheduleIndex}`}
+                        >
+                          <S.TdFlexBox>
+                            {DAY_LIST.map((day) => {
+                              return (
+                                <S.ToggleButton
+                                  isSelected={schedule.days.includes(day)}
+                                  className="square"
+                                  onClick={() => toggleDays(scheduleIndex, day)}
+                                  key={`dayListItem-${day}`}
+                                >
+                                  {day}
+                                </S.ToggleButton>
+                              );
+                            })}
+                          </S.TdFlexBox>
+                          <S.TdFlexBox>
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.startHour ? schedule.startHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startHour = parseInt(currentHour);
+                                  if (schedule.startHour >= 100)
+                                    schedule.startHour = Math.floor(schedule.startHour / 10);
+                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                    schedule.startHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.startMinute ? schedule.startMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startMinute = parseInt(currentMinute);
+                                  if (schedule.startMinute >= 100)
+                                    schedule.startMinute = Math.floor(schedule.startMinute / 10);
+                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                    schedule.startMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            부터
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.endHour ? schedule.endHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endHour = parseInt(currentHour);
+                                  if (schedule.endHour >= 100)
+                                    schedule.endHour = Math.floor(schedule.endHour / 10);
+                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                    schedule.endHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.endMinute ? schedule.endMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endMinute = parseInt(currentMinute);
+                                  if (schedule.endMinute >= 100)
+                                    schedule.endMinute = Math.floor(schedule.endMinute / 10);
+                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                    schedule.endMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            까지
+                          </S.TdFlexBox>
+                          <S.PlusMinusButtonContainer>
+                            <S.PlusMinusButton
+                              hide={schedules.length - 1 !== scheduleIndex}
+                              disabled={schedules.length - 1 !== scheduleIndex}
+                              onClick={() => {
+                                setSchedules([
+                                  ...schedules,
+                                  CareWorkerSchedule.noArgsConstructor(),
+                                ]);
+                              }}
+                            >
+                              <PlusIconSVG />
+                            </S.PlusMinusButton>
+                            <S.PlusMinusButton
+                              onClick={() => {
+                                if (schedules.length === 1) {
+                                  setSchedules([
+                                    ...schedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }
+                                setSchedules((schedules) =>
+                                  schedules.filter((_, i) => i !== scheduleIndex)
                                 );
-                              })}
-                            </S.TdFlexBox>
-                            <S.TdFlexBox>
-                              <S.ClockSelect>
-                                00:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              부터
-                              <S.ClockSelect className="clock-right">
-                                00:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              까지
-                            </S.TdFlexBox>
-                            {selectedDayList.length - 1 === selectedDaysIndex ? (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList([...selectedDayList, [] as string[]]);
-                                }}
-                              >
-                                <PlusIconSVG />
-                              </S.AddButton>
-                            ) : (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList((selectedDayList) =>
-                                    selectedDayList.filter((item, i) => i !== selectedDaysIndex)
-                                  );
-                                }}
-                              >
-                                <MinusIconSVG />
-                              </S.AddButton>
-                            )}
-                          </S.TimeSelectContainer>
-                        </>
+                              }}
+                            >
+                              <MinusIconSVG />
+                            </S.PlusMinusButton>
+                          </S.PlusMinusButtonContainer>
+                        </S.TimeSelectContainer>
                       );
                     })}
                   </td>
                 </tr>
                 <tr>
-                  <th>주소</th>
-                  <td colSpan={3} className="select wide">
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        시/도 선택
-                      </option>
-                      <option value="0">서울특별시</option>
-                      <option value="1">경기도</option>
-                    </S.DropDown>
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        구 선택
-                      </option>
-                      <option value="0">양천구</option>
-                      <option value="1">강서구</option>
-                    </S.DropDown>
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        동 선택
-                      </option>
-                      <option value="0">목1동</option>
-                      <option value="1">목2동</option>
-                    </S.DropDown>
-                    <S.InfoInput Size={ButtonSize.LONG} placeholder="세부 주소"></S.InfoInput>
+                  <th rowSpan={2}>주소</th>
+                  <td colSpan={3}>
+                    <S.TextInput type="text" readOnly onClick={openAddressModal} withButton />
+                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <S.TextInput type="text" long readOnly disabled />
+                  </td>
+                  <td colSpan={3}>
+                    <S.TextInput type="text" long placeholder="상세주소 입력" />
                   </td>
                 </tr>
                 <tr>
                   <th>거주 형태</th>
-                  <td colSpan={3} className="select wide">
-                    <S.InfoInput></S.InfoInput>
+                  <td colSpan={3} className="wide">
+                    <S.TdFlexBox>
+                      {FAMILY_TYPE.map((familyType, index) => {
+                        return (
+                          <S.ToggleButton
+                            isSelected={selectedFamilyType.indexOf(familyType) !== -1}
+                            onClick={() => {
+                              if (selectedFamilyType !== familyType) {
+                                setSelectedFamilyType(familyType);
+                              } else {
+                                setSelectedFamilyType('');
+                              }
+                            }}
+                            key={`familyTypeItem-${index}`}
+                          >
+                            {familyType}
+                          </S.ToggleButton>
+                        );
+                      })}
+                    </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>
                   <td colSpan={3} className="wide overtd">
                     <S.TdFlexBox>
-                      {careInfoList.map((careInfo, index) => {
+                      {CARE_INFO_LIST.map((careInfo, index) => {
                         return (
                           <S.ToggleButton
                             className="overitems"
@@ -283,7 +498,9 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                                 setSelectedCareInfo([...selectedCareInfo, careInfo]);
                               } else {
                                 setSelectedCareInfo((selectedCareInfo) =>
-                                  selectedCareInfo.filter((careInfo) => careInfo !== careInfo)
+                                  selectedCareInfo.filter(
+                                    (targetCareInfo) => careInfo !== targetCareInfo
+                                  )
                                 );
                               }
                             }}
@@ -297,30 +514,27 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>요구 성격</th>
+                  <th>종교</th>
                   <td colSpan={3} className="wide">
                     <S.TdFlexBox>
-                      {personalityInfoList.map((personalityInfo, index) => {
+                      {RELIGION_LIST.map((religion, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo.indexOf(personalityInfo) !== -1}
+                            isSelected={selectedReligionInfo.indexOf(religion) !== -1}
                             onClick={() => {
-                              if (selectedPersonalityInfo.indexOf(personalityInfo) === -1) {
-                                setSelectedPersonalityInfo([
-                                  ...selectedPersonalityInfo,
-                                  personalityInfo,
-                                ]);
+                              if (selectedReligionInfo.indexOf(religion) === -1) {
+                                setSelectedReligionInfo([...selectedReligionInfo, religion]);
                               } else {
-                                setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-                                  selectedPersonalityInfo.filter(
-                                    (personalityInfo) => personalityInfo !== personalityInfo
+                                setSelectedReligionInfo((selectedReligionInfo) =>
+                                  selectedReligionInfo.filter(
+                                    (targetReligionInfo) => religion !== targetReligionInfo
                                   )
                                 );
                               }
                             }}
                             key={`personalityInfoListItem-${index}`}
                           >
-                            {personalityInfo}
+                            {religion}
                           </S.ToggleButton>
                         );
                       })}
@@ -330,7 +544,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    <S.InfoInputDetail></S.InfoInputDetail>
+                    <S.TextArea placeholder="수급자의 세부 요구사항을 작성해주세요." />
                   </td>
                 </tr>
               </tbody>
@@ -351,20 +565,14 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>비고</th>
                   <td>
-                    <S.InfoInputDetail Size={ButtonSize.LONG}></S.InfoInputDetail>
+                    <S.TextArea placeholder="" />
                   </td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
           <S.CompleteSection>
-            <DefaultButtonContainter
-              content="매칭 제안서 보내기"
-              type={ButtonType.COMPLETE}
-              width="306px"
-              height="48px"
-              active={true}
-            ></DefaultButtonContainter>
+            <S.FinishButton>매칭 제안서 보내기</S.FinishButton>
           </S.CompleteSection>
         </S.InnerContent>
       </S.MatchingProposalContent>

@@ -6,11 +6,14 @@ import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
 import { useHeader } from '../../components/header/hooks';
 import Link from 'next/link';
+import { useCareCenter } from '../../context/care-center';
+import { useSoftRefresh } from '../../common/hooks/auth';
 
 const Header = ({ nowSection, setNowSection, sectionRefs }) => {
   const [isTop, setIstop] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [offset, setOffset] = useState(500);
+
   function logit() {
     setIstop(window.pageYOffset === 0 || isMobile);
     switch (true) {
@@ -84,6 +87,9 @@ const Header = ({ nowSection, setNowSection, sectionRefs }) => {
 };
 
 export default function Landing() {
+  useSoftRefresh();
+  const careCenter = useCareCenter();
+
   const jumbotronInfo = [
     {
       image:
@@ -163,6 +169,7 @@ export default function Landing() {
     return () => clearInterval(change);
   }, [jumbotronIndex]);
   const { contact, handleContactUpdate, handleConsultRequest } = useHeader();
+
   return (
     <>
       <Head>
@@ -179,9 +186,9 @@ export default function Landing() {
                 isLeft={jumbotronInfo[jumbotronIndex].isLeft}
                 dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
               ></S.JumboTitle>
-              <Link href="https://dol-bom.com">
+              <Link href={careCenter.isLoggedIn ? '/search' : '/demo'}>
                 <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-                  돌봄 바로가기 <RightArrowIconWhite />
+                  {careCenter.isLoggedIn ? '돌봄' : '데모'} 바로가기 <RightArrowIconWhite />
                 </S.ContactButton>
               </Link>
             </S.InnerContent>

@@ -6,6 +6,7 @@ import {
   FLEX_COLUMN_CENTER_START,
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
+  FLEX_ROW_CENTER_START,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
   FLEX_ROW_START_START,
@@ -109,37 +110,22 @@ export const InfoTable = styled.table`
   }
 `;
 
-export const ProfileImageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  ${FLEX_ROW_CENTER_CENTER};
-`;
-
-interface ProfileImageProps {
-  src: string;
-}
-
-export const ProfileImage = styled.div<ProfileImageProps>`
-  width: 118px;
-  height: 118px;
-  border-radius: 10px;
-  background: ${THEME.BACKGROUND};
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-  background-position: center;
-`;
 interface InfoInputProps {
   Size?: ButtonSize;
 }
 
 export const InfoInput = styled.input<InfoInputProps>`
-  width: ${(props) => (props.Size === 'LONG' ? '300px' : '200px')};
+  width: ${(props) => (props.Size === 'LONG' ? '300px' : '150px')};
   height: 36px;
   padding: 0 0 0 10px;
   border-radius: 3px;
   outline: none;
   border: 1px solid ${THEME.GRAY_LINE};
   color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 interface InfoInputDetailProps {
@@ -157,12 +143,8 @@ export const InfoInputDetail = styled.textarea<InfoInputDetailProps>`
   overflow-y: auto;
 `;
 
-interface DropDownProps {
-  Size: ButtonSize;
-}
-
-export const DropDown = styled.select<DropDownProps>`
-  width: ${(props) => (props.Size === 'LONG' ? '200px' : '120px')};
+export const DropDown = styled.select`
+  width: 150px;
   height: 36px;
   padding: 0 0 0 10px;
   margin-right: 10px;
@@ -199,7 +181,7 @@ export const TdFlexBox = styled.div`
     padding: 0;
   }
   .clock-right {
-    margin-left: 20px;
+    margin-left: 18px;
   }
 `;
 interface ToggleButtonProps {
@@ -207,7 +189,7 @@ interface ToggleButtonProps {
   isLast?: boolean;
 }
 export const ToggleButton = styled.div<ToggleButtonProps>`
-  padding: 0 15px;
+  padding: 0 13px;
   height: 36px;
   margin-right: ${(props) => (props.isLast ? '0' : '10px')};
   border-radius: 3px;
@@ -220,6 +202,12 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 interface TimeSeleceContainerProps {
@@ -258,4 +246,188 @@ export const ClockSelect = styled.div`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+`;
+
+export const ProfileImageContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 32px 25px;
+  ${FLEX_ROW_CENTER_START};
+`;
+
+interface ProfileImageProps {
+  src?: string | null;
+  isHover?: boolean;
+}
+
+export const ProfileImage = styled.div<ProfileImageProps>`
+  width: 118px;
+  height: 118px;
+  border-radius: 10px;
+  background: ${THEME.HEADER_BACKGROUND};
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-position: center;
+`;
+export const ImageIconContainer = styled.div<ProfileImageProps>`
+  opacity: ${(props) => (props.isHover ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+`;
+
+interface TextInputProps {
+  withButton?: boolean;
+  long?: boolean;
+}
+
+export const TextInput = styled.input<TextInputProps>`
+  outline: none;
+  width: ${(props) => (props.long ? '100%' : '200px')};
+  height: 36px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  padding: 0 10px;
+  color: ${THEME.GRAY_FONT};
+  cursor: ${(props) => props.withButton && 'pointer'};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
+`;
+
+export const AddressButton = styled.button`
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  width: 80px;
+  height: 36px;
+  border-radius: 3px;
+  color: ${THEME.MAIN};
+  margin-left: 10px;
+  background: white;
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const AddressDeleteButton = styled.button`
+  outline: none;
+  border: 1px solid red;
+  width: 100px;
+  height: 36px;
+  border-radius: 3px;
+  margin-left: 10px;
+  background: white;
+  color: red;
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const TextArea = styled.textarea`
+  outline: none;
+  width: 100%;
+  min-height: 84px;
+  padding: 10px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  resize: none;
+  overflow-y: hidden;
+  color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
+`;
+
+export const CenterInfoUpdateButton = styled.div`
+  height: 42px;
+  padding: 11px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid ${THEME.MAIN};
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const ClockSelectContainer = styled.div`
+  position: relative;
+  width: 90px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  color: ${THEME.GRAY_FONT};
+  border-radius: 3px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  margin-right: 7px;
+  margin-left: 15px;
+  outline: none;
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+
+export const ClockInput = styled.input`
+  border: none;
+  outline: none;
+  width: 30%;
+  text-align: right;
+  color: ${THEME.GRAY_FONT};
+`;
+
+export const PlusMinusButtonContainer = styled.div`
+  display: flex;
+`;
+
+interface PlusMinusButtonProps {
+  hide?: boolean;
+}
+
+export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
+  width: 36px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  border-radius: 3px;
+  margin-left: 10px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
+  background-color: white;
+  opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+
+export const FinishButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
