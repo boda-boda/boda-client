@@ -1,35 +1,40 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BannerStyleType, ButtonSize, ButtonType } from '../../common/types';
+import { ButtonSize, ButtonType } from '../../common/types';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
-import Banner from '../banner';
-import Category from '../category';
-import TimeInput from '../../svgs/time-input-svg';
 import DefaultButtonContainter from '../default-button';
-import { DefaultButton } from '../default-button/styles';
-import Footer from '../footer';
-import Header from '../header';
 import * as S from './styles';
-import { CARE_INFO_LIST, RELIGION_LIST, WORKER_MAN_SMALL_IMAGE_URL } from '../../constant';
+import {
+  CARE_INFO_LIST,
+  DAY_LIST,
+  FAMILY_TYPE,
+  NURSING_GRADE,
+  RELIGION_LIST,
+  WORKER_MAN_SMALL_IMAGE_URL,
+} from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import axios from 'axios';
 import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
 import { useCareCenter } from '../../context/care-center';
 import { validateCareCenter } from '../../common/lib/validate';
+import {
+  CareWorkerSchedule,
+  toggleDayOfCareWorkerSchedule,
+} from '../../model/care-worker-schedule';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
 
-const dayList = ['월', '화', '수', '목', '금', '토', '일'];
-
 export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
-  const [selectedDayList, setSelectedDayList] = useState([[]] as string[][]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedPersonalityInfo, setSelectedPersonalityInfo] = useState([] as string[]);
+  const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
+  const [selectedFamilyType, setSelectedFamilyType] = useState('');
+  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
 
   const careCenter = useCareCenter();
+  const [rerender, setRerender] = useState(false);
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
@@ -57,6 +62,12 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
       address: '',
       detailAddress: '',
     });
+  };
+
+  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
+    setSchedules(newSchedules);
   };
 
   useEffect(() => {
@@ -260,7 +271,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={8} className="recipientProfile">
+                  <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src="https://i.pinimg.com/originals/e1/83/18/e183187a03eee04333591dfcbe467f7f.png" />
                     </S.ProfileImageContainer>
@@ -296,15 +307,13 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>등급</th>
                   <td className="select left">
-                    <S.DropDown Size={ButtonSize.LONG} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        등급 선택
-                      </option>
-                      <option value="1">1등급</option>
-                      <option value="2">2등급</option>
-                      <option value="3">3등급</option>
-                      <option value="4">4등급</option>
-                      <option value="5">5등급</option>
+                    <S.DropDown>
+                      <option value={''}>요양등급 선택</option>
+                      {NURSING_GRADE.map((grade, idx) => (
+                        <option key={`${grade}-${idx}`} value={grade}>
+                          {grade}
+                        </option>
+                      ))}
                     </S.DropDown>
                   </td>
                   <th>나이</th>
@@ -314,118 +323,165 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td style={{ padding: 0 }} colSpan={3} className="wide">
-                    {selectedDayList.map((selectedDays, selectedDaysIndex) => {
+                  <td style={{ padding: 0 }} colSpan={3}>
+                    {schedules.map((schedule, scheduleIndex) => {
                       return (
-                        <>
-                          <S.TimeSelectContainer
-                            isLast={selectedDayList.length - 1 === selectedDaysIndex}
-                          >
-                            <S.TdFlexBox>
-                              {dayList.map((day) => {
-                                return (
-                                  <S.ToggleButton
-                                    isSelected={selectedDays.indexOf(day) !== -1}
-                                    onClick={() => {
-                                      if (selectedDays.indexOf(day) === -1) {
-                                        setSelectedDayList((selectedDayList) =>
-                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
-                                            if (selectedDayIndex === selectedDaysIndex)
-                                              return [...selectedDay, day];
-                                            return selectedDay;
-                                          })
-                                        );
-                                      } else {
-                                        setSelectedDayList((selectedDayList) =>
-                                          selectedDayList.map((selectedDay, selectedDayIndex) => {
-                                            if (selectedDayIndex === selectedDaysIndex)
-                                              return selectedDay.filter(
-                                                (selected) => selected !== day
-                                              );
-                                            return selectedDay;
-                                          })
-                                        );
-                                      }
-                                    }}
-                                    key={`dayListItem-${day}`}
-                                    className="square"
-                                  >
-                                    {day}
-                                  </S.ToggleButton>
+                        <S.TimeSelectContainer
+                          isLast={schedules.length - 1 === scheduleIndex}
+                          key={`timeselectcontainer-${scheduleIndex}`}
+                        >
+                          <S.TdFlexBox>
+                            {DAY_LIST.map((day) => {
+                              return (
+                                <S.ToggleButton
+                                  isSelected={schedule.days.includes(day)}
+                                  className="square"
+                                  onClick={() => toggleDays(scheduleIndex, day)}
+                                  key={`dayListItem-${day}`}
+                                >
+                                  {day}
+                                </S.ToggleButton>
+                              );
+                            })}
+                          </S.TdFlexBox>
+                          <S.TdFlexBox>
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.startHour ? schedule.startHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startHour = parseInt(currentHour);
+                                  if (schedule.startHour >= 100)
+                                    schedule.startHour = Math.floor(schedule.startHour / 10);
+                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
+                                    schedule.startHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.startMinute ? schedule.startMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.startMinute = parseInt(currentMinute);
+                                  if (schedule.startMinute >= 100)
+                                    schedule.startMinute = Math.floor(schedule.startMinute / 10);
+                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
+                                    schedule.startMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            부터
+                            <S.ClockSelectContainer>
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.endHour ? schedule.endHour : 0}
+                                onChange={(e) => {
+                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endHour = parseInt(currentHour);
+                                  if (schedule.endHour >= 100)
+                                    schedule.endHour = Math.floor(schedule.endHour / 10);
+                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
+                                    schedule.endHour = 23;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              시
+                              <S.ClockInput
+                                type="text"
+                                value={schedule.endMinute ? schedule.endMinute : 0}
+                                onChange={(e) => {
+                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
+                                  schedule.endMinute = parseInt(currentMinute);
+                                  if (schedule.endMinute >= 100)
+                                    schedule.endMinute = Math.floor(schedule.endMinute / 10);
+                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
+                                    schedule.endMinute = 59;
+                                  setRerender(!rerender);
+                                }}
+                              />
+                              분
+                            </S.ClockSelectContainer>
+                            까지
+                          </S.TdFlexBox>
+                          <S.PlusMinusButtonContainer>
+                            <S.PlusMinusButton
+                              hide={schedules.length - 1 !== scheduleIndex}
+                              disabled={schedules.length - 1 !== scheduleIndex}
+                              onClick={() => {
+                                setSchedules([
+                                  ...schedules,
+                                  CareWorkerSchedule.noArgsConstructor(),
+                                ]);
+                              }}
+                            >
+                              <PlusIconSVG />
+                            </S.PlusMinusButton>
+                            <S.PlusMinusButton
+                              onClick={() => {
+                                if (schedules.length === 1) {
+                                  setSchedules([
+                                    ...schedules,
+                                    CareWorkerSchedule.noArgsConstructor(),
+                                  ]);
+                                }
+                                setSchedules((schedules) =>
+                                  schedules.filter((_, i) => i !== scheduleIndex)
                                 );
-                              })}
-                            </S.TdFlexBox>
-                            <S.TdFlexBox>
-                              <S.ClockSelect>
-                                12:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              부터
-                              <S.ClockSelect className="clock-right">
-                                15:00
-                                <TimeInput />
-                              </S.ClockSelect>
-                              까지
-                            </S.TdFlexBox>
-                            {selectedDayList.length - 1 === selectedDaysIndex ? (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList([...selectedDayList, [] as string[]]);
-                                }}
-                              >
-                                <PlusIconSVG />
-                              </S.AddButton>
-                            ) : (
-                              <S.AddButton
-                                onClick={() => {
-                                  setSelectedDayList((selectedDayList) =>
-                                    selectedDayList.filter((item, i) => i !== selectedDaysIndex)
-                                  );
-                                }}
-                              >
-                                <MinusIconSVG />
-                              </S.AddButton>
-                            )}
-                          </S.TimeSelectContainer>
-                        </>
+                              }}
+                            >
+                              <MinusIconSVG />
+                            </S.PlusMinusButton>
+                          </S.PlusMinusButtonContainer>
+                        </S.TimeSelectContainer>
                       );
                     })}
                   </td>
                 </tr>
                 <tr>
-                  <th>주소</th>
-                  <td colSpan={3} className="select wide">
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        시/도 선택
-                      </option>
-                      <option value="0">서울특별시</option>
-                      <option value="1">경기도</option>
-                    </S.DropDown>
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        구 선택
-                      </option>
-                      <option value="0">양천구</option>
-                      <option value="1">강서구</option>
-                      <option value="2">서대문구</option>
-                    </S.DropDown>
-                    <S.DropDown Size={ButtonSize.SHORT} defaultValue="-1">
-                      <option value="-1" disabled hidden>
-                        동 선택
-                      </option>
-                      <option value="0">목1동</option>
-                      <option value="1">목2동</option>
-                      <option value="2">홍은동</option>
-                      <option value="3">홍제동</option>
-                    </S.DropDown>
-                    <S.InfoInput Size={ButtonSize.LONG} placeholder="세부 주소"></S.InfoInput>
+                  <th rowSpan={2}>주소</th>
+                  <td colSpan={3}>
+                    <S.TextInput type="text" readOnly onClick={openAddressModal} withButton />
+                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                      주소 초기화
+                    </S.AddressDeleteButton>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <S.TextInput type="text" long readOnly disabled />
+                  </td>
+                  <td colSpan={3}>
+                    <S.TextInput type="text" long placeholder="상세주소 입력" />
                   </td>
                 </tr>
                 <tr>
                   <th>거주 형태</th>
-                  <td colSpan={3} className="select wide">
-                    <S.InfoInput></S.InfoInput>
+                  <td colSpan={3} className="wide">
+                    <S.TdFlexBox>
+                      {FAMILY_TYPE.map((familyType, index) => {
+                        return (
+                          <S.ToggleButton
+                            isSelected={selectedFamilyType.indexOf(familyType) !== -1}
+                            onClick={() => {
+                              if (selectedFamilyType !== familyType) {
+                                setSelectedFamilyType(familyType);
+                              } else {
+                                setSelectedFamilyType('');
+                              }
+                            }}
+                            key={`familyTypeItem-${index}`}
+                          >
+                            {familyType}
+                          </S.ToggleButton>
+                        );
+                      })}
+                    </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
@@ -442,7 +498,9 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                                 setSelectedCareInfo([...selectedCareInfo, careInfo]);
                               } else {
                                 setSelectedCareInfo((selectedCareInfo) =>
-                                  selectedCareInfo.filter((careInfo) => careInfo !== careInfo)
+                                  selectedCareInfo.filter(
+                                    (targetCareInfo) => careInfo !== targetCareInfo
+                                  )
                                 );
                               }
                             }}
@@ -462,14 +520,14 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       {RELIGION_LIST.map((religion, index) => {
                         return (
                           <S.ToggleButton
-                            isSelected={selectedPersonalityInfo.indexOf(religion) !== -1}
+                            isSelected={selectedReligionInfo.indexOf(religion) !== -1}
                             onClick={() => {
-                              if (selectedPersonalityInfo.indexOf(religion) === -1) {
-                                setSelectedPersonalityInfo([...selectedPersonalityInfo, religion]);
+                              if (selectedReligionInfo.indexOf(religion) === -1) {
+                                setSelectedReligionInfo([...selectedReligionInfo, religion]);
                               } else {
-                                setSelectedPersonalityInfo((selectedPersonalityInfo) =>
-                                  selectedPersonalityInfo.filter(
-                                    (personalityInfo) => personalityInfo !== personalityInfo
+                                setSelectedReligionInfo((selectedReligionInfo) =>
+                                  selectedReligionInfo.filter(
+                                    (targetReligionInfo) => religion !== targetReligionInfo
                                   )
                                 );
                               }
@@ -486,7 +544,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    <S.InfoInputDetail></S.InfoInputDetail>
+                    <S.TextArea placeholder="수급자의 세부 요구사항을 작성해주세요." />
                   </td>
                 </tr>
               </tbody>
@@ -507,20 +565,14 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th>비고</th>
                   <td>
-                    <S.InfoInputDetail Size={ButtonSize.LONG}></S.InfoInputDetail>
+                    <S.TextArea placeholder="" />
                   </td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
           <S.CompleteSection>
-            <DefaultButtonContainter
-              content="매칭 제안서 보내기"
-              type={ButtonType.COMPLETE}
-              width="306px"
-              height="48px"
-              active={true}
-            ></DefaultButtonContainter>
+            <S.FinishButton>매칭 제안서 보내기</S.FinishButton>
           </S.CompleteSection>
         </S.InnerContent>
       </S.MatchingProposalContent>

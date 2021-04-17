@@ -115,13 +115,17 @@ interface InfoInputProps {
 }
 
 export const InfoInput = styled.input<InfoInputProps>`
-  width: ${(props) => (props.Size === 'LONG' ? '300px' : '200px')};
+  width: ${(props) => (props.Size === 'LONG' ? '300px' : '150px')};
   height: 36px;
   padding: 0 0 0 10px;
   border-radius: 3px;
   outline: none;
   border: 1px solid ${THEME.GRAY_LINE};
   color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;
 
 interface InfoInputDetailProps {
@@ -139,12 +143,8 @@ export const InfoInputDetail = styled.textarea<InfoInputDetailProps>`
   overflow-y: auto;
 `;
 
-interface DropDownProps {
-  Size: ButtonSize;
-}
-
-export const DropDown = styled.select<DropDownProps>`
-  width: ${(props) => (props.Size === 'LONG' ? '200px' : '120px')};
+export const DropDown = styled.select`
+  width: 150px;
   height: 36px;
   padding: 0 0 0 10px;
   margin-right: 10px;
@@ -202,6 +202,12 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -ms-user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
 `;
 
 interface TimeSeleceContainerProps {
@@ -349,6 +355,77 @@ export const CenterInfoUpdateButton = styled.div`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const ClockSelectContainer = styled.div`
+  position: relative;
+  width: 90px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  color: ${THEME.GRAY_FONT};
+  border-radius: 3px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  margin-right: 7px;
+  margin-left: 15px;
+  outline: none;
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+
+export const ClockInput = styled.input`
+  border: none;
+  outline: none;
+  width: 30%;
+  text-align: right;
+  color: ${THEME.GRAY_FONT};
+`;
+
+export const PlusMinusButtonContainer = styled.div`
+  display: flex;
+`;
+
+interface PlusMinusButtonProps {
+  hide?: boolean;
+}
+
+export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
+  width: 36px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  border-radius: 3px;
+  margin-left: 10px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
+  background-color: white;
+  opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+
+export const FinishButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
   :hover {
     font-weight: bold;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);

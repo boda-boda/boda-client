@@ -138,6 +138,8 @@ export const FLEX_COLUMN_SPACE_CENTER = `
 
 export const DAY_LIST = ['월', '화', '수', '목', '금', '토', '일'] as DayType[];
 
+export const NURSING_GRADE = ['1등급', '2등급', '3등급', '4등급', '5등급'];
+
 export const KOREAN_CONSONANT_LIST = [
   'ㄱ',
   'ㄴ',
@@ -186,6 +188,8 @@ export const CARE_INFO_LIST = [
 ];
 
 export const RELIGION_LIST = ['기독교', '불교', '천주교', '기타', '무교'];
+
+export const FAMILY_TYPE = ['독거', '노인부부', '미혼자녀와함께', '기혼자녀와함께', '기타'];
 
 export const PERSONALITY_INFO_LIST = ['조용함', '활발함', '긍정적임', '섬세함', '성실함'];
 
