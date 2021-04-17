@@ -14,6 +14,7 @@ import {
   dummyCareWorkers,
   CAPABILITY,
   PAGINATION_LENGTH,
+  OUTER_CARE_WORKER_SCHEDULE_TYPES,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -48,6 +49,7 @@ export default function OuterCareGiverList() {
   const [city, setCity] = useState('-1');
   const [gu, setGu] = useState('-1');
   const [dong, setDong] = useState('-1');
+  const [selectedTime, setSelectedTime] = useState([] as string[]);
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
@@ -87,6 +89,14 @@ export default function OuterCareGiverList() {
     const newSchedules = [...schedules];
     toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
     setSchedules(newSchedules);
+  };
+
+  const toggleTime = (time: string) => {
+    if (selectedTime.includes(time)) {
+      setSelectedTime((selectedTime) => selectedTime.filter((selected) => selected !== time));
+      return;
+    }
+    setSelectedTime([...selectedTime, time]);
   };
 
   const toggleCareInfo = (careInfo: string) => {
@@ -175,126 +185,24 @@ export default function OuterCareGiverList() {
                             )}
                       </S.DropDown>
                     </td>
-                  </tr>
-                  <tr>
-                    <th>돌봄 시간</th>
-                    <td style={{ padding: 0 }} colSpan={3}>
-                      {schedules.map((schedule, scheduleIndex) => {
-                        return (
-                          <S.TimeSelectContainer
-                            isLast={schedules.length - 1 === scheduleIndex}
-                            key={`timeselectcontainer-${scheduleIndex}`}
-                          >
-                            <S.TdFlexBox>
-                              {DAY_LIST.map((day) => {
-                                return (
-                                  <S.ToggleButton
-                                    isSelected={schedule.days.includes(day)}
-                                    className="square"
-                                    onClick={() => toggleDays(scheduleIndex, day)}
-                                    key={`dayListItem-${day}`}
-                                  >
-                                    {day}
-                                  </S.ToggleButton>
-                                );
-                              })}
-                            </S.TdFlexBox>
-                            <S.TdFlexBox>
-                              <S.ClockSelectContainer>
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.startHour ? schedule.startHour : 0}
-                                  onChange={(e) => {
-                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.startHour = parseInt(currentHour);
-                                    if (schedule.startHour >= 100)
-                                      schedule.startHour = Math.floor(schedule.startHour / 10);
-                                    if (schedule.startHour >= 24 && schedule.startHour < 100)
-                                      schedule.startHour = 23;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                시
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.startMinute ? schedule.startMinute : 0}
-                                  onChange={(e) => {
-                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.startMinute = parseInt(currentMinute);
-                                    if (schedule.startMinute >= 100)
-                                      schedule.startMinute = Math.floor(schedule.startMinute / 10);
-                                    if (schedule.startMinute >= 60 && schedule.startMinute < 100)
-                                      schedule.startMinute = 59;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                분
-                              </S.ClockSelectContainer>
-                              부터
-                              <S.ClockSelectContainer>
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.endHour ? schedule.endHour : 0}
-                                  onChange={(e) => {
-                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.endHour = parseInt(currentHour);
-                                    if (schedule.endHour >= 100)
-                                      schedule.endHour = Math.floor(schedule.endHour / 10);
-                                    if (schedule.endHour >= 24 && schedule.endHour < 100)
-                                      schedule.endHour = 23;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                시
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.endMinute ? schedule.endMinute : 0}
-                                  onChange={(e) => {
-                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.endMinute = parseInt(currentMinute);
-                                    if (schedule.endMinute >= 100)
-                                      schedule.endMinute = Math.floor(schedule.endMinute / 10);
-                                    if (schedule.endMinute >= 60 && schedule.endMinute < 100)
-                                      schedule.endMinute = 59;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                분
-                              </S.ClockSelectContainer>
-                              까지
-                            </S.TdFlexBox>
-                            <S.PlusMinusButtonContainer>
-                              <S.PlusMinusButton
-                                hide={schedules.length - 1 !== scheduleIndex}
-                                disabled={schedules.length - 1 !== scheduleIndex}
-                                onClick={() => {
-                                  setSchedules([
-                                    ...schedules,
-                                    CareWorkerSchedule.noArgsConstructor(),
-                                  ]);
-                                }}
-                              >
-                                <PlusIconSVG />
-                              </S.PlusMinusButton>
-                              <S.PlusMinusButton
-                                onClick={() => {
-                                  if (schedules.length === 1) {
-                                    setSchedules([
-                                      ...schedules,
-                                      CareWorkerSchedule.noArgsConstructor(),
-                                    ]);
-                                  }
-                                  setSchedules((schedules) =>
-                                    schedules.filter((_, i) => i !== scheduleIndex)
-                                  );
-                                }}
-                              >
-                                <MinusIconSVG />
-                              </S.PlusMinusButton>
-                            </S.PlusMinusButtonContainer>
-                          </S.TimeSelectContainer>
-                        );
-                      })}
+                    <th>시간</th>
+                    <td className="time">
+                      <S.TimeSelectContainer>
+                        {OUTER_CARE_WORKER_SCHEDULE_TYPES.map((time) => {
+                          return (
+                            <S.ToggleButton
+                              isSelected={selectedTime.includes(time)}
+                              className="square"
+                              onClick={() => {
+                                toggleTime(time);
+                              }}
+                              key={`timeListItem-${time}`}
+                            >
+                              {time}
+                            </S.ToggleButton>
+                          );
+                        })}
+                      </S.TimeSelectContainer>
                     </td>
                   </tr>
                   <tr>

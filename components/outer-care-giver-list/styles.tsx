@@ -57,14 +57,9 @@ export const SectionTitle = styled.div`
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
-interface TimeSeleceContainerProps {
-  isLast: boolean;
-}
-
-export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
-  ${FLEX_ROW_SPACE_CENTER};
-  padding: 10px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+export const TimeSelectContainer = styled.div`
+  ${FLEX_ROW_START_CENTER};
+  border-bottom: none;
 `;
 
 export const FilterTable = styled.table`
@@ -117,6 +112,10 @@ export const FilterTable = styled.table`
   .innerTableHeader {
     padding: 12px 12px;
   }
+  .time {
+    width: 275px;
+    border-bottom: none;
+  }
   table {
     border: none;
     padding: none;
@@ -134,7 +133,7 @@ export const TdFlexBox = styled.div`
 `;
 
 export const DropDown = styled.select`
-  width: 192px;
+  width: 150px;
   height: 36px;
   padding: 0 0 0 10px;
   margin-right: 10px;
