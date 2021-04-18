@@ -24,7 +24,7 @@ const recipients = [
     age: 20,
     birthDay: '2000-08-21',
 
-    careWorkerMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
+    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
 
     description: '설명',
     grade: 3,
@@ -33,40 +33,7 @@ const recipients = [
     name: '김슈급',
     phoneNumber: '010-7105-2344',
     profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
-  },
-  {
-    zipCode: '08018',
-    address: '서울시 양천구 신정7동',
-    detailAddress: '목동남로4길 81',
-    age: 20,
-    birthDay: '2000-08-21',
-
-    careWorkerMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
-
-    description: '설명',
-    grade: 3,
-    gender: '여',
-    id: 'asdf',
-    name: '김슈급',
-    phoneNumber: '010-7105-2344',
-    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
-  },
-  {
-    zipCode: '08018',
-    address: '서울시 양천구 신정7동',
-    detailAddress: '목동남로4길 81',
-    age: 20,
-    birthDay: '2000-08-21',
-
-    careWorkerMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
-
-    description: '설명',
-    grade: 3,
-    gender: '여',
-    id: 'asdf',
-    name: '김슈급',
-    phoneNumber: '010-7105-2344',
-    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
   },
 ] as Reciepient[];
 
@@ -120,7 +87,7 @@ export default function ReciepientsList() {
                             href={{
                               pathname: '/recipients/[id]',
                             }}
-                            as={`/list/${recipient.id}`}
+                            as={`/recipients/${recipient.id}`}
                             passHref
                           >
                             <S.Card>
@@ -151,7 +118,7 @@ export default function ReciepientsList() {
                                   <S.InfoType>가능 조건</S.InfoType>
 
                                   <S.InfoItemList>
-                                    {recipient.careWorkerMetas
+                                    {recipient.recipientMetas
                                       ?.filter((meta) => meta.type === CAPABILITY)
                                       .map((meta, index) => {
                                         return (

@@ -7,7 +7,7 @@ export default class Reciepient {
   public age: number;
   public birthDay: string;
 
-  public careWorkerMetas: CareWorkerMeta[];
+  public recipientMetas: CareWorkerMeta[];
 
   public description: string;
   public grade: number;
@@ -16,4 +16,6 @@ export default class Reciepient {
   public name: string;
   public phoneNumber: string;
   public profile: string;
+
+  public residenceType: string;
 }
