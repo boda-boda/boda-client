@@ -52,7 +52,6 @@ export default function CareGiverList() {
 
   const [careWorkers, setCareWorkers] = useState([] as CareWorker[]);
   const [filteredCareWorkers, setFilteredCareWorkers] = useState([] as CareWorker[]);
-  console.log(careWorkers);
 
   const [name, setName] = useState('');
   const [city, setCity] = useState('-1');

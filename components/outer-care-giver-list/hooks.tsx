@@ -84,8 +84,6 @@ export const useOuterCareGiverList = () => {
 
   const handleSearchOnClickSearchButton = () => {};
 
-  console.log(careWorkers);
-
   useEffect(() => {
     (async () => {
       if (!careCenter.isLoggedIn) return;
