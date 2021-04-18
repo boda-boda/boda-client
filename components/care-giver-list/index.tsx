@@ -45,7 +45,7 @@ const slicedReligionList = [];
 for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
 
-export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
+export default function CareGiverList() {
   const careCenter = useCareCenter();
 
   const [rerender, setRerender] = useState(false);
