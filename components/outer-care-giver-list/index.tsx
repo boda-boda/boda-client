@@ -1,12 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
-import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
 import {
-  DAY_LIST,
   CARE_INFO_LIST,
   SEOUL_GU_DONG,
   KOREAN_CONSONANT_LIST,
@@ -16,19 +13,11 @@ import {
   PAGINATION_LENGTH,
   OUTER_CARE_WORKER_SCHEDULE_TYPES,
 } from '../../constant';
-import {
-  CareWorkerSchedule,
-  toggleDayOfCareWorkerSchedule,
-} from '../../model/care-worker-schedule';
-import { DayType } from '../../common/types/date';
-import axios from 'axios';
-import { useCareCenter } from '../../context/care-center';
-import CareWorker from '../../model/care-worker';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
-import { range } from '../../common/lib';
 import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
 import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
+import { useOuterCareGiverList } from './hooks';
 
 const slicedCareInfoList = [];
 for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
@@ -39,100 +28,34 @@ for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
 
 export default function OuterCareGiverList() {
-  const careCenter = useCareCenter();
-
-  const [rerender, setRerender] = useState(false);
-
-  const [careWorkers, setCareWorkers] = useState([] as CareWorker[]);
-  const [filteredCareWorkers, setFilteredCareWorkers] = useState([] as CareWorker[]);
-
-  const [city, setCity] = useState('-1');
-  const [gu, setGu] = useState('-1');
-  const [dong, setDong] = useState('-1');
-  const [selectedTime, setSelectedTime] = useState([] as string[]);
-  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
-  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedReligion, setSelectedReligion] = useState([] as string[]);
-  const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
-  const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
-
-  const indexOfLastCareworker = currentPage * careWorkersPerPage;
-  const indexOfFirstCareworker = indexOfLastCareworker - careWorkersPerPage;
-  const currentPageCareWorkers = filteredCareWorkers.slice(
-    indexOfFirstCareworker,
-    indexOfLastCareworker
-  );
-  const maxPageNumber = Math.ceil(filteredCareWorkers.length / careWorkersPerPage);
-
-  const getPaginationBarNumbers = useCallback(() => {
-    return range(
-      currentPaginationGroup * PAGINATION_LENGTH + 1,
-      Math.min((currentPaginationGroup + 1) * PAGINATION_LENGTH, maxPageNumber)
-    );
-  }, [currentPaginationGroup, maxPageNumber]);
-
-  useEffect(() => {
-    if (careCenter.isValidating || !careCenter.isLoggedIn) return;
-
-    (async () => {
-      try {
-        const response = await axios.get('/care-worker');
-        setCareWorkers(response.data);
-        setFilteredCareWorkers(response.data);
-      } catch (e) {}
-    })();
-  }, [careCenter]);
-
-  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...schedules];
-    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
-    setSchedules(newSchedules);
-  };
-
-  const toggleTime = (time: string) => {
-    if (selectedTime.includes(time)) {
-      setSelectedTime((selectedTime) => selectedTime.filter((selected) => selected !== time));
-      return;
-    }
-    setSelectedTime([...selectedTime, time]);
-  };
-
-  const toggleCareInfo = (careInfo: string) => {
-    if (selectedCareInfo.includes(careInfo)) {
-      setSelectedCareInfo((selectedCareInfo) =>
-        selectedCareInfo.filter((selected) => selected !== careInfo)
-      );
-      return;
-    }
-    setSelectedCareInfo([...selectedCareInfo, careInfo]);
-  };
-
-  const toggleReligion = (religion: string) => {
-    if (selectedReligion.includes(religion)) {
-      setSelectedReligion((selectedReligion) =>
-        selectedReligion.filter((selected) => selected !== religion)
-      );
-      return;
-    }
-    setSelectedReligion([...selectedReligion, religion]);
-  };
-
-  const handleReset = useCallback(() => {
-    if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
-
-    setCity('-1');
-    setGu('-1');
-    setDong('-1');
-    setSelectedConsonantFilter(-1);
-    setSchedules([CareWorkerSchedule.noArgsConstructor()]);
-    setSelectedCareInfo([] as string[]);
-    setSelectedReligion([] as string[]);
-    setFilteredCareWorkers(careWorkers);
-  }, [careWorkers]);
-
-  const handleSearchOnClickSearchButton = () => {};
+  const {
+    city,
+    setCity,
+    gu,
+    setGu,
+    dong,
+    setDong,
+    selectedTime,
+    toggleTime,
+    toggleCareInfo,
+    selectedCareInfo,
+    toggleReligion,
+    selectedReligion,
+    handleReset,
+    handleSearchOnClickSearchButton,
+    careCenter,
+    careWorkersPerPage,
+    setCareWorkersPerPage,
+    setCurrentPage,
+    setCurrentPaginationGroup,
+    selectedConsonantFilter,
+    setSelectedConsonantFilter,
+    currentPage,
+    currentPaginationGroup,
+    getPaginationBarNumbers,
+    currentPageCareWorkers,
+    maxPageNumber,
+  } = useOuterCareGiverList();
 
   return (
     <>
@@ -149,9 +72,9 @@ export default function OuterCareGiverList() {
                       <S.DropDown
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        defaultValue="-1"
+                        defaultValue=""
                       >
-                        <option value="-1">시/도 선택</option>
+                        <option value="">시/도 선택</option>
                         <option value="서울특별시">서울특별시</option>
                       </S.DropDown>
                       <S.DropDown
@@ -159,8 +82,8 @@ export default function OuterCareGiverList() {
                         onChange={(e) => setGu(e.target.value)}
                         defaultValue=""
                       >
-                        <option value="-1">전체</option>
-                        {city === '-1'
+                        <option value="">전체</option>
+                        {city === ''
                           ? null
                           : SEOUL_GU_DONG.map((gudong, idx) => (
                               <option key={`${gudong.gu}-${idx}`} value={gudong.gu}>
@@ -173,8 +96,8 @@ export default function OuterCareGiverList() {
                         onChange={(e) => setDong(e.target.value)}
                         defaultValue=""
                       >
-                        <option value="-1">전체</option>
-                        {city === '-1' || gu === '-1'
+                        <option value="">전체</option>
+                        {city === '' || gu === ''
                           ? null
                           : SEOUL_GU_DONG.find((gudong) => gudong.gu === gu)?.dongs.map(
                               (dong, idx) => (
@@ -193,9 +116,7 @@ export default function OuterCareGiverList() {
                             <S.ToggleButton
                               isSelected={selectedTime.includes(time)}
                               className="square"
-                              onClick={() => {
-                                toggleTime(time);
-                              }}
+                              onClick={() => toggleTime(time)}
                               key={`timeListItem-${time}`}
                             >
                               {time}
@@ -311,29 +232,6 @@ export default function OuterCareGiverList() {
                   <option value="20">20명 씩 보기</option>
                 </S.CareWorkersPerPageDropDown>
               </S.CareWorkersPerPageContainer>
-              <S.ConsonantFilterList>
-                <S.ConsonantFilterItem
-                  isClicked={selectedConsonantFilter === -1}
-                  onClick={() => {
-                    setSelectedConsonantFilter(-1);
-                    setCurrentPage(1);
-                  }}
-                  isLeft
-                >
-                  전체
-                </S.ConsonantFilterItem>
-                {KOREAN_CONSONANT_LIST.map((name, nameIndex) => (
-                  <S.ConsonantFilterItem
-                    key={`name-${nameIndex}`}
-                    isClicked={selectedConsonantFilter === nameIndex}
-                    onClick={() => {
-                      setSelectedConsonantFilter(nameIndex);
-                    }}
-                  >
-                    {name}
-                  </S.ConsonantFilterItem>
-                ))}
-              </S.ConsonantFilterList>
               <S.CardList>
                 {!careCenter.isValidating && careCenter.isLoggedIn ? (
                   currentPageCareWorkers.length === 0 ? (
@@ -347,9 +245,9 @@ export default function OuterCareGiverList() {
                           <Link
                             key={`worker-${idx}`}
                             href={{
-                              pathname: '/list/[id]',
+                              pathname: '/search/[id]',
                             }}
-                            as={`/list/${worker.id}`}
+                            as={`/search/${worker.id}`}
                             passHref
                           >
                             <S.Card>
@@ -373,15 +271,13 @@ export default function OuterCareGiverList() {
                                   <S.InfoType>가능 조건</S.InfoType>
 
                                   <S.InfoItemList>
-                                    {worker.careWorkerMetas
-                                      ?.filter((meta) => meta.type === CAPABILITY)
-                                      .map((meta, index) => {
-                                        return (
-                                          <S.InfoItem key={`careInfoItem-${index}`}>
-                                            {meta.key}
-                                          </S.InfoItem>
-                                        );
-                                      })}
+                                    {worker.careWorkerCapabilities.map((capability, index) => {
+                                      return (
+                                        <S.InfoItem key={`careInfoItem-${index}`}>
+                                          {capability}
+                                        </S.InfoItem>
+                                      );
+                                    })}
                                   </S.InfoItemList>
                                 </S.InfoRow>
                               </S.InfoContainer>
