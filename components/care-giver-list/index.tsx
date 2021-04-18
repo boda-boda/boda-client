@@ -45,13 +45,14 @@ const slicedReligionList = [];
 for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
 
-export default function CareGiverList({ isMyCaregiver }: CareGiverListProps) {
+export default function CareGiverList() {
   const careCenter = useCareCenter();
 
   const [rerender, setRerender] = useState(false);
 
   const [careWorkers, setCareWorkers] = useState([] as CareWorker[]);
   const [filteredCareWorkers, setFilteredCareWorkers] = useState([] as CareWorker[]);
+  console.log(careWorkers);
 
   const [name, setName] = useState('');
   const [city, setCity] = useState('-1');
