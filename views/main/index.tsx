@@ -15,7 +15,7 @@ function Main() {
         <>
           <Banner bannerStyle={BannerStyleType.AD} />
           <S.Main>
-            <CareGiverList isMyCaregiver={false} />
+            <CareGiverList />
           </S.Main>
         </>
       </Layout>
