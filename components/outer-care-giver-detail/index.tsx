@@ -33,7 +33,7 @@ const dummyCompliment = [
 export default function OuterCareGiveDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
-  const [careWorker, setCareWorker] = useState(new CareWorker());
+  const [careWorker, setCareWorker] = useState({} as any);
   const [isEditingCompliment, setIsEditingCompliment] = useState(false);
   const [myCompliment, setMyCompliment] = useState(null);
   const [myComplimentTitle, setMyComplimentTitle] = useState('');
@@ -172,14 +172,11 @@ export default function OuterCareGiveDetail() {
                 <tr>
                   <td className="personality">
                     <S.AvailabilityInfoList>
-                      {careWorker.careWorkerMetas &&
-                        careWorker.careWorkerMetas
-                          .filter((meta) => meta.type === CAPABILITY)
-                          .map((meta, i) => (
-                            <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
-                              {meta.key}
-                            </S.AvailabilityInfoItem>
-                          ))}
+                      {careWorker.careWorkerCapabilities?.map((meta, i) => (
+                        <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
+                          {meta}
+                        </S.AvailabilityInfoItem>
+                      ))}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>
@@ -193,14 +190,11 @@ export default function OuterCareGiveDetail() {
                 <tr>
                   <td className="personality">
                     <S.AvailabilityInfoList>
-                      {careWorker.careWorkerMetas &&
-                        careWorker.careWorkerMetas
-                          .filter((meta) => meta.type === RELIGION)
-                          .map((meta, i) => (
-                            <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
-                              {meta.key}
-                            </S.AvailabilityInfoItem>
-                          ))}
+                      {careWorker.careWorkerReligions?.map((meta, i) => (
+                        <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
+                          {meta}
+                        </S.AvailabilityInfoItem>
+                      ))}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>

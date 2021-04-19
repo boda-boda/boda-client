@@ -75,7 +75,6 @@ export const useOuterCareGiverList = () => {
         setCareWorkers(response.data.data);
         setMaxPage(Math.ceil(response.data.total / careWorkersPerPage));
         setCurrentPage(1);
-        console.log(response.data);
       } catch (e) {
         return;
       }
@@ -105,7 +104,6 @@ export const useOuterCareGiverList = () => {
       );
 
       setCareWorkers(response.data.data);
-      console.log(response.data);
     } catch (e) {
       alert('검색에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
       return;
