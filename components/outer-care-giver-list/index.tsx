@@ -44,12 +44,10 @@ export default function OuterCareGiverList() {
     careWorkersPerPage,
     setCareWorkersPerPage,
     setCurrentPage,
-    setCurrentPaginationGroup,
     currentPage,
-    currentPaginationGroup,
+    maxPage,
     getPaginationBarNumbers,
-    currentPageCareWorkers,
-    maxPageNumber,
+    careWorkers,
     onClickSearchOuterCareGiver,
   } = useOuterCareGiverList();
 
@@ -221,7 +219,6 @@ export default function OuterCareGiverList() {
                   onChange={(e) => {
                     setCareWorkersPerPage(Number(e.target.value) as number);
                     setCurrentPage(1);
-                    setCurrentPaginationGroup(0);
                   }}
                 >
                   <option value="10">10명 씩 보기</option>
@@ -230,13 +227,13 @@ export default function OuterCareGiverList() {
               </S.CareWorkersPerPageContainer>
               <S.CardList>
                 {!careCenter.isValidating && careCenter.isLoggedIn ? (
-                  currentPageCareWorkers.length === 0 ? (
+                  careWorkers.length === 0 ? (
                     <S.EmptyCardContainer>
                       <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
                     </S.EmptyCardContainer>
                   ) : (
                     <S.CardList>
-                      {currentPageCareWorkers.map((worker, idx) => (
+                      {careWorkers.map((worker, idx) => (
                         <S.StyledLink>
                           <Link
                             key={`worker-${idx}`}
@@ -287,7 +284,6 @@ export default function OuterCareGiverList() {
                           key={'first-page-btn'}
                           onClick={() => {
                             setCurrentPage(1);
-                            setCurrentPaginationGroup(0);
                           }}
                         >
                           <DoubleArrowLeftSVG />
@@ -295,10 +291,7 @@ export default function OuterCareGiverList() {
                         <S.PaginationItem
                           key={'previous-pageset-btn'}
                           onClick={() => {
-                            const paginationGroup = Math.max(0, currentPaginationGroup - 1);
-
-                            setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
-                            setCurrentPaginationGroup(paginationGroup);
+                            setCurrentPage(currentPage - 1);
                           }}
                         >
                           <SingleArrowLeftSVG />
@@ -307,7 +300,7 @@ export default function OuterCareGiverList() {
                           <S.PaginationItem
                             key={`page-${pageNumber}`}
                             onClick={() => {
-                              setCurrentPage(pageNumber as number);
+                              setCurrentPage(pageNumber);
                             }}
                             isClicked={currentPage === pageNumber}
                           >
@@ -317,17 +310,7 @@ export default function OuterCareGiverList() {
                         <S.PaginationItem
                           key={'next-pageset-btn'}
                           onClick={() => {
-                            const paginationGroup = Math.min(
-                              Math.floor(maxPageNumber / PAGINATION_LENGTH),
-                              currentPaginationGroup + 1
-                            );
-                            setCurrentPage(
-                              Math.max(
-                                paginationGroup * PAGINATION_LENGTH + 1,
-                                getPaginationBarNumbers().slice(-1)[0]
-                              )
-                            );
-                            setCurrentPaginationGroup(paginationGroup);
+                            setCurrentPage(currentPage + 1);
                           }}
                         >
                           <SingleArrowRightSVG />
@@ -336,10 +319,7 @@ export default function OuterCareGiverList() {
                           <DoubleArrowRightSVG
                             key={'last-page-btn'}
                             onClick={() => {
-                              setCurrentPage(maxPageNumber);
-                              setCurrentPaginationGroup(
-                                Math.floor(maxPageNumber / PAGINATION_LENGTH)
-                              );
+                              setCurrentPage(maxPage);
                             }}
                           />
                         </S.PaginationItem>
