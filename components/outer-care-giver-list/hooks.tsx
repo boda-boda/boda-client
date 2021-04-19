@@ -4,7 +4,6 @@ import { range } from '../../common/lib';
 import { KOREAN_ASCII_LIST, PAGINATION_LENGTH } from '../../constant';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';
-import { CareWorkerSchedule } from '../../model/care-worker-schedule';
 
 export const useOuterCareGiverList = () => {
   const careCenter = useCareCenter();
@@ -16,7 +15,6 @@ export const useOuterCareGiverList = () => {
   const [gu, setGu] = useState('');
   const [dong, setDong] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
 
@@ -76,13 +74,10 @@ export const useOuterCareGiverList = () => {
     setGu('');
     setDong('');
     setSelectedConsonantFilter(-1);
-    setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
     setSelectedReligion([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
-
-  const handleSearchOnClickSearchButton = () => {};
 
   useEffect(() => {
     (async () => {
@@ -112,6 +107,32 @@ export const useOuterCareGiverList = () => {
     setFilteredCareWorkers(filterNameByLetter(careWorkers));
   }, [careWorkers]);
 
+  const onClickSearchOuterCareGiver = async () => {
+    let params = '';
+    if (city) params += `&city=${city}`;
+    if (gu) params += `&gu=${gu}`;
+    if (dong) params += `&dong=${dong}`;
+    if (selectedTime) params += `&schedule=${selectedTime}`;
+    for (let i = 0; i < selectedCareInfo.length; i++) {
+      params += `&capabilities=${selectedCareInfo[i]}`;
+    }
+    for (let i = 0; i < selectedReligion.length; i++) {
+      params += `&religions=${selectedReligion[i]}`;
+    }
+
+    try {
+      const response = await axios.get(
+        `/outer-care-worker/search?from=${0}&size=${careWorkersPerPage}${params}`
+      );
+      console.log(response.data);
+
+      setCareWorkers(response.data.data);
+    } catch (e) {
+      alert('검색에 실패하였습니다. 관리자에게 문의 부탁드립니다.');
+      return;
+    }
+  };
+
   return {
     city,
     setCity,
@@ -126,7 +147,6 @@ export const useOuterCareGiverList = () => {
     toggleReligion,
     selectedReligion,
     handleReset,
-    handleSearchOnClickSearchButton,
     careCenter,
     careWorkersPerPage,
     setCareWorkersPerPage,
@@ -139,5 +159,6 @@ export const useOuterCareGiverList = () => {
     getPaginationBarNumbers,
     currentPageCareWorkers,
     maxPageNumber,
+    onClickSearchOuterCareGiver,
   };
 };

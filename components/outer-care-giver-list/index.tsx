@@ -6,10 +6,8 @@ import Link from 'next/link';
 import {
   CARE_INFO_LIST,
   SEOUL_GU_DONG,
-  KOREAN_CONSONANT_LIST,
   RELIGION_LIST,
   dummyCareWorkers,
-  CAPABILITY,
   PAGINATION_LENGTH,
   OUTER_CARE_WORKER_SCHEDULE_TYPES,
 } from '../../constant';
@@ -42,19 +40,17 @@ export default function OuterCareGiverList() {
     toggleReligion,
     selectedReligion,
     handleReset,
-    handleSearchOnClickSearchButton,
     careCenter,
     careWorkersPerPage,
     setCareWorkersPerPage,
     setCurrentPage,
     setCurrentPaginationGroup,
-    selectedConsonantFilter,
-    setSelectedConsonantFilter,
     currentPage,
     currentPaginationGroup,
     getPaginationBarNumbers,
     currentPageCareWorkers,
     maxPageNumber,
+    onClickSearchOuterCareGiver,
   } = useOuterCareGiverList();
 
   return (
@@ -114,7 +110,7 @@ export default function OuterCareGiverList() {
                         {OUTER_CARE_WORKER_SCHEDULE_TYPES.map((time) => {
                           return (
                             <S.ToggleButton
-                              isSelected={selectedTime.includes(time)}
+                              isSelected={selectedTime === time}
                               className="square"
                               onClick={() => toggleTime(time)}
                               key={`timeListItem-${time}`}
@@ -202,7 +198,7 @@ export default function OuterCareGiverList() {
                 <S.FilterButton onClick={handleReset} isReset>
                   초기화
                 </S.FilterButton>
-                <S.FilterButton onClick={handleSearchOnClickSearchButton}>검색</S.FilterButton>
+                <S.FilterButton onClick={onClickSearchOuterCareGiver}>검색</S.FilterButton>
               </S.ResetButtonContainer>
             </S.InnerContent>
           </S.InnerSection>
