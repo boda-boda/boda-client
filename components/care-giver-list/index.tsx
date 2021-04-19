@@ -33,10 +33,6 @@ import { range } from '../../common/lib';
 import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
 import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 
-interface CareGiverListProps {
-  isMyCaregiver: boolean;
-}
-
 const slicedCareInfoList = [];
 for (let i = 0; i < CARE_INFO_LIST.length; i += 5)
   slicedCareInfoList.push(CARE_INFO_LIST.slice(i, i + 5));
