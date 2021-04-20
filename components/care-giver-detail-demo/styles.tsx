@@ -28,8 +28,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
 export const SectionTitle = styled.div`
@@ -211,7 +211,7 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 33px;
+  top: 13px;
   right: 0;
   padding: 11px 10px;
   height: 36px;
