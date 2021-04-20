@@ -362,23 +362,24 @@ export default function CareGiveDetail() {
                     )}
                   </td>
                 </tr>
-                {dummyCompliment
-                  .filter((compliment) => compliment.centerID !== careCenter.careCenter.id)
-                  .map((compliment, index) => {
-                    return (
-                      <tr key={`compliment-${index}`}>
-                        <td>
-                          <S.ComplimentTitle>{compliment.title}</S.ComplimentTitle>
-                          <S.ComplimentDate>
-                            {compliment.date.toDateString()} · {compliment.centerName}
-                          </S.ComplimentDate>
-                          <S.ComplimentContent
-                            dangerouslySetInnerHTML={{ __html: compliment.content }}
-                          ></S.ComplimentContent>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                {careCenter.careCenter &&
+                  dummyCompliment
+                    .filter((compliment) => compliment.centerID !== careCenter.careCenter.id)
+                    .map((compliment, index) => {
+                      return (
+                        <tr key={`compliment-${index}`}>
+                          <td>
+                            <S.ComplimentTitle>{compliment.title}</S.ComplimentTitle>
+                            <S.ComplimentDate>
+                              {compliment.date.toDateString()} · {compliment.centerName}
+                            </S.ComplimentDate>
+                            <S.ComplimentContent
+                              dangerouslySetInnerHTML={{ __html: compliment.content }}
+                            ></S.ComplimentContent>
+                          </td>
+                        </tr>
+                      );
+                    })}
               </tbody>
             </S.Table>
           </S.Section>

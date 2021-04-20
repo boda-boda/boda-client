@@ -46,9 +46,9 @@ export default function Header() {
             </S.StyledLink>
           </Link>
           <S.MenuList>
-            {/* <Link href="/search" passHref>
+            <Link href="/search" passHref>
               <S.MenuItem onClick={() => handleMenuClick(0)}>신규 요양보호사 검색</S.MenuItem>
-            </Link> */}
+            </Link>
             <S.MenuItem
               onClick={() => {
                 if (!careCenter.isValidating && !careCenter.isLoggedIn) {

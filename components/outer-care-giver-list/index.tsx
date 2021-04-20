@@ -291,6 +291,7 @@ export default function OuterCareGiverList() {
                         <S.PaginationItem
                           key={'previous-pageset-btn'}
                           onClick={() => {
+                            if (currentPage === 1) return;
                             setCurrentPage(currentPage - 1);
                           }}
                         >
@@ -310,6 +311,7 @@ export default function OuterCareGiverList() {
                         <S.PaginationItem
                           key={'next-pageset-btn'}
                           onClick={() => {
+                            if (currentPage === maxPage) return;
                             setCurrentPage(currentPage + 1);
                           }}
                         >
