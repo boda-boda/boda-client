@@ -308,24 +308,28 @@ export const AddressButton = styled.button`
   margin-left: 10px;
   background: white;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    color: white;
+    background-color: ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
 export const AddressDeleteButton = styled.button`
   outline: none;
-  border: 1px solid red;
+  border: 1px solid ${THEME.RED};
   width: 100px;
   height: 36px;
   border-radius: 3px;
   margin-left: 10px;
   background: white;
-  color: red;
+  color: ${THEME.RED};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    color: white;
+    background-color: ${THEME.RED};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
@@ -355,8 +359,10 @@ export const CenterInfoUpdateButton = styled.div`
   color: ${THEME.MAIN};
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
+    color: white;
+    background-color: ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
@@ -426,8 +432,8 @@ export const FinishButton = styled.button`
   font-size: 16px;
   cursor: pointer;
   ${FLEX_ROW_CENTER_CENTER};
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.3);
   }
 `;
