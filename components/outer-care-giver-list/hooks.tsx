@@ -20,7 +20,7 @@ export const useOuterCareGiverList = () => {
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const getPaginationBarNumbers = () => {
-    if (maxPage <= 5) return range(1, 5);
+    if (maxPage <= 5) return range(1, maxPage);
     if (currentPage <= 3) return range(1, 5);
     if (maxPage - currentPage < 2) {
       return range(maxPage - 4, maxPage);
