@@ -120,8 +120,8 @@ export default function RecipientsDetail() {
                       <th>가능 조건</th>
                       <td colSpan={3} className="personality">
                         <S.AvailabilityInfoList>
-                          {recipient.careWorkerMetas &&
-                            recipient.careWorkerMetas
+                          {recipient.recipientMetas &&
+                            recipient.recipientMetas
                               .filter((meta) => meta.type === CAPABILITY)
                               .map((meta, i) => (
                                 <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>

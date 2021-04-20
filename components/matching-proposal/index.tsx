@@ -21,6 +21,7 @@ import {
   CareWorkerSchedule,
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
+import { DayType } from '../../common/types/date';
 
 interface MatchingProposalProps {
   isFilled: boolean;
