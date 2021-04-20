@@ -18,9 +18,11 @@ export const useOuterCareGiverList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
+  console.log(currentPage);
+  console.log(maxPage);
 
   const getPaginationBarNumbers = () => {
-    if (maxPage <= 5) return range(1, 5);
+    if (maxPage <= 5) return range(1, maxPage);
     if (currentPage <= 3) return range(1, 5);
     if (maxPage - currentPage < 2) {
       return range(maxPage - 4, maxPage);
