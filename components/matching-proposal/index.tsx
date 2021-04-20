@@ -21,6 +21,7 @@ import {
   CareWorkerSchedule,
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
+import { DayType } from '../../common/types/date';
 
 interface MatchingProposalProps {
   isFilled: boolean;
@@ -32,7 +33,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
   const [selectedFamilyType, setSelectedFamilyType] = useState('');
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
-
+  const [recipientName, setRecipientName] = useState('');
   const careCenter = useCareCenter();
   const [rerender, setRerender] = useState(false);
 
