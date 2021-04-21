@@ -274,7 +274,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://i.pinimg.com/originals/e1/83/18/e183187a03eee04333591dfcbe467f7f.png" />
+                      <S.ProfileImage src="https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png" />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
