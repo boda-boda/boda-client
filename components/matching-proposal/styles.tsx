@@ -77,7 +77,7 @@ export const InfoTable = styled.table`
     font-weight: 500;
   }
   .profile {
-    padding: 32px 25px;
+    padding: 32px 0;
     width: 168px;
     vertical-align: middle;
   }
