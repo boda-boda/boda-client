@@ -24,15 +24,15 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const CompleteSection = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_ROW_CENTER_CENTER};
-  padding-top: 40px;
+  padding-top: 10px;
   padding-bottom: 60px;
 `;
 
@@ -63,7 +63,7 @@ export const InfoTable = styled.table`
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 12px;
+    padding: 12px 12px;
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
@@ -77,7 +77,7 @@ export const InfoTable = styled.table`
     font-weight: 500;
   }
   .profile {
-    padding: 32px 0;
+    padding: 0 0;
     width: 168px;
     vertical-align: middle;
   }
@@ -185,7 +185,7 @@ export const TdFlexBox = styled.div`
   }
 `;
 interface ToggleButtonProps {
-  isSelected: boolean;
+  isSelected?: boolean;
   isLast?: boolean;
 }
 export const ToggleButton = styled.div<ToggleButtonProps>`
@@ -198,16 +198,6 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
     props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GRAY_LINE}`};
   color: ${(props) => (props.isSelected ? 'white' : THEME.GRAY_FONT)};
   ${FLEX_ROW_CENTER_CENTER};
-  user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  cursor: pointer;
-  transition: 0.2s ease;
-  :hover {
-    border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
-  }
 `;
 
 interface TimeSeleceContainerProps {
@@ -251,7 +241,7 @@ export const ClockSelect = styled.div`
 export const ProfileImageContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 32px 25px;
+  padding: 25px 25px;
   ${FLEX_ROW_CENTER_START};
 `;
 
@@ -435,5 +425,46 @@ export const FinishButton = styled.button`
   transition: 0.2s ease;
   :hover {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.3);
+  }
+`;
+
+export const EditButton = styled.button`
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.MAIN};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const DeleteButton = styled.button`
+  padding: 11px 10px;
+  margin-left: 15px;
+  height: 36px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.RED};
+  font-size: 20px;
+  font-weight: bold;
+  background-color: white;
+  color: ${THEME.RED};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.RED};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;

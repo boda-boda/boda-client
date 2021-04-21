@@ -6,7 +6,7 @@ import { CAPABILITY, CARE_WORKERS_DEMO, DAY_LIST, RELIGION } from '../../constan
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 
-export default function CareGiveDetailDemo() {
+export default function CareGiverDetailDemo() {
   const router = useRouter();
   var pageId = router.asPath.replace(/[^0-9]/g, '');
   var careWorker = CARE_WORKERS_DEMO[pageId];

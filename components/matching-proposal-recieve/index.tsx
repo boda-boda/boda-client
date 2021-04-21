@@ -78,9 +78,9 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                     </S.ProfileImageContainer>
                   </td>
                   <th className="">이름</th>
-                  <td className="infovalue">{careCenter?.username}</td>
+                  <td className="">{careCenter?.username}</td>
                   <th>전화</th>
-                  <td className="infovalue">{careCenter?.phoneNumber}</td>
+                  <td className="">{careCenter?.phoneNumber}</td>
                 </tr>
                 <tr>
                   <th>이메일</th>
@@ -115,9 +115,9 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">칼 프레드릭슨</td>
+                  <td className="left">김돌봄</td>
                   <th>성별</th>
-                  <td className="select right">남자</td>
+                  <td className="right">여자</td>
                 </tr>
                 <tr>
                   <th>등급</th>
@@ -138,23 +138,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                   <th>거주 형태</th>
                   <td colSpan={3} className="wide">
                     <S.TdFlexBox>
-                      {FAMILY_TYPE.map((familyType, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedFamilyType.indexOf(familyType) !== -1}
-                            onClick={() => {
-                              if (selectedFamilyType !== familyType) {
-                                setSelectedFamilyType(familyType);
-                              } else {
-                                setSelectedFamilyType('');
-                              }
-                            }}
-                            key={`familyTypeItem-${index}`}
-                          >
-                            {familyType}
-                          </S.ToggleButton>
-                        );
-                      })}
+                      <S.ToggleButton>독거</S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
                 </tr>
@@ -167,17 +151,6 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                           <S.ToggleButton
                             className="overitems"
                             isSelected={selectedCareInfo.indexOf(careInfo) !== -1}
-                            onClick={() => {
-                              if (selectedCareInfo.indexOf(careInfo) === -1) {
-                                setSelectedCareInfo([...selectedCareInfo, careInfo]);
-                              } else {
-                                setSelectedCareInfo((selectedCareInfo) =>
-                                  selectedCareInfo.filter(
-                                    (targetCareInfo) => careInfo !== targetCareInfo
-                                  )
-                                );
-                              }
-                            }}
                             key={`careInfoListItem-${index}`}
                           >
                             {careInfo}
@@ -191,34 +164,18 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                   <th>종교</th>
                   <td colSpan={3} className="wide">
                     <S.TdFlexBox>
-                      {RELIGION_LIST.map((religion, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedReligionInfo.indexOf(religion) !== -1}
-                            onClick={() => {
-                              if (selectedReligionInfo.indexOf(religion) === -1) {
-                                setSelectedReligionInfo([...selectedReligionInfo, religion]);
-                              } else {
-                                setSelectedReligionInfo((selectedReligionInfo) =>
-                                  selectedReligionInfo.filter(
-                                    (targetReligionInfo) => religion !== targetReligionInfo
-                                  )
-                                );
-                              }
-                            }}
-                            key={`personalityInfoListItem-${index}`}
-                          >
-                            {religion}
-                          </S.ToggleButton>
-                        );
-                      })}
+                      <S.ToggleButton>무교</S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    <S.TextArea placeholder="수급자의 세부 요구사항을 작성해주세요." />
+                    <S.TextArea
+                      disabled
+                      value={`대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다.
+치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.`}
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -232,21 +189,20 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
               <tbody>
                 <tr>
                   <th>시급</th>
-                  <td>
-                    <S.InfoInput className="money"></S.InfoInput>원
-                  </td>
+                  <td>11500원</td>
                 </tr>
                 <tr>
                   <th>비고</th>
                   <td>
-                    <S.TextArea placeholder="" />
+                    <S.TextArea disabled value="잘 부탁드립니다." />
                   </td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
           <S.CompleteSection>
-            <S.FinishButton>매칭 제안서 보내기</S.FinishButton>
+            <S.EditButton>수락</S.EditButton>
+            <S.DeleteButton>거절</S.DeleteButton>
           </S.CompleteSection>
         </S.InnerContent>
       </S.MatchingProposalContent>
