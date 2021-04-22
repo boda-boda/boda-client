@@ -34,6 +34,11 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [selectedFamilyType, setSelectedFamilyType] = useState('');
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [recipientName, setRecipientName] = useState('');
+  const [recipientAddress, setRecipientAddress] = useState({
+    zipCode: '',
+    address: '',
+    detailAddress: '',
+  });
   const careCenter = useCareCenter();
   const [rerender, setRerender] = useState(false);
 
@@ -59,6 +64,16 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
 
     setCenterUpdateRequest({
       ...centerUpdateRequest,
+      zipCode: '',
+      address: '',
+      detailAddress: '',
+    });
+  };
+
+  const handleDeleteCurrentAddressRecipient = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setRecipientAddress({
       zipCode: '',
       address: '',
       detailAddress: '',
@@ -92,6 +107,22 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
       oncomplete: function (data: any) {
         setCenterUpdateRequest({
           ...centerUpdateRequest,
+          zipCode: data.zonecode,
+          address: data.roadAddress,
+        });
+      },
+    }).open();
+  };
+
+  const openAddressModalRecipient = () => {
+    if (!window.daum) {
+      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
+      return;
+    }
+    new window.daum.Postcode({
+      oncomplete: function (data: any) {
+        setRecipientAddress({
+          ...recipientAddress,
           zipCode: data.zonecode,
           address: data.roadAddress,
         });
@@ -446,19 +477,37 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th rowSpan={2}>주소</th>
                   <td colSpan={3}>
-                    <S.TextInput type="text" readOnly onClick={openAddressModal} withButton />
-                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
-                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                    <S.TextInput
+                      type="text"
+                      readOnly
+                      value={recipientAddress.zipCode}
+                      onClick={openAddressModalRecipient}
+                      withButton
+                    />
+                    <S.AddressButton onClick={openAddressModalRecipient}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddressRecipient}>
                       주소 초기화
                     </S.AddressDeleteButton>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <S.TextInput type="text" long readOnly disabled />
+                    <S.TextInput
+                      type="text"
+                      value={recipientAddress.address}
+                      long
+                      readOnly
+                      disabled
+                    />
                   </td>
                   <td colSpan={3}>
-                    <S.TextInput type="text" long placeholder="상세주소 입력" />
+                    <S.TextInput
+                      type="text"
+                      value={recipientAddress.detailAddress}
+                      readOnly={recipientAddress.address === ''}
+                      long
+                      placeholder="상세주소 입력"
+                    />
                   </td>
                 </tr>
                 <tr>
