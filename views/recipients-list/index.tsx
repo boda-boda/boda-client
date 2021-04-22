@@ -7,7 +7,7 @@ import Head from 'next/head';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import Link from 'next/link';
-import Reciepient from '../../model/reciepient';
+import Recipient from '../../model/recipient';
 import { CAPABILITY, PAGINATION_LENGTH } from '../../constant';
 import { useCallback, useState } from 'react';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
@@ -35,9 +35,9 @@ const recipients = [
     profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
     residenceType: '독거',
   },
-] as Reciepient[];
+] as Recipient[];
 
-export default function ReciepientsList() {
+export default function RecipientsList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [recipientsPerPage, setRecipientsPerPage] = useState(10);
@@ -72,7 +72,7 @@ export default function ReciepientsList() {
           <S.Section isBackgroundColored>
             <S.InnerContent>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
-              <S.ReciepientsList>
+              <S.RecipientsList>
                 <S.CardList>
                   {recipients.length === 0 ? (
                     <S.EmptyCardContainer>
@@ -200,7 +200,7 @@ export default function ReciepientsList() {
                     </S.CardList>
                   )}
                 </S.CardList>
-              </S.ReciepientsList>
+              </S.RecipientsList>
             </S.InnerContent>
           </S.Section>
         </>

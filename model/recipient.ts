@@ -1,6 +1,6 @@
 import CareWorkerMeta from './care-worker-meta';
 
-export default class Reciepient {
+export default class Recipient {
   public zipCode: string;
   public address: string;
   public detailAddress: string;

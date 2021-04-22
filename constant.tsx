@@ -115,6 +115,13 @@ export const FLEX_ROW_SPACE_CENTER = `
   align-items:center;
 `;
 
+export const FLEX_ROW_AROUND_CENTER = `
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
+  align-items:center;
+`;
+
 export const FLEX_COLUMN_START_CENTER = `
   display:flex;
   flex-direction:column;

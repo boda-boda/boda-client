@@ -9,13 +9,13 @@ import Banner from '../../components/banner';
 import Layout from '../../components/layout';
 import { BannerStyleType } from '../../common/types';
 import Head from 'next/head';
-import Reciepient from '../../model/reciepient';
+import Recipient from '../../model/recipient';
 import { CAPABILITY } from '../../constant';
 
 export default function RecipientsDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
-  const [recipient, setRecipient] = useState(new Reciepient());
+  const [recipient, setRecipient] = useState(new Recipient());
 
   useEffect(() => {
     if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {

@@ -38,7 +38,7 @@ export const SectionTitle = styled.div`
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
-export const ReciepientsList = styled.div`
+export const RecipientsList = styled.div`
   width: 100%;
 `;
 

@@ -5,6 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import DefaultButtonContainter from '../default-button';
 import * as S from './styles';
 import {
+  CAPABILITY,
   CARE_INFO_LIST,
   DAY_LIST,
   FAMILY_TYPE,
@@ -22,10 +23,80 @@ import {
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
+import CloseIconSVG from '../../svgs/close-icon-svg';
+import Recipient from '../../model/recipient';
+import Link from 'next/link';
+import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
+import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
+
+const recipients = [
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동 목동남로4길 81 105동 101호',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '간호조무사', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+    ],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급2',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+] as Recipient[];
 
 export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
@@ -34,13 +105,12 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const [selectedFamilyType, setSelectedFamilyType] = useState('');
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [recipientName, setRecipientName] = useState('');
-  const [recipientAddress, setRecipientAddress] = useState({
-    zipCode: '',
-    address: '',
-    detailAddress: '',
-  });
+
+  const [recipient, setRecipient] = useState(new Recipient());
+
   const careCenter = useCareCenter();
   const [rerender, setRerender] = useState(false);
+  const [isLoadModalOn, setIsLoadModalOn] = useState(false);
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
@@ -73,7 +143,8 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
   const handleDeleteCurrentAddressRecipient = async () => {
     if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
 
-    setRecipientAddress({
+    setRecipient({
+      ...recipient,
       zipCode: '',
       address: '',
       detailAddress: '',
@@ -121,8 +192,8 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
     }
     new window.daum.Postcode({
       oncomplete: function (data: any) {
-        setRecipientAddress({
-          ...recipientAddress,
+        setRecipient({
+          ...recipient,
           zipCode: data.zonecode,
           address: data.roadAddress,
         });
@@ -168,6 +239,83 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
     <>
       <S.MatchingProposalContent>
         <S.InnerContent>
+          {isLoadModalOn && (
+            <S.LoginModalLayout>
+              <S.LoginModal>
+                <S.LoginModalTitle>수급자 선택</S.LoginModalTitle>
+                <CloseIconSVG
+                  style={{ position: 'absolute', top: '20px', right: '20px', cursor: 'pointer' }}
+                  onClick={() => {
+                    setIsLoadModalOn(false);
+                  }}
+                />
+                <S.LoginModalInnerContent>
+                  {recipients.length === 0 ? (
+                    <S.EmptyCardContainer>
+                      <S.EmptyCard>현재 관리하고 있는 수급자가 없습니다.</S.EmptyCard>
+                    </S.EmptyCardContainer>
+                  ) : (
+                    <S.CardList>
+                      {recipients.map((recipient, idx) => (
+                        <S.StyledLink>
+                          <Link
+                            key={`worker-${idx}`}
+                            href={{
+                              pathname: '/recipients/[id]',
+                            }}
+                            as={`/recipients/${recipient.id}`}
+                            passHref
+                          >
+                            <S.Card>
+                              <S.ProfileImageLoad src={recipient.profile} />
+                              <S.InfoContainer>
+                                <S.BasicInfo>
+                                  {recipient.name} ({recipient.age}/{recipient.gender[0]}/
+                                  {recipient.grade}등급)
+                                </S.BasicInfo>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <PhoneNumberIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>위치</S.InfoType>
+                                  <S.InfoValue>{recipient.address}</S.InfoValue>
+                                </S.InfoRow>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <PhoneNumberIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>휴대전화</S.InfoType>
+                                  <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
+                                </S.InfoRow>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <CareInfoIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>요구 조건</S.InfoType>
+
+                                  <S.InfoItemList>
+                                    {recipient.recipientMetas
+                                      ?.filter((meta) => meta.type === CAPABILITY)
+                                      .map((meta, index) => {
+                                        return (
+                                          <S.InfoItem key={`careInfoItem-${index}`}>
+                                            {meta.key}
+                                          </S.InfoItem>
+                                        );
+                                      })}
+                                  </S.InfoItemList>
+                                </S.InfoRow>
+                              </S.InfoContainer>
+                            </S.Card>
+                          </Link>
+                        </S.StyledLink>
+                      ))}
+                    </S.CardList>
+                  )}
+                </S.LoginModalInnerContent>
+              </S.LoginModal>
+            </S.LoginModalLayout>
+          )}
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>센터 정보</S.SectionTitle>
@@ -292,13 +440,13 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
-              <DefaultButtonContainter
-                content="불러오기"
-                type={ButtonType.LOAD}
-                width="100px"
-                height="36px"
-                active={false}
-              ></DefaultButtonContainter>
+              <S.CenterInfoUpdateButton
+                onClick={() => {
+                  setIsLoadModalOn(true);
+                }}
+              >
+                불러오기
+              </S.CenterInfoUpdateButton>
             </S.SectionTitleContainer>
             <S.InfoTable>
               <tbody>
@@ -480,7 +628,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                     <S.TextInput
                       type="text"
                       readOnly
-                      value={recipientAddress.zipCode}
+                      value={recipient.zipCode}
                       onClick={openAddressModalRecipient}
                       withButton
                     />
@@ -492,19 +640,13 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 </tr>
                 <tr>
                   <td>
-                    <S.TextInput
-                      type="text"
-                      value={recipientAddress.address}
-                      long
-                      readOnly
-                      disabled
-                    />
+                    <S.TextInput type="text" value={recipient.address} long readOnly disabled />
                   </td>
                   <td colSpan={3}>
                     <S.TextInput
                       type="text"
-                      value={recipientAddress.detailAddress}
-                      readOnly={recipientAddress.address === ''}
+                      value={recipient.detailAddress}
+                      readOnly={recipient.address === ''}
                       long
                       placeholder="상세주소 입력"
                     />
