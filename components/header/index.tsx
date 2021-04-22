@@ -112,6 +112,10 @@ export default function Header() {
                         <S.StyledLink>나의 센터 정보</S.StyledLink>
                       </Link>
                       <S.MenuBar />
+                      <Link href="/recipients" passHref>
+                        <S.StyledLink>수급자 관리</S.StyledLink>
+                      </Link>
+                      <S.MenuBar />
                       <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
                     </S.MenuModal>
                   </>

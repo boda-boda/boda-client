@@ -55,9 +55,10 @@ export const MenuItem = styled.div`
   -webkit-user-select: none;
   -moz-user-select: none;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s ease;
+  font-weight: 400;
   :hover {
-    font-weight: bold;
+    font-weight: 500;
     /* font-size: 17px;
     margin-left: 32px; */
   }
@@ -173,6 +174,7 @@ export const ForgotPasswordText = styled.div`
   color: ${THEME.MAIN};
   text-decoration: none;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
     span {
       text-decoration: underline;
@@ -226,6 +228,7 @@ export const StyledLink = styled.a`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
   padding: 15px;
+  transition: 0.2s ease;
   :hover {
     font-weight: bold;
   }
@@ -236,6 +239,7 @@ export const LogoutButton = styled.div`
   text-decoration: none;
   padding: 15px;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
     font-weight: bold;
   }
