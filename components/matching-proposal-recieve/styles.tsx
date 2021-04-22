@@ -49,7 +49,7 @@ export const SectionTitleContainer = styled.div`
 `;
 
 export const SectionTitle = styled.div`
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 500;
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
