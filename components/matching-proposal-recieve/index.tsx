@@ -70,30 +70,17 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={5} className="profile">
+                  <td rowSpan={2} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={careCenter?.profile}></S.ProfileImage>
                       </label>
                     </S.ProfileImageContainer>
                   </td>
-                  <th className="">이름</th>
+                  <th className="">지역</th>
                   <td className="">{careCenter?.username}</td>
-                  <th>전화</th>
+                  <th>연혁</th>
                   <td className="">{careCenter?.phoneNumber}</td>
-                </tr>
-                <tr>
-                  <th>이메일</th>
-                  <td className="infovalue">{careCenter?.email}</td>
-                  <th>홈페이지</th>
-                  <td className="infovalue">{careCenter?.homePage}</td>
-                </tr>
-                <tr>
-                  <th rowSpan={1}>주소</th>
-                  <td colSpan={3}>
-                    {careCenter?.zipCode && `(${careCenter.zipCode})`} {careCenter?.address}{' '}
-                    {careCenter?.detailAddress}
-                  </td>
                 </tr>
                 <tr>
                   <th>센터 소개</th>
@@ -142,7 +129,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                     </S.TdFlexBox>
                   </td>
                   <th>종교</th>
-                  <td colSpan={3} className="wide">
+                  <td colSpan={1} className="">
                     <S.TdFlexBox>
                       <S.ToggleButton>무교</S.ToggleButton>
                     </S.TdFlexBox>
@@ -150,7 +137,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                 </tr>
                 <tr>
                   <th>요구 사항</th>
-                  <td colSpan={3} className="wide overtd">
+                  <td colSpan={3} className="overtd">
                     <S.TdFlexBox>
                       {CARE_INFO_LIST.map((careInfo, index) => {
                         return (
@@ -169,11 +156,8 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    <S.TextArea
-                      disabled
-                      value={`대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다.
-치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.`}
-                    />
+                    대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. <br></br>
+                    치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.
                   </td>
                 </tr>
               </tbody>
@@ -191,16 +175,14 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                 </tr>
                 <tr>
                   <th>비고</th>
-                  <td>
-                    <S.TextArea disabled value="잘 부탁드립니다." />
-                  </td>
+                  <td>잘 부탁드립니다.</td>
                 </tr>
               </tbody>
             </S.InfoTable>
           </S.Section>
           <S.CompleteSection>
-            <S.EditButton>수락</S.EditButton>
-            <S.DeleteButton>거절</S.DeleteButton>
+            <S.EditButton>수락 하기</S.EditButton>
+            <S.DeleteButton>거절 하기</S.DeleteButton>
           </S.CompleteSection>
         </S.InnerContent>
       </S.MatchingProposalContent>

@@ -326,7 +326,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <td rowSpan={5} className="profile">
+                  <td rowSpan={2} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={centerUpdateRequest.profile}>
@@ -345,7 +345,7 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       />
                     </S.ProfileImageContainer>
                   </td>
-                  <th className="">이름</th>
+                  <th className="">지역</th>
                   <td className="infovalue">
                     <S.TextInput
                       value={centerUpdateRequest.username}
@@ -354,70 +354,13 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                       placeholder="센터의 이름을 입력해주세요"
                     />
                   </td>
-                  <th>전화</th>
+                  <th>연혁</th>
                   <td className="infovalue">
                     <S.TextInput
                       value={centerUpdateRequest.phoneNumber}
                       onChange={handleInputChange('phoneNumber')}
                       type="text"
                       placeholder="전화번호를 입력해주세요"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>이메일</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.email}
-                      onChange={handleInputChange('email')}
-                      type="text"
-                      placeholder="이메일 주소를 입력해주세요"
-                    />
-                  </td>
-                  <th>홈페이지</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.homePage}
-                      onChange={handleInputChange('homePage')}
-                      type="text"
-                      placeholder="홈페이지 주소를 입력해주세요"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th rowSpan={2}>주소</th>
-                  <td colSpan={3}>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.zipCode}
-                      readOnly
-                      onClick={openAddressModal}
-                      withButton
-                    />
-                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
-                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
-                      주소 초기화
-                    </S.AddressDeleteButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.address}
-                      long
-                      readOnly
-                      disabled
-                    />
-                  </td>
-                  <td colSpan={2}>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.detailAddress}
-                      readOnly={centerUpdateRequest.address === ''}
-                      long
-                      placeholder="상세주소 입력"
-                      onChange={handleInputChange('detailAddress')}
                     />
                   </td>
                 </tr>

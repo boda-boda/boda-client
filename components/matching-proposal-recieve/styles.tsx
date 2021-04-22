@@ -65,13 +65,13 @@ export const InfoTable = styled.table`
     border-bottom: 1px solid ${THEME.GRAY_LINE};
     padding: 12px 12px;
     color: ${THEME.GRAY_FONT};
-    font-size: 14px;
+    font-size: 24px;
     text-align: left;
     vertical-align: middle;
     table-layout: fixed;
   }
   th {
-    width: 84px;
+    width: 150px;
     background: ${THEME.HEADER_BACKGROUND};
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-weight: 500;
@@ -87,13 +87,13 @@ export const InfoTable = styled.table`
     padding: 32px 25px 0 25px;
   }
   .left {
-    width: 336px;
+    /* width: 336px; */
   }
   .right {
-    width: 306px;
+    /* width: 306px; */
   }
   .wide {
-    width: 726px;
+    /* width: 726px; */
   }
 
   .select {
@@ -191,6 +191,7 @@ interface ToggleButtonProps {
 export const ToggleButton = styled.div<ToggleButtonProps>`
   padding: 0 13px;
   height: 36px;
+  font-size: 24px;
   margin-right: ${(props) => (props.isLast ? '0' : '10px')};
   border-radius: 3px;
   background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
@@ -327,7 +328,8 @@ export const AddressDeleteButton = styled.button`
 export const TextArea = styled.textarea`
   outline: none;
   width: 100%;
-  min-height: 84px;
+  font-size: 24px;
+  height: 100%;
   padding: 10px;
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};
