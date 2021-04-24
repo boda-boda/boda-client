@@ -1,4 +1,4 @@
-import RecipientDetail from '../../../views/recipients-detail';
+import RecipientDetail from '../../../views/recipients-detail-view';
 import { withRouter } from 'next/router';
 
 function RecipientDetailPage() {

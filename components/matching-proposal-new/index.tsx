@@ -98,7 +98,7 @@ const recipients = [
   },
 ] as Recipient[];
 
-export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
+export default function MatchingProposalNew({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
@@ -316,70 +316,6 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
               </S.LoginModal>
             </S.LoginModalLayout>
           )}
-          <S.Section>
-            <S.SectionTitleContainer>
-              <S.SectionTitle>센터 정보</S.SectionTitle>
-              <S.CenterInfoUpdateButton onClick={handleUpdateCareCenterInfo}>
-                기본 센터 정보로 저장하기
-              </S.CenterInfoUpdateButton>
-            </S.SectionTitleContainer>
-            <S.InfoTable>
-              <tbody>
-                <tr>
-                  <td rowSpan={2} className="profile">
-                    <S.ProfileImageContainer>
-                      <label htmlFor="profile">
-                        <S.ProfileImage src={centerUpdateRequest.profile}>
-                          <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
-                            <ImageDefaultSVG />
-                          </S.ImageIconContainer>
-                        </S.ProfileImage>
-                      </label>
-                      <input
-                        id="profile"
-                        type="file"
-                        accept="image/*"
-                        multiple={false}
-                        style={{ display: 'none' }}
-                        onChange={onChangeImage}
-                      />
-                    </S.ProfileImageContainer>
-                  </td>
-                  <th className="">지역</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.username}
-                      onChange={handleInputChange('username')}
-                      type="text"
-                      placeholder="센터의 이름을 입력해주세요"
-                    />
-                  </td>
-                  <th>연혁</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.phoneNumber}
-                      onChange={handleInputChange('phoneNumber')}
-                      type="text"
-                      placeholder="전화번호를 입력해주세요"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>센터 소개</th>
-                  <td colSpan={3}>
-                    <S.TextArea
-                      ref={memoRef}
-                      value={centerUpdateRequest.description}
-                      onChange={(e) => {
-                        handleInputChange('description')(e), setMemo(e.target.value);
-                      }}
-                      placeholder="센터의 소개글을 작성해주세요"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </S.InfoTable>
-          </S.Section>
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
