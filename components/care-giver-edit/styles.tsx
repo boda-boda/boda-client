@@ -397,6 +397,28 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   }
 `;
 
+export const ToggleButtonWorkingState = styled.div<ToggleButtonProps>`
+  padding: 0 10px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 3px;
+  background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
+  border: ${(props) =>
+    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GRAY_LINE}`};
+  color: ${(props) => (props.isSelected ? 'white' : THEME.GRAY_FONT)};
+  ${FLEX_ROW_CENTER_CENTER};
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
 export const ClockSelectContainer = styled.div`
   position: relative;
   width: 120px;

@@ -118,6 +118,9 @@ export const FilterTable = styled.table`
   .innerTableHeader {
     padding: 12px 12px;
   }
+  .empty {
+    cursor: default;
+  }
   table {
     border: none;
     padding: none;

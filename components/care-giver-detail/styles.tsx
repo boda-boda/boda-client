@@ -85,6 +85,9 @@ export const Table = styled.table`
   th.career {
     padding: 13px 0;
   }
+  .twoRow {
+    padding: 0 12px;
+  }
   .area {
     width: 33.3333%;
     text-align: center;

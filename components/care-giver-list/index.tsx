@@ -16,6 +16,7 @@ import {
   dummyCareWorkers,
   CAPABILITY,
   PAGINATION_LENGTH,
+  WORKING_STATE,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -56,6 +57,7 @@ export default function CareGiverList() {
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
+  const [selectedWorkingState, setSelectedWorkingState] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
@@ -125,6 +127,16 @@ export default function CareGiverList() {
       return;
     }
     setSelectedReligion([...selectedReligion, religion]);
+  };
+
+  const toggleWorkingState = (state: string) => {
+    if (selectedWorkingState.includes(state)) {
+      setSelectedWorkingState((selectedWorkingState) =>
+        selectedWorkingState.filter((selected) => selected !== state)
+      );
+      return;
+    }
+    setSelectedWorkingState([...selectedWorkingState, state]);
   };
 
   const handleReset = useCallback(() => {
@@ -213,14 +225,24 @@ export default function CareGiverList() {
     return result;
   };
   const filterReligion = (cws: CareWorker[]) => {
-    const result = cws.filter((cw: CareWorker) =>
-      selectedReligion.every((religion) =>
-        cw.careWorkerMetas
-          .filter((meta) => meta.type === 'Religion')
-          .map((meta) => meta.key)
-          .includes(religion)
-      )
-    );
+    const result =
+      selectedReligion.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) =>
+            selectedReligion.some((religion) =>
+              cw.careWorkerMetas
+                .filter((meta) => meta.type === 'Religion')
+                .map((meta) => meta.key)
+                .includes(religion)
+            )
+          );
+    return result;
+  };
+  const filterWorkingState = (cws: CareWorker[]) => {
+    const result =
+      selectedWorkingState.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) => selectedWorkingState.includes(cw.workingState));
     return result;
   };
   const filterNameByLetter = (cws: CareWorker[]) => {
@@ -243,7 +265,9 @@ export default function CareGiverList() {
 
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterSchedule(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
     setSelectedConsonantFilter(-1);
@@ -252,7 +276,9 @@ export default function CareGiverList() {
   const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterSchedule(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
   };
@@ -567,6 +593,36 @@ export default function CareGiverList() {
                               </tr>
                             );
                           })}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="innerTableHeader">재직 구분</th>
+                    <td className="innerTable" colSpan={3}>
+                      <table>
+                        <tbody>
+                          <tr>
+                            {WORKING_STATE.map((item, index) => {
+                              return (
+                                <td className={`available  last`} key={`${index}`}>
+                                  <div
+                                    className="hoverDiv"
+                                    onClick={() => toggleWorkingState(item)}
+                                  >
+                                    {item}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      checked={selectedWorkingState.includes(item)}
+                                      onChange={() => toggleWorkingState(item)}
+                                    />
+                                  </div>
+                                </td>
+                              );
+                            })}
+                            <td className="available last empty"></td>
+                            <td className="available last empty right"></td>
+                          </tr>
                         </tbody>
                       </table>
                     </td>

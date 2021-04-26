@@ -113,7 +113,7 @@ export default function CareGiveDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
@@ -132,6 +132,16 @@ export default function CareGiveDetail() {
                   <td className="infovalue">{careWorker.gender}</td>
                   <th>휴대전화</th>
                   <td className="infovalue">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
+                  <th>재직 구분</th>
+                  <td className="infovalue">{careWorker.workingState}</td>
+                  <th className="twoRow">
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">{careWorker.licenseDate}</td>
                 </tr>
                 <tr>
                   <th>주소</th>
@@ -291,16 +301,16 @@ export default function CareGiveDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
+                  <th className="career">근무지(수급자)</th>
+                  <th className="career">기간</th>
+                  <th className="career long right">비고</th>
                 </tr>
                 {careWorker.careWorkerCareers?.length > 0 ? (
                   careWorker.careWorkerCareers.map((career, idx) => (
                     <tr key={`career-${idx}`}>
-                      <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
+                      <td className="career">{career.workplace}</td>
+                      <td className="career">{career.duration}</td>
+                      <td className="career long right">{career.memo}</td>
                     </tr>
                   ))
                 ) : (
