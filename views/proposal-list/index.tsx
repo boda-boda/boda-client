@@ -8,7 +8,7 @@ import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import Link from 'next/link';
 import Recipient from '../../model/recipient';
-import { CAPABILITY, PAGINATION_LENGTH } from '../../constant';
+import { CAPABILITY, PAGINATION_LENGTH, RELIGION } from '../../constant';
 import { useCallback, useState } from 'react';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
@@ -20,23 +20,26 @@ import EtcSVG from '../../svgs/etc-svg';
 const proposals = [
   {
     id: '0',
+    pay: '11500',
+    memo: 'RFID 태그 꼭 사용 부탁드립니다.',
     recipient: {
       zipCode: '08018',
       address: '서울시 양천구 신정7동 목동남로4길 81',
       detailAddress: '101호',
       age: 99,
       birthDay: '1922-08-21',
-
+      schedule: '월 화 수 목 금 9:00 - 12:00',
       recipientMetas: [
-        { type: CAPABILITY, key: '휠체어', value: '' },
-        { type: CAPABILITY, key: '휠체어', value: '' },
-        { type: CAPABILITY, key: '휠체어', value: '' },
-        { type: CAPABILITY, key: '휠체어', value: '' },
+        { type: CAPABILITY, key: '휠체어어', value: '' },
+        { type: CAPABILITY, key: '휠체어어', value: '' },
+        { type: CAPABILITY, key: '휠체어어', value: '' },
+        { type: CAPABILITY, key: '휠체어어', value: '' },
         { type: CAPABILITY, key: '치매자격증', value: '' },
+        { type: RELIGION, key: '무교', value: '' },
       ],
       familyType: '독거',
       description:
-        '설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지',
+        '대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. 치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.',
       grade: 3,
       gender: '여',
       id: 'asdf',
@@ -51,8 +54,9 @@ const proposals = [
       detailAddress: '목동남로4길 81',
       age: 60,
       birthDay: '1962-08-21',
-
-      recipientMetas: [
+      availableTime: '오전',
+      schedule: '월 화 수 목 금 9:00 - 12:00',
+      caregiverMetas: [
         { type: CAPABILITY, key: '휠체어', value: '' },
         { type: CAPABILITY, key: '휠체어', value: '' },
         { type: CAPABILITY, key: '휠체어', value: '' },
@@ -64,10 +68,11 @@ const proposals = [
         { type: CAPABILITY, key: '휠체어', value: '' },
         { type: CAPABILITY, key: '휠체어', value: '' },
         { type: CAPABILITY, key: '휠체어', value: '' },
+        { type: RELIGION, key: '무교', value: '' },
       ],
-
+      workArea: ['서대문구'],
       description:
-        '설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지, 설명이 이렇게 길면 어쩌지',
+        '약속을 잘 지키시며, 꼼꼼한 성격이시다. 말씀하시는 것을 좋아하셔서 대화를 잘 하신다.',
       grade: 3,
       gender: '여',
       id: 'asdf',
@@ -90,7 +95,8 @@ export default function ProposalList() {
   const maxPageNumber = Math.ceil(proposals.length / proposalsPerPage);
 
   const getInfoItemsEtc = (infoList: any[]) => {
-    if (infoList.length <= 5)
+    const LENGTH = infoList.reduce((sum, item) => sum + item.key.length, 0);
+    if (LENGTH <= 15)
       return infoList
         ?.filter((meta) => meta.type === CAPABILITY)
         .map((meta, index) => {
@@ -100,7 +106,7 @@ export default function ProposalList() {
       return (
         <>
           {infoList
-            ?.slice(0, 5)
+            ?.slice(0, 4)
             .filter((meta) => meta.type === CAPABILITY)
             .map((meta, index) => {
               return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
@@ -192,7 +198,11 @@ export default function ProposalList() {
                                     </S.SVGIconBox>
                                     <S.InfoType>요구 사항</S.InfoType>
                                     <S.InfoItemList>
-                                      {getInfoItemsEtc(proposal.recipient.recipientMetas)}
+                                      {getInfoItemsEtc(
+                                        proposal.recipient.recipientMetas.filter(
+                                          (meta) => meta.type === CAPABILITY
+                                        )
+                                      )}
                                     </S.InfoItemList>
                                   </S.InfoRow>
                                   <S.InfoRow>
@@ -224,7 +234,11 @@ export default function ProposalList() {
                                     </S.SVGIconBox>
                                     <S.InfoType>가능 조건</S.InfoType>
                                     <S.InfoItemList>
-                                      {getInfoItemsEtc(proposal.caregiver.recipientMetas)}
+                                      {getInfoItemsEtc(
+                                        proposal.caregiver.caregiverMetas.filter(
+                                          (meta) => meta.type === CAPABILITY
+                                        )
+                                      )}
                                     </S.InfoItemList>
                                   </S.InfoRow>
                                   <S.InfoRow>
