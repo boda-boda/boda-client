@@ -230,27 +230,6 @@ export const EditButton = styled.button`
   }
 `;
 
-export const DeleteButton = styled.button`
-  position: absolute;
-  top: 33px;
-  right: 110px;
-  padding: 11px 10px;
-  height: 36px;
-  border-radius: 3px;
-  outline: none;
-  border: 1px solid ${THEME.RED};
-  background-color: white;
-  color: ${THEME.RED};
-  ${FLEX_ROW_CENTER_CENTER};
-  cursor: pointer;
-  transition: 0.2s ease;
-  :hover {
-    background: ${THEME.RED};
-    color: white;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
-  }
-`;
-
 export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
