@@ -156,7 +156,7 @@ export const InfoType = styled.div`
 `;
 
 export const InfoValue = styled.div`
-  margin-top: -1px;
+  /* margin-top: -1px; */
   color: ${THEME.GRAY_FONT};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -170,7 +170,7 @@ export const InfoValue = styled.div`
 `;
 
 export const MemoValue = styled.div`
-  margin-top: -1px;
+  /* margin-top: -1px; */
   color: ${THEME.GRAY_FONT};
   /* max-height: 60px; */
   overflow: hidden;
@@ -182,6 +182,21 @@ export const MemoValue = styled.div`
   word-wrap: break-word;
   line-height: 1.2em;
   height: 2.4em;
+`;
+
+export const MemoValueRight = styled.div`
+  /* margin-top: -1px; */
+  color: ${THEME.GRAY_FONT};
+  /* max-height: 60px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.2em;
+  height: 4.5em;
 `;
 
 export const CheckBox = styled.input`

@@ -152,7 +152,7 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">김돌봄</td>
+                  <td className="left">요XX</td>
                   <th>성별</th>
                   <td className="right">여자</td>
                 </tr>

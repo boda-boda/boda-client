@@ -71,7 +71,7 @@ const proposals = [
       grade: 3,
       gender: '여',
       id: 'asdf',
-      name: '요양보',
+      name: '요XX',
       phoneNumber: '010-7105-2344',
       profile:
         'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/15976dbd-3149-4331-a09d-58d9853668be_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1.jpg',
@@ -220,13 +220,6 @@ export default function ProposalList() {
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
-                                    </S.SVGIconBox>
-                                    <S.InfoType>휴대전화</S.InfoType>
-                                    <S.InfoValue>{proposal.caregiver.phoneNumber}</S.InfoValue>
-                                  </S.InfoRow>
-                                  <S.InfoRow>
-                                    <S.SVGIconBox>
                                       <CareInfoIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>가능 조건</S.InfoType>
@@ -239,7 +232,9 @@ export default function ProposalList() {
                                       <PhoneNumberIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>메모</S.InfoType>
-                                    <S.MemoValue>{proposal.caregiver.description}</S.MemoValue>
+                                    <S.MemoValueRight>
+                                      {proposal.caregiver.description}
+                                    </S.MemoValueRight>
                                   </S.InfoRow>
                                 </S.InfoContainerRight>
                               </S.CardSectionRight>
