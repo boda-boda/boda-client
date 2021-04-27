@@ -271,7 +271,7 @@ export default function CareGiveDetail() {
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
+          {/* <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
@@ -340,7 +340,7 @@ export default function CareGiveDetail() {
                     })}
               </tbody>
             </S.Table>
-          </S.Section>
+          </S.Section> */}
         </S.InnerContent>
       </S.CareGiverDetail>
     </>
