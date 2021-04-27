@@ -28,8 +28,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const SectionTitle = styled.div`
@@ -65,6 +65,9 @@ export const Table = styled.table`
     background: ${THEME.HEADER_BACKGROUND};
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-weight: 500;
+  }
+  .twoRow {
+    padding: 0 12px;
   }
   .profile {
     width: 168px;
@@ -320,5 +323,30 @@ export const ComplimentContentInput = styled.textarea`
   :focus {
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
+`;
+
+export const FinishButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  ${FLEX_ROW_CENTER_CENTER};
+`;
+
+export const FinishButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
