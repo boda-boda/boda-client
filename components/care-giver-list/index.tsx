@@ -298,14 +298,14 @@ export default function CareGiverList() {
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
     try { 
-      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState } = JSON.parse(savedSearchParams) as any;
       setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
-      setIsLocalStorageLoaded(true);
+      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []);
     }
     catch {
       localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
     }
-  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
   useEffect(() => {
@@ -316,11 +316,11 @@ export default function CareGiverList() {
 
       if (!availableSchedule.length) {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
         })) // prettier-ignore
       } else {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
         })) // prettier-ignore
       }
     }, 500);
@@ -336,6 +336,7 @@ export default function CareGiverList() {
     currentPage,
     careWorkersPerPage,
     rerender,
+    selectedWorkingState,
   ]);
 
   return (
