@@ -217,8 +217,8 @@ export default function CareGiveDetailDemo() {
                   careWorker.careWorkerCareers.map((career, idx) => (
                     <tr key={`career-${idx}`}>
                       <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
+                      <td className="career">{career.duration}</td>
+                      <td className="career right">{career.memo}</td>
                     </tr>
                   ))
                 ) : (

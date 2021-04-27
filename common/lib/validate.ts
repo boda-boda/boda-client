@@ -22,6 +22,14 @@ export const validateBirthday = (birthDay: string) => {
   if (!isStringOnlyDigit(birthDay)) return '생년월일은 숫자(0~9)만 입력하실 수 있습니다.';
 };
 
+export const validateLicenseDate = (licenseDate: string) => {
+  if (!licenseDate) return;
+
+  if (licenseDate.length !== 8) return '자격증 취득일은 숫자(0~9) 8자리를 입력해주세요.';
+
+  if (!isStringOnlyDigit(licenseDate)) return '자격증 취득일은 숫자(0~9)만 입력하실 수 있습니다.';
+};
+
 export const validateEmail = (email: string) => {
   if (!email) return;
 
@@ -31,7 +39,7 @@ export const validateEmail = (email: string) => {
 };
 
 export const validateCareWorker = (createCareGiverRequest: CreateCareGiverRequest) => {
-  const { name, birthDay, phoneNumber } = createCareGiverRequest;
+  const { name, birthDay, phoneNumber, licenseDate } = createCareGiverRequest;
 
   if (!name) {
     alert('이름을 입력해 주세요.');
@@ -45,6 +53,11 @@ export const validateCareWorker = (createCareGiverRequest: CreateCareGiverReques
 
   if (validateBirthday(birthDay)) {
     alert(validateBirthday(birthDay));
+    return false;
+  }
+
+  if (validateLicenseDate(licenseDate)) {
+    alert(validateLicenseDate(licenseDate));
     return false;
   }
 

@@ -24,15 +24,15 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const CompleteSection = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_ROW_CENTER_CENTER};
-  padding-top: 40px;
+  padding-top: 20px;
   padding-bottom: 60px;
 `;
 

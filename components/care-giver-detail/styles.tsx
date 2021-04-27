@@ -28,8 +28,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const SectionTitle = styled.div`
@@ -84,6 +84,9 @@ export const Table = styled.table`
   }
   th.career {
     padding: 13px 0;
+  }
+  .twoRow {
+    padding: 0 12px;
   }
   .area {
     width: 33.3333%;
@@ -211,7 +214,7 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 33px;
+  top: 20px;
   right: 0;
   padding: 11px 10px;
   height: 36px;
@@ -232,7 +235,7 @@ export const EditButton = styled.button`
 
 export const DeleteButton = styled.button`
   position: absolute;
-  top: 33px;
+  top: 20px;
   right: 110px;
   padding: 11px 10px;
   height: 36px;

@@ -68,6 +68,8 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             c.gender !== '남성',
             c.birthDay?.split('-').join(''),
             c.phoneNumber,
+            c.workingState,
+            c.licenseDate.split('-').join(''),
             c.profile,
             c.zipCode,
             c.address,
@@ -86,7 +88,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
         if (c.careWorkerCareers.length > 0)
           setCareWorkerCareers(
             c.careWorkerCareers.map((career) =>
-              Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
+              Career.allArgsConstructor(career.workplace, career.duration, career.memo)
             )
           );
         if (c.careWorkerAreas.length > 0)
@@ -156,6 +158,20 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     [careWorker]
   );
 
+  const handleUpdateWorkingState = useCallback(
+    (workingState: string) => () => {
+      if (careWorker.workingState === workingState) {
+        setCareWorker({ ...careWorker, workingState: '' });
+        return;
+      }
+
+      setCareWorker({
+        ...careWorker,
+        workingState: workingState,
+      });
+    },
+    [careWorker]
+  );
   const handleUpdateBirthday = useCallback(
     (e: any) => {
       setCareWorker({ ...careWorker, birthDay: e.target.value });
@@ -258,7 +274,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     const availableAreas = careWorkerAreas.filter((a) => a.city);
-    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.duration || a.memo); // prettier-ignore
     setIsRequesting(true);
 
     try {
@@ -300,7 +316,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     const availableAreas = careWorkerAreas.filter((a) => a.city);
-    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.recipient || a.duration); // prettier-ignore
+    const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.duration || a.memo); // prettier-ignore
 
     try {
       await axios.put('/care-worker', {
@@ -342,6 +358,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     setCareWorkerAreas,
     onChangeImage,
     handleUpdateGender,
+    handleUpdateWorkingState,
     handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,

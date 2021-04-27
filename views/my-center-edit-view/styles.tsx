@@ -126,8 +126,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const SectionTitle = styled.div`
@@ -186,7 +186,7 @@ export const TextArea = styled.textarea`
 
 export const CenterImageContainer = styled.div`
   margin-top: 24px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   position: relative;
   width: 100%;
   height: 640px;
@@ -253,7 +253,7 @@ export const EditButton2 = styled(EditButton)`
 
 export const FinishButtonContainer = styled.div`
   width: 100%;
-  margin-top: 40px;
+  margin-top: 20px;
   ${FLEX_ROW_CENTER_CENTER};
 `;
 

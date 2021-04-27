@@ -16,6 +16,7 @@ import {
   dummyCareWorkers,
   CAPABILITY,
   PAGINATION_LENGTH,
+  WORKING_STATE,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -56,6 +57,7 @@ export default function CareGiverList() {
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
+  const [selectedWorkingState, setSelectedWorkingState] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
@@ -125,6 +127,16 @@ export default function CareGiverList() {
       return;
     }
     setSelectedReligion([...selectedReligion, religion]);
+  };
+
+  const toggleWorkingState = (state: string) => {
+    if (selectedWorkingState.includes(state)) {
+      setSelectedWorkingState((selectedWorkingState) =>
+        selectedWorkingState.filter((selected) => selected !== state)
+      );
+      return;
+    }
+    setSelectedWorkingState([...selectedWorkingState, state]);
   };
 
   const handleReset = useCallback(() => {
@@ -213,14 +225,24 @@ export default function CareGiverList() {
     return result;
   };
   const filterReligion = (cws: CareWorker[]) => {
-    const result = cws.filter((cw: CareWorker) =>
-      selectedReligion.every((religion) =>
-        cw.careWorkerMetas
-          .filter((meta) => meta.type === 'Religion')
-          .map((meta) => meta.key)
-          .includes(religion)
-      )
-    );
+    const result =
+      selectedReligion.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) =>
+            selectedReligion.some((religion) =>
+              cw.careWorkerMetas
+                .filter((meta) => meta.type === 'Religion')
+                .map((meta) => meta.key)
+                .includes(religion)
+            )
+          );
+    return result;
+  };
+  const filterWorkingState = (cws: CareWorker[]) => {
+    const result =
+      selectedWorkingState.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) => selectedWorkingState.includes(cw.workingState));
     return result;
   };
   const filterNameByLetter = (cws: CareWorker[]) => {
@@ -243,7 +265,9 @@ export default function CareGiverList() {
 
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterSchedule(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
     setSelectedConsonantFilter(-1);
@@ -252,7 +276,9 @@ export default function CareGiverList() {
   const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterSchedule(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
   };
@@ -272,14 +298,14 @@ export default function CareGiverList() {
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
     try { 
-      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState } = JSON.parse(savedSearchParams) as any;
       setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
-      setIsLocalStorageLoaded(true);
+      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []);
     }
     catch {
       localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
     }
-  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
   useEffect(() => {
@@ -290,11 +316,11 @@ export default function CareGiverList() {
 
       if (!availableSchedule.length) {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
         })) // prettier-ignore
       } else {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
         })) // prettier-ignore
       }
     }, 500);
@@ -310,6 +336,7 @@ export default function CareGiverList() {
     currentPage,
     careWorkersPerPage,
     rerender,
+    selectedWorkingState,
   ]);
 
   return (
@@ -567,6 +594,36 @@ export default function CareGiverList() {
                               </tr>
                             );
                           })}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="innerTableHeader">재직 구분</th>
+                    <td className="innerTable" colSpan={3}>
+                      <table>
+                        <tbody>
+                          <tr>
+                            {WORKING_STATE.map((item, index) => {
+                              return (
+                                <td className={`available  last`} key={`${index}`}>
+                                  <div
+                                    className="hoverDiv"
+                                    onClick={() => toggleWorkingState(item)}
+                                  >
+                                    {item}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      checked={selectedWorkingState.includes(item)}
+                                      onChange={() => toggleWorkingState(item)}
+                                    />
+                                  </div>
+                                </td>
+                              );
+                            })}
+                            <td className="available last empty"></td>
+                            <td className="available last empty right"></td>
+                          </tr>
                         </tbody>
                       </table>
                     </td>

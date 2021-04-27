@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG, RELIGION_LIST } from '../../constant';
+import {
+  DAY_LIST,
+  CARE_INFO_LIST,
+  SEOUL_GU_DONG,
+  RELIGION_LIST,
+  WORKING_STATE,
+} from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import { CareWorkerSchedule } from '../../model/care-worker-schedule';
@@ -44,6 +50,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
     setCareWorkerAreas,
     onChangeImage,
     handleUpdateGender,
+    handleUpdateWorkingState,
     handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,
@@ -60,7 +67,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={4} className="profile">
+                  <td rowSpan={5} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={careWorker.profile}>
@@ -125,6 +132,37 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       type="text"
                       maxLength={11}
                       placeholder="예시) 01012345678"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>재직 구분</th>
+                  <td className="infovalue">
+                    <S.TdFlexBox>
+                      {WORKING_STATE.map((workingState, workingStateIndex) => {
+                        return (
+                          <S.ToggleButtonWorkingState
+                            isSelected={careWorker.workingState === workingState}
+                            onClick={handleUpdateWorkingState(workingState)}
+                          >
+                            {workingState}
+                          </S.ToggleButtonWorkingState>
+                        );
+                      })}
+                    </S.TdFlexBox>
+                  </td>
+                  <th>
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={careWorker.licenseDate || ''}
+                      onChange={handleUpdateCareGiver('licenseDate')}
+                      type="text"
+                      maxLength={11}
+                      placeholder="예시) 20210601"
                     />
                   </td>
                 </tr>
@@ -467,15 +505,15 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
+                  <th className="career">근무지(수급자)</th>
                   <th className="career">기간</th>
+                  <th className="career long">비고</th>
                   <th className="career short right">추가/제거</th>
                 </tr>
                 {careWorkerCareers.map((career, careerIndex) => {
                   return (
                     <tr key={`career-row-${careerIndex}`}>
-                      <td className="career long">
+                      <td className="career">
                         <S.TextInput
                           type="text"
                           value={career.workplace || ''}
@@ -490,25 +528,6 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                               })
                             );
                           }}
-                          long
-                        />
-                      </td>
-                      <td className="career">
-                        <S.TextInput
-                          type="text"
-                          value={career.recipient || ''}
-                          onChange={(e) => {
-                            setCareWorkerCareers((careers) =>
-                              careers.map((c, i) => {
-                                if (i !== careerIndex) return c;
-                                return {
-                                  ...careers[i],
-                                  recipient: e.target.value,
-                                };
-                              })
-                            );
-                          }}
-                          long
                         />
                       </td>
                       <td className="career">
@@ -522,6 +541,24 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                                 return {
                                   ...careers[i],
                                   duration: e.target.value,
+                                };
+                              })
+                            );
+                          }}
+                          long
+                        />
+                      </td>
+                      <td className="career">
+                        <S.TextInput
+                          type="text"
+                          value={career.memo || ''}
+                          onChange={(e) => {
+                            setCareWorkerCareers((careers) =>
+                              careers.map((c, i) => {
+                                if (i !== careerIndex) return c;
+                                return {
+                                  ...careers[i],
+                                  memo: e.target.value,
                                 };
                               })
                             );
