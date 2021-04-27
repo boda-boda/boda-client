@@ -8,6 +8,7 @@ export default class CreateCareGiverRequest {
     phoneNumber: string,
     workingState: string,
     licenseDate: string,
+    time: string,
     profile: string,
     zipCode: string,
     address: string,
@@ -21,6 +22,7 @@ export default class CreateCareGiverRequest {
       phoneNumber,
       workingState,
       licenseDate,
+      time,
       profile,
       zipCode,
       address,
@@ -34,6 +36,7 @@ export default class CreateCareGiverRequest {
       '',
       true,
       0,
+      '',
       '',
       '',
       '',
@@ -52,6 +55,7 @@ export default class CreateCareGiverRequest {
     phoneNumber: any,
     workingState: any,
     licenseDate: any,
+    time: any,
     profile: string,
     zipCode: string,
     address: string,
@@ -64,6 +68,7 @@ export default class CreateCareGiverRequest {
     this.phoneNumber = phoneNumber;
     this.workingState = workingState;
     this.licenseDate = licenseDate;
+    this.time = time;
     this.profile = profile;
     this.address = address;
     this.zipCode = zipCode;
@@ -77,6 +82,7 @@ export default class CreateCareGiverRequest {
   public phoneNumber: string;
   public workingState: string;
   public licenseDate: string;
+  public time: string;
   public profile: string;
   public zipCode: string;
   public address: string;

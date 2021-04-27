@@ -70,6 +70,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             c.phoneNumber,
             c.workingState,
             c.licenseDate.split('-').join(''),
+            c.time,
             c.profile,
             c.zipCode,
             c.address,
@@ -172,6 +173,22 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     },
     [careWorker]
   );
+
+  const handleUpdateTime = useCallback(
+    (time: string) => () => {
+      if (careWorker.time === time) {
+        setCareWorker({ ...careWorker, time: '' });
+        return;
+      }
+
+      setCareWorker({
+        ...careWorker,
+        time: time,
+      });
+    },
+    [careWorker]
+  );
+
   const handleUpdateBirthday = useCallback(
     (e: any) => {
       setCareWorker({ ...careWorker, birthDay: e.target.value });
@@ -359,6 +376,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     onChangeImage,
     handleUpdateGender,
     handleUpdateWorkingState,
+    handleUpdateTime,
     handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,
