@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import { DAY_LIST, CARE_INFO_LIST, SEOUL_GU_DONG, RELIGION_LIST } from '../../constant';
+import {
+  DAY_LIST,
+  CARE_INFO_LIST,
+  SEOUL_GU_DONG,
+  RELIGION_LIST,
+  WORKING_STATE,
+  OUTER_CARE_WORKER_SCHEDULE_TYPES,
+} from '../../constant';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 import { useCareGiverUpsert } from './hooks';
 import { CareWorkerSchedule } from '../../model/care-worker-schedule';
@@ -44,6 +51,8 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
     setCareWorkerAreas,
     onChangeImage,
     handleUpdateGender,
+    handleUpdateWorkingState,
+    handleUpdateTime,
     handleUpdateBirthday,
     handleUpdateCareGiver,
     handleClickUpdateButton,
@@ -60,7 +69,7 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={4} className="profile">
+                  <td rowSpan={6} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={careWorker.profile}>
@@ -126,6 +135,56 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                       maxLength={11}
                       placeholder="예시) 01012345678"
                     />
+                  </td>
+                </tr>
+                <tr>
+                  <th>재직 구분</th>
+                  <td className="infovalue">
+                    <S.TdFlexBox>
+                      {WORKING_STATE.map((workingState, workingStateIndex) => {
+                        return (
+                          <S.ToggleButtonWorkingState
+                            isSelected={careWorker.workingState === workingState}
+                            onClick={handleUpdateWorkingState(workingState)}
+                            key={`workingStateListItem-${workingStateIndex}`}
+                          >
+                            {workingState}
+                          </S.ToggleButtonWorkingState>
+                        );
+                      })}
+                    </S.TdFlexBox>
+                  </td>
+                  <th>
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">
+                    <S.TextInput
+                      value={careWorker.licenseDate || ''}
+                      onChange={handleUpdateCareGiver('licenseDate')}
+                      type="text"
+                      maxLength={11}
+                      placeholder="예시) 20210601"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th>가능 시간</th>
+                  <td className="time">
+                    <S.TimeSelectContainer>
+                      {OUTER_CARE_WORKER_SCHEDULE_TYPES.map((time, index) => {
+                        return (
+                          <S.ToggleButtonWorkingState
+                            isSelected={careWorker.time === time}
+                            onClick={handleUpdateTime(time)}
+                            key={`timeListItem-${index}`}
+                          >
+                            {time}
+                          </S.ToggleButtonWorkingState>
+                        );
+                      })}
+                    </S.TimeSelectContainer>
                   </td>
                 </tr>
                 <tr>
@@ -342,140 +401,21 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
-            <S.SectionTitle>요양보호사 스케줄</S.SectionTitle>
-            <S.Table>
-              <tbody>
-                <tr>
-                  <td style={{ padding: 0 }}>
-                    {careWorkerSchedules.map((schedule, scheduleIndex) => {
-                      return (
-                        <S.TimeSelectContainer
-                          isLast={careWorkerSchedules.length - 1 === scheduleIndex}
-                          key={`timeselectcontainer-${scheduleIndex}`}
-                        >
-                          <S.TdFlexBox>
-                            {DAY_LIST.map((day) => {
-                              return (
-                                <S.ToggleButton
-                                  isSelected={schedule.days.includes(day)}
-                                  onClick={() => toggleDays(scheduleIndex, day)}
-                                  key={`dayListItem-${day}`}
-                                >
-                                  {day}
-                                </S.ToggleButton>
-                              );
-                            })}
-                          </S.TdFlexBox>
-                          <S.TdFlexBox>
-                            <S.ClockSelectContainer>
-                              <S.ClockInput
-                                type="text"
-                                maxLength={2}
-                                value={schedule.startHour ? schedule.startHour : 0}
-                                onChange={(e) => {
-                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.startHour = parseInt(currentHour);
-                                  if (schedule.startHour >= 24) schedule.startHour = 23;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              시
-                              <S.ClockInput
-                                type="text"
-                                maxLength={2}
-                                value={schedule.startMinute ? schedule.startMinute : 0}
-                                onChange={(e) => {
-                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.startMinute = parseInt(currentMinute);
-                                  if (schedule.startMinute >= 60) schedule.startMinute = 59;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              분
-                            </S.ClockSelectContainer>
-                            부터
-                            <S.ClockSelectContainer>
-                              <S.ClockInput
-                                type="text"
-                                maxLength={2}
-                                value={schedule.endHour ? schedule.endHour : 0}
-                                onChange={(e) => {
-                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.endHour = parseInt(currentHour);
-                                  if (schedule.endHour >= 24) schedule.endHour = 23;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              시
-                              <S.ClockInput
-                                type="text"
-                                maxLength={2}
-                                value={schedule.endMinute ? schedule.endMinute : 0}
-                                onChange={(e) => {
-                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.endMinute = parseInt(currentMinute);
-                                  if (schedule.endMinute >= 60) schedule.endMinute = 59;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              분
-                            </S.ClockSelectContainer>
-                            까지
-                          </S.TdFlexBox>
-                          <S.PlusMinusButtonContainer>
-                            <S.PlusMinusButton
-                              hide={careWorkerSchedules.length - 1 !== scheduleIndex}
-                              disabled={careWorkerSchedules.length - 1 !== scheduleIndex}
-                              onClick={() => {
-                                setCareWorkerSchedules([
-                                  ...careWorkerSchedules,
-                                  CareWorkerSchedule.noArgsConstructor(),
-                                ]);
-                              }}
-                            >
-                              <PlusIconSVG />
-                            </S.PlusMinusButton>
-                            <S.XGap />
-                            <S.PlusMinusButton
-                              onClick={() => {
-                                if (careWorkerSchedules.length === 1) {
-                                  setCareWorkerSchedules([
-                                    ...careWorkerSchedules,
-                                    CareWorkerSchedule.noArgsConstructor(),
-                                  ]);
-                                }
-                                setCareWorkerSchedules((schedules) =>
-                                  schedules.filter((_, i) => i !== scheduleIndex)
-                                );
-                                setRerender(!rerender);
-                              }}
-                            >
-                              <MinusIconSVG />
-                            </S.PlusMinusButton>
-                          </S.PlusMinusButtonContainer>
-                        </S.TimeSelectContainer>
-                      );
-                    })}
-                  </td>
-                </tr>
-              </tbody>
-            </S.Table>
-          </S.Section>
+
           <S.Section>
             <S.SectionTitle>경력</S.SectionTitle>
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
+                  <th className="career">근무지(수급자)</th>
                   <th className="career">기간</th>
+                  <th className="career long">비고</th>
                   <th className="career short right">추가/제거</th>
                 </tr>
                 {careWorkerCareers.map((career, careerIndex) => {
                   return (
                     <tr key={`career-row-${careerIndex}`}>
-                      <td className="career long">
+                      <td className="career">
                         <S.TextInput
                           type="text"
                           value={career.workplace || ''}
@@ -490,25 +430,6 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                               })
                             );
                           }}
-                          long
-                        />
-                      </td>
-                      <td className="career">
-                        <S.TextInput
-                          type="text"
-                          value={career.recipient || ''}
-                          onChange={(e) => {
-                            setCareWorkerCareers((careers) =>
-                              careers.map((c, i) => {
-                                if (i !== careerIndex) return c;
-                                return {
-                                  ...careers[i],
-                                  recipient: e.target.value,
-                                };
-                              })
-                            );
-                          }}
-                          long
                         />
                       </td>
                       <td className="career">
@@ -522,6 +443,24 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                                 return {
                                   ...careers[i],
                                   duration: e.target.value,
+                                };
+                              })
+                            );
+                          }}
+                          long
+                        />
+                      </td>
+                      <td className="career">
+                        <S.TextInput
+                          type="text"
+                          value={career.memo || ''}
+                          onChange={(e) => {
+                            setCareWorkerCareers((careers) =>
+                              careers.map((c, i) => {
+                                if (i !== careerIndex) return c;
+                                return {
+                                  ...careers[i],
+                                  memo: e.target.value,
                                 };
                               })
                             );

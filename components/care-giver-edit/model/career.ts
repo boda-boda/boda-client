@@ -1,18 +1,18 @@
 export default class Career {
-  public static allArgsConstructor(workplace: string, recepient: string, duration: string) {
-    return new Career(workplace, recepient, duration);
+  public static allArgsConstructor(workplace: string, duration: string, memo: string) {
+    return new Career(workplace, duration, memo);
   }
 
   public static noArgsConstructor() {
     return new Career('', '', '');
   }
 
-  public constructor(workplace: any, recepient: any, duration: any) {
+  public constructor(workplace: any, duration: any, memo: any) {
     this.workplace = workplace;
-    this.recipient = recepient;
     this.duration = duration;
+    this.memo = memo;
   }
   public workplace: string;
-  public recipient: string;
   public duration: string;
+  public memo: string;
 }

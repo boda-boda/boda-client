@@ -16,6 +16,8 @@ import {
   dummyCareWorkers,
   CAPABILITY,
   PAGINATION_LENGTH,
+  WORKING_STATE,
+  OUTER_CARE_WORKER_SCHEDULE_TYPES,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -56,10 +58,12 @@ export default function CareGiverList() {
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
+  const [selectedWorkingState, setSelectedWorkingState] = useState([] as string[]);
   const [selectedConsonantFilter, setSelectedConsonantFilter] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
+  const [selectedTime, setSelectedTime] = useState('');
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
 
@@ -107,6 +111,14 @@ export default function CareGiverList() {
     setSchedules(newSchedules);
   };
 
+  const toggleTime = (time: string) => {
+    if (time === selectedTime) {
+      setSelectedTime('');
+      return;
+    }
+    setSelectedTime(time);
+  };
+
   const toggleCareInfo = (careInfo: string) => {
     if (selectedCareInfo.includes(careInfo)) {
       setSelectedCareInfo((selectedCareInfo) =>
@@ -127,6 +139,16 @@ export default function CareGiverList() {
     setSelectedReligion([...selectedReligion, religion]);
   };
 
+  const toggleWorkingState = (state: string) => {
+    if (selectedWorkingState.includes(state)) {
+      setSelectedWorkingState((selectedWorkingState) =>
+        selectedWorkingState.filter((selected) => selected !== state)
+      );
+      return;
+    }
+    setSelectedWorkingState([...selectedWorkingState, state]);
+  };
+
   const handleReset = useCallback(() => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
@@ -138,6 +160,8 @@ export default function CareGiverList() {
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
     setSelectedReligion([] as string[]);
+    setSelectedTime('');
+    setSelectedWorkingState([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
@@ -213,16 +237,36 @@ export default function CareGiverList() {
     return result;
   };
   const filterReligion = (cws: CareWorker[]) => {
-    const result = cws.filter((cw: CareWorker) =>
-      selectedReligion.every((religion) =>
-        cw.careWorkerMetas
-          .filter((meta) => meta.type === 'Religion')
-          .map((meta) => meta.key)
-          .includes(religion)
-      )
-    );
+    const result =
+      selectedReligion.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) =>
+            selectedReligion.some((religion) =>
+              cw.careWorkerMetas
+                .filter((meta) => meta.type === 'Religion')
+                .map((meta) => meta.key)
+                .includes(religion)
+            )
+          );
     return result;
   };
+
+  const filterTime = (cws: CareWorker[]) => {
+    const result =
+      selectedTime === ''
+        ? cws
+        : cws.filter((cw: CareWorker) => cw.time === selectedTime || cw.time === '종일');
+    return result;
+  };
+
+  const filterWorkingState = (cws: CareWorker[]) => {
+    const result =
+      selectedWorkingState.length === 0
+        ? cws
+        : cws.filter((cw: CareWorker) => selectedWorkingState.includes(cw.workingState));
+    return result;
+  };
+
   const filterNameByLetter = (cws: CareWorker[]) => {
     if (selectedConsonantFilter === -1) return cws;
     const result = cws.filter(
@@ -243,7 +287,9 @@ export default function CareGiverList() {
 
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterTime(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
     setSelectedConsonantFilter(-1);
@@ -252,7 +298,9 @@ export default function CareGiverList() {
   const handleSearchOnClickConsonantFilterItem = () => {
     setFilteredCareWorkers(
       filterNameByLetter(
-        filterSchedule(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        filterTime(
+          filterWorkingState(filterReligion(filterCareInfo(filterArea(filterName(careWorkers)))))
+        )
       )
     );
   };
@@ -272,14 +320,14 @@ export default function CareGiverList() {
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
     try { 
-      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage } = JSON.parse(savedSearchParams) as any;
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion } = JSON.parse(savedSearchParams) as any;
       setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
-      setIsLocalStorageLoaded(true);
+      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []); setSelectedTime(selectedTime ? selectedTime:''); setSelectedReligion(selectedReligion ? selectedReligion : []);
     }
     catch {
       localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
     }
-  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers]);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState, selectedTime, selectedReligion]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
   useEffect(() => {
@@ -290,11 +338,11 @@ export default function CareGiverList() {
 
       if (!availableSchedule.length) {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
         })) // prettier-ignore
       } else {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
         })) // prettier-ignore
       }
     }, 500);
@@ -310,6 +358,9 @@ export default function CareGiverList() {
     currentPage,
     careWorkersPerPage,
     rerender,
+    selectedWorkingState,
+    selectedTime,
+    selectedReligion,
   ]);
 
   return (
@@ -337,9 +388,27 @@ export default function CareGiverList() {
                         }}
                       ></S.TextInput>
                     </td>
-
+                    <th>시간</th>
+                    <td className="time">
+                      <S.TimeSelectContainer>
+                        {OUTER_CARE_WORKER_SCHEDULE_TYPES.map((time) => {
+                          return (
+                            <S.ToggleButton
+                              isSelected={selectedTime === time}
+                              className="square"
+                              onClick={() => toggleTime(time)}
+                              key={`timeListItem-${time}`}
+                            >
+                              {time}
+                            </S.ToggleButton>
+                          );
+                        })}
+                      </S.TimeSelectContainer>
+                    </td>
+                  </tr>
+                  <tr>
                     <th>지역</th>
-                    <td>
+                    <td colSpan={3}>
                       <S.DropDown
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
@@ -378,127 +447,6 @@ export default function CareGiverList() {
                               )
                             )}
                       </S.DropDown>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>돌봄 시간</th>
-                    <td style={{ padding: 0 }} colSpan={3}>
-                      {schedules.map((schedule, scheduleIndex) => {
-                        return (
-                          <S.TimeSelectContainer
-                            isLast={schedules.length - 1 === scheduleIndex}
-                            key={`timeselectcontainer-${scheduleIndex}`}
-                          >
-                            <S.TdFlexBox>
-                              {DAY_LIST.map((day) => {
-                                return (
-                                  <S.ToggleButton
-                                    isSelected={schedule.days.includes(day)}
-                                    className="square"
-                                    onClick={() => toggleDays(scheduleIndex, day)}
-                                    key={`dayListItem-${day}`}
-                                  >
-                                    {day}
-                                  </S.ToggleButton>
-                                );
-                              })}
-                            </S.TdFlexBox>
-                            <S.TdFlexBox>
-                              <S.ClockSelectContainer>
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.startHour ? schedule.startHour : 0}
-                                  onChange={(e) => {
-                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.startHour = parseInt(currentHour);
-                                    if (schedule.startHour >= 100)
-                                      schedule.startHour = Math.floor(schedule.startHour / 10);
-                                    if (schedule.startHour >= 24 && schedule.startHour < 100)
-                                      schedule.startHour = 23;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                시
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.startMinute ? schedule.startMinute : 0}
-                                  onChange={(e) => {
-                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.startMinute = parseInt(currentMinute);
-                                    if (schedule.startMinute >= 100)
-                                      schedule.startMinute = Math.floor(schedule.startMinute / 10);
-                                    if (schedule.startMinute >= 60 && schedule.startMinute < 100)
-                                      schedule.startMinute = 59;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                분
-                              </S.ClockSelectContainer>
-                              부터
-                              <S.ClockSelectContainer>
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.endHour ? schedule.endHour : 0}
-                                  onChange={(e) => {
-                                    const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.endHour = parseInt(currentHour);
-                                    if (schedule.endHour >= 100)
-                                      schedule.endHour = Math.floor(schedule.endHour / 10);
-                                    if (schedule.endHour >= 24 && schedule.endHour < 100)
-                                      schedule.endHour = 23;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                시
-                                <S.ClockInput
-                                  type="text"
-                                  value={schedule.endMinute ? schedule.endMinute : 0}
-                                  onChange={(e) => {
-                                    const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                    schedule.endMinute = parseInt(currentMinute);
-                                    if (schedule.endMinute >= 100)
-                                      schedule.endMinute = Math.floor(schedule.endMinute / 10);
-                                    if (schedule.endMinute >= 60 && schedule.endMinute < 100)
-                                      schedule.endMinute = 59;
-                                    setRerender(!rerender);
-                                  }}
-                                />
-                                분
-                              </S.ClockSelectContainer>
-                              까지
-                            </S.TdFlexBox>
-                            <S.PlusMinusButtonContainer>
-                              <S.PlusMinusButton
-                                hide={schedules.length - 1 !== scheduleIndex}
-                                disabled={schedules.length - 1 !== scheduleIndex}
-                                onClick={() => {
-                                  setSchedules([
-                                    ...schedules,
-                                    CareWorkerSchedule.noArgsConstructor(),
-                                  ]);
-                                }}
-                              >
-                                <PlusIconSVG />
-                              </S.PlusMinusButton>
-                              <S.PlusMinusButton
-                                onClick={() => {
-                                  if (schedules.length === 1) {
-                                    setSchedules([
-                                      ...schedules,
-                                      CareWorkerSchedule.noArgsConstructor(),
-                                    ]);
-                                  }
-                                  setSchedules((schedules) =>
-                                    schedules.filter((_, i) => i !== scheduleIndex)
-                                  );
-                                }}
-                              >
-                                <MinusIconSVG />
-                              </S.PlusMinusButton>
-                            </S.PlusMinusButtonContainer>
-                          </S.TimeSelectContainer>
-                        );
-                      })}
                     </td>
                   </tr>
                   <tr>
@@ -567,6 +515,36 @@ export default function CareGiverList() {
                               </tr>
                             );
                           })}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="innerTableHeader">재직 구분</th>
+                    <td className="innerTable" colSpan={3}>
+                      <table>
+                        <tbody>
+                          <tr>
+                            {WORKING_STATE.map((item, index) => {
+                              return (
+                                <td className={`available  last`} key={`${index}`}>
+                                  <div
+                                    className="hoverDiv"
+                                    onClick={() => toggleWorkingState(item)}
+                                  >
+                                    {item}
+                                    <S.CheckBox
+                                      type="checkbox"
+                                      checked={selectedWorkingState.includes(item)}
+                                      onChange={() => toggleWorkingState(item)}
+                                    />
+                                  </div>
+                                </td>
+                              );
+                            })}
+                            <td className="available last empty"></td>
+                            <td className="available last empty right"></td>
+                          </tr>
                         </tbody>
                       </table>
                     </td>

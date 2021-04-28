@@ -28,8 +28,8 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 40px;
-  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 10px;
 `;
 
 export const SectionTitle = styled.div`
@@ -319,14 +319,9 @@ export const AddressDeleteButton = styled.button`
   }
 `;
 
-interface TimeSeleceContainerProps {
-  isLast: boolean;
-}
-
-export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
-  ${FLEX_ROW_SPACE_CENTER};
-  padding: 12px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+export const TimeSelectContainer = styled.div`
+  ${FLEX_ROW_START_CENTER};
+  border-bottom: none;
 `;
 
 export const FilterTable = styled.table`
@@ -377,6 +372,28 @@ interface ToggleButtonProps {
 export const ToggleButton = styled.div<ToggleButtonProps>`
   width: 36px;
   padding: 0;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 3px;
+  background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
+  border: ${(props) =>
+    props.isSelected ? css`1px solid ${THEME.MAIN}` : css`1px solid ${THEME.GRAY_LINE}`};
+  color: ${(props) => (props.isSelected ? 'white' : THEME.GRAY_FONT)};
+  ${FLEX_ROW_CENTER_CENTER};
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const ToggleButtonWorkingState = styled.div<ToggleButtonProps>`
+  padding: 0 10px;
   height: 36px;
   margin-right: 10px;
   border-radius: 3px;

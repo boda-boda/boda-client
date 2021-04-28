@@ -113,7 +113,7 @@ export default function CareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={5} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
@@ -132,6 +132,22 @@ export default function CareGiverDetail() {
                   <td className="infovalue">{careWorker.gender}</td>
                   <th>휴대전화</th>
                   <td className="infovalue">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
+                  <th>재직 구분</th>
+                  <td className="infovalue">{careWorker.workingState}</td>
+                  <th className="twoRow">
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">{careWorker.licenseDate}</td>
+                </tr>
+                <tr>
+                  <th>가능 시간</th>
+                  <td className="infovalue" colSpan={3}>
+                    {careWorker.time}
+                  </td>
                 </tr>
                 <tr>
                   <th>주소</th>
@@ -229,78 +245,20 @@ export default function CareGiverDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>
-              요양보호사 스케줄
-              <span>요양보호사의 일정을 기록합니다.</span>
-            </S.SectionTitle>
-            <S.TimeTable>
-              <tbody>
-                <tr>
-                  <th></th>
-                  <th>월</th>
-                  <th>화</th>
-                  <th>수</th>
-                  <th>목</th>
-                  <th>금</th>
-                  <th className="saturday">토</th>
-                  <th className="sunday right">일</th>
-                </tr>
-                {[...Array(10)].map((_time, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        {index < 1 ? 0 : ''}
-                        {index + 9}:00
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td className="right"></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              {careWorker.careWorkerSchedules?.map((schedule, scheduleIndex) => {
-                const [startHourString, startMinuteString] = schedule.startAt.split(':');
-                const [startHour, startMinute] = schedule.startAt.split(':').map((a) => parseInt(a)); // prettier-ignore
-                const [endHourString, endMinuteString] = schedule.endAt.split(':');
-                const [endHour, endMinute] = schedule.endAt.split(':').map((a) => parseInt(a));
-
-                return (
-                  <S.TimeContainer
-                    key={`schedule-${scheduleIndex}`}
-                    day={DAY_LIST.indexOf(schedule.day as DayType)}
-                    startTime={startHour + startMinute / 60}
-                    endTime={endHour + endMinute / 60}
-                  >
-                    <S.TimeItem>
-                      {startHourString}:{startMinuteString}
-                      <br />~<br />
-                      {endHourString}:{endMinuteString}
-                    </S.TimeItem>
-                  </S.TimeContainer>
-                );
-              })}
-            </S.TimeTable>
-          </S.Section>
-          <S.Section>
             <S.SectionTitle>경력</S.SectionTitle>
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
+                  <th className="career">근무지(수급자)</th>
+                  <th className="career">기간</th>
+                  <th className="career long right">비고</th>
                 </tr>
                 {careWorker.careWorkerCareers?.length > 0 ? (
                   careWorker.careWorkerCareers.map((career, idx) => (
                     <tr key={`career-${idx}`}>
-                      <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
+                      <td className="career">{career.workplace}</td>
+                      <td className="career">{career.duration}</td>
+                      <td className="career long right">{career.memo}</td>
                     </tr>
                   ))
                 ) : (
@@ -313,7 +271,7 @@ export default function CareGiverDetail() {
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
+          {/* <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
@@ -382,7 +340,7 @@ export default function CareGiverDetail() {
                     })}
               </tbody>
             </S.Table>
-          </S.Section>
+          </S.Section> */}
         </S.InnerContent>
       </S.CareGiverDetail>
     </>

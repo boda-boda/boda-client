@@ -6,6 +6,9 @@ export default class CreateCareGiverRequest {
     isFemale: boolean,
     birthDay: string,
     phoneNumber: string,
+    workingState: string,
+    licenseDate: string,
+    time: string,
     profile: string,
     zipCode: string,
     address: string,
@@ -17,6 +20,9 @@ export default class CreateCareGiverRequest {
       isFemale,
       birthDay,
       phoneNumber,
+      workingState,
+      licenseDate,
+      time,
       profile,
       zipCode,
       address,
@@ -31,6 +37,9 @@ export default class CreateCareGiverRequest {
       true,
       0,
       '',
+      '',
+      '',
+      '',
       WORKER_WOMAN_SMALL_IMAGE_URL,
       '',
       '',
@@ -44,6 +53,9 @@ export default class CreateCareGiverRequest {
     isFemale: any,
     birthDay: any,
     phoneNumber: any,
+    workingState: any,
+    licenseDate: any,
+    time: any,
     profile: string,
     zipCode: string,
     address: string,
@@ -54,6 +66,9 @@ export default class CreateCareGiverRequest {
     this.isFemale = isFemale;
     this.birthDay = birthDay;
     this.phoneNumber = phoneNumber;
+    this.workingState = workingState;
+    this.licenseDate = licenseDate;
+    this.time = time;
     this.profile = profile;
     this.address = address;
     this.zipCode = zipCode;
@@ -65,6 +80,9 @@ export default class CreateCareGiverRequest {
   public isFemale: boolean;
   public birthDay: string;
   public phoneNumber: string;
+  public workingState: string;
+  public licenseDate: string;
+  public time: string;
   public profile: string;
   public zipCode: string;
   public address: string;

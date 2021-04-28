@@ -9,6 +9,9 @@ export default class CareWorker {
   public detailAddress: string;
   public age: number;
   public birthDay: string;
+  public workingState: string;
+  public licenseDate: string;
+  public time: string;
 
   public careWorkerAreas: BusinessArea[];
   public careWorkerCareers: CareWorkerCareer[];
