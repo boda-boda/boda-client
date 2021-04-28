@@ -319,14 +319,9 @@ export const AddressDeleteButton = styled.button`
   }
 `;
 
-interface TimeSeleceContainerProps {
-  isLast: boolean;
-}
-
-export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
-  ${FLEX_ROW_SPACE_CENTER};
-  padding: 12px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+export const TimeSelectContainer = styled.div`
+  ${FLEX_ROW_START_CENTER};
+  border-bottom: none;
 `;
 
 export const FilterTable = styled.table`

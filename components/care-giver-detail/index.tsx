@@ -113,7 +113,7 @@ export default function CareGiveDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={4} className="profile">
+                  <td rowSpan={5} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
@@ -142,6 +142,12 @@ export default function CareGiveDetail() {
                     취득일
                   </th>
                   <td className="infovalue">{careWorker.licenseDate}</td>
+                </tr>
+                <tr>
+                  <th>가능 시간</th>
+                  <td className="infovalue" colSpan={3}>
+                    {careWorker.time}
+                  </td>
                 </tr>
                 <tr>
                   <th>주소</th>
@@ -239,64 +245,6 @@ export default function CareGiveDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>
-              요양보호사 스케줄
-              <span>요양보호사의 일정을 기록합니다.</span>
-            </S.SectionTitle>
-            <S.TimeTable>
-              <tbody>
-                <tr>
-                  <th></th>
-                  <th>월</th>
-                  <th>화</th>
-                  <th>수</th>
-                  <th>목</th>
-                  <th>금</th>
-                  <th className="saturday">토</th>
-                  <th className="sunday right">일</th>
-                </tr>
-                {[...Array(10)].map((_time, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        {index < 1 ? 0 : ''}
-                        {index + 9}:00
-                      </td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td className="right"></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              {careWorker.careWorkerSchedules?.map((schedule, scheduleIndex) => {
-                const [startHourString, startMinuteString] = schedule.startAt.split(':');
-                const [startHour, startMinute] = schedule.startAt.split(':').map((a) => parseInt(a)); // prettier-ignore
-                const [endHourString, endMinuteString] = schedule.endAt.split(':');
-                const [endHour, endMinute] = schedule.endAt.split(':').map((a) => parseInt(a));
-
-                return (
-                  <S.TimeContainer
-                    key={`schedule-${scheduleIndex}`}
-                    day={DAY_LIST.indexOf(schedule.day as DayType)}
-                    startTime={startHour + startMinute / 60}
-                    endTime={endHour + endMinute / 60}
-                  >
-                    <S.TimeItem>
-                      {startHourString}:{startMinuteString}
-                      <br />~<br />
-                      {endHourString}:{endMinuteString}
-                    </S.TimeItem>
-                  </S.TimeContainer>
-                );
-              })}
-            </S.TimeTable>
-          </S.Section>
-          <S.Section>
             <S.SectionTitle>경력</S.SectionTitle>
             <S.Table>
               <tbody>
@@ -323,7 +271,7 @@ export default function CareGiveDetail() {
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
+          {/* <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
@@ -392,7 +340,7 @@ export default function CareGiveDetail() {
                     })}
               </tbody>
             </S.Table>
-          </S.Section>
+          </S.Section> */}
         </S.InnerContent>
       </S.CareGiverDetail>
     </>
