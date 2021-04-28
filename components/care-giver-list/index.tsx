@@ -160,6 +160,8 @@ export default function CareGiverList() {
     setSchedules([CareWorkerSchedule.noArgsConstructor()]);
     setSelectedCareInfo([] as string[]);
     setSelectedReligion([] as string[]);
+    setSelectedTime('');
+    setSelectedWorkingState([] as string[]);
     setFilteredCareWorkers(careWorkers);
   }, [careWorkers]);
 
@@ -318,14 +320,14 @@ export default function CareGiverList() {
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
     try { 
-      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState } = JSON.parse(savedSearchParams) as any;
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion } = JSON.parse(savedSearchParams) as any;
       setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
-      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []);
+      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []); setSelectedTime(selectedTime ? selectedTime:''); setSelectedReligion(selectedReligion ? selectedReligion : []);
     }
     catch {
       localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
     }
-  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState]);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState, selectedTime, selectedReligion]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
   useEffect(() => {
@@ -336,11 +338,11 @@ export default function CareGiverList() {
 
       if (!availableSchedule.length) {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
+          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
         })) // prettier-ignore
       } else {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState
+          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
         })) // prettier-ignore
       }
     }, 500);
@@ -357,6 +359,8 @@ export default function CareGiverList() {
     careWorkersPerPage,
     rerender,
     selectedWorkingState,
+    selectedTime,
+    selectedReligion,
   ]);
 
   return (
