@@ -350,3 +350,23 @@ export const FinishButton = styled.button`
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
+
+export const TransferButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  margin-right: 10px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;

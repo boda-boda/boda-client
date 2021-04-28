@@ -287,7 +287,17 @@ export default function OuterCareGiverDetail() {
             </S.Table>
           </S.Section>
           <S.FinishButtonContainer>
-            <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
+            <S.TransferButton>내 요양보호사로 전환하기</S.TransferButton>
+            <Link
+              key={`worker-${careWorker.id}`}
+              href={{
+                pathname: '/search/[id]/proposal',
+              }}
+              as={`/search/${careWorker.id}/proposal`}
+              passHref
+            >
+              <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
+            </Link>
           </S.FinishButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>
