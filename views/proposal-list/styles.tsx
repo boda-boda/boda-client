@@ -281,7 +281,7 @@ export const EditButton = styled.button`
   position: absolute;
   top: 3px;
   right: 0;
-  padding: 11px 10px;
+  padding: 5px 12px;
   height: 36px;
   border-radius: 3px;
   outline: none;
@@ -313,7 +313,8 @@ export const StatusDiv = styled.div<StatusDivProps>`
   right: 10px;
   cursor: default;
   color: ${(props) => (props.isAccepted ? THEME.MAIN : 'red')};
-  border: ${(props) => (props.isAccepted ? `1px solid ${THEME.MAIN}` : '1px solid red')};
+  /* text-decoration: underline; */
+  /* border: ${(props) => (props.isAccepted ? `1px solid blue` : '1px solid red')}; */
 `;
 
 export const StatusDivWait = styled.div`
@@ -324,15 +325,16 @@ export const StatusDivWait = styled.div`
   top: 5px;
   padding: 2px 4px;
   right: 10px;
-  border: 1px solid;
+  /* text-decoration: underline; */
+  /* border: 1px solid; */
   cursor: default;
 `;
 
 export const TransferButton = styled.button`
   position: absolute;
   top: 3px;
-  right: 80px;
-  padding: 11px 10px;
+  right: 90px;
+  padding: 5px 12px;
   height: 36px;
   border-radius: 3px;
   outline: none;
