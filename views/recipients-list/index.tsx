@@ -31,12 +31,12 @@ const recipients = [
 
     description: '설명',
     grade: 3,
-    gender: '여',
+    isFemale: true,
     id: 'asdf',
     name: '김슈급',
     phoneNumber: '010-7105-2344',
     profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
-    residenceType: '독거',
+    familyType: '독거',
   },
 ] as Recipient[];
 
