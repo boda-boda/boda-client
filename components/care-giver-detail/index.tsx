@@ -141,7 +141,9 @@ export default function CareGiveDetail() {
                     <br />
                     취득일
                   </th>
-                  <td className="infovalue">{careWorker.licenseDate}</td>
+                  <td className="infovalue">
+                    {careWorker.licenseDate ? careWorker.licenseDate : ''}
+                  </td>
                 </tr>
                 <tr>
                   <th>가능 시간</th>

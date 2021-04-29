@@ -164,7 +164,7 @@ export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
                       value={careWorker.licenseDate || ''}
                       onChange={handleUpdateCareGiver('licenseDate')}
                       type="text"
-                      maxLength={11}
+                      maxLength={8}
                       placeholder="예시) 20210601"
                     />
                   </td>

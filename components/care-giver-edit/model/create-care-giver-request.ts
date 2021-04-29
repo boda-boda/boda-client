@@ -38,7 +38,7 @@ export default class CreateCareGiverRequest {
       0,
       '',
       '',
-      '',
+      0,
       '',
       WORKER_WOMAN_SMALL_IMAGE_URL,
       '',
