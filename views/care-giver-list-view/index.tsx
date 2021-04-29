@@ -6,10 +6,6 @@ import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
 
-interface CareGiverListViewProps {
-  isMyCaregiver: boolean;
-}
-
 export default function CareGiverListView() {
   return (
     <>

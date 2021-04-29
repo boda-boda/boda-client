@@ -273,6 +273,13 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const handleClickCreateButton = async () => {
     if (!validateCareWorker(careWorker)) return;
+    if (!careWorker.birthDay) {
+      careWorker.birthDay = null;
+    }
+
+    if (!careWorker.licenseDate) {
+      careWorker.licenseDate = null;
+    }
 
     const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
     if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {
@@ -315,6 +322,13 @@ export const useCareGiverUpsert = (isNew: boolean) => {
 
   const handleClickUpdateButton = async () => {
     if (!validateCareWorker(careWorker)) return;
+    if (!careWorker.birthDay) {
+      careWorker.birthDay = null;
+    }
+
+    if (!careWorker.licenseDate) {
+      careWorker.licenseDate = null;
+    }
 
     const availableSchedule = careWorkerSchedules.filter((a) => a.days.length !== 0);
     if (availableSchedule.some((a) => !isCareWorkerScheduleValid(a))) {

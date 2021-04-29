@@ -4,8 +4,7 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
-import { DayType } from '../../common/types/date';
+import { CAPABILITY, RELIGION } from '../../constant';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 
@@ -95,7 +94,7 @@ export default function CareGiverDetail() {
     }
 
     alert('삭제에 성공하였습니다.');
-    router.push('/');
+    router.push('/list');
   }, [router.query.ID]);
 
   return (
