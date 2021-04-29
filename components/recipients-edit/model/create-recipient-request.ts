@@ -4,59 +4,71 @@ export default class CreateRecipientRequest {
   public static allArgsConstructor(
     name: string,
     isFemale: boolean,
-    birthDay: string,
+    age: number,
     grade: number,
     phoneNumber: string,
     profile: string,
     zipCode: string,
     address: string,
     detailAddress: string,
-    description: string
+    description: string,
+    memo: string,
+    hourlyWage: number,
+    familyType: string
   ) {
     return new CreateRecipientRequest(
       name,
       isFemale,
-      birthDay,
+      age,
       grade,
       phoneNumber,
       profile,
       zipCode,
       address,
       detailAddress,
-      description
+      description,
+      memo,
+      hourlyWage,
+      familyType
     );
   }
 
   public static noArgsConstructor() {
     return new CreateRecipientRequest(
       '',
-      true,
+      false,
       0,
-      '',
+      1,
       1,
       WORKER_WOMAN_SMALL_IMAGE_URL,
       '',
       '',
       '',
-      ''
+      '',
+      '',
+      0,
+      '독거'
     );
   }
 
   public constructor(
     name: any,
     isFemale: any,
-    birthDay: any,
+    age: any,
     grade: any,
     phoneNumber: any,
     profile: string,
     zipCode: string,
     address: string,
     detailAddress: string,
-    description: any
+    description: any,
+    memo: string,
+    hourlyWage: number,
+    familyType: string
   ) {
     this.name = name;
     this.isFemale = isFemale;
-    this.birthDay = birthDay;
+    this.age = age;
     this.grade = grade;
     this.phoneNumber = phoneNumber;
     this.profile = profile;
@@ -64,11 +76,14 @@ export default class CreateRecipientRequest {
     this.zipCode = zipCode;
     this.detailAddress = detailAddress;
     this.description = description;
+    this.memo = memo;
+    this.hourlyWage = hourlyWage;
+    this.familyType = familyType;
   }
 
   public name: string;
   public isFemale: boolean;
-  public birthDay: string;
+  public age: number;
   public grade: number;
   public phoneNumber: string;
   public profile: string;
@@ -76,4 +91,7 @@ export default class CreateRecipientRequest {
   public address: string;
   public detailAddress: string;
   public description: string;
+  public hourlyWage: number;
+  public memo: string;
+  public familyType: string;
 }

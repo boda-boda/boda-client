@@ -1,25 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { DayType } from '../../common/types/date';
-import BusinessArea from '../../model/business-area';
-import {
-  CareWorkerSchedule,
-  toggleDayOfCareWorkerSchedule,
-  isCareWorkerScheduleValid,
-  isCareWorkerScheduleRangeValid,
-} from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateRecipientRequest from './model/create-recipient-request';
-import Career from './model/career';
 import { useRouter } from 'next/router';
-import CareWorker from '../../model/care-worker';
 import { useCareCenter } from '../../context/care-center';
-import {
-  CAPABILITY,
-  RELIGION,
-  WORKER_MAN_SMALL_IMAGE_URL,
-  WORKER_WOMAN_SMALL_IMAGE_URL,
-} from '../../constant';
-import { validateCareWorker } from '../../common/lib/validate';
+import { WORKER_MAN_SMALL_IMAGE_URL, WORKER_WOMAN_SMALL_IMAGE_URL } from '../../constant';
+import { validateCareWorker, validateRecipient } from '../../common/lib/validate';
 
 export const useRecipientsUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -28,10 +13,14 @@ export const useRecipientsUpsert = (isNew: boolean) => {
 
   const [isRequesting, setIsRequesting] = useState(false);
   const [recipient, setRecipient] = useState(CreateRecipientRequest.noArgsConstructor());
-  const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
+  const [recipientCapabilities, setRecipientCapabilities] = useState([] as string[]);
+  console.log(recipient);
+  console.log(recipientCapabilities);
 
   const [memo, setMemo] = useState('');
+  const [memo2, setMemo2] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+  const memoRef2 = useRef<HTMLTextAreaElement>(null);
 
   const handleDeleteCurrentAddress = async () => {
     if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
@@ -151,9 +140,9 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     [recipient]
   );
 
-  const handleUpdateBirthday = useCallback(
+  const handleUpdateAge = useCallback(
     (e: any) => {
-      setRecipient({ ...recipient, birthDay: e.target.value });
+      setRecipient({ ...recipient, age: parseInt(e.target.value) });
     },
     [recipient]
   );
@@ -166,15 +155,15 @@ export const useRecipientsUpsert = (isNew: boolean) => {
 
   const toggleCapability = useCallback(
     (careInfo: string) => {
-      if (careWorkerCapabilities.includes(careInfo)) {
-        setCareWorkerCapabilities((selectedCareInfo) =>
+      if (recipientCapabilities.includes(careInfo)) {
+        setRecipientCapabilities((selectedCareInfo) =>
           selectedCareInfo.filter((selected) => selected !== careInfo)
         );
         return;
       }
-      setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
+      setRecipientCapabilities([...recipientCapabilities, careInfo]);
     },
-    [careWorkerCapabilities]
+    [recipientCapabilities]
   );
 
   const onChangeImage = useCallback(
@@ -189,7 +178,7 @@ export const useRecipientsUpsert = (isNew: boolean) => {
           },
         });
 
-        const response = await axiosInstance.post('/recipient/profile', formData);
+        const response = await axiosInstance.post('/care-worker/profile', formData);
         const url = response.data.Location;
         setRecipient({ ...recipient, profile: url });
       } catch {
@@ -212,15 +201,15 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   }, [recipient]);
 
   const handleClickCreateButton = async () => {
-    if (!validateCareWorker(recipient)) return;
+    if (!validateRecipient(recipient)) return;
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     setIsRequesting(true);
 
     try {
       await axios.post('/recipient', {
-        careWorker: recipient,
-        careWorkerCapabilities,
+        ...recipient,
+        recipientCapabilities,
       });
     } catch (e) {
       alert('요양보호사 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
@@ -233,15 +222,15 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   };
 
   const handleClickUpdateButton = async () => {
-    if (!validateCareWorker(recipient)) return;
+    if (!validateRecipient(recipient)) return;
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
     try {
       await axios.put('/recipient', {
         id,
-        careWorker: recipient,
-        careWorkerCapabilities,
+        ...recipient,
+        recipientCapabilities,
       });
     } catch (e) {
       alert('요양보호사 수정에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
@@ -257,14 +246,17 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     recipient,
     setRecipient,
     memo,
+    memo2,
     memoRef,
+    memoRef2,
     setMemo,
-    careWorkerCapabilities,
+    setMemo2,
+    recipientCapabilities,
     toggleCapability,
     openAddressModal,
     onChangeImage,
     handleUpdateGender,
-    handleUpdateBirthday,
+    handleUpdateAge,
     handleUpdateRecipient,
     handleClickUpdateButton,
     handleClickCreateButton,

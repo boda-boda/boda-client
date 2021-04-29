@@ -15,6 +15,7 @@ import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 import { range } from '../../common/lib';
 import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
+import { useRouter } from 'next/router';
 
 const recipients = [
   {
@@ -37,7 +38,8 @@ const recipients = [
   },
 ] as Recipient[];
 
-export default function RecipientsList() {
+export default function ReciepientsList() {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [recipientsPerPage, setRecipientsPerPage] = useState(10);
@@ -72,6 +74,11 @@ export default function RecipientsList() {
           <S.Section isBackgroundColored>
             <S.InnerContent>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
+              <Link href={`recipients/new`} passHref>
+                <S.StyledLink>
+                  <S.EditButton>수급자 등록하기</S.EditButton>
+                </S.StyledLink>
+              </Link>
               <S.RecipientsList>
                 <S.CardList>
                   {recipients.length === 0 ? (
