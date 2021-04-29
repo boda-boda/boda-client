@@ -1,6 +1,6 @@
 import BusinessArea from './business-area';
 import CareWorkerCareer from './care-worker-career';
-import CareWorkerMeta from './care-worker-meta';
+import Meta from './care-worker-meta';
 import CareWorkerSingleSchedule from './care-worker-single-schedule';
 
 export default class CareWorker {
@@ -12,7 +12,7 @@ export default class CareWorker {
 
   public careWorkerAreas: BusinessArea[];
   public careWorkerCareers: CareWorkerCareer[];
-  public careWorkerMetas: CareWorkerMeta[];
+  public careWorkerMetas: Meta[];
   public careWorkerSchedules: CareWorkerSingleSchedule[];
 
   public description: string;

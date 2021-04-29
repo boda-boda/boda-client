@@ -1,4 +1,4 @@
-import CareWorkerMeta from './care-worker-meta';
+import Meta from './care-worker-meta';
 
 export default class Recipient {
   public zipCode: string;
@@ -6,16 +6,15 @@ export default class Recipient {
   public detailAddress: string;
   public age: number;
   public birthDay: string;
-
-  public recipientMetas: CareWorkerMeta[];
-
+  public recipientMetas: Meta[];
   public description: string;
   public grade: number;
-  public gender: string;
+  public isFemale: boolean;
   public id: string;
   public name: string;
   public phoneNumber: string;
   public profile: string;
-
-  public residenceType: string;
+  public hourlyWage: number;
+  public note: string;
+  public familyType: string;
 }

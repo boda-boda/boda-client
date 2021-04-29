@@ -2,7 +2,7 @@ import { DayType } from './common/types/date';
 import BusinessArea from './model/business-area';
 import CareWorker from './model/care-worker';
 import CareWorkerCareer from './model/care-worker-career';
-import CareWorkerMeta from './model/care-worker-meta';
+import Meta from './model/care-worker-meta';
 import CareWorkerSingleSchedule from './model/care-worker-single-schedule';
 
 export const CONTENT_WIDTH = 978;
@@ -235,7 +235,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '기저귀', value: '' },
       { type: 'Capability', key: '치매', value: '' },
       { type: 'Capability', key: '입주', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',
@@ -260,7 +260,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '재활', value: '' },
       { type: 'Capability', key: '가사', value: '' },
       { type: 'Capability', key: '입주', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',
@@ -284,7 +284,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '재활', value: '' },
       { type: 'Capability', key: '가사', value: '' },
       { type: 'Capability', key: '입주', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',
@@ -308,7 +308,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '휠체어', value: '' },
       { type: 'Capability', key: '재활', value: '' },
       { type: 'Capability', key: '가사', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',
@@ -332,7 +332,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '재활', value: '' },
       { type: 'Capability', key: '가사', value: '' },
       { type: 'Capability', key: '입주', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',
@@ -356,7 +356,7 @@ export const dummyCareWorkers = [
       { type: 'Capability', key: '휠체어', value: '' },
       { type: 'Capability', key: '재활', value: '' },
       { type: 'Capability', key: '가사', value: '' },
-    ] as CareWorkerMeta[],
+    ] as Meta[],
     careWorkerSchedules: [] as CareWorkerSingleSchedule[],
     description: 'ㅁㄴㅇㄹ',
     gender: '여',

@@ -12,7 +12,7 @@ export default class CreateRecipientRequest {
     address: string,
     detailAddress: string,
     description: string,
-    memo: string,
+    note: string,
     hourlyWage: number,
     familyType: string
   ) {
@@ -27,7 +27,7 @@ export default class CreateRecipientRequest {
       address,
       detailAddress,
       description,
-      memo,
+      note,
       hourlyWage,
       familyType
     );
@@ -62,7 +62,7 @@ export default class CreateRecipientRequest {
     address: string,
     detailAddress: string,
     description: any,
-    memo: string,
+    note: string,
     hourlyWage: number,
     familyType: string
   ) {
@@ -76,7 +76,7 @@ export default class CreateRecipientRequest {
     this.zipCode = zipCode;
     this.detailAddress = detailAddress;
     this.description = description;
-    this.memo = memo;
+    this.note = note;
     this.hourlyWage = hourlyWage;
     this.familyType = familyType;
   }
@@ -92,6 +92,6 @@ export default class CreateRecipientRequest {
   public detailAddress: string;
   public description: string;
   public hourlyWage: number;
-  public memo: string;
+  public note: string;
   public familyType: string;
 }

@@ -9,13 +9,15 @@ import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import Link from 'next/link';
 import Recipient from '../../model/recipient';
 import { CAPABILITY, PAGINATION_LENGTH } from '../../constant';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 import { range } from '../../common/lib';
 import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
 import { useRouter } from 'next/router';
+import { useCareCenter } from '../../context/care-center';
+import axios from 'axios';
 
 const recipients = [
   {
@@ -39,10 +41,15 @@ const recipients = [
 ] as Recipient[];
 
 export default function ReciepientsList() {
+  const careCenter = useCareCenter();
   const router = useRouter();
+
+  const [recipients, setRecipients] = useState([] as Recipient[]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [recipientsPerPage, setRecipientsPerPage] = useState(10);
+
   const indexOfLastRecipient = currentPage * recipientsPerPage;
   const indexOfFirstRecipient = indexOfLastRecipient - recipientsPerPage;
   const currentPageRecipients = recipients.slice(indexOfFirstRecipient, indexOfLastRecipient);
@@ -54,6 +61,17 @@ export default function ReciepientsList() {
       Math.min((currentPaginationGroup + 1) * PAGINATION_LENGTH, maxPageNumber)
     );
   }, [currentPaginationGroup, maxPageNumber]);
+
+  useEffect(() => {
+    if (careCenter.isValidating || !careCenter.isLoggedIn) return;
+
+    (async () => {
+      try {
+        const response = await axios.get('/recipient');
+        setRecipients(response.data);
+      } catch (e) {}
+    })();
+  }, [careCenter]);
 
   return (
     <>
@@ -74,7 +92,7 @@ export default function ReciepientsList() {
           <S.Section isBackgroundColored>
             <S.InnerContent>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
-              <Link href={`recipients/new`} passHref>
+              <Link href={`/recipients/new`} passHref>
                 <S.StyledLink>
                   <S.EditButton>수급자 등록하기</S.EditButton>
                 </S.StyledLink>
@@ -88,7 +106,7 @@ export default function ReciepientsList() {
                   ) : (
                     <S.CardList>
                       {recipients.map((recipient, idx) => (
-                        <S.StyledLink>
+                        <S.StyledLink key={`recipient-${idx}`}>
                           <Link
                             key={`worker-${idx}`}
                             href={{
@@ -101,7 +119,7 @@ export default function ReciepientsList() {
                               <S.ProfileImage src={recipient.profile} />
                               <S.InfoContainer>
                                 <S.BasicInfo>
-                                  {recipient.name} ({recipient.age}/{recipient.gender[0]}/
+                                  {recipient.name} ({recipient.age}세/
                                   {recipient.grade}등급)
                                 </S.BasicInfo>
                                 <S.InfoRow>
@@ -111,13 +129,13 @@ export default function ReciepientsList() {
                                   <S.InfoType>위치</S.InfoType>
                                   <S.InfoValue>{recipient.address}</S.InfoValue>
                                 </S.InfoRow>
-                                <S.InfoRow>
+                                {/* <S.InfoRow>
                                   <S.SVGIconBox>
                                     <PhoneNumberIconSVG />
                                   </S.SVGIconBox>
                                   <S.InfoType>휴대전화</S.InfoType>
                                   <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
-                                </S.InfoRow>
+                                </S.InfoRow> */}
                                 <S.InfoRow>
                                   <S.SVGIconBox>
                                     <CareInfoIconSVG />

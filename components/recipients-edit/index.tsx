@@ -93,7 +93,7 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                 <tr>
                   <th>등급</th>
                   <td className="infovalue">
-                    <S.DropDown onChange={handleUpdateRecipient('grade')}>
+                    <S.DropDown value={recipient.grade} onChange={handleUpdateRecipient('grade')}>
                       <option value={1}>1등급</option>
                       <option value={2}>2등급</option>
                       <option value={3}>3등급</option>
@@ -231,7 +231,7 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                     value={memo2}
                     onChange={(e) => {
                       setMemo2(e.target.value);
-                      handleUpdateRecipient('memo')(e);
+                      handleUpdateRecipient('note')(e);
                     }}
                     placeholder="비고란을 입력해주세요"
                   />
