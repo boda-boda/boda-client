@@ -5,6 +5,7 @@ import PlusIconSVG from '../../svgs/plus-icon-svg';
 import DefaultButtonContainter from '../default-button';
 import * as S from './styles';
 import {
+  CAPABILITY,
   CARE_INFO_LIST,
   DAY_LIST,
   FAMILY_TYPE,
@@ -22,20 +23,94 @@ import {
   toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
+import CloseIconSVG from '../../svgs/close-icon-svg';
+import Recipient from '../../model/recipient';
+import Link from 'next/link';
+import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
+import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
 
-export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
+const recipients = [
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동 목동남로4길 81 105동 101호',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '간호조무사', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+      { type: CAPABILITY, key: '휠체어', value: '' },
+    ],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급2',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+  {
+    zipCode: '08018',
+    address: '서울시 양천구 신정7동',
+    detailAddress: '목동남로4길 81',
+    age: 20,
+    birthDay: '2000-08-21',
+
+    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
+
+    description: '설명',
+    grade: 3,
+    gender: '여',
+    id: 'asdf',
+    name: '김슈급',
+    phoneNumber: '010-7105-2344',
+    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
+    residenceType: '독거',
+  },
+] as Recipient[];
+
+export default function MatchingProposalNew({ isFilled }: MatchingProposalProps) {
   const [isWoman, setIsWoman] = useState(true);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
   const [selectedFamilyType, setSelectedFamilyType] = useState('');
   const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
   const [recipientName, setRecipientName] = useState('');
+
+  const [recipient, setRecipient] = useState(new Recipient());
+
   const careCenter = useCareCenter();
   const [rerender, setRerender] = useState(false);
+  const [isLoadModalOn, setIsLoadModalOn] = useState(false);
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
@@ -59,6 +134,17 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
 
     setCenterUpdateRequest({
       ...centerUpdateRequest,
+      zipCode: '',
+      address: '',
+      detailAddress: '',
+    });
+  };
+
+  const handleDeleteCurrentAddressRecipient = async () => {
+    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
+
+    setRecipient({
+      ...recipient,
       zipCode: '',
       address: '',
       detailAddress: '',
@@ -92,6 +178,22 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
       oncomplete: function (data: any) {
         setCenterUpdateRequest({
           ...centerUpdateRequest,
+          zipCode: data.zonecode,
+          address: data.roadAddress,
+        });
+      },
+    }).open();
+  };
+
+  const openAddressModalRecipient = () => {
+    if (!window.daum) {
+      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
+      return;
+    }
+    new window.daum.Postcode({
+      oncomplete: function (data: any) {
+        setRecipient({
+          ...recipient,
           zipCode: data.zonecode,
           address: data.roadAddress,
         });
@@ -137,144 +239,100 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
     <>
       <S.MatchingProposalContent>
         <S.InnerContent>
-          <S.Section>
-            <S.SectionTitleContainer>
-              <S.SectionTitle>센터 정보</S.SectionTitle>
-              <S.CenterInfoUpdateButton onClick={handleUpdateCareCenterInfo}>
-                기본 센터 정보로 저장하기
-              </S.CenterInfoUpdateButton>
-            </S.SectionTitleContainer>
-            <S.InfoTable>
-              <tbody>
-                <tr>
-                  <td rowSpan={5} className="profile">
-                    <S.ProfileImageContainer>
-                      <label htmlFor="profile">
-                        <S.ProfileImage src={centerUpdateRequest.profile}>
-                          <S.ImageIconContainer isHover={centerUpdateRequest.profile !== ''}>
-                            <ImageDefaultSVG />
-                          </S.ImageIconContainer>
-                        </S.ProfileImage>
-                      </label>
-                      <input
-                        id="profile"
-                        type="file"
-                        accept="image/*"
-                        multiple={false}
-                        style={{ display: 'none' }}
-                        onChange={onChangeImage}
-                      />
-                    </S.ProfileImageContainer>
-                  </td>
-                  <th className="">이름</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.username}
-                      onChange={handleInputChange('username')}
-                      type="text"
-                      placeholder="센터의 이름을 입력해주세요"
-                    />
-                  </td>
-                  <th>전화</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.phoneNumber}
-                      onChange={handleInputChange('phoneNumber')}
-                      type="text"
-                      placeholder="전화번호를 입력해주세요"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>이메일</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.email}
-                      onChange={handleInputChange('email')}
-                      type="text"
-                      placeholder="이메일 주소를 입력해주세요"
-                    />
-                  </td>
-                  <th>홈페이지</th>
-                  <td className="infovalue">
-                    <S.TextInput
-                      value={centerUpdateRequest.homePage}
-                      onChange={handleInputChange('homePage')}
-                      type="text"
-                      placeholder="홈페이지 주소를 입력해주세요"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th rowSpan={2}>주소</th>
-                  <td colSpan={3}>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.zipCode}
-                      readOnly
-                      onClick={openAddressModal}
-                      withButton
-                    />
-                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
-                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
-                      주소 초기화
-                    </S.AddressDeleteButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.address}
-                      long
-                      readOnly
-                      disabled
-                    />
-                  </td>
-                  <td colSpan={2}>
-                    <S.TextInput
-                      type="text"
-                      value={centerUpdateRequest.detailAddress}
-                      readOnly={centerUpdateRequest.address === ''}
-                      long
-                      placeholder="상세주소 입력"
-                      onChange={handleInputChange('detailAddress')}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th>센터 소개</th>
-                  <td colSpan={3}>
-                    <S.TextArea
-                      ref={memoRef}
-                      value={centerUpdateRequest.description}
-                      onChange={(e) => {
-                        handleInputChange('description')(e), setMemo(e.target.value);
-                      }}
-                      placeholder="센터의 소개글을 작성해주세요"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </S.InfoTable>
-          </S.Section>
+          {isLoadModalOn && (
+            <S.LoginModalLayout>
+              <S.LoginModal>
+                <S.LoginModalTitle>수급자 선택</S.LoginModalTitle>
+                <CloseIconSVG
+                  style={{ position: 'absolute', top: '20px', right: '20px', cursor: 'pointer' }}
+                  onClick={() => {
+                    setIsLoadModalOn(false);
+                  }}
+                />
+                <S.LoginModalInnerContent>
+                  {recipients.length === 0 ? (
+                    <S.EmptyCardContainer>
+                      <S.EmptyCard>현재 관리하고 있는 수급자가 없습니다.</S.EmptyCard>
+                    </S.EmptyCardContainer>
+                  ) : (
+                    <S.CardList>
+                      {recipients.map((recipient, idx) => (
+                        <S.StyledLink>
+                          <Link
+                            key={`worker-${idx}`}
+                            href={{
+                              pathname: '/recipients/[id]',
+                            }}
+                            as={`/recipients/${recipient.id}`}
+                            passHref
+                          >
+                            <S.Card>
+                              <S.ProfileImageLoad src={recipient.profile} />
+                              <S.InfoContainer>
+                                <S.BasicInfo>
+                                  {recipient.name} ({recipient.age}/{recipient.gender[0]}/
+                                  {recipient.grade}등급)
+                                </S.BasicInfo>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <PhoneNumberIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>위치</S.InfoType>
+                                  <S.InfoValue>{recipient.address}</S.InfoValue>
+                                </S.InfoRow>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <PhoneNumberIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>휴대전화</S.InfoType>
+                                  <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
+                                </S.InfoRow>
+                                <S.InfoRow>
+                                  <S.SVGIconBox>
+                                    <CareInfoIconSVG />
+                                  </S.SVGIconBox>
+                                  <S.InfoType>요구 조건</S.InfoType>
+
+                                  <S.InfoItemList>
+                                    {recipient.recipientMetas
+                                      ?.filter((meta) => meta.type === CAPABILITY)
+                                      .map((meta, index) => {
+                                        return (
+                                          <S.InfoItem key={`careInfoItem-${index}`}>
+                                            {meta.key}
+                                          </S.InfoItem>
+                                        );
+                                      })}
+                                  </S.InfoItemList>
+                                </S.InfoRow>
+                              </S.InfoContainer>
+                            </S.Card>
+                          </Link>
+                        </S.StyledLink>
+                      ))}
+                    </S.CardList>
+                  )}
+                </S.LoginModalInnerContent>
+              </S.LoginModal>
+            </S.LoginModalLayout>
+          )}
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>수급자 정보</S.SectionTitle>
-              <DefaultButtonContainter
-                content="불러오기"
-                type={ButtonType.LOAD}
-                width="100px"
-                height="36px"
-                active={false}
-              ></DefaultButtonContainter>
+              <S.CenterInfoUpdateButton
+                onClick={() => {
+                  setIsLoadModalOn(true);
+                }}
+              >
+                불러오기
+              </S.CenterInfoUpdateButton>
             </S.SectionTitleContainer>
             <S.InfoTable>
               <tbody>
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src="https://i.pinimg.com/originals/e1/83/18/e183187a03eee04333591dfcbe467f7f.png" />
+                      <S.ProfileImage src="https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png" />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
@@ -446,19 +504,31 @@ export default function MatchingProposal({ isFilled }: MatchingProposalProps) {
                 <tr>
                   <th rowSpan={2}>주소</th>
                   <td colSpan={3}>
-                    <S.TextInput type="text" readOnly onClick={openAddressModal} withButton />
-                    <S.AddressButton onClick={openAddressModal}>주소 검색</S.AddressButton>
-                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddress}>
+                    <S.TextInput
+                      type="text"
+                      readOnly
+                      value={recipient.zipCode}
+                      onClick={openAddressModalRecipient}
+                      withButton
+                    />
+                    <S.AddressButton onClick={openAddressModalRecipient}>주소 검색</S.AddressButton>
+                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddressRecipient}>
                       주소 초기화
                     </S.AddressDeleteButton>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <S.TextInput type="text" long readOnly disabled />
+                    <S.TextInput type="text" value={recipient.address} long readOnly disabled />
                   </td>
                   <td colSpan={3}>
-                    <S.TextInput type="text" long placeholder="상세주소 입력" />
+                    <S.TextInput
+                      type="text"
+                      value={recipient.detailAddress}
+                      readOnly={recipient.address === ''}
+                      long
+                      placeholder="상세주소 입력"
+                    />
                   </td>
                 </tr>
                 <tr>

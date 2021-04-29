@@ -3,9 +3,9 @@ import Layout from '../../components/layout';
 import Banner from '../../components/banner';
 import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
-import MatchingProposal from '../../components/matching-proposal';
+import MatchingProposalNew from '../../components/matching-proposal-new';
 
-export default function MatchingProposalView() {
+export default function MatchingProposalNewView() {
   return (
     <Layout>
       <>
@@ -18,7 +18,7 @@ export default function MatchingProposalView() {
         <Category list={['홈', '신규 요양보호사 추가', '요양보호사 검색', '매칭 제안서 작성']} />
 
         <S.MatchingProposalPage>
-          <MatchingProposal isFilled={false} />
+          <MatchingProposalNew isFilled={false} />
         </S.MatchingProposalPage>
       </>
     </Layout>

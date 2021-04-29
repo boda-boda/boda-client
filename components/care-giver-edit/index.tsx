@@ -28,7 +28,7 @@ const slicedReligionList = [];
 for (let i = 0; i < RELIGION_LIST.length; i += 5)
   slicedReligionList.push(RELIGION_LIST.slice(i, i + 5));
 
-export default function CareGiveEdit({ isNew }: CareGiverEditProps) {
+export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
   const [rerender, setRerender] = useState(false);
   const {
     isRequesting,

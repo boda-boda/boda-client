@@ -114,7 +114,7 @@ export const FilterTable = styled.table`
   }
   .time {
     width: 275px;
-    border-bottom: none;
+    /* border-bottom: none; */
   }
   table {
     border: none;

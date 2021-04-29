@@ -30,7 +30,7 @@ const dummyCompliment = [
   },
 ];
 
-export default function OuterCareGiveDetail() {
+export default function OuterCareGiverDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
   const [careWorker, setCareWorker] = useState({} as any);

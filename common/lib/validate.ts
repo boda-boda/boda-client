@@ -1,4 +1,5 @@
 import CreateCareGiverRequest from '../../components/care-giver-edit/model/create-care-giver-request';
+import CreateRecipientRequest from '../../components/recipients-edit/model/create-recipient-request';
 import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
 
 export const isStringOnlyDigit = (str: string) => {
@@ -58,6 +59,27 @@ export const validateCareWorker = (createCareGiverRequest: CreateCareGiverReques
 
   if (validateLicenseDate(licenseDate)) {
     alert(validateLicenseDate(licenseDate));
+    return false;
+  }
+
+  return true;
+};
+
+export const validateRecipient = (createRecipientRequest: CreateRecipientRequest) => {
+  const { name, age, hourlyWage } = createRecipientRequest;
+
+  if (!name) {
+    alert('이름을 입력해 주세요.');
+    return false;
+  }
+
+  if (!age || age >= 150) {
+    alert('올바른 나이를 입력해주세요');
+    return false;
+  }
+
+  if (!hourlyWage) {
+    alert('시급을 입력해주세요.');
     return false;
   }
 
