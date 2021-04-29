@@ -124,7 +124,7 @@ export default function CareGiveDetail() {
                   <td className="infovalue">
                     {careWorker.birthDay && careWorker.age
                       ? `${careWorker.birthDay} (${careWorker.age}세)`
-                      : ''}
+                      : `${careWorker.birthDay} (00세)`}
                   </td>
                 </tr>
                 <tr>
