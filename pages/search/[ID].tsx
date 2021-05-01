@@ -1,4 +1,4 @@
-import OuterCareGiverDetailView from '../../../views/outer-care-giver-detail-view';
+import OuterCareGiverDetailView from '../../views/outer-care-giver-detail-view';
 import { withRouter } from 'next/router';
 
 function CareGiverDetailPage() {
