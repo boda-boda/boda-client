@@ -92,7 +92,7 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
@@ -111,6 +111,20 @@ export default function OuterCareGiverDetail() {
                   <td className="infovalue">{careWorker.gender}</td>
                   <th>휴대전화</th>
                   <td className="infovalue">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
+                  <th>시간</th>
+                  <td className="infovalue">
+                    {careWorker.careWorkerSchedule ? careWorker.careWorkerSchedule : ''}
+                  </td>
+                  <th className="twoRow">
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">
+                    {careWorker.licenseDate ? careWorker.licenseDate : ''}
+                  </td>
                 </tr>
                 <tr>
                   <th>주소</th>
@@ -228,11 +242,11 @@ export default function OuterCareGiverDetail() {
               </tbody>
             </S.Table>
           </S.Section>
-          {/* <S.Section>
+          <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
+                {/* <tr>
                   <td style={{ background: '#f4f4f4', position: 'relative' }}>
                     {isEditingCompliment ? (
                       <>
@@ -276,7 +290,7 @@ export default function OuterCareGiverDetail() {
                       </>
                     )}
                   </td>
-                </tr>
+                </tr> */}
                 {dummyCompliment.map((compliment, index) => {
                   return (
                     <tr key={`compliment-${index}`}>
@@ -294,7 +308,7 @@ export default function OuterCareGiverDetail() {
                 })}
               </tbody>
             </S.Table>
-          </S.Section> */}
+          </S.Section>
         </S.InnerContent>
       </S.CareGiverDetail>
     </>
