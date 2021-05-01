@@ -23,7 +23,7 @@ const dummyCompliment = [
     date: new Date(),
     centerID: 'asdf',
     centerName: '서울시 서대문구 재가센터',
-    content: `강경숙 선생님은 대화하는 상대방을 편하게 해주십니다.<br />
+    content: `강 선생님은 대화하는 상대방을 편하게 해주십니다.<br />
     실제로 맡으셨던 수급자와 보호자 분들께서 까다로우신 편이셔서 여러번 선생님 교체를 원하셨었는데, 강 선생님은 상당히 좋아하셨습니다.
     그래서 강 선생님께서 그 수급자 분과 1년 정도 꾸준히 하셨습니다.<br />
 
@@ -220,7 +220,7 @@ export default function OuterCareGiverDetail() {
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
+                {/* <tr>
                   <td style={{ background: '#f4f4f4', position: 'relative' }}>
                     {isEditingCompliment ? (
                       <>
@@ -264,7 +264,7 @@ export default function OuterCareGiverDetail() {
                       </>
                     )}
                   </td>
-                </tr>
+                </tr> */}
                 {careCenter.careCenter &&
                   dummyCompliment
                     .filter((compliment) => compliment.centerID !== careCenter.careCenter.id)

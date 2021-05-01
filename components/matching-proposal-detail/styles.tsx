@@ -32,7 +32,11 @@ export const CompleteSection = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_ROW_CENTER_CENTER};
+<<<<<<< HEAD
   padding-top: 10px;
+=======
+  padding-top: 20px;
+>>>>>>> 0377fae889821aeb3adc65008322096ce812602e
   padding-bottom: 60px;
 `;
 

@@ -66,6 +66,27 @@ export const Card = styled.div`
   }
 `;
 
+export const EditButton = styled.button`
+  position: absolute;
+  top: 3px;
+  right: 0;
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.MAIN};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
 export const EmptyCardContainer = styled.div`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};

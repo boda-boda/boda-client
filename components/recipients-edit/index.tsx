@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styles';
-import { CAPABILITY, CARE_INFO_LIST } from '../../constant';
+import { CAPABILITY, CARE_INFO_LIST, FAMILY_TYPE } from '../../constant';
 import { useRecipientsUpsert } from './hooks';
 import ImageDefaultSVG from '../../svgs/image-default-svg';
 
@@ -12,23 +12,26 @@ interface RecipientsEditProps {
   isNew: boolean;
 }
 
-export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
+export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
   const {
-    isRequesting,
     recipient,
     setRecipient,
     memo,
+    memo2,
     memoRef,
+    memoRef2,
     setMemo,
-    careWorkerCapabilities,
+    setMemo2,
+    recipientCapabilities,
     toggleCapability,
     openAddressModal,
     onChangeImage,
     handleUpdateGender,
-    handleUpdateBirthday,
+    handleUpdateAge,
     handleUpdateRecipient,
     handleClickUpdateButton,
     handleClickCreateButton,
+    isRequesting,
     handleDeleteCurrentAddress,
   } = useRecipientsUpsert(isNew);
 
@@ -41,7 +44,7 @@ export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={6} className="profile">
+                  <td rowSpan={8} className="profile">
                     <S.ProfileImageContainer>
                       <label htmlFor="profile">
                         <S.ProfileImage src={recipient.profile}>
@@ -73,16 +76,16 @@ export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
                   <td className="infovalue">
                     <S.TdFlexBox>
                       <S.ToggleButton
-                        isSelected={recipient.isFemale}
-                        onClick={handleUpdateGender(true)}
-                      >
-                        여
-                      </S.ToggleButton>
-                      <S.ToggleButton
                         isSelected={!recipient.isFemale}
                         onClick={handleUpdateGender(false)}
                       >
                         남
+                      </S.ToggleButton>
+                      <S.ToggleButton
+                        isSelected={recipient.isFemale}
+                        onClick={handleUpdateGender(true)}
+                      >
+                        여
                       </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>
@@ -90,17 +93,37 @@ export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
                 <tr>
                   <th>등급</th>
                   <td className="infovalue">
-                    <S.DropDown></S.DropDown>
+                    <S.DropDown value={recipient.grade} onChange={handleUpdateRecipient('grade')}>
+                      <option value={1}>1등급</option>
+                      <option value={2}>2등급</option>
+                      <option value={3}>3등급</option>
+                      <option value={4}>4등급</option>
+                      <option value={5}>5등급</option>
+                    </S.DropDown>
                   </td>
-                  <th>생년월일</th>
+                  <th>나이</th>
                   <td className="infovalue">
                     <S.TextInput
-                      value={recipient.birthDay || ''}
-                      onChange={handleUpdateBirthday}
-                      type="text"
-                      maxLength={8}
-                      placeholder="예시) 19601231"
+                      value={recipient.age || ''}
+                      onChange={handleUpdateAge}
+                      type="number"
+                      placeholder="예시) 12"
                     />
+                  </td>
+                </tr>
+                <tr>
+                  <th>거주형태</th>
+                  <td className="infovalue">
+                    <S.DropDown
+                      value={recipient.familyType}
+                      onChange={handleUpdateRecipient('familyType')}
+                    >
+                      {FAMILY_TYPE.map((f) => (
+                        <option key={f} value={f}>
+                          {f}
+                        </option>
+                      ))}
+                    </S.DropDown>
                   </td>
                 </tr>
                 <tr>
@@ -155,7 +178,7 @@ export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
                                       {careInfo}
                                       <S.CheckBox
                                         type="checkbox"
-                                        checked={careWorkerCapabilities.includes(careInfo)}
+                                        checked={recipientCapabilities.includes(careInfo)}
                                         onChange={() => toggleCapability(careInfo)}
                                       />
                                     </div>
@@ -191,14 +214,27 @@ export default function RecipientsEdit({ isNew }: RecipientsEditProps) {
             <S.Table>
               <tr>
                 <th>시급</th>
-                <td>11,000원</td>
+                <td>
+                  <S.TextInput
+                    value={recipient.hourlyWage}
+                    onChange={handleUpdateRecipient('hourlyWage')}
+                    type="text"
+                    placeholder="이름을 입력해주세요"
+                  />
+                </td>
               </tr>
               <tr>
                 <th>비고</th>
                 <td>
-                  매번 요리 하실 필요는 없고, 있는 반찬으로 밥 차려드려서 식사만 도와드리면 됩니다.
-                  산책하는 것을 좋아하셔서 날이 좋으면 자주 산책 해주시면 됩니다. 주로 혼자
-                  생활하시며 자녀분께서 일주일에 두 번 정도 방문하십니다.
+                  <S.TextArea
+                    ref={memoRef2}
+                    value={memo2}
+                    onChange={(e) => {
+                      setMemo2(e.target.value);
+                      handleUpdateRecipient('note')(e);
+                    }}
+                    placeholder="비고란을 입력해주세요"
+                  />
                 </td>
               </tr>
             </S.Table>

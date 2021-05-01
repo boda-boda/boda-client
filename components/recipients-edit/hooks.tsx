@@ -1,25 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { DayType } from '../../common/types/date';
-import BusinessArea from '../../model/business-area';
-import {
-  CareWorkerSchedule,
-  toggleDayOfCareWorkerSchedule,
-  isCareWorkerScheduleValid,
-  isCareWorkerScheduleRangeValid,
-} from '../../model/care-worker-schedule';
 import axios from 'axios';
 import CreateRecipientRequest from './model/create-recipient-request';
-import Career from './model/career';
 import { useRouter } from 'next/router';
-import CareWorker from '../../model/care-worker';
 import { useCareCenter } from '../../context/care-center';
 import {
   CAPABILITY,
-  RELIGION,
   WORKER_MAN_SMALL_IMAGE_URL,
   WORKER_WOMAN_SMALL_IMAGE_URL,
 } from '../../constant';
-import { validateCareWorker } from '../../common/lib/validate';
+import { validateRecipient } from '../../common/lib/validate';
+import Recipient from '../../model/recipient';
 
 export const useRecipientsUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -28,10 +18,12 @@ export const useRecipientsUpsert = (isNew: boolean) => {
 
   const [isRequesting, setIsRequesting] = useState(false);
   const [recipient, setRecipient] = useState(CreateRecipientRequest.noArgsConstructor());
-  const [careWorkerCapabilities, setCareWorkerCapabilities] = useState([] as string[]);
+  const [recipientCapabilities, setRecipientCapabilities] = useState([] as string[]);
 
   const [memo, setMemo] = useState('');
+  const [memo2, setMemo2] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+  const memoRef2 = useRef<HTMLTextAreaElement>(null);
 
   const handleDeleteCurrentAddress = async () => {
     if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
@@ -51,73 +43,36 @@ export const useRecipientsUpsert = (isNew: boolean) => {
 
     (async () => {
       try {
-        /*
         const response = await axios.get(`/recipient/${router.query.ID}`);
-        const c = response.data as CareWorker;
+        const c = response.data as Recipient;
 
         setId(c.id);
-        setCareWorker(
-          CreateCareGiverRequest.allArgsConstructor(
+        setRecipient(
+          CreateRecipientRequest.allArgsConstructor(
             c.name,
-            c.gender !== '남성',
-            c.birthDay?.split('-').join(''),
+            c.isFemale,
+            c.age,
+            c.grade,
             c.phoneNumber,
             c.profile,
             c.zipCode,
             c.address,
             c.detailAddress,
-            c.description
+            c.description,
+            c.note,
+            c.hourlyWage,
+            c.familyType
           )
         );
         setMemo(c.description);
+        setMemo2(c.note);
 
-        setCareWorkerCapabilities(
-          c.careWorkerMetas.filter((meta) => meta.type == CAPABILITY).map((meta) => meta.key)
+        setRecipientCapabilities(
+          c.recipientMetas.filter((meta) => meta.type == CAPABILITY).map((meta) => meta.key)
         );
-        setCareWorkerReligions(
-          c.careWorkerMetas.filter((meta) => meta.type == RELIGION).map((meta) => meta.key)
-        );
-        if (c.careWorkerCareers.length > 0)
-          setCareWorkerCareers(
-            c.careWorkerCareers.map((career) =>
-              Career.allArgsConstructor(career.workplace, career.recipient, career.duration)
-            )
-          );
-        if (c.careWorkerAreas.length > 0)
-          setCareWorkerAreas(
-            c.careWorkerAreas.map((area) =>
-              BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
-            )
-          );
-
-        const allSchedules = c.careWorkerSchedules.reduce((acc, sc) => {
-          if (sc.startAt.split(':').length < 3 || sc.endAt.split(':').length < 3) return acc;
-          const [stt, stm] = sc.startAt.split(':').map((m) => parseInt(m));
-          const [et, em] = sc.endAt.split(':').map((m) => parseInt(m));
-
-          const matchedSchedule = acc.find(
-            (cws) =>
-              cws.startHour === stt &&
-              cws.startMinute === stm &&
-              cws.endHour === et &&
-              cws.endMinute === em
-          );
-
-          if (matchedSchedule) {
-            matchedSchedule.days.push(sc.day);
-          } else {
-            const newSchedule = CareWorkerSchedule.allArgsConstructor(stt, stm, et, em);
-            newSchedule.days.push(sc.day);
-            acc.push(newSchedule);
-          }
-
-          return acc;
-        }, [] as CareWorkerSchedule[]);
-        if (allSchedules.length > 0) setCareWorkerSchedules(allSchedules);
-        */
       } catch {
         alert('잘못된 접근입니다.');
-        router.push('/');
+        router.push('/recipients');
       }
     })();
   }, [router, careCenter]);
@@ -151,9 +106,9 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     [recipient]
   );
 
-  const handleUpdateBirthday = useCallback(
+  const handleUpdateAge = useCallback(
     (e: any) => {
-      setRecipient({ ...recipient, birthDay: e.target.value });
+      setRecipient({ ...recipient, age: parseInt(e.target.value) });
     },
     [recipient]
   );
@@ -166,15 +121,15 @@ export const useRecipientsUpsert = (isNew: boolean) => {
 
   const toggleCapability = useCallback(
     (careInfo: string) => {
-      if (careWorkerCapabilities.includes(careInfo)) {
-        setCareWorkerCapabilities((selectedCareInfo) =>
+      if (recipientCapabilities.includes(careInfo)) {
+        setRecipientCapabilities((selectedCareInfo) =>
           selectedCareInfo.filter((selected) => selected !== careInfo)
         );
         return;
       }
-      setCareWorkerCapabilities([...careWorkerCapabilities, careInfo]);
+      setRecipientCapabilities([...recipientCapabilities, careInfo]);
     },
-    [careWorkerCapabilities]
+    [recipientCapabilities]
   );
 
   const onChangeImage = useCallback(
@@ -189,7 +144,7 @@ export const useRecipientsUpsert = (isNew: boolean) => {
           },
         });
 
-        const response = await axiosInstance.post('/recipient/profile', formData);
+        const response = await axiosInstance.post('/care-worker/profile', formData);
         const url = response.data.Location;
         setRecipient({ ...recipient, profile: url });
       } catch {
@@ -212,15 +167,15 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   }, [recipient]);
 
   const handleClickCreateButton = async () => {
-    if (!validateCareWorker(recipient)) return;
+    if (!validateRecipient(recipient)) return;
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
     setIsRequesting(true);
 
     try {
-      await axios.post('/recipient', {
-        careWorker: recipient,
-        careWorkerCapabilities,
+      await axios.post(`/recipient`, {
+        ...recipient,
+        recipientCapabilities,
       });
     } catch (e) {
       alert('요양보호사 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
@@ -229,19 +184,19 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
-    router.push('/list');
+    router.push('/recipients');
   };
 
   const handleClickUpdateButton = async () => {
-    if (!validateCareWorker(recipient)) return;
+    if (!validateRecipient(recipient)) return;
 
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
     try {
-      await axios.put('/recipient', {
+      await axios.put(`/recipient/${router.query.ID}`, {
         id,
-        careWorker: recipient,
-        careWorkerCapabilities,
+        ...recipient,
+        recipientCapabilities,
       });
     } catch (e) {
       alert('요양보호사 수정에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
@@ -250,21 +205,24 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 수정에 성공하였습니다.');
-    router.push(`/list/${router.query.ID}`);
+    router.push(`/recipients/${router.query.ID}`);
   };
 
   return {
     recipient,
     setRecipient,
     memo,
+    memo2,
     memoRef,
+    memoRef2,
     setMemo,
-    careWorkerCapabilities,
+    setMemo2,
+    recipientCapabilities,
     toggleCapability,
     openAddressModal,
     onChangeImage,
     handleUpdateGender,
-    handleUpdateBirthday,
+    handleUpdateAge,
     handleUpdateRecipient,
     handleClickUpdateButton,
     handleClickCreateButton,
