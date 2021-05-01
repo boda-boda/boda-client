@@ -71,6 +71,9 @@ export const Table = styled.table`
     vertical-align: middle;
     padding: 0;
   }
+  .twoRow {
+    padding: 0 12px;
+  }
   .personality {
     padding: 0 12px;
   }
@@ -320,5 +323,49 @@ export const ComplimentContentInput = styled.textarea`
   :focus {
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
+`;
+export const FinishButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  ${FLEX_ROW_CENTER_CENTER};
+`;
+
+export const FinishButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const TransferButton = styled.button`
+  outline: none;
+  border: none;
+  width: 306px;
+  height: 48px;
+  margin-right: 10px;
+  border-radius: 3px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.MAIN};
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  ${FLEX_ROW_CENTER_CENTER};
+  :hover {
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
