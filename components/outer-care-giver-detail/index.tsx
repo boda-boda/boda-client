@@ -11,22 +11,23 @@ import { useCareCenter } from '../../context/care-center';
 
 const dummyCompliment = [
   {
-    title: '오태식씨를 칭찬합니다',
+    title: '강 선생님을 칭찬합니다.',
     date: new Date(),
     centerID: '64aefb6c-a59a-4432-b9a0-d5f29ed2d653',
     centerName: '돌봄',
-    content:
-      '병진이형 나가있으라고 말했잖아 내가 별 수 없게 현실이었어 감수하고 12, 000원 빼가 정준하 벌스라도 훔쳐갈 애가 명절 때 대입 자금 활짝 웃어 멀쩡합니다 베이식 형처럼 할거 매일 시켜 먹었다이가 외식을 치즈 콰트로 피어싱도 뚫어',
+    content: `한 번도 지각한 적이 없으실 정도로 시간 약속을 잘 지키십니다.<br />
+    맡으셨던 두 명의 수급자 분 모두 기본적으로 만족도가 높았고 특히 치매인지재활 부분에 대해서 상당히 만족하셨습니다.`,
   },
   {
-    title: '최고의 전문가 오태식',
+    title: '상대방을 편안하게 해주시는 강 선생님',
     date: new Date(),
     centerID: 'asdf',
-    centerName: '서울시 성북구 래원센터',
-    content: `해바라기 식당에 바로 앞에 직장 에어팟 한 개에 집착 왜 발악해 신참<br />
-      새파랗게 어린 자식들 거의 다 배신자 코펜하겐 수입 담배 가루 워싱턴<br />
-      난 신짜오야 진짜 우황청심환 심장 만신창이와 술 취한 마술사의 아구창<br />
-      삼지창은 간지 쫙 수강신청 언제적 산신령 먼 친척이 사실 여보 친정`,
+    centerName: '서울시 서대문구 재가센터',
+    content: `강 선생님은 대화하는 상대방을 편하게 해주십니다.<br />
+    실제로 맡으셨던 수급자와 보호자 분들께서 까다로우신 편이셔서 여러번 선생님 교체를 원하셨었는데, 강 선생님은 상당히 좋아하셨습니다.
+    그래서 강 선생님께서 그 수급자 분과 1년 정도 꾸준히 하셨습니다.<br />
+
+      `,
   },
 ];
 
@@ -92,7 +93,7 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
@@ -111,6 +112,20 @@ export default function OuterCareGiverDetail() {
                   <td className="infovalue">{careWorker.gender}</td>
                   <th>휴대전화</th>
                   <td className="infovalue">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
+                  <th>시간</th>
+                  <td className="infovalue">
+                    {careWorker.careWorkerSchedule ? careWorker.careWorkerSchedule : ''}
+                  </td>
+                  <th className="twoRow">
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue">
+                    {careWorker.licenseDate ? careWorker.licenseDate : ''}
+                  </td>
                 </tr>
                 <tr>
                   <th>주소</th>
@@ -202,37 +217,10 @@ export default function OuterCareGiverDetail() {
             </S.Table>
           </S.Section>
           <S.Section>
-            <S.SectionTitle>경력</S.SectionTitle>
-            <S.Table>
-              <tbody>
-                <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
-                </tr>
-                {careWorker.careWorkerCareers?.length > 0 ? (
-                  careWorker.careWorkerCareers.map((career, idx) => (
-                    <tr key={`career-${idx}`}>
-                      <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td className="career long"></td>
-                    <td className="career"></td>
-                    <td className="career right"></td>
-                  </tr>
-                )}
-              </tbody>
-            </S.Table>
-          </S.Section>
-          {/* <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
-                <tr>
+                {/* <tr>
                   <td style={{ background: '#f4f4f4', position: 'relative' }}>
                     {isEditingCompliment ? (
                       <>
@@ -276,25 +264,41 @@ export default function OuterCareGiverDetail() {
                       </>
                     )}
                   </td>
-                </tr>
-                {dummyCompliment.map((compliment, index) => {
-                  return (
-                    <tr key={`compliment-${index}`}>
-                      <td>
-                        <S.ComplimentTitle>{compliment.title}</S.ComplimentTitle>
-                        <S.ComplimentDate>
-                          {compliment.date.toDateString()} · {compliment.centerName}
-                        </S.ComplimentDate>
-                        <S.ComplimentContent
-                          dangerouslySetInnerHTML={{ __html: compliment.content }}
-                        ></S.ComplimentContent>
-                      </td>
-                    </tr>
-                  );
-                })}
+                </tr> */}
+                {careCenter.careCenter &&
+                  dummyCompliment
+                    .filter((compliment) => compliment.centerID !== careCenter.careCenter.id)
+                    .map((compliment, index) => {
+                      return (
+                        <tr key={`compliment-${index}`}>
+                          <td>
+                            <S.ComplimentTitle>{compliment.title}</S.ComplimentTitle>
+                            <S.ComplimentDate>
+                              {compliment.date.toDateString()} · {compliment.centerName}
+                            </S.ComplimentDate>
+                            <S.ComplimentContent
+                              dangerouslySetInnerHTML={{ __html: compliment.content }}
+                            ></S.ComplimentContent>
+                          </td>
+                        </tr>
+                      );
+                    })}
               </tbody>
             </S.Table>
-          </S.Section> */}
+          </S.Section>
+          <S.FinishButtonContainer>
+            <S.TransferButton>내 요양보호사로 전환하기</S.TransferButton>
+            <Link
+              key={`worker-${careWorker.id}`}
+              href={{
+                pathname: '/search/[id]/proposal',
+              }}
+              as={`/search/${careWorker.id}/proposal`}
+              passHref
+            >
+              <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
+            </Link>
+          </S.FinishButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>
     </>

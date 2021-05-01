@@ -151,6 +151,12 @@ export default function CareGiverDetail() {
                   </td>
                 </tr>
                 <tr>
+                  <th>가능 시간</th>
+                  <td className="infovalue" colSpan={3}>
+                    {careWorker.time}
+                  </td>
+                </tr>
+                <tr>
                   <th>주소</th>
                   <td colSpan={3}>
                     {careWorker.zipCode && `(${careWorker.zipCode})`} {careWorker.address}{' '}
