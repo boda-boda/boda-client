@@ -1,4 +1,3 @@
-import { blue, red } from '@material-ui/core/colors';
 import styled from 'styled-components';
 import {
   CONTENT_WIDTH,
@@ -53,7 +52,7 @@ export const CardList = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 978px;
-  height: 180px;
+  height: 200px;
   padding: 10px 15px;
   border-radius: 10px;
   margin-top: 30px;
@@ -281,60 +280,7 @@ export const EditButton = styled.button`
   position: absolute;
   top: 3px;
   right: 0;
-  padding: 5px 12px;
-  height: 36px;
-  border-radius: 3px;
-  outline: none;
-  border: 1px solid red;
-  background-color: white;
-  color: red;
-  ${FLEX_ROW_CENTER_CENTER};
-  cursor: pointer;
-  transition: 0.2s ease;
-  :hover {
-    background: red;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
-  }
-`;
-
-interface StatusDivProps {
-  isAccepted?: boolean;
-}
-
-export const StatusDiv = styled.div<StatusDivProps>`
-  border-radius: 3px;
-  /* box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); */
-  font-size: 12px;
-  position: absolute;
-  top: 5px;
-  padding: 2px 4px;
-  right: 10px;
-  cursor: default;
-  color: ${(props) => (props.isAccepted ? THEME.MAIN : 'red')};
-  /* text-decoration: underline; */
-  /* border: ${(props) => (props.isAccepted ? `1px solid blue` : '1px solid red')}; */
-`;
-
-export const StatusDivWait = styled.div`
-  border-radius: 3px;
-  /* box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16); */
-  font-size: 12px;
-  position: absolute;
-  top: 5px;
-  padding: 2px 4px;
-  right: 10px;
-  /* text-decoration: underline; */
-  /* border: 1px solid; */
-  cursor: default;
-`;
-
-export const TransferButton = styled.button`
-  position: absolute;
-  top: 3px;
-  right: 90px;
-  padding: 5px 12px;
+  padding: 11px 10px;
   height: 36px;
   border-radius: 3px;
   outline: none;
@@ -347,7 +293,6 @@ export const TransferButton = styled.button`
   :hover {
     background: ${THEME.MAIN};
     color: white;
-    font-weight: bold;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;

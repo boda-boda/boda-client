@@ -194,8 +194,6 @@ export const CARE_INFO_LIST = [
   '간호조무사',
 ];
 
-export const MATCHING_PROPOSAL_STATUS = ['수락됨', '거절됨', '대기중'];
-
 export const RELIGION_LIST = ['기독교', '불교', '천주교', '기타', '무교'];
 
 export const FAMILY_TYPE = ['독거', '노인부부', '미혼자녀와함께', '기혼자녀와함께', '기타'];
