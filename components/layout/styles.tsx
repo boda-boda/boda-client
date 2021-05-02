@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTENT_WIDTH, THEME } from '../../constant';
+import { CONTENT_WIDTH, FLEX_COLUMN_CENTER_CENTER, THEME } from '../../constant';
 
 export const Layout = styled.div`
   width: 100%;
@@ -34,4 +34,15 @@ export const TopButton = styled.button`
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   padding-top: 5px;
   cursor: pointer;
+`;
+
+export const AttemptingLogin = styled.div`
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  ${FLEX_COLUMN_CENTER_CENTER};
 `;
