@@ -98,7 +98,7 @@ export default function RecipientsDetail() {
                       <td>{recipient.familyType}</td>
                     </tr>
                     <tr>
-                      <th>가능 조건</th>
+                      <th>요구 사항</th>
                       <td colSpan={3} className="personality">
                         <S.AvailabilityInfoList>
                           {recipient.recipientMetas &&

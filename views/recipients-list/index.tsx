@@ -119,7 +119,7 @@ export default function ReciepientsList() {
                                   <S.SVGIconBox>
                                     <CareInfoIconSVG />
                                   </S.SVGIconBox>
-                                  <S.InfoType>가능 조건</S.InfoType>
+                                  <S.InfoType>요구 사항</S.InfoType>
 
                                   <S.InfoItemList>
                                     {recipient.recipientMetas
