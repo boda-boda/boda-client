@@ -173,7 +173,7 @@ interface ToggleButtonProps {
   isLast?: boolean;
 }
 export const ToggleButton = styled.div<ToggleButtonProps>`
-  padding: 0 13px;
+  padding: 0 12px;
   height: 36px;
   margin-right: ${(props) => (props.isLast ? '0' : '10px')};
   border-radius: 3px;
