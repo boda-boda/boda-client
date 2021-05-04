@@ -138,7 +138,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                   <th>등급</th>
                   <td className="select left">{proposal.recipient.grade}등급</td>
                   <th>나이</th>
-                  <td className="right">{proposal.recipient.age}</td>
+                  <td className="right">{proposal.recipient.age}세</td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
