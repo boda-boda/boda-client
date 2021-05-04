@@ -1,4 +1,5 @@
 import Meta from './care-worker-meta';
+import { RecipientTime } from './recipient-time';
 
 export default class Recipient {
   public zipCode: string;
@@ -17,4 +18,6 @@ export default class Recipient {
   public hourlyWage: number;
   public note: string;
   public familyType: string;
+
+  public recipientTime: RecipientTime[];
 }

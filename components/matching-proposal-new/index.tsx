@@ -26,6 +26,9 @@ import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import { useRouter } from 'next/router';
 import CreateRecipientRequest from '../recipients-edit/model/create-recipient-request';
+import { RecipientTime, toggleDayOfRecipientTime } from '../../model/recipient-time';
+import EtcSVG from '../../svgs/etc-svg';
+import LocationIconSVG from '../../svgs/location-icom-svg';
 
 interface MatchingProposalProps {
   isFilled: boolean;
@@ -38,7 +41,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
   const [selectedFamilyType, setSelectedFamilyType] = useState('');
-  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
+  const [schedules, setSchedules] = useState([RecipientTime.noArgsConstructor()]);
 
   const [recipient, setRecipient] = useState(new Recipient());
 
@@ -47,6 +50,30 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+
+  const getInfoItemsEtc = (infoList: any[]) => {
+    const wordLimit = 16;
+    const itemLimit = 7;
+    const LENGTH = infoList.reduce((sum, item) => sum + item.key.length, 0);
+    if (LENGTH <= wordLimit)
+      return infoList
+        ?.filter((meta) => meta.type === CAPABILITY)
+        .map((meta, index) => {
+          return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
+        });
+    else
+      return (
+        <>
+          {infoList
+            ?.slice(0, itemLimit)
+            .filter((meta) => meta.type === CAPABILITY)
+            .map((meta, index) => {
+              return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
+            })}
+          <EtcSVG />
+        </>
+      );
+  };
 
   const handleUpdateRecipient = useCallback(
     (key: keyof CreateRecipientRequest) => (e: any) => {
@@ -97,7 +124,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
 
   const toggleDays = (selectedDaysIndex: number, day: DayType) => {
     const newSchedules = [...schedules];
-    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
+    toggleDayOfRecipientTime(newSchedules[selectedDaysIndex], day);
     setSchedules(newSchedules);
   };
 
@@ -342,10 +369,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                               hide={schedules.length - 1 !== scheduleIndex}
                               disabled={schedules.length - 1 !== scheduleIndex}
                               onClick={() => {
-                                setSchedules([
-                                  ...schedules,
-                                  CareWorkerSchedule.noArgsConstructor(),
-                                ]);
+                                setSchedules([...schedules, RecipientTime.noArgsConstructor()]);
                               }}
                             >
                               <PlusIconSVG />
@@ -353,10 +377,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                             <S.PlusMinusButton
                               onClick={() => {
                                 if (schedules.length === 1) {
-                                  setSchedules([
-                                    ...schedules,
-                                    CareWorkerSchedule.noArgsConstructor(),
-                                  ]);
+                                  setSchedules([...schedules, RecipientTime.noArgsConstructor()]);
                                 }
                                 setSchedules((schedules) =>
                                   schedules.filter((_, i) => i !== scheduleIndex)
@@ -556,34 +577,29 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                               </S.BasicInfo>
                               <S.InfoRow>
                                 <S.SVGIconBox>
-                                  <PhoneNumberIconSVG />
+                                  <LocationIconSVG />
                                 </S.SVGIconBox>
                                 <S.InfoType>위치</S.InfoType>
-                                <S.InfoValue>{recipient.address}</S.InfoValue>
+                                <S.LocationValue>{recipient.address}</S.LocationValue>
                               </S.InfoRow>
                               <S.InfoRow>
                                 <S.SVGIconBox>
                                   <PhoneNumberIconSVG />
                                 </S.SVGIconBox>
-                                <S.InfoType>거주형태</S.InfoType>
-                                <S.InfoValue>{recipient.familyType}</S.InfoValue>
+                                <S.InfoType>휴대전화</S.InfoType>
+                                <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
                               </S.InfoRow>
                               <S.InfoRow>
                                 <S.SVGIconBox>
                                   <CareInfoIconSVG />
                                 </S.SVGIconBox>
-                                <S.InfoType>요구 조건</S.InfoType>
-
+                                <S.InfoType>요구 사항</S.InfoType>
                                 <S.InfoItemList>
-                                  {recipient.recipientMetas
-                                    ?.filter((meta) => meta.type === CAPABILITY)
-                                    .map((meta, index) => {
-                                      return (
-                                        <S.InfoItem key={`careInfoItem-${index}`}>
-                                          {meta.key}
-                                        </S.InfoItem>
-                                      );
-                                    })}
+                                  {getInfoItemsEtc(
+                                    recipient.recipientMetas?.filter(
+                                      (meta) => meta.type === CAPABILITY
+                                    )
+                                  )}
                                 </S.InfoItemList>
                               </S.InfoRow>
                             </S.InfoContainer>

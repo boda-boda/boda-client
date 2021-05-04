@@ -39,7 +39,7 @@ export default class CreateRecipientRequest {
       false,
       0,
       1,
-      1,
+      '',
       WORKER_WOMAN_SMALL_IMAGE_URL,
       '',
       '',

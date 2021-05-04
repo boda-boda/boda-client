@@ -657,3 +657,33 @@ export const ProfileImageLoad = styled.div<ProfileImageProps>`
   background-size: cover;
   background-position: center;
 `;
+
+export const LocationValue = styled.div`
+  /* margin-top: -1px; */
+  color: ${THEME.GRAY_FONT};
+  /* max-height: 60px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.4em;
+  height: 1.4em;
+`;
+
+export const MemoValue = styled.div`
+  /* margin-top: -1px; */
+  color: ${THEME.GRAY_FONT};
+  /* max-height: 60px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.2em;
+  height: 2.4em;
+`;

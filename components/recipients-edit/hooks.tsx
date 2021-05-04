@@ -10,6 +10,8 @@ import {
 } from '../../constant';
 import { validateRecipient } from '../../common/lib/validate';
 import Recipient from '../../model/recipient';
+import { RecipientTime, toggleDayOfRecipientTime } from '../../model/recipient-time';
+import { DayType } from '../../common/types/date';
 
 export const useRecipientsUpsert = (isNew: boolean) => {
   const careCenter = useCareCenter();
@@ -19,6 +21,8 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const [recipient, setRecipient] = useState(CreateRecipientRequest.noArgsConstructor());
   const [recipientCapabilities, setRecipientCapabilities] = useState([] as string[]);
+  const [rerender, setRerender] = useState(false);
+  const [schedules, setSchedules] = useState([RecipientTime.noArgsConstructor()]);
 
   const [memo, setMemo] = useState('');
   const [memo2, setMemo2] = useState('');
@@ -29,6 +33,12 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
 
     setRecipient({ ...recipient, address: '', zipCode: '' });
+  };
+
+  const toggleDaysOfRecipientTime = (selectedDaysIndex: number, day: DayType) => {
+    const newSchedules = [...schedules];
+    toggleDayOfRecipientTime(newSchedules[selectedDaysIndex], day);
+    setSchedules(newSchedules);
   };
 
   useEffect(() => {
@@ -211,14 +221,19 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   return {
     recipient,
     setRecipient,
+    rerender,
+    setRerender,
     memo,
     memo2,
     memoRef,
     memoRef2,
     setMemo,
     setMemo2,
+    schedules,
+    setSchedules,
     recipientCapabilities,
     toggleCapability,
+    toggleDaysOfRecipientTime,
     openAddressModal,
     onChangeImage,
     handleUpdateGender,

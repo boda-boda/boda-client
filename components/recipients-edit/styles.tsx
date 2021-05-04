@@ -385,3 +385,65 @@ export const FinishButton = styled.button`
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
+
+export const ClockSelectContainer = styled.div`
+  position: relative;
+  width: 90px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  color: ${THEME.GRAY_FONT};
+  border-radius: 3px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  margin-right: 7px;
+  margin-left: 15px;
+  outline: none;
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+
+export const ClockInput = styled.input`
+  border: none;
+  outline: none;
+  width: 30%;
+  text-align: right;
+  color: ${THEME.GRAY_FONT};
+`;
+
+export const PlusMinusButtonContainer = styled.div`
+  display: flex;
+`;
+
+interface PlusMinusButtonProps {
+  hide?: boolean;
+}
+
+export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
+  width: 36px;
+  height: 36px;
+  ${FLEX_ROW_CENTER_CENTER};
+  border-radius: 3px;
+  margin-left: 10px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
+  background-color: white;
+  opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: 0.2s ease;
+  :hover {
+    border: solid 1px ${THEME.MAIN};
+  }
+`;
+interface TimeSeleceContainerProps {
+  isLast: boolean;
+}
+
+export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
+  ${FLEX_ROW_START_CENTER};
+  padding: 12px;
+  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+  flex-wrap: wrap;
+`;

@@ -52,7 +52,7 @@ export const CardList = styled.div`
 export const Card = styled.div`
   position: relative;
   width: 474px;
-  height: 160px;
+  height: 180px;
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
@@ -116,14 +116,11 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   background-image: url(${(props) => props.src});
   background-size: cover;
   background-position: center;
+  margin-right: 30px;
 `;
 
 export const InfoContainer = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 25px 0px 25px 145px;
-  width: 100%;
+  width: 80%;
   height: 100%;
   cursor: pointer;
 `;
@@ -228,4 +225,18 @@ export const PaginationItemArrow = styled.div<PaginationItemProps>`
   border-left: ${(props) => !props.isLeft && 'none'};
   cursor: pointer;
   user-select: none;
+`;
+export const LocationValue = styled.div`
+  /* margin-top: -1px; */
+  color: ${THEME.GRAY_FONT};
+  /* max-height: 60px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
+  line-height: 1.4em;
+  height: 1.4em;
 `;
