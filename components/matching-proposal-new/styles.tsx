@@ -235,7 +235,6 @@ export const ClockSelect = styled.div`
 export const ProfileImageContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 32px 25px;
   ${FLEX_ROW_CENTER_START};
 `;
 
