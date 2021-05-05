@@ -4,6 +4,7 @@ import { CareCenter } from '../model/care-center';
 export const CareCenterStateContext = createContext({
   isValidating: true,
   isLoggedIn: false,
+  isLoggedOut: false,
 } as any);
 
 export const CareCenterDispatchContext = createContext(null);
@@ -14,9 +15,10 @@ const reducer = (state: any, action: any) => {
       return {
         isValidating: false,
         isLoggedIn: false,
+        isLoggedOut: true,
       };
     case 'LOGIN':
-      return { ...action.payload, isValidating: false, isLoggedIn: true };
+      return { ...action.payload, isValidating: false, isLoggedIn: true, isLoggedOut: false };
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }

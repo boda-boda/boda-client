@@ -8,8 +8,10 @@ export const usePrivatePage = (careCenter: CareCenter) => {
   useEffect(() => {
     if (careCenter.isValidating) return;
     if (!careCenter.isLoggedIn) {
-      alert('로그인이 필요합니다.');
-      router.push('/');
+      if (!careCenter.isLoggedOut) {
+        alert('로그인이 필요합니다.');
+      }
+      router.replace('/');
     }
   }, [careCenter]);
 
