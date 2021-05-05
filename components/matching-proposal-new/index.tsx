@@ -1,193 +1,79 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import MinusIconSVG from '../../svgs/minus-icon-svg';
-import PlusIconSVG from '../../svgs/plus-icon-svg';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
-import {
-  CAPABILITY,
-  CARE_INFO_LIST,
-  DAY_LIST,
-  FAMILY_TYPE,
-  NURSING_GRADE,
-  RELIGION_LIST,
-  WORKER_MAN_SMALL_IMAGE_URL,
-  WORKER_WOMAN_SMALL_IMAGE_URL,
-} from '../../constant';
+import { CAPABILITY } from '../../constant';
 import axios from 'axios';
-import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
 import { useCareCenter } from '../../context/care-center';
-import {
-  CareWorkerSchedule,
-  toggleDayOfCareWorkerSchedule,
-} from '../../model/care-worker-schedule';
-import { DayType } from '../../common/types/date';
 import CloseIconSVG from '../../svgs/close-icon-svg';
 import Recipient from '../../model/recipient';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import { useRouter } from 'next/router';
-import CreateRecipientRequest from '../recipients-edit/model/create-recipient-request';
-import { RecipientTime, toggleDayOfRecipientTime } from '../../model/recipient-time';
 import EtcSVG from '../../svgs/etc-svg';
 import LocationIconSVG from '../../svgs/location-icom-svg';
+import CreateMatchingProposalReqeust from './model/create-matching-proposal-request';
+import { validateMatchingProposal } from '../../common/lib/validate';
+import { route } from 'next/dist/next-server/server/router';
 
 interface MatchingProposalProps {
   isFilled: boolean;
 }
 
+const getInfoItemsEtc = (infoList: any[]) => {
+  const wordLimit = 16;
+  const itemLimit = 7;
+  const LENGTH = infoList.reduce((sum, item) => sum + item.key.length, 0);
+  if (LENGTH <= wordLimit)
+    return infoList
+      ?.filter((meta) => meta.type === CAPABILITY)
+      .map((meta, index) => {
+        return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
+      });
+  else
+    return (
+      <>
+        {infoList
+          ?.slice(0, itemLimit)
+          .filter((meta) => meta.type === CAPABILITY)
+          .map((meta, index) => {
+            return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
+          })}
+        <EtcSVG />
+      </>
+    );
+};
+
 export default function MatchingProposalNew({ isFilled }: MatchingProposalProps) {
   const careCenter = useCareCenter();
+
   const router = useRouter();
 
-  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
-  const [selectedFamilyType, setSelectedFamilyType] = useState('');
-  const [schedules, setSchedules] = useState([RecipientTime.noArgsConstructor()]);
-
   const [recipient, setRecipient] = useState(new Recipient());
-
-  const [rerender, setRerender] = useState(false);
-  const [isLoadModalOn, setIsLoadModalOn] = useState(false);
-
-  const [memo, setMemo] = useState('');
-  const memoRef = useRef<HTMLTextAreaElement>(null);
-
-  const getInfoItemsEtc = (infoList: any[]) => {
-    const wordLimit = 16;
-    const itemLimit = 7;
-    const LENGTH = infoList.reduce((sum, item) => sum + item.key.length, 0);
-    if (LENGTH <= wordLimit)
-      return infoList
-        ?.filter((meta) => meta.type === CAPABILITY)
-        .map((meta, index) => {
-          return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
-        });
-    else
-      return (
-        <>
-          {infoList
-            ?.slice(0, itemLimit)
-            .filter((meta) => meta.type === CAPABILITY)
-            .map((meta, index) => {
-              return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
-            })}
-          <EtcSVG />
-        </>
-      );
-  };
-
-  const handleUpdateRecipient = useCallback(
-    (key: keyof CreateRecipientRequest) => (e: any) => {
-      setRecipient({
-        ...recipient,
-        [key]: e.target.value,
-      });
-    },
-    [recipient]
-  );
-
-  const handleUpdateGender = useCallback(
-    (isFemale: boolean) => () => {
-      if (
-        recipient.profile !== WORKER_MAN_SMALL_IMAGE_URL &&
-        recipient.profile !== WORKER_WOMAN_SMALL_IMAGE_URL
-      ) {
-        setRecipient({ ...recipient, isFemale });
-        return;
-      }
-
-      setRecipient({
-        ...recipient,
-        isFemale,
-        profile: isFemale ? WORKER_WOMAN_SMALL_IMAGE_URL : WORKER_MAN_SMALL_IMAGE_URL,
-      });
-    },
-    [recipient]
-  );
-
-  const handleUpdateAge = useCallback(
-    (e: any) => {
-      setRecipient({ ...recipient, age: parseInt(e.target.value) });
-    },
-    [recipient]
-  );
-
-  const handleDeleteCurrentAddressRecipient = async () => {
-    if (!window.confirm('현재 입력된 주소를 삭제하시겠습니까?')) return;
-
-    setRecipient({
-      ...recipient,
-      zipCode: '',
-      address: '',
-      detailAddress: '',
-    });
-  };
-
-  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...schedules];
-    toggleDayOfRecipientTime(newSchedules[selectedDaysIndex], day);
-    setSchedules(newSchedules);
-  };
-
-  useEffect(() => {
-    if (!memoRef.current) return;
-    memoRef.current!.style.height = 'auto';
-    memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
-  }, [memo]);
-
-  const openAddressModal = () => {
-    if (!window.daum) {
-      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
-      return;
-    }
-    new window.daum.Postcode({
-      oncomplete: function (data: any) {
-        setRecipient({
-          ...recipient,
-          zipCode: data.zonecode,
-          address: data.roadAddress,
-        });
-      },
-    }).open();
-  };
-
-  const openAddressModalRecipient = () => {
-    if (!window.daum) {
-      alert('주소 검색 서비스 연결이 원활하지 않습니다.');
-      return;
-    }
-    new window.daum.Postcode({
-      oncomplete: function (data: any) {
-        setRecipient({
-          ...recipient,
-          zipCode: data.zonecode,
-          address: data.roadAddress,
-        });
-      },
-    }).open();
-  };
-
-  const onChangeImage = async (e: any) => {
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-
-    try {
-      const axiosInstance = axios.create({
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      const response = await axiosInstance.post('/care-worker/profile', formData);
-      setRecipient({
-        ...recipient,
-        profile: response.data.Location,
-      });
-    } catch {
-      alert('이미지 업로드에 실패하였습니다. 잠시후 다시 시도해주세요.');
-    }
-  };
-
   const [recipients, setRecipients] = useState([] as Recipient[]);
+  const [matchingProposal, setMatchingProposal] = useState(new CreateMatchingProposalReqeust());
+
+  console.log(JSON.stringify(matchingProposal));
+
+  const updateMatchingProposal = useCallback(
+    (meta: keyof CreateMatchingProposalReqeust) => (e: any) => {
+      setMatchingProposal({
+        ...matchingProposal,
+        [meta]: e.target.value,
+      });
+    },
+    [matchingProposal]
+  );
+
+  const updateHourlyWage = useCallback(
+    (e: any) => {
+      setMatchingProposal({
+        ...matchingProposal,
+        hourlyWage: parseInt(e.target.value),
+      });
+    },
+    [matchingProposal]
+  );
+
+  const [isLoadModalOn, setIsLoadModalOn] = useState(false);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
@@ -200,13 +86,47 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
     })();
   }, [careCenter]);
 
+  useEffect(() => {
+    if (careCenter.isValidating || !careCenter.isLoggedIn) return;
+
+    if (!router.query.ID) {
+      router.push('/search');
+      return;
+    }
+
+    setMatchingProposal({
+      ...matchingProposal,
+      outerCareWorkerId: router.query.ID.toString(),
+    });
+  }, [careCenter, router]);
+
   const onClickRecipient = useCallback(
     (recipient: Recipient) => () => {
       setRecipient(recipient);
-      setIsLoadModalOn(false);
+      setMatchingProposal({
+        ...matchingProposal,
+        recipientId: recipient.id,
+      }),
+        setIsLoadModalOn(false);
     },
-    [recipients]
+    [recipients, matchingProposal]
   );
+
+  const handleCreateMatchingProposal = useCallback(async () => {
+    if (!validateMatchingProposal(matchingProposal)) return;
+
+    try {
+      const response = await axios.post('/matching-proposal', matchingProposal);
+      console.log(response.data);
+    } catch (e) {
+      console.log(e.response);
+      return;
+    }
+
+    alert('매칭 제안서가 발송되었습니다.');
+    router.push('/proposal-list');
+    return;
+  }, [matchingProposal]);
 
   return (
     <>
@@ -308,9 +228,12 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                   <th>시급</th>
                   <td>
                     <S.InfoInput
-                      value={recipient.hourlyWage}
-                      onChange={handleUpdateRecipient('hourlyWage')}
+                      type="number"
+                      min={0}
+                      value={matchingProposal.hourlyWage}
+                      onChange={updateHourlyWage}
                       className="money"
+                      placeholder="예시) 11500"
                     ></S.InfoInput>
                     원
                   </td>
@@ -319,9 +242,9 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                   <th>비고</th>
                   <td>
                     <S.TextArea
-                      value={recipient.note}
-                      onChange={handleUpdateRecipient('note')}
-                      placeholder=""
+                      value={matchingProposal.description}
+                      onChange={updateMatchingProposal('description')}
+                      placeholder="예시) RFID 태그 꼭 찍어주세요."
                     />
                   </td>
                 </tr>
@@ -329,7 +252,9 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
             </S.Table>
           </S.Section>
           <S.CompleteSection>
-            <S.FinishButton>매칭 제안서 보내기</S.FinishButton>
+            <S.FinishButton onClick={handleCreateMatchingProposal}>
+              매칭 제안서 보내기
+            </S.FinishButton>
           </S.CompleteSection>
           {isLoadModalOn && (
             <S.LoginModalLayout>

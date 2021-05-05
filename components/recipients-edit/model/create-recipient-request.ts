@@ -51,7 +51,7 @@ export default class CreateRecipientRequest {
       '',
       '',
       0,
-      '독거',
+      '',
       '',
       ''
     );

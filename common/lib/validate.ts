@@ -1,4 +1,5 @@
 import CreateCareGiverRequest from '../../components/care-giver-edit/model/create-care-giver-request';
+import CreateMatchingProposalRequest from '../../components/matching-proposal-new/model/create-matching-proposal-request';
 import CreateRecipientRequest from '../../components/recipients-edit/model/create-recipient-request';
 import CenterUpdateRequest from '../../views/my-center-edit-view/model/center-update-request';
 
@@ -91,6 +92,27 @@ export const validateCareCenter = (createCareCenterRequest: CenterUpdateRequest)
 
   if (validatePhoneNumber(phoneNumber)) {
     alert(validatePhoneNumber(phoneNumber));
+    return false;
+  }
+
+  return true;
+};
+
+export const validateMatchingProposal = (matchingProposal: CreateMatchingProposalRequest) => {
+  const { recipientId, hourlyWage } = matchingProposal;
+
+  if (!recipientId) {
+    alert('수급자를 선택해 주세요.');
+    return false;
+  }
+
+  if (hourlyWage !== 0 && !hourlyWage) {
+    alert('시급을 입력해 주세요.');
+    return false;
+  }
+
+  if (hourlyWage <= -1) {
+    alert('올바른 시급을 입력해 주세요.');
     return false;
   }
 
