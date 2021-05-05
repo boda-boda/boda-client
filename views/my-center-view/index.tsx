@@ -10,9 +10,12 @@ import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 import Head from 'next/head';
 import { useEditPassword } from './hooks';
+import { usePrivatePage } from '../../common/hooks/private-page';
 
 export default function MyCenterView() {
   const { careCenter } = useCareCenter();
+  usePrivatePage(useCareCenter());
+
   const [imageIndex, setImageIndex] = useState(0);
   const {
     isPasswordModalOn,
