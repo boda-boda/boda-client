@@ -104,7 +104,8 @@ export default function RecipientsDetail() {
                     <tr>
                       <th>주소</th>
                       <td colSpan={3}>
-                        {recipient.address} {recipient.detailAddress}
+                        {recipient.zipCode &&
+                          `(${recipient.zipCode}) ${recipient.address} ${recipient.detailAddress}`}
                       </td>
                     </tr>
                     <tr>

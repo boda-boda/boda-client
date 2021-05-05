@@ -105,7 +105,7 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                       value={recipient.age || ''}
                       onChange={handleUpdateAge}
                       type="text"
-                      placeholder="예시) 12"
+                      placeholder="예시) 70"
                     />
                   </td>
                   <th>휴대전화</th>
