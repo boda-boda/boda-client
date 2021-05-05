@@ -36,7 +36,7 @@ const proposal = {
     detailAddress: '101호',
     age: 99,
     birthDay: '1922-08-21',
-    schedule: '월 화 수 목 금 9:00 - 12:00',
+    serviceTime: '월 화 수 목 금 9:00 - 12:00',
     recipientMetas: [
       { type: CAPABILITY, key: '휠체어어', value: '' },
       { type: CAPABILITY, key: '휠체어어', value: '' },
@@ -135,14 +135,22 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                   <td className="right">{proposal.recipient.gender}자</td>
                 </tr>
                 <tr>
-                  <th>등급</th>
-                  <td className="select left">{proposal.recipient.grade}등급</td>
                   <th>나이</th>
                   <td className="right">{proposal.recipient.age}세</td>
+                  <th>등급</th>
+                  <td className="select left">{proposal.recipient.grade}등급</td>
                 </tr>
                 <tr>
-                  <th>돌봄 시간</th>
-                  <td colSpan={3}>{proposal.recipient.schedule}</td>
+                  <th>거주 형태</th>
+                  <td colSpan={1} className="wide">
+                    {proposal.recipient.familyType}
+                  </td>
+                  <th>종교</th>
+                  <td colSpan={1} className="">
+                    {proposal.recipient.recipientMetas
+                      .filter((meta) => meta.type === RELIGION)
+                      .map((religion) => religion.key)}
+                  </td>
                 </tr>
                 <tr>
                   <th rowSpan={1}>주소</th>
@@ -151,26 +159,8 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                   </td>
                 </tr>
                 <tr>
-                  <th>거주 형태</th>
-                  <td colSpan={1} className="wide">
-                    <S.TdFlexBox>
-                      <S.ToggleButton>{proposal.recipient.familyType}</S.ToggleButton>
-                    </S.TdFlexBox>
-                  </td>
-                  <th>종교</th>
-                  <td colSpan={1} className="">
-                    <S.TdFlexBox>
-                      {proposal.recipient.recipientMetas
-                        .filter((meta) => meta.type === RELIGION)
-                        .map((religion, index) => {
-                          return (
-                            <S.ToggleButton key={`religion-${index}`}>
-                              {religion.key}
-                            </S.ToggleButton>
-                          );
-                        })}
-                    </S.TdFlexBox>
-                  </td>
+                  <th>돌봄 시간</th>
+                  <td colSpan={3}>{proposal.recipient.serviceTime}</td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>
