@@ -66,7 +66,7 @@ export const validateCareWorker = (createCareGiverRequest: CreateCareGiverReques
 };
 
 export const validateRecipient = (createRecipientRequest: CreateRecipientRequest) => {
-  const { name, age, hourlyWage } = createRecipientRequest;
+  const { name, age } = createRecipientRequest;
 
   if (!name) {
     alert('이름을 입력해 주세요.');
@@ -75,11 +75,6 @@ export const validateRecipient = (createRecipientRequest: CreateRecipientRequest
 
   if (!age || age >= 150) {
     alert('올바른 나이를 입력해주세요');
-    return false;
-  }
-
-  if (!hourlyWage) {
-    alert('시급을 입력해주세요.');
     return false;
   }
 

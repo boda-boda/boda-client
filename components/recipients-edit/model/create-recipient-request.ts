@@ -14,7 +14,9 @@ export default class CreateRecipientRequest {
     description: string,
     note: string,
     hourlyWage: number,
-    familyType: string
+    familyType: string,
+    reilgion: string,
+    serviceTime: string
   ) {
     return new CreateRecipientRequest(
       name,
@@ -29,7 +31,9 @@ export default class CreateRecipientRequest {
       description,
       note,
       hourlyWage,
-      familyType
+      familyType,
+      reilgion,
+      serviceTime
     );
   }
 
@@ -47,7 +51,9 @@ export default class CreateRecipientRequest {
       '',
       '',
       0,
-      '독거'
+      '독거',
+      '',
+      ''
     );
   }
 
@@ -64,7 +70,9 @@ export default class CreateRecipientRequest {
     description: any,
     note: string,
     hourlyWage: number,
-    familyType: string
+    familyType: string,
+    religion: string,
+    serviceTime: string
   ) {
     this.name = name;
     this.isFemale = isFemale;
@@ -79,6 +87,8 @@ export default class CreateRecipientRequest {
     this.note = note;
     this.hourlyWage = hourlyWage;
     this.familyType = familyType;
+    this.religion = religion;
+    this.serviceTime = serviceTime;
   }
 
   public name: string;
@@ -94,4 +104,6 @@ export default class CreateRecipientRequest {
   public hourlyWage: number;
   public note: string;
   public familyType: string;
+  public religion: string;
+  public serviceTime: string;
 }

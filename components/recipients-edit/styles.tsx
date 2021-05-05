@@ -321,7 +321,7 @@ export const TdFlexBox = styled.div`
 `;
 
 export const DropDown = styled.select`
-  width: 192px;
+  width: 200px;
   height: 36px;
   padding: 0 0 0 10px;
   margin-right: 10px;
@@ -333,16 +333,14 @@ export const DropDown = styled.select`
     color: ${THEME.GRAY_FONT};
   }
 `;
-
 interface ToggleButtonProps {
   isSelected: boolean;
+  isLast?: boolean;
 }
-
 export const ToggleButton = styled.div<ToggleButtonProps>`
-  width: 36px;
-  padding: 0;
+  padding: 0 12px;
   height: 36px;
-  margin-right: 10px;
+  margin-right: ${(props) => (props.isLast ? '0' : '10px')};
   border-radius: 3px;
   background-color: ${(props) => (props.isSelected ? THEME.MAIN : 'white')};
   border: ${(props) =>

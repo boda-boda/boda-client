@@ -223,301 +223,86 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                 불러오기
               </S.CenterInfoUpdateButton>
             </S.SectionTitleContainer>
-            <S.InfoTable>
+            {!recipient.name && (
+              <S.NeedLoad
+                onClick={() => {
+                  setIsLoadModalOn(true);
+                }}
+              >
+                <S.NeedLoadModal>수급자 정보는 불러오기를 통해 입력할 수 있습니다.</S.NeedLoadModal>
+              </S.NeedLoad>
+            )}
+            <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={9} className="recipientProfile">
+                  <td rowSpan={8} className="profile">
                     <S.ProfileImageContainer>
                       <S.ProfileImage src={recipient.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">
-                    <S.InfoInput value={recipient.name} onChange={handleUpdateRecipient('name')} />
-                  </td>
+                  <td className="infovalue">{recipient.name}</td>
                   <th>성별</th>
-                  <td className="select right">
-                    <S.TdFlexBox>
-                      <S.ToggleButton
-                        isSelected={!recipient.isFemale}
-                        onClick={handleUpdateGender(false)}
-                        key={`GenderItem-man`}
-                      >
-                        남
-                      </S.ToggleButton>
-                      <S.ToggleButton
-                        isSelected={recipient.isFemale}
-                        onClick={handleUpdateGender(true)}
-                        key={`GenderItem-female`}
-                      >
-                        여
-                      </S.ToggleButton>
-                    </S.TdFlexBox>
+                  <td className="infovalue">
+                    {recipient.isFemale ? '여' : ''}
+                    {recipient.isFemale === false ? '남' : ''}
                   </td>
                 </tr>
                 <tr>
-                  <th>등급</th>
-                  <td className="select left">
-                    <S.DropDown
-                      onChange={(e) =>
-                        setRecipient({ ...recipient, grade: parseInt(e.target.value) })
-                      }
-                      value={recipient.grade}
-                    >
-                      <option value={''}>요양등급 선택</option>
-                      {NURSING_GRADE.map((grade, idx) => (
-                        <option key={`${grade}-${idx}`} value={idx + 1}>
-                          {grade}
-                        </option>
-                      ))}
-                    </S.DropDown>
-                  </td>
                   <th>나이</th>
-                  <td className="right">
-                    <S.InfoInput value={recipient.age} />
+                  <td className="infovalue">
+                    {recipient.age}
+                    {recipient.age && '세'}
                   </td>
-                </tr>
-                <tr>
-                  <th>돌봄 시간</th>
-                  <td style={{ padding: 0 }} colSpan={3}>
-                    {schedules.map((schedule, scheduleIndex) => {
-                      return (
-                        <S.TimeSelectContainer
-                          isLast={schedules.length - 1 === scheduleIndex}
-                          key={`timeselectcontainer-${scheduleIndex}`}
-                        >
-                          <S.TdFlexBox>
-                            {DAY_LIST.map((day) => {
-                              return (
-                                <S.ToggleButton
-                                  isSelected={schedule.days.includes(day)}
-                                  className="square"
-                                  onClick={() => toggleDays(scheduleIndex, day)}
-                                  key={`dayListItem-${day}`}
-                                >
-                                  {day}
-                                </S.ToggleButton>
-                              );
-                            })}
-                          </S.TdFlexBox>
-                          <S.TdFlexBox>
-                            <S.ClockSelectContainer>
-                              <S.ClockInput
-                                type="text"
-                                value={schedule.startHour ? schedule.startHour : 0}
-                                onChange={(e) => {
-                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.startHour = parseInt(currentHour);
-                                  if (schedule.startHour >= 100)
-                                    schedule.startHour = Math.floor(schedule.startHour / 10);
-                                  if (schedule.startHour >= 24 && schedule.startHour < 100)
-                                    schedule.startHour = 23;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              시
-                              <S.ClockInput
-                                type="text"
-                                value={schedule.startMinute ? schedule.startMinute : 0}
-                                onChange={(e) => {
-                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.startMinute = parseInt(currentMinute);
-                                  if (schedule.startMinute >= 100)
-                                    schedule.startMinute = Math.floor(schedule.startMinute / 10);
-                                  if (schedule.startMinute >= 60 && schedule.startMinute < 100)
-                                    schedule.startMinute = 59;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              분
-                            </S.ClockSelectContainer>
-                            부터
-                            <S.ClockSelectContainer>
-                              <S.ClockInput
-                                type="text"
-                                value={schedule.endHour ? schedule.endHour : 0}
-                                onChange={(e) => {
-                                  const currentHour = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.endHour = parseInt(currentHour);
-                                  if (schedule.endHour >= 100)
-                                    schedule.endHour = Math.floor(schedule.endHour / 10);
-                                  if (schedule.endHour >= 24 && schedule.endHour < 100)
-                                    schedule.endHour = 23;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              시
-                              <S.ClockInput
-                                type="text"
-                                value={schedule.endMinute ? schedule.endMinute : 0}
-                                onChange={(e) => {
-                                  const currentMinute = e.target.value.replace(/[^0-9]/g, '');
-                                  schedule.endMinute = parseInt(currentMinute);
-                                  if (schedule.endMinute >= 100)
-                                    schedule.endMinute = Math.floor(schedule.endMinute / 10);
-                                  if (schedule.endMinute >= 60 && schedule.endMinute < 100)
-                                    schedule.endMinute = 59;
-                                  setRerender(!rerender);
-                                }}
-                              />
-                              분
-                            </S.ClockSelectContainer>
-                            까지
-                          </S.TdFlexBox>
-                          <S.PlusMinusButtonContainer>
-                            <S.PlusMinusButton
-                              hide={schedules.length - 1 !== scheduleIndex}
-                              disabled={schedules.length - 1 !== scheduleIndex}
-                              onClick={() => {
-                                setSchedules([...schedules, RecipientTime.noArgsConstructor()]);
-                              }}
-                            >
-                              <PlusIconSVG />
-                            </S.PlusMinusButton>
-                            <S.PlusMinusButton
-                              onClick={() => {
-                                if (schedules.length === 1) {
-                                  setSchedules([...schedules, RecipientTime.noArgsConstructor()]);
-                                }
-                                setSchedules((schedules) =>
-                                  schedules.filter((_, i) => i !== scheduleIndex)
-                                );
-                              }}
-                            >
-                              <MinusIconSVG />
-                            </S.PlusMinusButton>
-                          </S.PlusMinusButtonContainer>
-                        </S.TimeSelectContainer>
-                      );
-                    })}
-                  </td>
-                </tr>
-                <tr>
-                  <th rowSpan={2}>주소</th>
-                  <td colSpan={3}>
-                    <S.TextInput
-                      type="text"
-                      readOnly
-                      value={recipient.zipCode}
-                      onClick={openAddressModalRecipient}
-                      withButton
-                    />
-                    <S.AddressButton onClick={openAddressModalRecipient}>주소 검색</S.AddressButton>
-                    <S.AddressDeleteButton onClick={handleDeleteCurrentAddressRecipient}>
-                      주소 초기화
-                    </S.AddressDeleteButton>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <S.TextInput type="text" value={recipient.address} long readOnly disabled />
-                  </td>
-                  <td colSpan={3}>
-                    <S.TextInput
-                      type="text"
-                      value={recipient.detailAddress}
-                      onChange={handleUpdateRecipient('detailAddress')}
-                      readOnly={recipient.address === ''}
-                      long
-                      placeholder="상세주소 입력"
-                    />
+                  <th>등급</th>
+                  <td className="infovalue">
+                    {recipient.grade}
+                    {recipient.grade && '등급'}
                   </td>
                 </tr>
                 <tr>
                   <th>거주 형태</th>
-                  <td colSpan={3} className="wide">
-                    <S.TdFlexBox>
-                      {FAMILY_TYPE.map((familyType, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedFamilyType.indexOf(familyType) !== -1}
-                            onClick={() => {
-                              if (selectedFamilyType !== familyType) {
-                                setSelectedFamilyType(familyType);
-                              } else {
-                                setSelectedFamilyType('');
-                              }
-                            }}
-                            key={`familyTypeItem-${index}`}
-                          >
-                            {familyType}
-                          </S.ToggleButton>
-                        );
-                      })}
-                    </S.TdFlexBox>
+                  <td>{recipient.familyType}</td>
+                  <th>종교</th>
+                  <td>{recipient.religion}</td>
+                </tr>
+                <tr>
+                  <th>돌봄 시간</th>
+                  <td colSpan={3}>{recipient.serviceTime}</td>
+                </tr>
+                <tr>
+                  <th>주소</th>
+                  <td colSpan={3}>
+                    {recipient.address} {recipient.detailAddress}
                   </td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>
-                  <td colSpan={3} className="wide overtd">
-                    <S.TdFlexBox>
-                      {CARE_INFO_LIST.map((careInfo, index) => {
-                        return (
-                          <S.ToggleButton
-                            className="overitems"
-                            isSelected={selectedCareInfo.indexOf(careInfo) !== -1}
-                            onClick={() => {
-                              if (selectedCareInfo.indexOf(careInfo) === -1) {
-                                setSelectedCareInfo([...selectedCareInfo, careInfo]);
-                              } else {
-                                setSelectedCareInfo((selectedCareInfo) =>
-                                  selectedCareInfo.filter(
-                                    (targetCareInfo) => careInfo !== targetCareInfo
-                                  )
-                                );
-                              }
-                            }}
-                            key={`careInfoListItem-${index}`}
-                          >
-                            {careInfo}
-                          </S.ToggleButton>
-                        );
-                      })}
-                    </S.TdFlexBox>
-                  </td>
-                </tr>
-                <tr>
-                  <th>종교</th>
-                  <td colSpan={3} className="wide">
-                    <S.TdFlexBox>
-                      {RELIGION_LIST.map((religion, index) => {
-                        return (
-                          <S.ToggleButton
-                            isSelected={selectedReligionInfo.indexOf(religion) !== -1}
-                            onClick={() => {
-                              if (selectedReligionInfo.indexOf(religion) === -1) {
-                                setSelectedReligionInfo([...selectedReligionInfo, religion]);
-                              } else {
-                                setSelectedReligionInfo((selectedReligionInfo) =>
-                                  selectedReligionInfo.filter(
-                                    (targetReligionInfo) => religion !== targetReligionInfo
-                                  )
-                                );
-                              }
-                            }}
-                            key={`personalityInfoListItem-${index}`}
-                          >
-                            {religion}
-                          </S.ToggleButton>
-                        );
-                      })}
-                    </S.TdFlexBox>
+                  <td colSpan={3} className="personality">
+                    <S.AvailabilityInfoList>
+                      {recipient.recipientMetas &&
+                        recipient.recipientMetas
+                          .filter((meta) => meta.type === CAPABILITY)
+                          .map((meta, i) => (
+                            <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
+                              {meta.key}
+                            </S.AvailabilityInfoItem>
+                          ))}
+                    </S.AvailabilityInfoList>
                   </td>
                 </tr>
                 <tr>
                   <th>세부 사항</th>
-                  <td colSpan={3} className="select wide">
-                    <S.TextArea placeholder="수급자의 세부 요구사항을 작성해주세요." />
-                  </td>
+                  <td colSpan={3}>{recipient.description}</td>
                 </tr>
               </tbody>
-            </S.InfoTable>
+            </S.Table>
           </S.Section>
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>기타</S.SectionTitle>
             </S.SectionTitleContainer>
-            <S.InfoTable>
+            <S.Table>
               <tbody>
                 <tr>
                   <th>시급</th>
@@ -541,7 +326,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                   </td>
                 </tr>
               </tbody>
-            </S.InfoTable>
+            </S.Table>
           </S.Section>
           <S.CompleteSection>
             <S.FinishButton>매칭 제안서 보내기</S.FinishButton>

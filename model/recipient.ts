@@ -18,6 +18,8 @@ export default class Recipient {
   public hourlyWage: number;
   public note: string;
   public familyType: string;
+  public religion: string;
+  public serviceTime: string;
 
   public recipientTime: RecipientTime[];
 }

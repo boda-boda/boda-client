@@ -55,21 +55,19 @@ export const SectionTitle = styled.div`
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
-export const InfoTable = styled.table`
+export const Table = styled.table`
   width: 100%;
-  margin-top: 5px;
+  margin-top: 10px;
   border-top: 2px solid ${THEME.MAIN};
   border-collapse: collapse;
-  table-layout: fixed;
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 12px;
+    padding: 20px 12px;
     color: ${THEME.GRAY_FONT};
     font-size: 14px;
     text-align: left;
     vertical-align: middle;
-    table-layout: fixed;
   }
   th {
     width: 84px;
@@ -78,36 +76,37 @@ export const InfoTable = styled.table`
     font-weight: 500;
   }
   .profile {
-    padding: 32px 0;
-    width: 168px;
-    vertical-align: middle;
-  }
-  .recipientProfile {
     width: 168px;
     vertical-align: top;
-    padding: 32px 25px 0 25px;
+    padding-top: 30px;
   }
-  .left {
-    width: 336px;
+  .personality {
+    padding: 0 12px;
+  }
+  .career {
+    width: 25%;
+    text-align: center;
+    border-right: 1px solid ${THEME.GRAY_LINE};
+  }
+  .long {
+    width: 50%;
+  }
+  th.career {
+    padding: 13px 0;
+  }
+  .area {
+    width: 33.3333%;
+    text-align: center;
+    border-right: 1px solid ${THEME.GRAY_LINE};
   }
   .right {
-    width: 306px;
+    border-right: none;
   }
-  .wide {
-    width: 726px;
+  .memo {
+    padding: 24px 12px;
   }
-
-  .select {
-    padding: 12px;
-  }
-  .overtd {
-    padding: 2px 0 12px 12px;
-  }
-  .overitems {
-    margin-top: 10px;
-  }
-  .money {
-    margin-right: 5px;
+  .infovalue {
+    width: 330px;
   }
 `;
 
@@ -685,4 +684,47 @@ export const MemoValue = styled.div`
   word-wrap: break-word;
   line-height: 1.2em;
   height: 2.4em;
+`;
+
+export const AvailabilityInfoList = styled.div`
+  width: 100%;
+  ${FLEX_ROW_START_CENTER};
+`;
+
+export const AvailabilityInfoItem = styled.div`
+  padding: 0 12px;
+  height: 36px;
+  margin-right: 10px;
+  border-radius: 3px;
+  border: 1px solid ${THEME.GRAY_LINE};
+  color: ${THEME.GRAY_FONT};
+  ${FLEX_ROW_CENTER_CENTER};
+`;
+
+export const NeedLoad = styled.div`
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 100%;
+  height: 431px;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+  ${FLEX_COLUMN_CENTER_CENTER};
+  cursor: pointer;
+`;
+
+export const NeedLoadModal = styled.div`
+  width: 500px;
+  height: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  color: ${THEME.GRAY_FONT};
+  font-size: 24px;
+  font-weight: 500;
+  /* padding: 0 50px; */
+  text-align: center;
+  word-break: keep-all;
+  filter: blur(0px);
+  ${FLEX_COLUMN_CENTER_CENTER};
 `;

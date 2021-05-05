@@ -73,31 +73,33 @@ export default function RecipientsDetail() {
                 <S.Table>
                   <tbody>
                     <tr>
-                      <td rowSpan={7} className="profile">
+                      <td rowSpan={8} className="profile">
                         <S.ProfileImageContainer>
                           <S.ProfileImage src={recipient.profile} />
                         </S.ProfileImageContainer>
                       </td>
                       <th>이름</th>
                       <td className="infovalue">{recipient.name}</td>
-                      <th>나이</th>
-                      <td className="infovalue">{recipient.age}세</td>
-                    </tr>
-                    <tr>
                       <th>성별</th>
                       <td className="infovalue">{recipient.isFemale ? '여' : '남'}</td>
+                    </tr>
+                    <tr>
+                      <th>나이</th>
+                      <td className="infovalue">{recipient.age}세</td>
                       <th>휴대전화</th>
                       <td className="infovalue">{recipient.phoneNumber}</td>
                     </tr>
                     <tr>
                       <th>등급</th>
                       <td className="infovalue">{recipient.grade}등급</td>
-                      <th>거주 형태</th>
-                      <td>{recipient.familyType}</td>
+                      <th>종교</th>
+                      <td>{recipient.religion}</td>
                     </tr>
                     <tr>
+                      <th>거주 형태</th>
+                      <td>{recipient.familyType}</td>
                       <th>돌봄 시간</th>
-                      <td colSpan={3}>{recipient.recipientTime}</td>
+                      <td>{recipient.serviceTime}</td>
                     </tr>
                     <tr>
                       <th>주소</th>
