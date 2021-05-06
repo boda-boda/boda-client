@@ -104,7 +104,7 @@ export default function Header() {
                   handleMenuClick(2);
                 }}
               >
-                나의 센터 정보
+                나의 센터 관리
                 {isMenuModalOn[2] ? (
                   <>
                     <ArrowUp />
@@ -115,6 +115,10 @@ export default function Header() {
                       <S.MenuBar />
                       <Link href="/recipients" passHref>
                         <S.StyledLink>수급자 관리</S.StyledLink>
+                      </Link>
+                      <S.MenuBar />
+                      <Link href="/compliment-list" passHref>
+                        <S.StyledLink>칭찬 관리</S.StyledLink>
                       </Link>
                       <S.MenuBar />
                       <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
