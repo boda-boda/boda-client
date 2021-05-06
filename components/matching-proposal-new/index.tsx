@@ -51,8 +51,6 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
   const [recipients, setRecipients] = useState([] as Recipient[]);
   const [matchingProposal, setMatchingProposal] = useState(new CreateMatchingProposalReqeust());
 
-  console.log(JSON.stringify(matchingProposal));
-
   const updateMatchingProposal = useCallback(
     (meta: keyof CreateMatchingProposalReqeust) => (e: any) => {
       setMatchingProposal({
@@ -117,9 +115,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
 
     try {
       const response = await axios.post('/matching-proposal', matchingProposal);
-      console.log(response.data);
     } catch (e) {
-      console.log(e.response);
       return;
     }
 

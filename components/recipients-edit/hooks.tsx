@@ -190,7 +190,6 @@ export const useRecipientsUpsert = (isNew: boolean) => {
         recipientCapabilities,
       });
     } catch (e) {
-      console.log(recipientCapabilities);
       alert('수급자 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
@@ -206,8 +205,6 @@ export const useRecipientsUpsert = (isNew: boolean) => {
     if (!window.confirm('해당 변경사항을 저장하시겠습니까?')) return;
 
     try {
-      console.log(recipientCapabilities);
-
       await axios.put(`/recipient/${router.query.ID}`, {
         id,
         ...recipient,
