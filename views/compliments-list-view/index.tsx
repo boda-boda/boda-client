@@ -28,7 +28,6 @@ export default function ComplimentsList() {
   const [convertedCareWorkers, setConvertedCareWorkers] = useState([] as any[]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
 
   const getPaginationBarNumbers = () => {
@@ -38,8 +37,6 @@ export default function ComplimentsList() {
       return range(maxPage - 4, maxPage);
     } else return range(currentPage - 2, currentPage + 2);
   };
-
-  const maxPageNumber = Math.ceil(convertedCareWorkers.length / careWorkersPerPage);
 
   useEffect(() => {
     if (careCenter.isValidating || !careCenter.isLoggedIn) return;
