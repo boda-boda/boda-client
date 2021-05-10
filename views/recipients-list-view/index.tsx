@@ -66,7 +66,7 @@ export default function ReciepientsList() {
               title="수급자 관리"
               subtitle="요양보호사 매칭이 필요한 수급자 정보를 등록하여 제안서 작성에 활용할 수 있습니다."
             />
-            <Category list={['홈', '나의 센터 정보', '수급자 관리 ']} />
+            <Category list={['홈', '나의 센터 관리', '수급자 관리 ']} />
           </>
           <S.Section isBackgroundColored>
             <S.InnerContent>

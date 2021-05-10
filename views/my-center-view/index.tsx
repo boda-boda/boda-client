@@ -40,7 +40,7 @@ export default function MyCenterView() {
             title="나의 센터 정보"
             subtitle="우리 센터 정보를 등록할 수 있습니다."
           />
-          <Category list={['홈', '나의 센터 정보']} />
+          <Category list={['홈', '나의 센터 관리', '나의 센터 정보']} />
           <S.InnerContent>
             <S.MyCenterPage>
               <S.Section>

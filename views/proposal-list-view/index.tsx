@@ -270,7 +270,7 @@ export default function ProposalList() {
               title="매칭 제안서 목록"
               subtitle="내가 발송한 제안서 목록을 확인할 수 있습니다."
             />
-            <Category list={['홈', '나의 센터 정보', '매칭 제안서 목록 ']} />
+            <Category list={['홈', '나의 센터 관리', '매칭 제안서 목록 ']} />
           </>
           <S.Section isBackgroundColored>
             <S.InnerContent>

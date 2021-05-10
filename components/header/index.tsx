@@ -83,6 +83,10 @@ export default function Header() {
                     <Link href="/new" passHref>
                       <S.StyledLink>요양보호사 추가</S.StyledLink>
                     </Link>
+                    <S.MenuBar />
+                    <Link href="/compliment-list" passHref>
+                      <S.StyledLink>요양보호사 칭찬</S.StyledLink>
+                    </Link>
                   </S.MenuModal>
                 </>
               ) : (
@@ -115,10 +119,6 @@ export default function Header() {
                       <S.MenuBar />
                       <Link href="/recipients" passHref>
                         <S.StyledLink>수급자 관리</S.StyledLink>
-                      </Link>
-                      <S.MenuBar />
-                      <Link href="/compliment-list" passHref>
-                        <S.StyledLink>칭찬 관리</S.StyledLink>
                       </Link>
                       <S.MenuBar />
                       <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>

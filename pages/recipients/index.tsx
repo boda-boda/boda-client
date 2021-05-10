@@ -1,5 +1,5 @@
-import RecipientsList from '../../views/recipients-list';
+import RecipientsList from '../../views/recipients-list-view';
 
-export default function CareGiverListPage() {
+export default function RecipientsListPage() {
   return <RecipientsList />;
 }
