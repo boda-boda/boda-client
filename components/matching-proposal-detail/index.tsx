@@ -20,6 +20,9 @@ import {
 } from '../../model/care-worker-schedule';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCareCenter } from '../../context/care-center';
+import axios from 'axios';
 
 interface MatchingProposalProps {
   isFilled?: boolean;
@@ -92,6 +95,9 @@ const PROPOSAL = {
 };
 
 export default function MatchingProposalDetail({ isFilled }: MatchingProposalProps) {
+  const router = useRouter();
+  const careCenter = useCareCenter();
+
   const [isWoman, setIsWoman] = useState(true);
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
@@ -102,12 +108,25 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+  const [matchingProposal, setMatchingProposal] = useState(null as any);
 
   useEffect(() => {
     if (!memoRef.current) return;
     memoRef.current!.style.height = 'auto';
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
+
+  useEffect(() => {
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+
+    (async () => {
+      const response = await axios.get(`/matching-proposal/${router.query.ID}`);
+      console.log(response.data);
+      setMatchingProposal(response.data);
+    })();
+  }, [router, careCenter]);
 
   return (
     <>

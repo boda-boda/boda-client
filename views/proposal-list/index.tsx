@@ -5,9 +5,7 @@ import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
-import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import Link from 'next/link';
-import Recipient from '../../model/recipient';
 import { CAPABILITY, MATCHING_PROPOSAL_STATUS, PAGINATION_LENGTH, RELIGION } from '../../constant';
 import { useCallback, useEffect, useState } from 'react';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
@@ -19,207 +17,6 @@ import EtcSVG from '../../svgs/etc-svg';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import MatchingProposal from '../../model/matching-proposal';
-
-// const proposals = [
-//   {
-//     id: '0',
-//     status: MATCHING_PROPOSAL_STATUS[0],
-//     pay: '11500',
-//     memo: 'RFID 태그 꼭 사용 부탁드립니다.',
-//     recipient: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동 목동남로4길 81',
-//       detailAddress: '101호',
-//       age: 99,
-//       birthDay: '1922-08-21',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       recipientMetas: [
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '치매자격증', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       familyType: '독거',
-//       description:
-//         '대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. 치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '김수급',
-//       profile:
-//         'https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png',
-//       residenceType: '독거',
-//     },
-//     caregiver: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동',
-//       detailAddress: '목동남로4길 81',
-//       age: 60,
-//       birthDay: '1962-08-21',
-//       availableTime: '오전',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       caregiverMetas: [
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       workArea: ['서대문구'],
-//       description:
-//         '약속을 잘 지키시며, 꼼꼼한 성격이시다. 말씀하시는 것을 좋아하셔서 대화를 잘 하신다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '요XX',
-//       phoneNumber: '010-7105-2344',
-//       profile:
-//         'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/15976dbd-3149-4331-a09d-58d9853668be_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1.jpg',
-//       residenceType: '독거',
-//     },
-//   },
-//   {
-//     id: '1',
-//     status: MATCHING_PROPOSAL_STATUS[2],
-//     pay: '11500',
-//     memo: 'RFID 태그 꼭 사용 부탁드립니다.',
-//     recipient: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동 목동남로4길 81',
-//       detailAddress: '101호',
-//       age: 99,
-//       birthDay: '1922-08-21',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       recipientMetas: [
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '치매자격증', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       familyType: '독거',
-//       description:
-//         '대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. 치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '김수급',
-//       profile:
-//         'https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png',
-//       residenceType: '독거',
-//     },
-//     caregiver: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동',
-//       detailAddress: '목동남로4길 81',
-//       age: 60,
-//       birthDay: '1962-08-21',
-//       availableTime: '오전',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       caregiverMetas: [
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       workArea: ['서대문구'],
-//       description:
-//         '약속을 잘 지키시며, 꼼꼼한 성격이시다. 말씀하시는 것을 좋아하셔서 대화를 잘 하신다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '요XX',
-//       phoneNumber: '010-7105-2344',
-//       profile:
-//         'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/15976dbd-3149-4331-a09d-58d9853668be_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1.jpg',
-//       residenceType: '독거',
-//     },
-//   },
-//   {
-//     id: '2',
-//     status: MATCHING_PROPOSAL_STATUS[1],
-//     pay: '11500',
-//     memo: 'RFID 태그 꼭 사용 부탁드립니다.',
-//     recipient: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동 목동남로4길 81',
-//       detailAddress: '101호',
-//       age: 99,
-//       birthDay: '1922-08-21',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       recipientMetas: [
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '휠체어어', value: '' },
-//         { type: CAPABILITY, key: '치매자격증', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       familyType: '독거',
-//       description:
-//         '대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. 치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '김수급',
-//       profile:
-//         'https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png',
-//       residenceType: '독거',
-//     },
-//     caregiver: {
-//       zipCode: '08018',
-//       address: '서울시 양천구 신정7동',
-//       detailAddress: '목동남로4길 81',
-//       age: 60,
-//       birthDay: '1962-08-21',
-//       availableTime: '오전',
-//       schedule: '월 화 수 목 금 9:00 - 12:00',
-//       caregiverMetas: [
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: CAPABILITY, key: '휠체어', value: '' },
-//         { type: RELIGION, key: '무교', value: '' },
-//       ],
-//       workArea: ['서대문구'],
-//       description:
-//         '약속을 잘 지키시며, 꼼꼼한 성격이시다. 말씀하시는 것을 좋아하셔서 대화를 잘 하신다.',
-//       grade: 3,
-//       gender: '여',
-//       id: 'asdf',
-//       name: '요XX',
-//       phoneNumber: '010-7105-2344',
-//       profile:
-//         'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/15976dbd-3149-4331-a09d-58d9853668be_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1.jpg',
-//       residenceType: '독거',
-//     },
-//   },
-// ] as any[];
 
 export default function ProposalList() {
   const careCenter = useCareCenter();
@@ -237,6 +34,7 @@ export default function ProposalList() {
     (async () => {
       try {
         const response = await axios.get('/matching-proposal');
+        console.log(response.data);
         setProposals(response.data);
       } catch (e) {}
     })();
@@ -342,7 +140,8 @@ export default function ProposalList() {
                                 <S.InfoContainer>
                                   <S.BasicInfo>
                                     {proposal.recipient.name} ({proposal.recipient.age}/
-                                    {proposal.recipient.gender[0]}/{proposal.recipient.grade}등급)
+                                    {proposal.recipient.isFemale ? '여' : '남'}/
+                                    {proposal.recipient.grade}등급)
                                   </S.BasicInfo>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
@@ -361,19 +160,6 @@ export default function ProposalList() {
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <CareInfoIconSVG />
-                                    </S.SVGIconBox>
-                                    <S.InfoType>요구 사항</S.InfoType>
-                                    <S.InfoItemList>
-                                      {getInfoItemsEtc(
-                                        proposal.recipient.recipientMetas.filter(
-                                          (meta) => meta.type === CAPABILITY
-                                        )
-                                      )}
-                                    </S.InfoItemList>
-                                  </S.InfoRow>
-                                  <S.InfoRow>
-                                    <S.SVGIconBox>
                                       <PhoneNumberIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>세부 사항</S.InfoType>
@@ -382,31 +168,18 @@ export default function ProposalList() {
                                 </S.InfoContainer>
                               </S.CardSection>
                               <S.CardSectionRight>
-                                <S.ProfileImage src={proposal.caregiver.profile} />
+                                <S.ProfileImage src={proposal.outerCareWorker.profile} />
                                 <S.InfoContainerRight>
                                   <S.BasicInfo>
-                                    {proposal.caregiver.name} ({proposal.caregiver.age}/
-                                    {proposal.caregiver.gender[0]}/{proposal.caregiver.grade}등급)
+                                    {proposal.outerCareWorker.name} ({proposal.outerCareWorker.age}/
+                                    {proposal.outerCareWorker.gender === '여성' ? '여' : '남'})
                                   </S.BasicInfo>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
                                       <PhoneNumberIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>위치</S.InfoType>
-                                    <S.InfoValue>{proposal.caregiver.address}</S.InfoValue>
-                                  </S.InfoRow>
-                                  <S.InfoRow>
-                                    <S.SVGIconBox>
-                                      <CareInfoIconSVG />
-                                    </S.SVGIconBox>
-                                    <S.InfoType>가능 조건</S.InfoType>
-                                    <S.InfoItemList>
-                                      {getInfoItemsEtc(
-                                        proposal.caregiver.caregiverMetas.filter(
-                                          (meta) => meta.type === CAPABILITY
-                                        )
-                                      )}
-                                    </S.InfoItemList>
+                                    <S.InfoValue>{proposal.outerCareWorker.address}</S.InfoValue>
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
@@ -414,7 +187,7 @@ export default function ProposalList() {
                                     </S.SVGIconBox>
                                     <S.InfoType>메모</S.InfoType>
                                     <S.MemoValueRight>
-                                      {proposal.caregiver.description}
+                                      {proposal.outerCareWorker.description}
                                     </S.MemoValueRight>
                                   </S.InfoRow>
                                 </S.InfoContainerRight>
