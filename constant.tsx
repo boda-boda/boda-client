@@ -219,8 +219,6 @@ export const LOCALSTORAGE_KEY = {
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';
 
-export const PRIVATE_ROUTES = ['/', '/new', '/list', '/list/[ID]', '/list/[ID]/edit', 'mycenter'];
-
 export const OUTER_CARE_WORKER_SCHEDULE_TYPES = ['오전', '오후', '종일'];
 
 export const dummyCareWorkers = [

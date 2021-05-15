@@ -6,7 +6,12 @@ import OuterCareGiverList from '../../components/outer-care-giver-list';
 import Head from 'next/head';
 import Category from '../../components/category';
 
+import { useCareCenter } from '../../context/care-center';
+import { usePrivatePage } from '../../common/hooks/private-page';
+
 function Search() {
+  usePrivatePage(useCareCenter());
+
   return (
     <>
       <Head>

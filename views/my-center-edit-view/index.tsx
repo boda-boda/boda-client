@@ -14,10 +14,12 @@ import { useRouter } from 'next/router';
 import { CareCenterMeta } from '../../model/care-center';
 import Head from 'next/head';
 import { validateCareCenter } from '../../common/lib/validate';
+import { usePrivatePage } from '../../common/hooks/private-page';
 
 export default function MyCenterView() {
   const router = useRouter();
   const careCenter = useCareCenter();
+  usePrivatePage(useCareCenter());
 
   const [imageIndex, setImageIndex] = useState(0);
   const [centerMetaImages, setCenterMetaImages] = useState([] as CareCenterMeta[]);
