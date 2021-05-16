@@ -156,7 +156,7 @@ export const InfoType = styled.div`
 `;
 
 export const InfoValue = styled.div`
-  /* margin-top: -1px; */
+  margin-top: 1px;
   color: ${THEME.GRAY_FONT};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -170,7 +170,7 @@ export const InfoValue = styled.div`
 `;
 
 export const MemoValue = styled.div`
-  /* margin-top: -1px; */
+  margin-top: 1px;
   color: ${THEME.GRAY_FONT};
   /* max-height: 60px; */
   overflow: hidden;
@@ -185,7 +185,7 @@ export const MemoValue = styled.div`
 `;
 
 export const MemoValueRight = styled.div`
-  /* margin-top: -1px; */
+  margin-top: 1px;
   color: ${THEME.GRAY_FONT};
   /* max-height: 60px; */
   overflow: hidden;

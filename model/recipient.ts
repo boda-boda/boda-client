@@ -19,7 +19,7 @@ export default class Recipient {
   public note: string;
   public familyType: string;
   public religion: string;
-  public serviceTime: string;
+  public schedule: string;
 
   public recipientTime: RecipientTime[];
 }

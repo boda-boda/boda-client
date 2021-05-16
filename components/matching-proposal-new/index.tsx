@@ -9,7 +9,7 @@ import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import { useRouter } from 'next/router';
 import EtcSVG from '../../svgs/etc-svg';
-import LocationIconSVG from '../../svgs/location-icom-svg';
+import LocationIconSVG from '../../svgs/location-icon-svg';
 import CreateMatchingProposalReqeust from './model/create-matching-proposal-request';
 import { validateMatchingProposal } from '../../common/lib/validate';
 import { route } from 'next/dist/next-server/server/router';
@@ -184,7 +184,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td colSpan={3}>{recipient.serviceTime}</td>
+                  <td colSpan={3}>{recipient.schedule}</td>
                 </tr>
                 <tr>
                   <th>주소</th>

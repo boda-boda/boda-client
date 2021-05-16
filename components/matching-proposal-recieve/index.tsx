@@ -36,7 +36,7 @@ const proposal = {
     detailAddress: '101호',
     age: 99,
     birthDay: '1922-08-21',
-    serviceTime: '월 화 수 목 금 9:00 - 12:00',
+    schedule: '월 화 수 목 금 9:00 - 12:00',
     recipientMetas: [
       { type: CAPABILITY, key: '휠체어어', value: '' },
       { type: CAPABILITY, key: '휠체어어', value: '' },
@@ -160,7 +160,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td colSpan={3}>{proposal.recipient.serviceTime}</td>
+                  <td colSpan={3}>{proposal.recipient.schedule}</td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>

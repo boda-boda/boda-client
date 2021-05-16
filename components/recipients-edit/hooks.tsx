@@ -73,7 +73,7 @@ export const useRecipientsUpsert = (isNew: boolean) => {
             c.hourlyWage,
             c.familyType,
             c.religion,
-            c.serviceTime
+            c.schedule
           )
         );
         setMemo(c.description);

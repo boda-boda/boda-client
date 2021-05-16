@@ -144,43 +144,41 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={PROPOSAL.recipient.profile} />
+                      <S.ProfileImage src={matchingProposal.recipient.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">{PROPOSAL.recipient.name}</td>
+                  <td className="left">{matchingProposal.recipient.name}</td>
                   <th>성별</th>
-                  <td className="right">{PROPOSAL.recipient.gender}자</td>
+                  <td className="right">{matchingProposal.recipient.isFemail ? '여자' : '남자'}</td>
                 </tr>
                 <tr>
                   <th>나이</th>
-                  <td className="right">{PROPOSAL.recipient.age}세</td>
+                  <td className="right">{matchingProposal.recipient.age}세</td>
                   <th>등급</th>
-                  <td className="select left">{PROPOSAL.recipient.grade}등급</td>
+                  <td className="select left">{matchingProposal.recipient.grade}등급</td>
                 </tr>
                 <tr>
                   <th>거주 형태</th>
                   <td colSpan={1} className="wide">
-                    {PROPOSAL.recipient.residenceType}
+                    {matchingProposal.recipient.familyType}
                   </td>
                   <th>종교</th>
                   <td colSpan={1} className="">
-                    {PROPOSAL.recipient.recipientMetas
-                      .filter((meta) => meta.type === RELIGION)
-                      .map((meta) => meta.key)}
+                    {matchingProposal.recipient.religion}
                   </td>
                 </tr>
                 <tr>
                   <th rowSpan={1}>주소</th>
                   <td colSpan={3}>
-                    ({PROPOSAL.recipient.zipCode}) {PROPOSAL.recipient.address}{' '}
-                    {PROPOSAL.recipient.detailAddress}
+                    ({matchingProposal.recipient.zipCode}) {matchingProposal.recipient.address}{' '}
+                    {matchingProposal.recipient.detailAddress}
                   </td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
                   <td colSpan={1} className="wide">
-                    {PROPOSAL.recipient.serviceTime}
+                    {matchingProposal.recipient.schedule}
                   </td>
                 </tr>
                 <tr>
@@ -206,7 +204,7 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    {PROPOSAL.recipient.description}
+                    {matchingProposal.recipient.description}
                   </td>
                 </tr>
               </tbody>
@@ -224,7 +222,7 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 </tr>
                 <tr>
                   <th>비고</th>
-                  <td>{PROPOSAL.memo}</td>
+                  <td>{matchingProposal.description}</td>
                 </tr>
               </tbody>
             </S.InfoTable>
@@ -238,21 +236,22 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={PROPOSAL.caregiver.profile} />
+                      <S.ProfileImage src={matchingProposal.outerCareWorker.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">{PROPOSAL.caregiver.name}</td>
+                  <td className="left">{matchingProposal.outerCareWorker.name}</td>
                   <th>성별</th>
-                  <td className="right">{PROPOSAL.caregiver.gender}자</td>
+                  <td className="right">{matchingProposal.outerCareWorker.gender}자</td>
                 </tr>
                 <tr>
                   <th>생년월일</th>
                   <td className="select left">
-                    {PROPOSAL.caregiver.birthDay} ({PROPOSAL.caregiver.age})세
+                    {matchingProposal.outerCareWorker.birthDay} (
+                    {matchingProposal.outerCareWorker.age})세
                   </td>
                   <th>돌봄 시간</th>
-                  <td className="right">{PROPOSAL.caregiver.availableTime}</td>
+                  <td className="right">{matchingProposal.outerCareWorker.availableTime}</td>
                 </tr>
                 <tr>
                   <th rowSpan={1}>주소</th>
@@ -297,7 +296,7 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <th>메모</th>
                   <td colSpan={3} className="select wide">
-                    {PROPOSAL.caregiver.description}
+                    {matchingProposal.outerCareWorker.description}
                   </td>
                 </tr>
               </tbody>

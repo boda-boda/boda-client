@@ -25,6 +25,7 @@ export default function RecipientsDetail() {
     (async () => {
       try {
         const response = await axios.get(`/recipient/${router.query.ID}`);
+        console.log(response.data);
         setRecipient(response.data);
       } catch (e) {
         router.push('/recipients');
@@ -99,7 +100,7 @@ export default function RecipientsDetail() {
                       <th>거주 형태</th>
                       <td>{recipient.familyType}</td>
                       <th>돌봄 시간</th>
-                      <td>{recipient.serviceTime}</td>
+                      <td>{recipient.schedule}</td>
                     </tr>
                     <tr>
                       <th>주소</th>

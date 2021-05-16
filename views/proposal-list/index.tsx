@@ -4,7 +4,6 @@ import Banner from '../../components/banner';
 import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
-import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 import Link from 'next/link';
 import { CAPABILITY, MATCHING_PROPOSAL_STATUS, PAGINATION_LENGTH, RELIGION } from '../../constant';
 import { useCallback, useEffect, useState } from 'react';
@@ -17,6 +16,10 @@ import EtcSVG from '../../svgs/etc-svg';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import MatchingProposal from '../../model/matching-proposal';
+import LocationIconSVG from '../../svgs/location-icon-svg';
+import PersonalityInfoIconSVG from '../../svgs/personality-info-icon-svg';
+import WorkTimeIconSVG from '../../svgs/work-time-icon-svg';
+import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 
 export default function ProposalList() {
   const careCenter = useCareCenter();
@@ -39,28 +42,6 @@ export default function ProposalList() {
       } catch (e) {}
     })();
   }, [careCenter]);
-
-  const getInfoItemsEtc = (infoList: any[]) => {
-    const LENGTH = infoList.reduce((sum, item) => sum + item.key.length, 0);
-    if (LENGTH <= 15)
-      return infoList
-        ?.filter((meta) => meta.type === CAPABILITY)
-        .map((meta, index) => {
-          return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
-        });
-    else
-      return (
-        <>
-          {infoList
-            ?.slice(0, 4)
-            .filter((meta) => meta.type === CAPABILITY)
-            .map((meta, index) => {
-              return <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>;
-            })}
-          <EtcSVG />
-        </>
-      );
-  };
 
   const getPaginationBarNumbers = useCallback(() => {
     return range(
@@ -145,7 +126,7 @@ export default function ProposalList() {
                                   </S.BasicInfo>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
+                                      <LocationIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>위치</S.InfoType>
                                     <S.InfoValue>{proposal.recipient.address}</S.InfoValue>
@@ -153,14 +134,21 @@ export default function ProposalList() {
 
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
+                                      <CareInfoIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>거주 형태</S.InfoType>
                                     <S.InfoValue>{proposal.recipient.familyType}</S.InfoValue>
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
+                                      <WorkTimeIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>돌봄 시간</S.InfoType>
+                                    <S.InfoValue>{proposal.recipient.schedule}</S.InfoValue>
+                                  </S.InfoRow>
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <PersonalityInfoIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>세부 사항</S.InfoType>
                                     <S.MemoValue>{proposal.recipient.description}</S.MemoValue>
@@ -176,14 +164,21 @@ export default function ProposalList() {
                                   </S.BasicInfo>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
+                                      <LocationIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>위치</S.InfoType>
                                     <S.InfoValue>{proposal.outerCareWorker.address}</S.InfoValue>
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <PhoneNumberIconSVG />
+                                      <WorkTimeIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>돌봄 시간</S.InfoType>
+                                    <S.InfoValue>{proposal.outerCareWorker.address}</S.InfoValue>
+                                  </S.InfoRow>
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <PersonalityInfoIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>메모</S.InfoType>
                                     <S.MemoValueRight>

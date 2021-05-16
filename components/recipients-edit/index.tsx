@@ -164,8 +164,8 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                   <th>돌봄 시간</th>
                   <td className="infovalue">
                     <S.TextInput
-                      value={recipient.serviceTime || ''}
-                      onChange={handleUpdateRecipient('serviceTime')}
+                      value={recipient.schedule || ''}
+                      onChange={handleUpdateRecipient('schedule')}
                       type="text"
                       placeholder="예시) 월~금 9-12"
                     />

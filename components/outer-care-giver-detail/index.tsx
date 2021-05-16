@@ -113,7 +113,7 @@ export default function OuterCareGiverDetail() {
                   <td className="infovalue">{careWorker.phoneNumber}</td>
                 </tr>
                 <tr>
-                  <th>시간</th>
+                  <th>돌봄 시간</th>
                   <td className="infovalue">
                     {careWorker.careWorkerSchedule ? careWorker.careWorkerSchedule : ''}
                   </td>
