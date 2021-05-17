@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCareCenter } from '../../context/care-center';
 import axios from 'axios';
+import MatchingProposalDetailRequest from './model/matching-proposal-detail-request';
 
 interface MatchingProposalProps {
   isFilled?: boolean;
@@ -108,15 +109,19 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
-  const [matchingProposal, setMatchingProposal] = useState(null as any);
+  const [matchingProposal, setMatchingProposal] = useState(
+    MatchingProposalDetailRequest.noArgsConstructor()
+  );
 
   useEffect(() => {
+    console.log('44444444');
     if (!memoRef.current) return;
     memoRef.current!.style.height = 'auto';
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
 
   useEffect(() => {
+    console.log('22222222');
     if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
       return;
     }
@@ -130,6 +135,7 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
 
   return (
     <>
+      {console.log('33333333')}
       <S.MatchingProposalContent>
         <S.InnerContent>
           <S.Section>
