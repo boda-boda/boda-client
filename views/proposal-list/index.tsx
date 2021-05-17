@@ -37,7 +37,6 @@ export default function ProposalList() {
     (async () => {
       try {
         const response = await axios.get('/matching-proposal');
-        console.log(response.data);
         setProposals(response.data);
       } catch (e) {}
     })();
@@ -174,7 +173,7 @@ export default function ProposalList() {
                                       <WorkTimeIconSVG />
                                     </S.SVGIconBox>
                                     <S.InfoType>돌봄 시간</S.InfoType>
-                                    <S.InfoValue>{proposal.outerCareWorker.address}</S.InfoValue>
+                                    <S.InfoValue>{proposal.outerCareWorker.schedule}</S.InfoValue>
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>

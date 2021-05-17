@@ -25,7 +25,6 @@ export default function RecipientsDetail() {
     (async () => {
       try {
         const response = await axios.get(`/recipient/${router.query.ID}`);
-        console.log(response.data);
         setRecipient(response.data);
       } catch (e) {
         router.push('/recipients');

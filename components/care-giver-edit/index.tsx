@@ -170,7 +170,7 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                   </td>
                 </tr>
                 <tr>
-                  <th>가능 시간</th>
+                  <th>돌봄 시간</th>
                   <td className="time">
                     <S.TimeSelectContainer>
                       {OUTER_CARE_WORKER_SCHEDULE_TYPES.map((time, index) => {

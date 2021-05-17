@@ -9,6 +9,7 @@ export default class OuterCareWorker {
   public detailAddress: string;
   public age: number;
   public birthDay: string;
+  public schedule: string;
 
   public careWorkerAreas: BusinessArea[];
   public careWorkerCareers: CareWorkerCareer[];

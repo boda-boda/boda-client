@@ -114,9 +114,7 @@ export default function OuterCareGiverDetail() {
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td className="infovalue">
-                    {careWorker.careWorkerSchedule ? careWorker.careWorkerSchedule : ''}
-                  </td>
+                  <td className="infovalue">{careWorker.schedule ? careWorker.schedule : ''}</td>
                   <th className="twoRow">
                     자격증
                     <br />
@@ -204,11 +202,9 @@ export default function OuterCareGiverDetail() {
                 <tr>
                   <td className="personality">
                     <S.AvailabilityInfoList>
-                      {careWorker.careWorkerReligions?.map((meta, i) => (
-                        <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
-                          {meta}
-                        </S.AvailabilityInfoItem>
-                      ))}
+                      <S.AvailabilityInfoItem key={`${RELIGION}`}>
+                        {careWorker.religion}
+                      </S.AvailabilityInfoItem>
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>
