@@ -33,7 +33,7 @@ const dummyCompliment = [
 export default function OuterCareGiverDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
-  const [careWorker, setCareWorker] = useState({} as any);
+  const [outerCareWorker, setOuterCareWorker] = useState({} as any);
   const [isEditingCompliment, setIsEditingCompliment] = useState(false);
   const [myCompliment, setMyCompliment] = useState(null);
   const [myComplimentTitle, setMyComplimentTitle] = useState('');
@@ -67,7 +67,7 @@ export default function OuterCareGiverDetail() {
     (async () => {
       try {
         const response = await axios.get(`/outer-care-worker/${router.query.ID}`);
-        setCareWorker(response.data);
+        setOuterCareWorker(response.data);
       } catch (e) {
         router.push('/search');
       }
@@ -94,41 +94,43 @@ export default function OuterCareGiverDetail() {
                 <tr>
                   <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={careWorker.profile} />
+                      <S.ProfileImage src={outerCareWorker.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="infovalue">{careWorker.name}</td>
+                  <td className="infovalue">{outerCareWorker.name}</td>
                   <th>생년월일</th>
                   <td className="infovalue">
-                    {careWorker.birthDay && careWorker.age
-                      ? `${careWorker.birthDay} (${careWorker.age}세)`
+                    {outerCareWorker.birthDay && outerCareWorker.age
+                      ? `${outerCareWorker.birthDay} (${outerCareWorker.age}세)`
                       : ''}
                   </td>
                 </tr>
                 <tr>
                   <th>성별</th>
-                  <td className="infovalue">{careWorker.gender}</td>
+                  <td className="infovalue">{outerCareWorker.gender}</td>
                   <th>휴대전화</th>
-                  <td className="infovalue">{careWorker.phoneNumber}</td>
+                  <td className="infovalue">{outerCareWorker.phoneNumber}</td>
                 </tr>
                 <tr>
                   <th>돌봄 시간</th>
-                  <td className="infovalue">{careWorker.schedule ? careWorker.schedule : ''}</td>
+                  <td className="infovalue">
+                    {outerCareWorker.schedule ? outerCareWorker.schedule : ''}
+                  </td>
                   <th className="twoRow">
                     자격증
                     <br />
                     취득일
                   </th>
                   <td className="infovalue">
-                    {careWorker.licenseDate ? careWorker.licenseDate : ''}
+                    {outerCareWorker.licenseDate ? outerCareWorker.licenseDate : ''}
                   </td>
                 </tr>
                 <tr>
                   <th>주소</th>
                   <td colSpan={3}>
-                    {careWorker.zipCode && `(${careWorker.zipCode})`} {careWorker.address}{' '}
-                    {careWorker.detailAddress}
+                    {outerCareWorker.zipCode && `(${outerCareWorker.zipCode})`}{' '}
+                    {outerCareWorker.address} {outerCareWorker.detailAddress}
                   </td>
                 </tr>
               </tbody>
@@ -139,7 +141,7 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td className="memo">{careWorker.description}</td>
+                  <td className="memo">{outerCareWorker.description}</td>
                 </tr>
               </tbody>
             </S.Table>
@@ -148,31 +150,35 @@ export default function OuterCareGiverDetail() {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                {careWorker.careWorkerAreas?.length > 0 ? (
-                  chunk(careWorker.careWorkerAreas, 3).map((row, key) => {
-                    return (
-                      <tr key={`${key}`}>
-                        {row.map((areaItem, areaItemIndex) => {
-                          return (
-                            <td
-                              className={
-                                key === 0
-                                  ? `area ${areaItemIndex === row.length - 1 && 'right'}`
-                                  : `area ${(areaItemIndex + 1) % 3 === 0 && 'right'}`
-                              }
-                              key={`areaItem-${areaItemIndex}`}
-                            >
-                              {areaItem.city} {areaItem.gu} {areaItem.dong}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })
+                {outerCareWorker.outerCareWorkerAreas ? (
+                  outerCareWorker.outerCareWorkerAreas?.length > 0 ? (
+                    chunk(outerCareWorker.outerCareWorkerAreas, 3).map((row, key) => {
+                      return (
+                        <tr key={`${key}`}>
+                          {row.map((areaItem, areaItemIndex) => {
+                            return (
+                              <td
+                                className={
+                                  key === 0
+                                    ? `area ${areaItemIndex === row.length - 1 && 'right'}`
+                                    : `area ${(areaItemIndex + 1) % 3 === 0 && 'right'}`
+                                }
+                                key={`areaItem-${areaItemIndex}`}
+                              >
+                                {areaItem.city} {areaItem.gu} {areaItem.dong}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td>등록된 활동 지역이 없습니다.</td>
+                    </tr>
+                  )
                 ) : (
-                  <tr>
-                    <td>등록된 활동 지역이 없습니다.</td>
-                  </tr>
+                  ''
                 )}
               </tbody>
             </S.Table>
@@ -184,11 +190,13 @@ export default function OuterCareGiverDetail() {
                 <tr>
                   <td className="personality">
                     <S.AvailabilityInfoList>
-                      {careWorker.careWorkerCapabilities?.map((meta, i) => (
-                        <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
-                          {meta}
-                        </S.AvailabilityInfoItem>
-                      ))}
+                      {outerCareWorker.outerCareWorkerMetas
+                        ? outerCareWorker.outerCareWorkerMetas?.map((meta, i) => (
+                            <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
+                              {meta.key}
+                            </S.AvailabilityInfoItem>
+                          ))
+                        : ''}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>
@@ -203,7 +211,7 @@ export default function OuterCareGiverDetail() {
                   <td className="personality">
                     <S.AvailabilityInfoList>
                       <S.AvailabilityInfoItem key={`${RELIGION}`}>
-                        {careWorker.religion}
+                        {outerCareWorker.religion}
                       </S.AvailabilityInfoItem>
                     </S.AvailabilityInfoList>
                   </td>
@@ -220,29 +228,33 @@ export default function OuterCareGiverDetail() {
                   <th className="career">수급자</th>
                   <th className="career right">기간</th>
                 </tr>
-                {careWorker.careWorkerCareers?.length > 0 ? (
-                  careWorker.careWorkerCareers.map((career, idx) => (
-                    <tr key={`career-${idx}`}>
-                      <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
+                {outerCareWorker.outerCareWorkerCareers ? (
+                  outerCareWorker.outerCareWorkerCareers.length > 0 ? (
+                    outerCareWorker.outerCareWorkerCareers.map((career, idx) => (
+                      <tr key={`career-${idx}`}>
+                        <td className="career long">{career.workplace}</td>
+                        <td className="career">{career.recipient}</td>
+                        <td className="career right">{career.duration}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="career long"></td>
+                      <td className="career"></td>
+                      <td className="career right"></td>
                     </tr>
-                  ))
+                  )
                 ) : (
-                  <tr>
-                    <td className="career long"></td>
-                    <td className="career"></td>
-                    <td className="career right"></td>
-                  </tr>
+                  ''
                 )}
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
+          {/* <S.Section>
             <S.SectionTitle>칭찬</S.SectionTitle>
             <S.Table>
               <tbody>
-                {/* <tr>
+                <tr>
                   <td style={{ background: '#f4f4f4', position: 'relative' }}>
                     {isEditingCompliment ? (
                       <>
@@ -286,7 +298,7 @@ export default function OuterCareGiverDetail() {
                       </>
                     )}
                   </td>
-                </tr> */}
+                </tr>
                 {dummyCompliment.map((compliment, index) => {
                   return (
                     <tr key={`compliment-${index}`}>
@@ -304,15 +316,15 @@ export default function OuterCareGiverDetail() {
                 })}
               </tbody>
             </S.Table>
-          </S.Section>
+          </S.Section> */}
           <S.FinishButtonContainer>
             <S.TransferButton>내 요양보호사로 전환하기</S.TransferButton>
             <Link
-              key={`worker-${careWorker.id}`}
+              key={`worker-${outerCareWorker.id}`}
               href={{
                 pathname: '/search/[id]/proposal',
               }}
-              as={`/search/${careWorker.id}/proposal`}
+              as={`/search/${outerCareWorker.id}/proposal`}
               passHref
             >
               <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
