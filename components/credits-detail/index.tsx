@@ -1,8 +1,10 @@
 import * as S from './styles';
-import Link from 'next/link';
 import CreditSVG from '../../svgs/credit-svg';
 
 export default function CreditDetail() {
+  const handleClickPurchase = () => {
+    alert('돌봄코인 구매는 010-5618-9508 또는 help@dol-bom.com으로 문의주세요.');
+  };
   return (
     <>
       <S.MatchingProposalContent>
@@ -10,14 +12,12 @@ export default function CreditDetail() {
           <S.Section>
             <S.SectionTitleContainer>
               <S.SectionTitle>내 돌봄코인 정보</S.SectionTitle>
-              <Link href={`/proposal-list`} passHref>
-                <S.CreditPurchaseButton>
-                  <S.CreditSVGWrapper>
-                    <CreditSVG />
-                  </S.CreditSVGWrapper>
-                  돌봄코인 구매
-                </S.CreditPurchaseButton>
-              </Link>
+              <S.CreditPurchaseButton onClick={handleClickPurchase}>
+                <S.CreditSVGWrapper>
+                  <CreditSVG />
+                </S.CreditSVGWrapper>
+                돌봄코인 구매
+              </S.CreditPurchaseButton>
             </S.SectionTitleContainer>
             <S.CreditInfoContainer>
               <S.CreditInfoRow>
