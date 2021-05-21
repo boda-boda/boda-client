@@ -317,7 +317,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
-    router.push('/list');
+    router.push('/new');
   };
 
   const handleClickUpdateButton = async () => {
