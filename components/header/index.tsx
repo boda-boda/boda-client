@@ -90,6 +90,10 @@ export default function Header() {
                         <S.StyledLink>수급자 관리</S.StyledLink>
                       </Link>
                       <S.MenuBar />
+                      <Link href="/credits" passHref>
+                        <S.StyledLink>돌봄코인 관리</S.StyledLink>
+                      </Link>
+                      <S.MenuBar />
                       <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
                     </S.MenuModal>
                   </>

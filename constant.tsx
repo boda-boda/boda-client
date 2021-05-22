@@ -7,6 +7,8 @@ import CareWorkerSingleSchedule from './model/care-worker-single-schedule';
 
 export const CONTENT_WIDTH = 978;
 
+export const CONTENT_WIDTH_NARROW = 700;
+
 export const THEME = {
   MAIN: '#7131b7',
   RED: '#dc3545',
