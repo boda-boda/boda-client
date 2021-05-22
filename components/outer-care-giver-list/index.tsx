@@ -57,7 +57,7 @@ export default function OuterCareGiverList() {
         <S.Section isBackgroundColored={false}>
           <S.InnerSection>
             <S.InnerContent>
-              <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+              <S.SectionTitle>신규 요양보호사 검색</S.SectionTitle>
               <S.FilterTable>
                 <tbody>
                   <tr>
@@ -264,7 +264,7 @@ export default function OuterCareGiverList() {
                                   <S.InfoType>가능 조건</S.InfoType>
 
                                   <S.InfoItemList>
-                                    {worker.careWorkerCapabilities.map((capability, index) => {
+                                    {worker.outerCareWorkerCapabilities.map((capability, index) => {
                                       return (
                                         <S.InfoItem key={`careInfoItem-${index}`}>
                                           {capability}

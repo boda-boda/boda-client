@@ -307,6 +307,8 @@ export default function CareGiverList() {
         )
       )
     );
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
   };
 
   useEffect(() => {

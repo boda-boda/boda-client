@@ -106,20 +106,20 @@ export default function ReciepientsList() {
                                     <PhoneNumberIconSVG />
                                   </S.SVGIconBox>
                                   <S.InfoType>위치</S.InfoType>
-                                  <S.InfoValue>{recipient.address}</S.InfoValue>
+                                  <S.LocationValue>{recipient.address}</S.LocationValue>
                                 </S.InfoRow>
-                                {/* <S.InfoRow>
+                                <S.InfoRow>
                                   <S.SVGIconBox>
                                     <PhoneNumberIconSVG />
                                   </S.SVGIconBox>
                                   <S.InfoType>휴대전화</S.InfoType>
                                   <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
-                                </S.InfoRow> */}
+                                </S.InfoRow>
                                 <S.InfoRow>
                                   <S.SVGIconBox>
                                     <CareInfoIconSVG />
                                   </S.SVGIconBox>
-                                  <S.InfoType>가능 조건</S.InfoType>
+                                  <S.InfoType>요구 사항</S.InfoType>
 
                                   <S.InfoItemList>
                                     {recipient.recipientMetas

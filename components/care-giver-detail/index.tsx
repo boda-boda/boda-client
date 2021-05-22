@@ -145,7 +145,7 @@ export default function CareGiverDetail() {
                   </td>
                 </tr>
                 <tr>
-                  <th>가능 시간</th>
+                  <th>돌봄 시간</th>
                   <td className="infovalue" colSpan={3}>
                     {careWorker.time}
                   </td>
