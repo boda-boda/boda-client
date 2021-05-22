@@ -99,9 +99,9 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                   <td className="select left">{recipient.grade}등급</td>
                 </tr>
                 <tr>
-                  <th>거주 형태</th>
+                  <th>돌봄 시간</th>
                   <td colSpan={1} className="wide">
-                    {recipient.familyType}
+                    {recipient.schedule}
                   </td>
                   <th>종교</th>
                   <td colSpan={1} className="">
@@ -109,15 +109,19 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                   </td>
                 </tr>
                 <tr>
-                  <th rowSpan={1}>주소</th>
-                  <td colSpan={3}>
-                    ({recipient.zipCode}) {recipient.address} {recipient.detailAddress}
+                  <th>거주 형태</th>
+                  <td colSpan={1} className="wide">
+                    {recipient.familyType}
+                  </td>
+                  <th>휴대전화</th>
+                  <td colSpan={1} className="wide">
+                    {recipient.phoneNumber}
                   </td>
                 </tr>
                 <tr>
-                  <th>돌봄 시간</th>
-                  <td colSpan={1} className="wide">
-                    {recipient.schedule}
+                  <th rowSpan={1}>주소</th>
+                  <td colSpan={3}>
+                    ({recipient.zipCode}) {recipient.address} {recipient.detailAddress}
                   </td>
                 </tr>
                 <tr>
@@ -189,8 +193,20 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                   <td className="select left">
                     {careWorker.birthDay} ({careWorker.age})세
                   </td>
+                  <th>휴대전화</th>
+                  <td className="right">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
                   <th>돌봄 시간</th>
                   <td className="right">{careWorker.schedule}</td>
+                  <th>종교</th>
+                  <td colSpan={1} className="">
+                    {careWorker.religion}
+                  </td>
+                </tr>
+                <tr>
+                  <th>자격증 취득일</th>
+                  <td className="right">{careWorker.licenseDate}</td>
                 </tr>
                 <tr>
                   <th rowSpan={1}>활동 지역</th>
@@ -208,17 +224,6 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                             );
                           })
                         : ''}
-                    </S.TdFlexBox>
-                  </td>
-                </tr>
-
-                <tr>
-                  <th>종교</th>
-                  <td colSpan={1} className="">
-                    <S.TdFlexBox>
-                      {careWorker.religion ? (
-                        <S.ToggleButton>{careWorker.religion}</S.ToggleButton>
-                      ) : null}
                     </S.TdFlexBox>
                   </td>
                 </tr>

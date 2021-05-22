@@ -5,14 +5,13 @@ import { BannerStyleType } from '../../common/types';
 import Category from '../../components/category';
 import Head from 'next/head';
 import Link from 'next/link';
-import { CAPABILITY, MATCHING_PROPOSAL_STATUS, PAGINATION_LENGTH, RELIGION } from '../../constant';
+import { MATCHING_PROPOSAL_STATUS, PAGINATION_LENGTH, RELIGION } from '../../constant';
 import { useCallback, useEffect, useState } from 'react';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import SingleArrowLeftSVG from '../../svgs/single-arrow-left-svg';
 import { range } from '../../common/lib';
 import SingleArrowRightSVG from '../../svgs/single-arrow-right-svg';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
-import EtcSVG from '../../svgs/etc-svg';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import MatchingProposal from '../../model/matching-proposal';
@@ -20,6 +19,7 @@ import LocationIconSVG from '../../svgs/location-icon-svg';
 import PersonalityInfoIconSVG from '../../svgs/personality-info-icon-svg';
 import WorkTimeIconSVG from '../../svgs/work-time-icon-svg';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
+import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
 
 export default function ProposalList() {
   const careCenter = useCareCenter();
@@ -163,10 +163,12 @@ export default function ProposalList() {
                                   </S.BasicInfo>
                                   <S.InfoRow>
                                     <S.SVGIconBox>
-                                      <LocationIconSVG />
+                                      <PhoneNumberIconSVG />
                                     </S.SVGIconBox>
-                                    <S.InfoType>위치</S.InfoType>
-                                    <S.InfoValue>{proposal.outerCareWorker.address}</S.InfoValue>
+                                    <S.InfoType>휴대전화</S.InfoType>
+                                    <S.InfoValue>
+                                      {proposal.outerCareWorker.phoneNumber}
+                                    </S.InfoValue>
                                   </S.InfoRow>
                                   <S.InfoRow>
                                     <S.SVGIconBox>

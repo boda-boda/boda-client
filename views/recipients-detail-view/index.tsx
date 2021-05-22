@@ -86,20 +86,21 @@ export default function RecipientsDetail() {
                     <tr>
                       <th>나이</th>
                       <td className="infovalue">{recipient.age}세</td>
-                      <th>휴대전화</th>
-                      <td className="infovalue">{recipient.phoneNumber}</td>
-                    </tr>
-                    <tr>
                       <th>등급</th>
                       <td className="infovalue">{recipient.grade}등급</td>
+                    </tr>
+                    <tr>
+                      <th>돌봄 시간</th>
+                      <td>{recipient.schedule}</td>
+
                       <th>종교</th>
                       <td>{recipient.religion}</td>
                     </tr>
                     <tr>
                       <th>거주 형태</th>
                       <td>{recipient.familyType}</td>
-                      <th>돌봄 시간</th>
-                      <td>{recipient.schedule}</td>
+                      <th>휴대전화</th>
+                      <td className="infovalue">{recipient.phoneNumber}</td>
                     </tr>
                     <tr>
                       <th>주소</th>

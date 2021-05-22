@@ -72,7 +72,7 @@ export const Table = styled.table`
     padding: 0;
   }
   .twoRow {
-    padding: 0 12px;
+    padding: 9.5px 12px;
   }
   .personality {
     padding: 0 12px;
