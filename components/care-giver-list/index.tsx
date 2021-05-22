@@ -163,6 +163,8 @@ export default function CareGiverList() {
     setSelectedTime('');
     setSelectedWorkingState([] as string[]);
     setFilteredCareWorkers(careWorkers);
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
   }, [careWorkers]);
 
   const filterByLetter = (letters: string[], cwName: string) => {
@@ -293,6 +295,8 @@ export default function CareGiverList() {
       )
     );
     setSelectedConsonantFilter(-1);
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
   };
 
   const handleSearchOnClickConsonantFilterItem = () => {
@@ -303,6 +307,8 @@ export default function CareGiverList() {
         )
       )
     );
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
   };
 
   useEffect(() => {
@@ -591,6 +597,7 @@ export default function CareGiverList() {
                   onClick={() => {
                     setSelectedConsonantFilter(-1);
                     setCurrentPage(1);
+                    setCurrentPaginationGroup(0);
                   }}
                   isLeft
                 >
