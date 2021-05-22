@@ -99,16 +99,16 @@ export default function OuterCareGiverDetail() {
                   </td>
                   <th>이름</th>
                   <td className="infovalue">{outerCareWorker.name}</td>
+                  <th>성별</th>
+                  <td className="infovalue">{outerCareWorker.gender}</td>
+                </tr>
+                <tr>
                   <th>생년월일</th>
                   <td className="infovalue">
                     {outerCareWorker.birthDay && outerCareWorker.age
                       ? `${outerCareWorker.birthDay} (${outerCareWorker.age}세)`
                       : ''}
                   </td>
-                </tr>
-                <tr>
-                  <th>성별</th>
-                  <td className="infovalue">{outerCareWorker.gender}</td>
                   <th>휴대전화</th>
                   <td className="infovalue">{outerCareWorker.phoneNumber}</td>
                 </tr>
@@ -117,20 +117,17 @@ export default function OuterCareGiverDetail() {
                   <td className="infovalue">
                     {outerCareWorker.schedule ? outerCareWorker.schedule : ''}
                   </td>
+                  <th>종교</th>
+                  <td>{outerCareWorker.religion ? outerCareWorker.religion : ''}</td>
+                </tr>
+                <tr>
                   <th className="twoRow">
                     자격증
                     <br />
                     취득일
                   </th>
-                  <td className="infovalue">
+                  <td className="infovalue" colSpan={3}>
                     {outerCareWorker.licenseDate ? outerCareWorker.licenseDate : ''}
-                  </td>
-                </tr>
-                <tr>
-                  <th>주소</th>
-                  <td colSpan={3}>
-                    {outerCareWorker.zipCode && `(${outerCareWorker.zipCode})`}{' '}
-                    {outerCareWorker.address} {outerCareWorker.detailAddress}
                   </td>
                 </tr>
               </tbody>
@@ -196,23 +193,7 @@ export default function OuterCareGiverDetail() {
                               {meta.key}
                             </S.AvailabilityInfoItem>
                           ))
-                        : ''}
-                    </S.AvailabilityInfoList>
-                  </td>
-                </tr>
-              </tbody>
-            </S.Table>
-          </S.Section>
-          <S.Section>
-            <S.SectionTitle>종교</S.SectionTitle>
-            <S.Table>
-              <tbody>
-                <tr>
-                  <td className="personality">
-                    <S.AvailabilityInfoList>
-                      <S.AvailabilityInfoItem key={`${RELIGION}`}>
-                        {outerCareWorker.religion}
-                      </S.AvailabilityInfoItem>
+                        : '가능 조건 정보가 없습니다'}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>
