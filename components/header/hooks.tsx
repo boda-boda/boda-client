@@ -108,6 +108,7 @@ export function useHeader() {
         },
       });
       alert(`${loginResponse.data.careCenter.name}님, 환영합니다`);
+      router.push('/list');
     } catch (e) {
       if (e.response) {
         switch (e.response.status) {
