@@ -685,7 +685,6 @@ export default function CareGiverList() {
                           key={'previous-pageset-btn'}
                           onClick={() => {
                             const paginationGroup = Math.max(0, currentPaginationGroup - 1);
-
                             setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
                             setCurrentPaginationGroup(paginationGroup);
                           }}

@@ -24,6 +24,7 @@ export class CareCenterProperties {
 export class CareCenter {
   public readonly isValidating: boolean;
   public readonly isLoggedIn: boolean;
+  public readonly isLoggedOut: boolean;
   public readonly accessToken: string;
   public readonly expiresIn: Date;
   public readonly careCenter: CareCenterProperties;
