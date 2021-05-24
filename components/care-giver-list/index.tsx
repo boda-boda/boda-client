@@ -339,6 +339,7 @@ export default function CareGiverList() {
   useEffect(() => {
     if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
     if (useLocalStorage) {
+      //로컬스토리지 사용 체크됐을 때만 저장
       const timeout = setTimeout(() => {
         const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
 
@@ -354,6 +355,7 @@ export default function CareGiverList() {
       }, 500);
       return () => clearTimeout(timeout);
     } else {
+      //로컬스토리지 사용 체크 해제했을 때 로컬스토리지 사용 여부만 저장함
       localStorage.setItem(
         LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS,
         JSON.stringify({
