@@ -70,6 +70,7 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                       onChange={handleUpdateRecipient('name')}
                       type="text"
                       placeholder="이름을 입력해주세요"
+                      autoFocus
                     />
                   </td>
                   <th>성별</th>
@@ -219,7 +220,7 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                     value={recipient.hourlyWage}
                     onChange={handleUpdateRecipient('hourlyWage')}
                     type="text"
-                    placeholder="이름을 입력해주세요"
+                    placeholder="시급을 입력해주세요"
                   />
                 </td>
               </tr>

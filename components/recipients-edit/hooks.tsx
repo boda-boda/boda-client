@@ -178,12 +178,12 @@ export const useRecipientsUpsert = (isNew: boolean) => {
         recipientCapabilities,
       });
     } catch (e) {
-      alert('요양보호사 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
+      alert('수급자 추가에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.');
       setIsRequesting(false);
       return;
     }
 
-    alert('요양보호사 추가에 성공하였습니다.');
+    alert('수급자 추가에 성공하였습니다.');
     router.push('/recipients');
   };
 

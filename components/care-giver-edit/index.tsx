@@ -95,6 +95,7 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                       onChange={handleUpdateCareGiver('name')}
                       type="text"
                       placeholder="이름을 입력해주세요"
+                      autoFocus
                     />
                   </td>
                   <th>생년월일</th>

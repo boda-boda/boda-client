@@ -6,7 +6,6 @@ import * as S from './styles';
 import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
 import {
-  DAY_LIST,
   CARE_INFO_LIST,
   SEOUL_GU_DONG,
   KOREAN_CONSONANT_LIST,
@@ -18,6 +17,7 @@ import {
   PAGINATION_LENGTH,
   WORKING_STATE,
   OUTER_CARE_WORKER_SCHEDULE_TYPES,
+  NAME_ORDER,
 } from '../../constant';
 import {
   CareWorkerSchedule,
@@ -64,6 +64,7 @@ export default function CareGiverList() {
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
   const [careWorkersPerPage, setCareWorkersPerPage] = useState(10);
   const [selectedTime, setSelectedTime] = useState('');
+  const [useLocalStorage, setUseLocalStorage] = useState(false);
 
   const [isLocalStorageLoaded, setIsLocalStorageLoaded] = useState(false);
 
@@ -99,17 +100,12 @@ export default function CareGiverList() {
     (async () => {
       try {
         const response = await axios.get('/care-worker');
+        response.data.sort(NAME_ORDER);
         setCareWorkers(response.data);
         setFilteredCareWorkers(response.data);
       } catch (e) {}
     })();
   }, [careCenter]);
-
-  const toggleDays = (selectedDaysIndex: number, day: DayType) => {
-    const newSchedules = [...schedules];
-    toggleDayOfCareWorkerSchedule(newSchedules[selectedDaysIndex], day);
-    setSchedules(newSchedules);
-  };
 
   const toggleTime = (time: string) => {
     if (time === selectedTime) {
@@ -279,6 +275,12 @@ export default function CareGiverList() {
     return result;
   };
 
+  const handleOnClickConsonantFilterItem = (nameIndex: number) => {
+    setSelectedConsonantFilter(nameIndex);
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
+  };
+
   const handleSearchOnClickSearchButton = () => {
     if (schedules.some((a) => !isCareWorkerScheduleValidListPage(a))) {
       alert(
@@ -324,33 +326,41 @@ export default function CareGiverList() {
       return; // 저장된게 없으면 안 가져옴 (오류 방지)
     }
     try { 
-      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion } = JSON.parse(savedSearchParams) as any;
+      const { name, city, gu, dong, schedules, selectedCareInfo, selectedConsonantFilter, currentPage, careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion, useLocalStorage } = JSON.parse(savedSearchParams) as any;
       setName(name ? name : ''); setCity(city ? city : '-1'); setGu(gu ? gu : '-1'); setDong(dong ? dong : '-1'); setSchedules(schedules ? schedules : []); setSelectedCareInfo(selectedCareInfo ? selectedCareInfo : []); setSelectedConsonantFilter(selectedConsonantFilter ? selectedConsonantFilter : -1); setCurrentPage(currentPage ? currentPage : 1); setCareWorkersPerPage(careWorkersPerPage ? careWorkersPerPage : 10);
-      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []); setSelectedTime(selectedTime ? selectedTime:''); setSelectedReligion(selectedReligion ? selectedReligion : []);
+      setIsLocalStorageLoaded(true); setSelectedWorkingState(selectedWorkingState ? selectedWorkingState : []); setSelectedTime(selectedTime ? selectedTime:''); setSelectedReligion(selectedReligion ? selectedReligion : []); setUseLocalStorage(useLocalStorage?useLocalStorage:false);
     }
     catch {
       localStorage.removeItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS);
     }
-  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState, selectedTime, selectedReligion]);
+  }, [name, city, gu, dong, schedules, selectedCareInfo, filteredCareWorkers, selectedWorkingState, selectedTime, selectedReligion, useLocalStorage]);
 
   // 로컬 스토리지에 검색결과 저장 (작성 후 1초 후에 저장 - 디바운스를 위함) // TODO: 검증 및 최적화
   useEffect(() => {
     if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
+    if (useLocalStorage) {
+      const timeout = setTimeout(() => {
+        const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
 
-    const timeout = setTimeout(() => {
-      const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
-
-      if (!availableSchedule.length) {
-        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
-        })) // prettier-ignore
-      } else {
-        localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
-          name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion,
-        })) // prettier-ignore
-      }
-    }, 500);
-    return () => clearTimeout(timeout);
+        if (!availableSchedule.length) {
+          localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+      name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion, useLocalStorage,
+    })) // prettier-ignore
+        } else {
+          localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
+      name,city,gu,dong,schedules : availableSchedule, selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage, selectedWorkingState, selectedTime, selectedReligion, useLocalStorage,
+    })) // prettier-ignore
+        }
+      }, 500);
+      return () => clearTimeout(timeout);
+    } else {
+      localStorage.setItem(
+        LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS,
+        JSON.stringify({
+          useLocalStorage,
+        })
+      );
+    }
   }, [
     name,
     city,
@@ -365,6 +375,7 @@ export default function CareGiverList() {
     selectedWorkingState,
     selectedTime,
     selectedReligion,
+    useLocalStorage,
   ]);
 
   return (
@@ -373,7 +384,17 @@ export default function CareGiverList() {
         <S.Section isBackgroundColored={false}>
           <S.InnerSection>
             <S.InnerContent>
-              <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+              <S.SectionTitleWrapper>
+                <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+                <S.UseLocalStorageWrapper onClick={() => setUseLocalStorage(!useLocalStorage)}>
+                  검색필터 저장하기
+                </S.UseLocalStorageWrapper>
+                <S.LocalStorageCheckBox
+                  type="checkbox"
+                  checked={useLocalStorage}
+                  onChange={() => setUseLocalStorage(!useLocalStorage)}
+                ></S.LocalStorageCheckBox>
+              </S.SectionTitleWrapper>
               <S.FilterTable>
                 <tbody>
                   <tr>
@@ -390,6 +411,7 @@ export default function CareGiverList() {
                         onChange={(e: any) => {
                           setName(e.target.value);
                         }}
+                        autoFocus
                       ></S.TextInput>
                     </td>
                     <th>시간</th>
@@ -606,7 +628,7 @@ export default function CareGiverList() {
                     key={`name-${nameIndex}`}
                     isClicked={selectedConsonantFilter === nameIndex}
                     onClick={() => {
-                      setSelectedConsonantFilter(nameIndex);
+                      handleOnClickConsonantFilterItem(nameIndex);
                     }}
                   >
                     {name}
