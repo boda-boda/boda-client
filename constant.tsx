@@ -221,6 +221,10 @@ export const PRIVATE_ROUTES = ['/', '/new', '/list', '/list/[ID]', '/list/[ID]/e
 
 export const OUTER_CARE_WORKER_SCHEDULE_TYPES = ['오전', '오후', '종일'];
 
+export const NAME_ORDER = (a: CareWorker, b: CareWorker) => {
+  return a.name < b.name ? -1 : a.name === b.name ? 0 : 1;
+};
+
 export const dummyCareWorkers = [
   {
     zipCode: '08101',
