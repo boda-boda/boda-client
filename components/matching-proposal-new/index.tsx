@@ -230,6 +230,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                       onChange={updateHourlyWage}
                       className="money"
                       placeholder="예시) 11500"
+                      autoFocus
                     ></S.InfoInput>
                     원
                   </td>

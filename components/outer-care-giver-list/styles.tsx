@@ -57,6 +57,19 @@ export const SectionTitle = styled.div`
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
+export const SectionTitleWrapper = styled.div`
+  width: 100%;
+  ${FLEX_ROW_SPACE_CENTER}
+`;
+
+export const UseLocalStorageWrapper = styled.div`
+  position: absolute;
+  right: 35px;
+  top: 10px;
+  color: ${THEME.GRAY_FONT};
+  cursor: pointer;
+`;
+
 export const TimeSelectContainer = styled.div`
   ${FLEX_ROW_START_CENTER};
   border-bottom: none;
@@ -247,6 +260,15 @@ export const CheckBox = styled.input`
   right: 10px;
   width: 16px;
   height: 16px;
+`;
+
+export const LocalStorageCheckBox = styled.input`
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 `;
 
 export const ResetButtonContainer = styled.div`

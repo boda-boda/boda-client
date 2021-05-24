@@ -49,6 +49,8 @@ export default function OuterCareGiverList() {
     getPaginationBarNumbers,
     careWorkers,
     onClickSearchOuterCareGiver,
+    useLocalStorage,
+    setUseLocalStorage,
   } = useOuterCareGiverList();
 
   return (
@@ -58,6 +60,14 @@ export default function OuterCareGiverList() {
           <S.InnerSection>
             <S.InnerContent>
               <S.SectionTitle>신규 요양보호사 검색</S.SectionTitle>
+              <S.UseLocalStorageWrapper onClick={() => setUseLocalStorage(!useLocalStorage)}>
+                검색필터 저장하기
+              </S.UseLocalStorageWrapper>
+              <S.LocalStorageCheckBox
+                type="checkbox"
+                checked={useLocalStorage}
+                onChange={() => setUseLocalStorage(!useLocalStorage)}
+              ></S.LocalStorageCheckBox>
               <S.FilterTable>
                 <tbody>
                   <tr>

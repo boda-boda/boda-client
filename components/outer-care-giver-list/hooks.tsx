@@ -14,6 +14,7 @@ export const useOuterCareGiverList = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
+  const [useLocalStorage, setUseLocalStorage] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -72,6 +73,7 @@ export const useOuterCareGiverList = () => {
         const response = await axios.get(
           `/outer-care-worker/search?from=${0}&size=${careWorkersPerPage}`
         );
+        console.log(response.data.data);
         setCareWorkers(response.data.data);
         setMaxPage(Math.ceil(response.data.total / careWorkersPerPage));
         setCurrentPage(1);
@@ -139,5 +141,7 @@ export const useOuterCareGiverList = () => {
     maxPage,
     getPaginationBarNumbers,
     onClickSearchOuterCareGiver,
+    useLocalStorage,
+    setUseLocalStorage,
   };
 };
