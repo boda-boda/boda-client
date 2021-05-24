@@ -210,36 +210,6 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
               </tbody>
             </S.Table>
           </S.Section>
-          <S.Section>
-            <S.SectionTitle>기타</S.SectionTitle>
-            <S.Table>
-              <tr>
-                <th>시급</th>
-                <td>
-                  <S.TextInput
-                    value={recipient.hourlyWage}
-                    onChange={handleUpdateRecipient('hourlyWage')}
-                    type="text"
-                    placeholder="시급을 입력해주세요"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th>비고</th>
-                <td>
-                  <S.TextArea
-                    ref={memoRef2}
-                    value={memo2}
-                    onChange={(e) => {
-                      setMemo2(e.target.value);
-                      handleUpdateRecipient('note')(e);
-                    }}
-                    placeholder="비고란을 입력해주세요"
-                  />
-                </td>
-              </tr>
-            </S.Table>
-          </S.Section>
           <S.FinishButtonContainer>
             {isNew ? (
               <S.FinishButton disabled={isRequesting} onClick={handleClickCreateButton}>
