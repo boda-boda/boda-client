@@ -327,10 +327,8 @@ export default function CareGiverEdit({ isNew }: CareGiverEditProps) {
                 <tr>
                   <td className="memo">
                     <S.TextArea
-                      ref={memoRef}
-                      value={memo}
+                      value={careWorker.description}
                       onChange={(e) => {
-                        setMemo(e.target.value);
                         handleUpdateCareGiver('description')(e);
                       }}
                       placeholder="메모를 입력해주세요"

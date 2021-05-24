@@ -275,7 +275,7 @@ export const TextArea = styled.textarea`
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};
   resize: none;
-  overflow-y: hidden;
+  overflow-y: scroll;
   color: ${THEME.GRAY_FONT};
   :focus {
     border: solid 1px ${THEME.MAIN};

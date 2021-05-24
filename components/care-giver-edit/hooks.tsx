@@ -69,7 +69,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             c.birthDay?.split('-').join(''),
             c.phoneNumber,
             c.workingState,
-            c.licenseDate.split('-').join(''),
+            c.licenseDate?.split('-').join(''),
             c.time,
             c.profile,
             c.zipCode,
@@ -79,13 +79,14 @@ export const useCareGiverUpsert = (isNew: boolean) => {
           )
         );
         setMemo(c.description);
-
-        setCareWorkerCapabilities(
-          c.careWorkerMetas.filter((meta) => meta.type == CAPABILITY).map((meta) => meta.key)
-        );
-        setCareWorkerReligions(
-          c.careWorkerMetas.filter((meta) => meta.type == RELIGION).map((meta) => meta.key)
-        );
+        if (c.careWorkerMetas.length > 0)
+          setCareWorkerCapabilities(
+            c.careWorkerMetas.filter((meta) => meta.type == CAPABILITY).map((meta) => meta.key)
+          );
+        if (c.careWorkerMetas.length > 0)
+          setCareWorkerReligions(
+            c.careWorkerMetas.filter((meta) => meta.type == RELIGION).map((meta) => meta.key)
+          );
         if (c.careWorkerCareers.length > 0)
           setCareWorkerCareers(
             c.careWorkerCareers.map((career) =>
