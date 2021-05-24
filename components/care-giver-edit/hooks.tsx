@@ -69,7 +69,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
             c.birthDay?.split('-').join(''),
             c.phoneNumber,
             c.workingState,
-            c.licenseDate.split('-').join(''),
+            c.licenseDate?.split('-').join(''),
             c.time,
             c.profile,
             c.zipCode,
