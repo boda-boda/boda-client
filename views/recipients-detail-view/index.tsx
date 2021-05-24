@@ -119,19 +119,6 @@ export default function RecipientsDetail() {
                   </tbody>
                 </S.Table>
               </S.Section>
-              <S.Section>
-                <S.SectionTitle>기타</S.SectionTitle>
-                <S.Table>
-                  <tr>
-                    <th>시급</th>
-                    <td>{recipient.hourlyWage}</td>
-                  </tr>
-                  <tr>
-                    <th>비고</th>
-                    <td>{recipient.note}</td>
-                  </tr>
-                </S.Table>
-              </S.Section>
             </S.InnerContent>
           </S.CareGiverDetail>
         </>
