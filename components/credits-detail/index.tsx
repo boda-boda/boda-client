@@ -1,38 +1,82 @@
 import * as S from './styles';
 import CreditSVG from '../../svgs/credit-svg';
+import { useCareCenter } from '../../context/care-center';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import Credit from '../../model/credit';
+import CreditHistory from '../../model/credit-history';
 
 export default function CreditDetail() {
+  const router = useRouter();
+  const careCenter = useCareCenter();
+  const [credit, setCredit] = useState({} as Credit);
+  const [creditHistorys, setCreditHistorys] = useState([] as CreditHistory[]);
+
   const handleClickPurchase = () => {
-    alert('돌봄코인 구매는 010-5618-9508 또는 help@dol-bom.com으로 문의주세요.');
+    alert('돌봄 포인트 구매는 010-5618-9508 또는 help@dol-bom.com으로 문의주세요.');
   };
+
+  useEffect(() => {
+    if (!careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+
+    (async () => {
+      try {
+        const response = await axios.get(`/credit`);
+        setCredit(response.data);
+      } catch (e) {
+        router.push('/list');
+      }
+    })();
+  }, [careCenter]);
+
+  useEffect(() => {
+    if (!careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+
+    (async () => {
+      try {
+        const response = await axios.get(`/credit/history`);
+        setCreditHistorys(response.data);
+      } catch (e) {
+        router.push('/list');
+      }
+    })();
+  }, [careCenter]);
+
   return (
     <>
       <S.MatchingProposalContent>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitleContainer>
-              <S.SectionTitle>내 돌봄코인 정보</S.SectionTitle>
+              <S.SectionTitle>내 돌봄 포인트 정보</S.SectionTitle>
               <S.CreditPurchaseButton onClick={handleClickPurchase}>
                 <S.CreditSVGWrapper>
                   <CreditSVG />
                 </S.CreditSVGWrapper>
-                돌봄코인 구매
+                돌봄 포인트 구매
               </S.CreditPurchaseButton>
             </S.SectionTitleContainer>
             <S.CreditInfoContainer>
               <S.CreditInfoRow>
-                <S.CreditInfoDiv>보유 돌봄코인</S.CreditInfoDiv>
-                <S.CreditInfoDiv>250 돌봄코인</S.CreditInfoDiv>
+                <S.CreditInfoDiv>보유 돌봄 포인트</S.CreditInfoDiv>
+                <S.CreditInfoDiv>
+                  {credit.paidCredit + credit.freeCredit} 돌봄 포인트
+                </S.CreditInfoDiv>
               </S.CreditInfoRow>
             </S.CreditInfoContainer>
             <S.CreditInfoContainer>
               <S.CreditInfoRow>
-                <S.CreditInfoDiv>유상 돌봄코인</S.CreditInfoDiv>
-                <S.CreditInfoDiv>200 돌봄코인</S.CreditInfoDiv>
+                <S.CreditInfoDiv>유상 돌봄 포인트</S.CreditInfoDiv>
+                <S.CreditInfoDiv>{credit.paidCredit} 돌봄 포인트</S.CreditInfoDiv>
               </S.CreditInfoRow>
               <S.CreditInfoRow>
-                <S.CreditInfoDiv>무상 돌봄코인</S.CreditInfoDiv>
-                <S.CreditInfoDiv>50 돌봄코인</S.CreditInfoDiv>
+                <S.CreditInfoDiv>무상 돌봄 포인트</S.CreditInfoDiv>
+                <S.CreditInfoDiv>{credit.freeCredit} 돌봄 포인트</S.CreditInfoDiv>
               </S.CreditInfoRow>
             </S.CreditInfoContainer>
           </S.Section>
@@ -43,23 +87,21 @@ export default function CreditDetail() {
             <S.InfoTable>
               <tbody>
                 <tr>
-                  <th className={'detail'}>내역</th>
-                  <th className={'credit'}>돌봄코인</th>
-                  <th className={'sort'}>구분</th>
+                  <th className={'content'}>내역</th>
+                  <th className={'credit'}>돌봄 포인트</th>
+                  <th className={'type'}>구분</th>
                   <th className={'time'}>일시</th>
                 </tr>
-                <tr>
-                  <td>돌봄 코인 50개(칭찬 5회 작성)</td>
-                  <td>50</td>
-                  <td>지급</td>
-                  <td>2020.04.02 14:00</td>
-                </tr>
-                <tr>
-                  <td>돌봄 코인 200개</td>
-                  <td>200</td>
-                  <td>충천</td>
-                  <td>2020.01.02 14:00</td>
-                </tr>
+                {creditHistorys.map((creditHistory, idx) => {
+                  return (
+                    <tr>
+                      <td>{creditHistory.content}</td>
+                      <td className={'credit'}>{creditHistory.credits}</td>
+                      <td className={'type'}>{creditHistory.type}</td>
+                      <td>{creditHistory.date}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </S.InfoTable>
           </S.Section>

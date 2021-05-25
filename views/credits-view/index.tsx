@@ -11,8 +11,8 @@ export default function MatchingProposalDetailView() {
         <Banner
           bannerStyle={BannerStyleType.SECTION}
           sectionIndex={1}
-          title="돌봄코인 내역"
-          subtitle="돌봄코인의 잔액, 충전 내역과 사용 내역을 확인할 수 있습니다."
+          title="돌봄 포인트 내역"
+          subtitle="돌봄 포인트의 잔액, 충전 내역과 사용 내역을 확인할 수 있습니다."
         />
         <S.CreditDetailPage>
           <CreditDetail />

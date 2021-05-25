@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import { ButtonSize } from '../../common/types';
 import {
-  CONTENT_WIDTH,
   CONTENT_WIDTH_NARROW,
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
@@ -10,7 +9,6 @@ import {
   FLEX_ROW_CENTER_START,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
-  FLEX_ROW_START_START,
   THEME,
 } from '../../constant';
 
@@ -71,23 +69,28 @@ export const InfoTable = styled.table`
     vertical-align: middle;
     table-layout: fixed;
   }
+  tr {
+    width: 100%;
+  }
   th {
     width: 150px;
     background: ${THEME.HEADER_BACKGROUND};
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-weight: 500;
   }
-  .detail {
-    width: 46%;
+  .content {
+    width: 40%;
   }
   .credit {
-    width: 17%;
+    width: 20%;
+    text-align: center;
   }
-  .sort {
-    width: 17%;
+  .type {
+    width: 15%;
+    text-align: center;
   }
   .time {
-    width: 20%;
+    width: 35%;
   }
 `;
 

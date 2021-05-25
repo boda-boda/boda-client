@@ -223,6 +223,8 @@ export const RELIGION = 'Religion';
 
 export const OUTER_CARE_WORKER_SCHEDULE_TYPES = ['오전', '오후', '종일'];
 
+export const CREDITS_ON_CONVERSION = 50;
+
 export const dummyCareWorkers = [
   {
     zipCode: '08101',
