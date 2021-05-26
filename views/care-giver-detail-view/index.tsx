@@ -20,7 +20,7 @@ export default function CareGiverDetailView() {
             title="내 요양보호사 세부정보"
             subtitle="요양보호사의 자세한 정보를 확인할 수 있습니다.#마음에 드신다면 매칭제안서를 작성해보세요."
           />
-          <Category list={['홈', '신규 요양보호사 검색', '요양보호사 세부정보']} />
+          <Category list={['홈', '나의 요양보호사 관리', '요양보호사 세부정보']} />
           <S.CareGiverDetailPage>
             <CareGiverDetail />
           </S.CareGiverDetailPage>

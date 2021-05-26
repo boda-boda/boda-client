@@ -275,13 +275,11 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.duration || a.memo); // prettier-ignore
     setIsRequesting(true);
-
     try {
       await axios.post('/care-worker', {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: availableSchedule,
         careWorkerCareers: availableCareers,
         careWorkerAreas: availableAreas,
       });
@@ -292,7 +290,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
-    document.location.href = '/new';
+    // document.location.href = '/new';
   };
 
   const handleClickUpdateButton = async () => {

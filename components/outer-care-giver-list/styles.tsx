@@ -307,6 +307,24 @@ export const Card = styled.div`
     box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.3);
   }
 `;
+
+export const CardConverted = styled.div`
+  position: relative;
+  width: 474px;
+  height: 160px;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 30px;
+  margin-bottom: -10px;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: ${THEME.LOCATION_LINE};
+  ${FLEX_ROW_SPACE_CENTER};
+  transition: 0.2s ease;
+  /* :hover {
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.3);
+  } */
+`;
+
 export const EmptyCardContainer = styled.div`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
@@ -328,6 +346,7 @@ export const EmptyCard = styled.div`
 
 interface ProfileImageProps {
   src: string;
+  converted?: boolean;
 }
 
 export const ProfileImage = styled.div<ProfileImageProps>`
@@ -336,24 +355,47 @@ export const ProfileImage = styled.div<ProfileImageProps>`
   border-radius: 50%;
   background: ${THEME.BACKGROUND};
   background-image: url(${(props) => props.src});
+  opacity: ${(props) => (props.converted ? 0.5 : 1)};
   background-size: cover;
   background-position: center;
 `;
 
-export const InfoContainer = styled.div`
+interface InfoContainerProps {
+  converted?: boolean;
+}
+
+export const InfoContainer = styled.div<InfoContainerProps>`
   position: absolute;
   left: 0;
   top: 0;
   padding: 25px 0px 25px 145px;
   width: 100%;
   height: 100%;
-  cursor: pointer;
+  cursor: ${(props) => (props.converted ? 'default' : 'pointer')};
+`;
+
+export const InfoContainerConverted = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 25px 0px 25px 145px;
+  width: 100%;
+  height: 100%;
 `;
 
 export const BasicInfo = styled.div`
   font-size: 20px;
   font-weight: 500;
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+  margin-bottom: 15px;
+`;
+
+export const ConvertedInfo = styled.div`
+  font-size: 12px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: ${THEME.MAIN};
   margin-bottom: 15px;
 `;
 

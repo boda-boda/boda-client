@@ -415,8 +415,8 @@ export const FinishButton = styled.button`
 `;
 
 export const CreditPurchaseButton = styled.button`
-  padding: 10px 15px;
-  height: 45px;
+  padding: 10px 10px;
+  height: 40px;
   border-radius: 3px;
   margin-bottom: -10px;
   font-size: 16px;

@@ -4,10 +4,12 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
+import { CAPABILITY, CREDITS_ON_CONVERSION, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
+import { validateCareWorker } from '../../common/lib/validate';
+import Credit from '../../model/credit';
 
 const dummyCompliment = [
   {
@@ -81,6 +83,58 @@ export default function OuterCareGiverDetail() {
   const handleApplyCompliment = () => {
     setIsEditingCompliment(false);
     //update 칭찬
+  };
+
+  const handleClickConversionButton = async () => {
+    if (
+      !window.confirm(
+        `${CREDITS_ON_CONVERSION} 돌봄 포인트를 사용하여 내 요양보호사로 전환하시겠습니까?`
+      )
+    )
+      return;
+
+    try {
+      const response = await axios.get(`/outer-care-worker/conversion/${router.query.ID}`);
+      const creditResponse = await axios.get(`/credit`);
+      const credit = creditResponse.data as Credit;
+      if (credit.freeCredit + credit.paidCredit <= CREDITS_ON_CONVERSION) {
+        alert('보유하신 돌봄 포인트가 부족합니다.');
+        return;
+      }
+      try {
+        await axios.post('/outer-care-worker/conversion', {
+          outerCareWorkerId: outerCareWorker.id,
+        });
+      } catch (e) {
+        alert('이미 전환된 요양보호사 입니다.');
+        return;
+      }
+      try {
+        await axios.put(`credit/use`, {
+          usedCredit: CREDITS_ON_CONVERSION,
+          careWorkerName: response.data.careWorker.name,
+        });
+        await axios.post('/care-worker', {
+          careWorker: response.data.careWorker,
+          careWorkerAreas: response.data.careWorkerAreas,
+          careWorkerCapabilities: response.data.careWorkerCapabilities,
+          careWorkerCareers: response.data.careWorkerCareers,
+          careWorkerReligions: response.data.careWorkerReligions,
+        });
+      } catch (e) {
+        alert(
+          '요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
+        );
+        return;
+      }
+    } catch (e) {
+      alert(
+        '해당 요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
+      );
+      router.push('/search');
+    }
+
+    alert('요양보호사 전환에 성공하였습니다.');
   };
 
   return (
@@ -299,7 +353,9 @@ export default function OuterCareGiverDetail() {
             </S.Table>
           </S.Section> */}
           <S.FinishButtonContainer>
-            <S.TransferButton>내 요양보호사로 전환하기</S.TransferButton>
+            <S.TransferButton onClick={handleClickConversionButton}>
+              내 요양보호사로 전환하기
+            </S.TransferButton>
             <Link
               key={`worker-${outerCareWorker.id}`}
               href={{
