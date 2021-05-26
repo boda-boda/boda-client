@@ -290,7 +290,7 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     }
 
     alert('요양보호사 추가에 성공하였습니다.');
-    // document.location.href = '/new';
+    document.location.href = '/new';
   };
 
   const handleClickUpdateButton = async () => {
