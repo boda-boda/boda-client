@@ -65,7 +65,7 @@ export default function CreditDetail() {
               <S.CreditInfoRow>
                 <S.CreditInfoDiv>보유 돌봄 포인트</S.CreditInfoDiv>
                 <S.CreditInfoDiv>
-                  {credit.paidCredit && credit.freeCredit
+                  {credit.paidCredit || credit.freeCredit
                     ? credit.paidCredit + credit.freeCredit
                     : 0}
                   돌봄 포인트

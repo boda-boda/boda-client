@@ -97,44 +97,26 @@ export default function OuterCareGiverDetail() {
       return;
 
     try {
-      const response = await axios.get(`/outer-care-worker/conversion/${router.query.ID}`);
       const creditResponse = await axios.get(`/credit`);
       const credit = creditResponse.data as Credit;
-      if (credit.freeCredit + credit.paidCredit <= CREDITS_ON_CONVERSION) {
+      if (credit.freeCredit + credit.paidCredit < CREDITS_ON_CONVERSION) {
         alert('보유하신 돌봄 포인트가 부족합니다.');
         return;
       }
-      try {
-        await axios.post('/outer-care-worker/conversion', {
-          outerCareWorkerId: outerCareWorker.id,
-        });
-      } catch (e) {
+      if (convertedOuterCareWorkerIds.includes(outerCareWorker.id)) {
         alert('이미 전환된 요양보호사 입니다.');
         return;
       }
-      try {
-        await axios.put(`credit/use`, {
-          usedCredit: CREDITS_ON_CONVERSION,
-          careWorkerName: response.data.careWorker.name,
-        });
-        await axios.post('/care-worker', {
-          careWorker: response.data.careWorker,
-          careWorkerAreas: response.data.careWorkerAreas,
-          careWorkerCapabilities: response.data.careWorkerCapabilities,
-          careWorkerCareers: response.data.careWorkerCareers,
-          careWorkerReligions: response.data.careWorkerReligions,
-        });
-      } catch (e) {
-        alert(
-          '요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
-        );
-        return;
-      }
+      await axios.post('/outer-care-worker/convert', {
+        outerCareWorkerId: outerCareWorker.id,
+        usedCredit: CREDITS_ON_CONVERSION,
+      });
     } catch (e) {
       alert(
         '해당 요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
       );
       router.push('/search');
+      return;
     }
 
     alert('요양보호사 전환에 성공하였습니다.');
@@ -265,17 +247,17 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
+                  <th className="career">근무지(수급자)</th>
+                  <th className="career">기간</th>
+                  <th className="career long right">비고</th>
                 </tr>
                 {outerCareWorker.outerCareWorkerCareers ? (
                   outerCareWorker.outerCareWorkerCareers.length > 0 ? (
                     outerCareWorker.outerCareWorkerCareers.map((career, idx) => (
                       <tr key={`career-${idx}`}>
-                        <td className="career long">{career.workplace}</td>
-                        <td className="career">{career.recipient}</td>
-                        <td className="career right">{career.duration}</td>
+                        <td className="career">{career.workplace}</td>
+                        <td className="career">{career.duration}</td>
+                        <td className="career long right">{career.memo}</td>
                       </tr>
                     ))
                   ) : (
