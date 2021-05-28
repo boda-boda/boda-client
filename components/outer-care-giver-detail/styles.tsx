@@ -369,3 +369,11 @@ export const TransferButton = styled.button`
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
+export const ConvertedInfo = styled.div`
+  font-size: 20px;
+  position: absolute;
+  left: 100px;
+  top: 22px;
+  color: ${THEME.MAIN};
+  margin-bottom: 15px;
+`;

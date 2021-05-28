@@ -41,6 +41,7 @@ export default function OuterCareGiverDetail() {
   const [myComplimentTitle, setMyComplimentTitle] = useState('');
   const [myComplimentContent, setMyComplimentContent] = useState('');
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [convertedOuterCareWorkerIds, setConvertedOuterCareWorkerIds] = useState([] as string[]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -70,6 +71,8 @@ export default function OuterCareGiverDetail() {
       try {
         const response = await axios.get(`/outer-care-worker/${router.query.ID}`);
         setOuterCareWorker(response.data);
+        const ocwIdResponse = await axios.get(`/outer-care-worker/id/converted`);
+        setConvertedOuterCareWorkerIds(ocwIdResponse.data);
       } catch (e) {
         router.push('/search');
       }
@@ -143,6 +146,9 @@ export default function OuterCareGiverDetail() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
+            {convertedOuterCareWorkerIds.includes(outerCareWorker.id) && (
+              <S.ConvertedInfo>(이미 전환된 요양보호사 입니다.)</S.ConvertedInfo>
+            )}
             <S.Table>
               <tbody>
                 <tr>

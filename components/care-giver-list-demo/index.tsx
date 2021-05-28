@@ -302,6 +302,11 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
 
   return (
     <>
+      {console.log(filteredCareWorkers)}
+      {console.log(indexOfFirstCareworker)}
+      {console.log(indexOfLastCareworker)}
+      {console.log(currentPage)}
+      {console.log(careWorkersPerPage)}
       <S.CgList>
         <S.Section isBackgroundColored={false}>
           <S.InnerContent>
