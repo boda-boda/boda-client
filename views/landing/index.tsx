@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import SlideLeftButton from '../../svgs/slide-left-button-svg';
 import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
-import { useHeader } from '../../components/header/hooks';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
 import { useSoftRefresh } from '../../common/hooks/auth';
+import { useLogin } from '../login/hooks';
 
 const Header = ({ nowSection, setNowSection, sectionRefs }) => {
   const [isTop, setIstop] = useState(true);
@@ -168,7 +168,7 @@ export default function Landing() {
     const change = setInterval(imageChange, 20000);
     return () => clearInterval(change);
   }, [jumbotronIndex]);
-  const { contact, handleContactUpdate, handleConsultRequest } = useHeader();
+  const { contact, handleContactUpdate, handleConsultRequest } = useLogin();
 
   return (
     <>
