@@ -114,7 +114,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
     if (!validateMatchingProposal(matchingProposal)) return;
 
     try {
-      const response = await axios.post('/matching-proposal', matchingProposal);
+      await axios.post('/matching-proposal', matchingProposal);
     } catch (e) {
       return;
     }
