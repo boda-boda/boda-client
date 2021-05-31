@@ -128,7 +128,7 @@ export const AvailabilityInfoList = styled.div`
 `;
 
 export const AvailabilityInfoItem = styled.div`
-  padding: 0 15px;
+  padding: 0 12px;
   height: 36px;
   margin-right: 10px;
   border-radius: 3px;

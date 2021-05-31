@@ -144,10 +144,10 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
   const filterName = (cws: any[]) => {
     const result = cws.filter((cw: any) => {
       if (name === '-1') return true;
-      if (name.split('').every((letter) => KOREAN_CONSONANT_LIST.includes(letter))) {
+      if (name?.split('').every((letter) => KOREAN_CONSONANT_LIST.includes(letter))) {
         return filterByLetter(name.split(''), cw.name);
       }
-      if (name.length > cw.name.length) return false;
+      if (name?.length > cw.name.length) return false;
       return cw.name.includes(name);
     });
     return result;
@@ -274,9 +274,9 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
     if (!isLocalStorageLoaded) return; // 한번도 가져온 적이 없으면 저장하지 않게 함
 
     const timeout = setTimeout(() => {
-      const availableSchedule = schedules.filter((a) => isCareWorkerScheduleValid(a));
+      const availableSchedule = schedules?.filter((a) => isCareWorkerScheduleValid(a));
 
-      if (!availableSchedule.length) {
+      if (!availableSchedule?.length) {
         localStorage.setItem(LOCALSTORAGE_KEY.MY_CARE_WORKER_SEARCH_PARAMS, JSON.stringify({
           name,city,gu,dong, schedules : [CareWorkerSchedule.noArgsConstructor()], selectedCareInfo, selectedConsonantFilter, currentPage,careWorkersPerPage
         })) // prettier-ignore
@@ -366,7 +366,7 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
                 <tr>
                   <th>돌봄 시간</th>
                   <td style={{ padding: 0 }} colSpan={3}>
-                    {schedules.map((schedule, scheduleIndex) => {
+                    {schedules?.map((schedule, scheduleIndex) => {
                       return (
                         <S.TimeSelectContainer
                           isLast={schedules.length - 1 === scheduleIndex}
@@ -506,7 +506,7 @@ export default function CareGiverListDemo({ isMyCaregiver }: CareGiverListProps)
                                       {careInfo}
                                       <S.CheckBox
                                         type="checkbox"
-                                        checked={selectedCareInfo.includes(careInfo)}
+                                        checked={selectedCareInfo?.includes(careInfo)}
                                         onChange={() => toggleCareInfo(careInfo)}
                                       />
                                     </div>

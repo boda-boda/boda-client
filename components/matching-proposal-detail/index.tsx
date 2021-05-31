@@ -1,113 +1,72 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ButtonSize, ButtonType } from '../../common/types';
-import MinusIconSVG from '../../svgs/minus-icon-svg';
-import PlusIconSVG from '../../svgs/plus-icon-svg';
-import DefaultButtonContainter from '../default-button';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './styles';
-import {
-  CAPABILITY,
-  CARE_INFO_LIST,
-  DAY_LIST,
-  FAMILY_TYPE,
-  NURSING_GRADE,
-  RELIGION,
-  RELIGION_LIST,
-  WORKER_MAN_SMALL_IMAGE_URL,
-} from '../../constant';
-import {
-  CareWorkerSchedule,
-  toggleDayOfCareWorkerSchedule,
-} from '../../model/care-worker-schedule';
-import { DayType } from '../../common/types/date';
+import { CAPABILITY } from '../../constant';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useCareCenter } from '../../context/care-center';
+import axios from 'axios';
+import MatchingProposalDetailRequest from './model/matching-proposal-detail-request';
+import Recipient from '../../model/recipient';
 
 interface MatchingProposalProps {
   isFilled?: boolean;
 }
 
-const PROPOSAL = {
-  id: '0',
-  pay: '11500',
-  memo: 'RFID 태그 꼭 사용 부탁드립니다.',
-  recipient: {
-    zipCode: '08018',
-    address: '서울시 양천구 신정7동 목동남로4길 81',
-    detailAddress: '101호',
-    age: 99,
-    birthDay: '1922-08-21',
-    schedule: '월 화 수 목 금 9:00 - 12:00',
-    recipientMetas: [
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '치매자격증', value: '' },
-      { type: RELIGION, key: '무교', value: '' },
-    ],
-    familyType: '독거',
-    description:
-      '대화하는 것을 좋아하셔서 말동무를 많이 해주시면 좋을 것 같습니다. 치매인지재활 교육은 매일 1시간 30분 씩 진행해주시면 됩니다.',
-    grade: 3,
-    gender: '여',
-    id: 'asdf',
-    name: '김수급',
-    profile:
-      'https://dolbom.s3.amazonaws.com/newFiles/2ce24d59-59b8-4109-b5f3-6ad26ac55170_%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png',
-    residenceType: '독거',
-  },
-  caregiver: {
-    zipCode: '08018',
-    address: '서울시 양천구 신정7동',
-    detailAddress: '목동남로4길 81',
-    age: 60,
-    birthDay: '1962-08-21',
-    availableTime: '오전',
-    schedule: '월 화 수 목 금 9:00 - 12:00',
-    caregiverMetas: [
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: CAPABILITY, key: '휠체어', value: '' },
-      { type: RELIGION, key: '무교', value: '' },
-    ],
-    workArea: ['서대문구'],
-    description:
-      '약속을 잘 지키시며, 꼼꼼한 성격이시다. 말씀하시는 것을 좋아하셔서 대화를 잘 하신다.',
-    grade: 3,
-    gender: '여',
-    id: 'asdf',
-    name: '요XX',
-    phoneNumber: '010-7105-2344',
-    profile:
-      'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/15976dbd-3149-4331-a09d-58d9853668be_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1_%E1%84%8B%E1%85%AD%E1%84%8B%E1%85%A3%E1%86%BC%E1%84%87%E1%85%A9%E1%84%92%E1%85%A9%E1%84%89%E1%85%A1.jpg',
-    residenceType: '독거',
-  },
-};
-
 export default function MatchingProposalDetail({ isFilled }: MatchingProposalProps) {
-  const [isWoman, setIsWoman] = useState(true);
-  const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
-  const [selectedReligionInfo, setSelectedReligionInfo] = useState([] as string[]);
-  const [selectedFamilyType, setSelectedFamilyType] = useState('');
-  const [schedules, setSchedules] = useState([CareWorkerSchedule.noArgsConstructor()]);
-  const [recipientName, setRecipientName] = useState('');
-  const [rerender, setRerender] = useState(false);
+  const router = useRouter();
+  const careCenter = useCareCenter();
+
+  const [careWorker, setCareWorker] = useState({} as any);
+  const [recipient, setRecipient] = useState(new Recipient());
 
   const [memo, setMemo] = useState('');
   const memoRef = useRef<HTMLTextAreaElement>(null);
+  const [matchingProposal, setMatchingProposal] = useState(
+    MatchingProposalDetailRequest.noArgsConstructor()
+  );
 
   useEffect(() => {
     if (!memoRef.current) return;
     memoRef.current!.style.height = 'auto';
     memoRef.current!.style.height = (memoRef.current!.scrollHeight + 10).toString() + 'px';
   }, [memo]);
+
+  useEffect(() => {
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+
+    (async () => {
+      const response = await axios.get(`/matching-proposal/${router.query.ID}`);
+      setMatchingProposal(response.data);
+    })();
+  }, [router, careCenter]);
+
+  useEffect(() => {
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+    matchingProposal.outerCareWorker.id
+      ? (async () => {
+          const response = matchingProposal.outerCareWorker
+            ? await axios.get(`/outer-care-worker/${matchingProposal.outerCareWorker.id}`)
+            : ({} as any);
+          setCareWorker(response.data);
+        })()
+      : null;
+  }, [router, careCenter, matchingProposal]);
+
+  useEffect(() => {
+    if (!router.query.ID || !careCenter || careCenter.isValidating || !careCenter.isLoggedIn) {
+      return;
+    }
+    matchingProposal.recipient.id
+      ? (async () => {
+          const response = await axios.get(`/recipient/${matchingProposal.recipient.id}`);
+          setRecipient(response.data);
+        })()
+      : null;
+  }, [router, careCenter, matchingProposal]);
 
   return (
     <>
@@ -125,70 +84,71 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={PROPOSAL.recipient.profile} />
+                      <S.ProfileImage src={recipient.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">{PROPOSAL.recipient.name}</td>
+                  <td className="left">{recipient.name}</td>
                   <th>성별</th>
-                  <td className="right">{PROPOSAL.recipient.gender}자</td>
+                  <td className="right">{recipient.isFemale ? '여자' : '남자'}</td>
                 </tr>
                 <tr>
-                  <th>등급</th>
-                  <td className="select left">{PROPOSAL.recipient.grade}등급</td>
                   <th>나이</th>
-                  <td className="right">{PROPOSAL.recipient.age}세</td>
+                  <td className="right">{recipient.age}세</td>
+                  <th>등급</th>
+                  <td className="select left">{recipient.grade}등급</td>
+                </tr>
+                <tr>
+                  <th>돌봄 시간</th>
+                  <td colSpan={1} className="wide">
+                    {recipient.schedule}
+                  </td>
+                  <th>종교</th>
+                  <td colSpan={1} className="">
+                    {recipient.religion}
+                  </td>
+                </tr>
+                <tr>
+                  <th>거주 형태</th>
+                  <td colSpan={1} className="wide">
+                    {recipient.familyType}
+                  </td>
+                  <th>휴대전화</th>
+                  <td colSpan={1} className="wide">
+                    {recipient.phoneNumber}
+                  </td>
                 </tr>
                 <tr>
                   <th rowSpan={1}>주소</th>
                   <td colSpan={3}>
-                    ({PROPOSAL.recipient.zipCode}) {PROPOSAL.recipient.address}{' '}
-                    {PROPOSAL.recipient.detailAddress}
-                  </td>
-                </tr>
-
-                <tr>
-                  <th>거주 형태</th>
-                  <td colSpan={1} className="wide">
-                    <S.TdFlexBox>
-                      <S.ToggleButton>{PROPOSAL.recipient.residenceType}</S.ToggleButton>
-                    </S.TdFlexBox>
-                  </td>
-                  <th>종교</th>
-                  <td colSpan={1} className="">
-                    <S.TdFlexBox>
-                      <S.ToggleButton>
-                        {PROPOSAL.recipient.recipientMetas
-                          .filter((meta) => meta.type === RELIGION)
-                          .map((meta) => meta.key)}
-                      </S.ToggleButton>
-                    </S.TdFlexBox>
+                    ({recipient.zipCode}) {recipient.address} {recipient.detailAddress}
                   </td>
                 </tr>
                 <tr>
                   <th>요구 사항</th>
                   <td colSpan={3} className="overtd">
                     <S.TdFlexBox>
-                      {PROPOSAL.recipient.recipientMetas
-                        .filter((meta) => meta.type === CAPABILITY)
-                        .map((meta, index) => {
-                          return (
-                            <S.ToggleButton
-                              className="overitems"
-                              isSelected={selectedCareInfo.indexOf(meta.key) !== -1}
-                              key={`careInfoListItem-${index}`}
-                            >
-                              {meta.key}
-                            </S.ToggleButton>
-                          );
-                        })}
+                      {recipient.recipientMetas
+                        ? recipient.recipientMetas
+                            .filter((meta) => meta.type === CAPABILITY)
+                            .map((meta, index) => {
+                              return (
+                                <S.ToggleButton
+                                  className="overitems"
+                                  key={`careInfoListItem-${index}`}
+                                >
+                                  {meta.key}
+                                </S.ToggleButton>
+                              );
+                            })
+                        : ''}
                     </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>세부 사항</th>
                   <td colSpan={3} className="select wide">
-                    {PROPOSAL.recipient.description}
+                    {recipient.description}
                   </td>
                 </tr>
               </tbody>
@@ -202,11 +162,11 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
               <tbody>
                 <tr>
                   <th>시급</th>
-                  <td>{PROPOSAL.pay}원</td>
+                  <td>{matchingProposal.hourlyWage}원</td>
                 </tr>
                 <tr>
                   <th>비고</th>
-                  <td>{PROPOSAL.memo}</td>
+                  <td>{matchingProposal.description}</td>
                 </tr>
               </tbody>
             </S.InfoTable>
@@ -220,39 +180,50 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                 <tr>
                   <td rowSpan={9} className="recipientProfile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={PROPOSAL.caregiver.profile} />
+                      <S.ProfileImage src={careWorker.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="left">{PROPOSAL.caregiver.name}</td>
+                  <td className="left">{careWorker.name}</td>
                   <th>성별</th>
-                  <td className="right">{PROPOSAL.caregiver.gender}자</td>
+                  <td className="right">{careWorker.gender}</td>
                 </tr>
                 <tr>
                   <th>생년월일</th>
                   <td className="select left">
-                    {PROPOSAL.caregiver.birthDay} ({PROPOSAL.caregiver.age})세
+                    {careWorker.birthDay} ({careWorker.age})세
                   </td>
+                  <th>휴대전화</th>
+                  <td className="right">{careWorker.phoneNumber}</td>
+                </tr>
+                <tr>
                   <th>돌봄 시간</th>
-                  <td className="right">{PROPOSAL.caregiver.availableTime}</td>
-                </tr>
-                <tr>
-                  <th rowSpan={1}>주소</th>
-                  <td colSpan={3}>
-                    ({PROPOSAL.recipient.zipCode}) {PROPOSAL.recipient.address}{' '}
-                    {PROPOSAL.recipient.detailAddress}
-                  </td>
-                </tr>
-
-                <tr>
+                  <td className="right">{careWorker.schedule}</td>
                   <th>종교</th>
                   <td colSpan={1} className="">
+                    {careWorker.religion}
+                  </td>
+                </tr>
+                <tr>
+                  <th>자격증 취득일</th>
+                  <td className="right">{careWorker.licenseDate}</td>
+                </tr>
+                <tr>
+                  <th rowSpan={1}>활동 지역</th>
+                  <td colSpan={3} className="overtd">
                     <S.TdFlexBox>
-                      <S.ToggleButton>
-                        {PROPOSAL.caregiver.caregiverMetas
-                          .filter((meta) => meta.type === RELIGION)
-                          .map((meta) => meta.key)}
-                      </S.ToggleButton>
+                      {careWorker.outerCareWorkerAreas
+                        ? careWorker.outerCareWorkerAreas.map((area, index) => {
+                            return (
+                              <S.ToggleButton
+                                className="overitems"
+                                key={`careInfoListItem-${index}`}
+                              >
+                                {`${area.city} ${area.gu} ${area.dong}`}
+                              </S.ToggleButton>
+                            );
+                          })
+                        : ''}
                     </S.TdFlexBox>
                   </td>
                 </tr>
@@ -260,26 +231,25 @@ export default function MatchingProposalDetail({ isFilled }: MatchingProposalPro
                   <th>가능 조건</th>
                   <td colSpan={3} className="overtd">
                     <S.TdFlexBox>
-                      {PROPOSAL.caregiver.caregiverMetas
-                        .filter((meta) => meta.type === CAPABILITY)
-                        .map((meta, index) => {
-                          return (
-                            <S.ToggleButton
-                              className="overitems"
-                              isSelected={selectedCareInfo.indexOf(meta.key) !== -1}
-                              key={`careInfoListItem-${index}`}
-                            >
-                              {meta.key}
-                            </S.ToggleButton>
-                          );
-                        })}
+                      {careWorker.outerCareWorkerMetas
+                        ? careWorker.outerCareWorkerMetas.map((meta, index) => {
+                            return (
+                              <S.ToggleButton
+                                className="overitems"
+                                key={`careInfoListItem-${index}`}
+                              >
+                                {meta.key}
+                              </S.ToggleButton>
+                            );
+                          })
+                        : ''}
                     </S.TdFlexBox>
                   </td>
                 </tr>
                 <tr>
                   <th>메모</th>
                   <td colSpan={3} className="select wide">
-                    {PROPOSAL.caregiver.description}
+                    {careWorker.description}
                   </td>
                 </tr>
               </tbody>

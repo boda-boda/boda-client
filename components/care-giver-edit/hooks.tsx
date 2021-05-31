@@ -98,31 +98,6 @@ export const useCareGiverUpsert = (isNew: boolean) => {
               BusinessArea.allArgsConstructor(area.city, area.gu, area.dong)
             )
           );
-
-        const allSchedules = c.careWorkerSchedules.reduce((acc, sc) => {
-          if (sc.startAt.split(':').length < 3 || sc.endAt.split(':').length < 3) return acc;
-          const [stt, stm] = sc.startAt.split(':').map((m) => parseInt(m));
-          const [et, em] = sc.endAt.split(':').map((m) => parseInt(m));
-
-          const matchedSchedule = acc.find(
-            (cws) =>
-              cws.startHour === stt &&
-              cws.startMinute === stm &&
-              cws.endHour === et &&
-              cws.endMinute === em
-          );
-
-          if (matchedSchedule) {
-            matchedSchedule.days.push(sc.day);
-          } else {
-            const newSchedule = CareWorkerSchedule.allArgsConstructor(stt, stm, et, em);
-            newSchedule.days.push(sc.day);
-            acc.push(newSchedule);
-          }
-
-          return acc;
-        }, [] as CareWorkerSchedule[]);
-        if (allSchedules.length > 0) setCareWorkerSchedules(allSchedules);
       } catch {
         alert('잘못된 접근입니다.');
         router.push('/');
@@ -300,13 +275,11 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.duration || a.memo); // prettier-ignore
     setIsRequesting(true);
-
     try {
       await axios.post('/care-worker', {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: availableSchedule,
         careWorkerCareers: availableCareers,
         careWorkerAreas: availableAreas,
       });

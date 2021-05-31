@@ -7,6 +7,8 @@ import CareWorkerSingleSchedule from './model/care-worker-single-schedule';
 
 export const CONTENT_WIDTH = 978;
 
+export const CONTENT_WIDTH_NARROW = 700;
+
 export const THEME = {
   MAIN: '#7131b7',
   RED: '#dc3545',
@@ -194,6 +196,8 @@ export const CARE_INFO_LIST = [
   '간호조무사',
 ];
 
+export const MATCHING_PROPOSAL_STATUS = ['수락됨', '거절됨', '대기중'];
+
 export const RELIGION_LIST = ['기독교', '불교', '천주교', '기타', '무교'];
 
 export const FAMILY_TYPE = ['독거', '노인부부', '미혼자녀와함께', '기혼자녀와함께', '기타'];
@@ -217,10 +221,9 @@ export const LOCALSTORAGE_KEY = {
 export const CAPABILITY = 'Capability';
 export const RELIGION = 'Religion';
 
-export const PRIVATE_ROUTES = ['/', '/new', '/list', '/list/[ID]', '/list/[ID]/edit', 'mycenter'];
-
 export const OUTER_CARE_WORKER_SCHEDULE_TYPES = ['오전', '오후', '종일'];
 
+export const CREDITS_ON_CONVERSION = 50;
 export const NAME_ORDER = (a: CareWorker, b: CareWorker) => {
   return a.name < b.name ? -1 : a.name === b.name ? 0 : 1;
 };

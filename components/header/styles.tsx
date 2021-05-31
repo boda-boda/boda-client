@@ -42,7 +42,12 @@ export const MenuList = styled.div`
   ${FLEX_ROW_END_START};
 `;
 
-export const MenuItem = styled.div`
+interface MenuItemProps {
+  isNarrow?: boolean;
+}
+
+export const MenuItem = styled.div<MenuItemProps>`
+  width: ${(props) => (props.isNarrow ? '130px' : 'auto')};
   position: relative;
   margin-left: 38px;
   height: 50px;

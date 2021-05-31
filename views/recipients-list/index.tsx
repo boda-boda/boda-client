@@ -19,27 +19,6 @@ import { useRouter } from 'next/router';
 import { useCareCenter } from '../../context/care-center';
 import axios from 'axios';
 
-const recipients = [
-  {
-    zipCode: '08018',
-    address: '서울시 양천구 신정7동',
-    detailAddress: '목동남로4길 81',
-    age: 20,
-    birthDay: '2000-08-21',
-
-    recipientMetas: [{ type: CAPABILITY, key: '휠체어', value: '' }],
-
-    description: '설명',
-    grade: 3,
-    isFemale: true,
-    id: 'asdf',
-    name: '김슈급',
-    phoneNumber: '010-7105-2344',
-    profile: 'https://topclass.chosun.com/news_img/2008/2008_008_4.jpg',
-    familyType: '독거',
-  },
-] as Recipient[];
-
 export default function ReciepientsList() {
   const careCenter = useCareCenter();
   const router = useRouter();
@@ -127,20 +106,20 @@ export default function ReciepientsList() {
                                     <PhoneNumberIconSVG />
                                   </S.SVGIconBox>
                                   <S.InfoType>위치</S.InfoType>
-                                  <S.InfoValue>{recipient.address}</S.InfoValue>
+                                  <S.LocationValue>{recipient.address}</S.LocationValue>
                                 </S.InfoRow>
-                                {/* <S.InfoRow>
+                                <S.InfoRow>
                                   <S.SVGIconBox>
                                     <PhoneNumberIconSVG />
                                   </S.SVGIconBox>
                                   <S.InfoType>휴대전화</S.InfoType>
                                   <S.InfoValue>{recipient.phoneNumber}</S.InfoValue>
-                                </S.InfoRow> */}
+                                </S.InfoRow>
                                 <S.InfoRow>
                                   <S.SVGIconBox>
                                     <CareInfoIconSVG />
                                   </S.SVGIconBox>
-                                  <S.InfoType>가능 조건</S.InfoType>
+                                  <S.InfoType>요구 사항</S.InfoType>
 
                                   <S.InfoItemList>
                                     {recipient.recipientMetas

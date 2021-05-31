@@ -14,6 +14,7 @@ export const useOuterCareGiverList = () => {
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [selectedReligion, setSelectedReligion] = useState([] as string[]);
+  const [convertedOuterCareWorkerIds, setConvertedOuterCareWorkerIds] = useState([] as string[]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -75,6 +76,8 @@ export const useOuterCareGiverList = () => {
         setCareWorkers(response.data.data);
         setMaxPage(Math.ceil(response.data.total / careWorkersPerPage));
         setCurrentPage(1);
+        const ocwIdResponse = await axios.get(`/outer-care-worker/id/converted`);
+        setConvertedOuterCareWorkerIds(ocwIdResponse.data);
       } catch (e) {
         return;
       }
@@ -139,5 +142,6 @@ export const useOuterCareGiverList = () => {
     maxPage,
     getPaginationBarNumbers,
     onClickSearchOuterCareGiver,
+    convertedOuterCareWorkerIds,
   };
 };

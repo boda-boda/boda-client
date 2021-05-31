@@ -4,41 +4,44 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
+import { CAPABILITY, CREDITS_ON_CONVERSION, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
+import { validateCareWorker } from '../../common/lib/validate';
+import Credit from '../../model/credit';
 
 const dummyCompliment = [
   {
-    title: '오태식씨를 칭찬합니다',
+    title: '강 선생님을 칭찬합니다.',
     date: new Date(),
     centerID: '64aefb6c-a59a-4432-b9a0-d5f29ed2d653',
     centerName: '돌봄',
-    content:
-      '병진이형 나가있으라고 말했잖아 내가 별 수 없게 현실이었어 감수하고 12, 000원 빼가 정준하 벌스라도 훔쳐갈 애가 명절 때 대입 자금 활짝 웃어 멀쩡합니다 베이식 형처럼 할거 매일 시켜 먹었다이가 외식을 치즈 콰트로 피어싱도 뚫어',
+    content: `한 번도 지각한 적이 없으실 정도로 시간 약속을 잘 지키십니다.<br />
+    맡으셨던 두 명의 수급자 분 모두 기본적으로 만족도가 높았고 특히 치매인지재활 부분에 대해서 상당히 만족하셨습니다.`,
   },
   {
-    title: '최고의 전문가 오태식',
+    title: '상대방을 편안하게 해주시는 강 선생님',
     date: new Date(),
     centerID: 'asdf',
-    centerName: '서울시 성북구 래원센터',
-    content: `해바라기 식당에 바로 앞에 직장 에어팟 한 개에 집착 왜 발악해 신참<br />
-      새파랗게 어린 자식들 거의 다 배신자 코펜하겐 수입 담배 가루 워싱턴<br />
-      난 신짜오야 진짜 우황청심환 심장 만신창이와 술 취한 마술사의 아구창<br />
-      삼지창은 간지 쫙 수강신청 언제적 산신령 먼 친척이 사실 여보 친정`,
+    centerName: '서울시 서대문구 재가센터',
+    content: `강 선생님은 대화하는 상대방을 편하게 해주십니다.<br />
+    실제로 맡으셨던 수급자와 보호자 분들께서 까다로우신 편이셔서 여러번 선생님 교체를 원하셨었는데, 강 선생님은 상당히 좋아하셨습니다.
+    그래서 강 선생님께서 그 수급자 분과 1년 정도 꾸준히 하셨습니다.<br />
+      `,
   },
 ];
 
 export default function OuterCareGiverDetail() {
   const router = useRouter();
   const careCenter = useCareCenter();
-  const [careWorker, setCareWorker] = useState({} as any);
+  const [outerCareWorker, setOuterCareWorker] = useState({} as any);
   const [isEditingCompliment, setIsEditingCompliment] = useState(false);
   const [myCompliment, setMyCompliment] = useState(null);
   const [myComplimentTitle, setMyComplimentTitle] = useState('');
   const [myComplimentContent, setMyComplimentContent] = useState('');
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [convertedOuterCareWorkerIds, setConvertedOuterCareWorkerIds] = useState([] as string[]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -67,7 +70,9 @@ export default function OuterCareGiverDetail() {
     (async () => {
       try {
         const response = await axios.get(`/outer-care-worker/${router.query.ID}`);
-        setCareWorker(response.data);
+        setOuterCareWorker(response.data);
+        const ocwIdResponse = await axios.get(`/outer-care-worker/id/converted`);
+        setConvertedOuterCareWorkerIds(ocwIdResponse.data);
       } catch (e) {
         router.push('/search');
       }
@@ -83,40 +88,88 @@ export default function OuterCareGiverDetail() {
     //update 칭찬
   };
 
+  const handleClickConversionButton = async () => {
+    if (
+      !window.confirm(
+        `${CREDITS_ON_CONVERSION} 돌봄 포인트를 사용하여 내 요양보호사로 전환하시겠습니까?`
+      )
+    )
+      return;
+
+    try {
+      const creditResponse = await axios.get(`/credit`);
+      const credit = creditResponse.data as Credit;
+      if (credit.freeCredit + credit.paidCredit < CREDITS_ON_CONVERSION) {
+        alert('보유하신 돌봄 포인트가 부족합니다.');
+        return;
+      }
+      if (convertedOuterCareWorkerIds.includes(outerCareWorker.id)) {
+        alert('이미 전환된 요양보호사 입니다.');
+        return;
+      }
+      await axios.post('/outer-care-worker/convert', {
+        outerCareWorkerId: outerCareWorker.id,
+        usedCredit: CREDITS_ON_CONVERSION,
+      });
+    } catch (e) {
+      alert(
+        '해당 요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
+      );
+      router.push('/search');
+      return;
+    }
+
+    alert('요양보호사 전환에 성공하였습니다.');
+  };
+
   return (
     <>
       <S.CareGiverDetail>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
+            {convertedOuterCareWorkerIds.includes(outerCareWorker.id) && (
+              <S.ConvertedInfo>(이미 전환된 요양보호사 입니다.)</S.ConvertedInfo>
+            )}
             <S.Table>
               <tbody>
                 <tr>
-                  <td rowSpan={3} className="profile">
+                  <td rowSpan={4} className="profile">
                     <S.ProfileImageContainer>
-                      <S.ProfileImage src={careWorker.profile} />
+                      <S.ProfileImage src={outerCareWorker.profile} />
                     </S.ProfileImageContainer>
                   </td>
                   <th>이름</th>
-                  <td className="infovalue">{careWorker.name}</td>
+                  <td className="infovalue">{outerCareWorker.name}</td>
+                  <th>성별</th>
+                  <td className="infovalue">{outerCareWorker.gender}</td>
+                </tr>
+                <tr>
                   <th>생년월일</th>
                   <td className="infovalue">
-                    {careWorker.birthDay && careWorker.age
-                      ? `${careWorker.birthDay} (${careWorker.age}세)`
+                    {outerCareWorker.birthDay && outerCareWorker.age
+                      ? `${outerCareWorker.birthDay} (${outerCareWorker.age}세)`
                       : ''}
                   </td>
-                </tr>
-                <tr>
-                  <th>성별</th>
-                  <td className="infovalue">{careWorker.gender}</td>
                   <th>휴대전화</th>
-                  <td className="infovalue">{careWorker.phoneNumber}</td>
+                  <td className="infovalue">{outerCareWorker.phoneNumber}</td>
                 </tr>
                 <tr>
-                  <th>주소</th>
-                  <td colSpan={3}>
-                    {careWorker.zipCode && `(${careWorker.zipCode})`} {careWorker.address}{' '}
-                    {careWorker.detailAddress}
+                  <th>돌봄 시간</th>
+                  <td className="infovalue">
+                    {outerCareWorker.schedule ? outerCareWorker.schedule : ''}
+                  </td>
+                  <th>종교</th>
+                  <td>{outerCareWorker.religion ? outerCareWorker.religion : ''}</td>
+                </tr>
+                <tr>
+                  <th className="twoRow">
+                    자격증
+                    <br />
+                    취득일
+                  </th>
+                  <td className="infovalue" colSpan={3}>
+                    {outerCareWorker.licenseDate ? outerCareWorker.licenseDate : ''}
                   </td>
                 </tr>
               </tbody>
@@ -127,7 +180,7 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <td className="memo">{careWorker.description}</td>
+                  <td className="memo">{outerCareWorker.description}</td>
                 </tr>
               </tbody>
             </S.Table>
@@ -136,31 +189,35 @@ export default function OuterCareGiverDetail() {
             <S.SectionTitle>활동 지역</S.SectionTitle>
             <S.Table>
               <tbody>
-                {careWorker.careWorkerAreas?.length > 0 ? (
-                  chunk(careWorker.careWorkerAreas, 3).map((row, key) => {
-                    return (
-                      <tr key={`${key}`}>
-                        {row.map((areaItem, areaItemIndex) => {
-                          return (
-                            <td
-                              className={
-                                key === 0
-                                  ? `area ${areaItemIndex === row.length - 1 && 'right'}`
-                                  : `area ${(areaItemIndex + 1) % 3 === 0 && 'right'}`
-                              }
-                              key={`areaItem-${areaItemIndex}`}
-                            >
-                              {areaItem.city} {areaItem.gu} {areaItem.dong}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })
+                {outerCareWorker.outerCareWorkerAreas ? (
+                  outerCareWorker.outerCareWorkerAreas?.length > 0 ? (
+                    chunk(outerCareWorker.outerCareWorkerAreas, 3).map((row, key) => {
+                      return (
+                        <tr key={`${key}`}>
+                          {row.map((areaItem, areaItemIndex) => {
+                            return (
+                              <td
+                                className={
+                                  key === 0
+                                    ? `area ${areaItemIndex === row.length - 1 && 'right'}`
+                                    : `area ${(areaItemIndex + 1) % 3 === 0 && 'right'}`
+                                }
+                                key={`areaItem-${areaItemIndex}`}
+                              >
+                                {areaItem.city} {areaItem.gu} {areaItem.dong}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td>등록된 활동 지역이 없습니다.</td>
+                    </tr>
+                  )
                 ) : (
-                  <tr>
-                    <td>등록된 활동 지역이 없습니다.</td>
-                  </tr>
+                  ''
                 )}
               </tbody>
             </S.Table>
@@ -172,29 +229,13 @@ export default function OuterCareGiverDetail() {
                 <tr>
                   <td className="personality">
                     <S.AvailabilityInfoList>
-                      {careWorker.careWorkerCapabilities?.map((meta, i) => (
-                        <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
-                          {meta}
-                        </S.AvailabilityInfoItem>
-                      ))}
-                    </S.AvailabilityInfoList>
-                  </td>
-                </tr>
-              </tbody>
-            </S.Table>
-          </S.Section>
-          <S.Section>
-            <S.SectionTitle>종교</S.SectionTitle>
-            <S.Table>
-              <tbody>
-                <tr>
-                  <td className="personality">
-                    <S.AvailabilityInfoList>
-                      {careWorker.careWorkerReligions?.map((meta, i) => (
-                        <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
-                          {meta}
-                        </S.AvailabilityInfoItem>
-                      ))}
+                      {outerCareWorker.outerCareWorkerMetas
+                        ? outerCareWorker.outerCareWorkerMetas?.map((meta, i) => (
+                            <S.AvailabilityInfoItem key={`${CAPABILITY}-${i}`}>
+                              {meta.key}
+                            </S.AvailabilityInfoItem>
+                          ))
+                        : '가능 조건 정보가 없습니다'}
                     </S.AvailabilityInfoList>
                   </td>
                 </tr>
@@ -206,24 +247,28 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
+                  <th className="career">근무지(수급자)</th>
+                  <th className="career">기간</th>
+                  <th className="career long right">비고</th>
                 </tr>
-                {careWorker.careWorkerCareers?.length > 0 ? (
-                  careWorker.careWorkerCareers.map((career, idx) => (
-                    <tr key={`career-${idx}`}>
-                      <td className="career long">{career.workplace}</td>
-                      <td className="career">{career.recipient}</td>
-                      <td className="career right">{career.duration}</td>
+                {outerCareWorker.outerCareWorkerCareers ? (
+                  outerCareWorker.outerCareWorkerCareers.length > 0 ? (
+                    outerCareWorker.outerCareWorkerCareers.map((career, idx) => (
+                      <tr key={`career-${idx}`}>
+                        <td className="career">{career.workplace}</td>
+                        <td className="career">{career.duration}</td>
+                        <td className="career long right">{career.memo}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="career long"></td>
+                      <td className="career"></td>
+                      <td className="career right"></td>
                     </tr>
-                  ))
+                  )
                 ) : (
-                  <tr>
-                    <td className="career long"></td>
-                    <td className="career"></td>
-                    <td className="career right"></td>
-                  </tr>
+                  ''
                 )}
               </tbody>
             </S.Table>
@@ -295,6 +340,21 @@ export default function OuterCareGiverDetail() {
               </tbody>
             </S.Table>
           </S.Section> */}
+          <S.FinishButtonContainer>
+            <S.TransferButton onClick={handleClickConversionButton}>
+              내 요양보호사로 전환하기
+            </S.TransferButton>
+            <Link
+              key={`worker-${outerCareWorker.id}`}
+              href={{
+                pathname: '/search/[id]/proposal',
+              }}
+              as={`/search/${outerCareWorker.id}/proposal`}
+              passHref
+            >
+              <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
+            </Link>
+          </S.FinishButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>
     </>

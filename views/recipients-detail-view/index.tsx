@@ -73,7 +73,7 @@ export default function RecipientsDetail() {
                 <S.Table>
                   <tbody>
                     <tr>
-                      <td rowSpan={5} className="profile">
+                      <td rowSpan={8} className="profile">
                         <S.ProfileImageContainer>
                           <S.ProfileImage src={recipient.profile} />
                         </S.ProfileImageContainer>
@@ -84,21 +84,33 @@ export default function RecipientsDetail() {
                       <td className="infovalue">{recipient.isFemale ? '여' : '남'}</td>
                     </tr>
                     <tr>
-                      <th>등급</th>
-                      <td className="infovalue">{recipient.grade}등급</td>
                       <th>나이</th>
                       <td className="infovalue">{recipient.age}세</td>
+                      <th>등급</th>
+                      <td className="infovalue">{recipient.grade}등급</td>
                     </tr>
                     <tr>
-                      <th>위치</th>
-                      <td>
-                        {recipient.address} {recipient.detailAddress}
-                      </td>
+                      <th>돌봄 시간</th>
+                      <td>{recipient.schedule}</td>
+
+                      <th>종교</th>
+                      <td>{recipient.religion}</td>
+                    </tr>
+                    <tr>
                       <th>거주 형태</th>
                       <td>{recipient.familyType}</td>
+                      <th>휴대전화</th>
+                      <td className="infovalue">{recipient.phoneNumber}</td>
                     </tr>
                     <tr>
-                      <th>가능 조건</th>
+                      <th>주소</th>
+                      <td colSpan={3}>
+                        {recipient.zipCode &&
+                          `(${recipient.zipCode}) ${recipient.address} ${recipient.detailAddress}`}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>요구 사항</th>
                       <td colSpan={3} className="personality">
                         <S.AvailabilityInfoList>
                           {recipient.recipientMetas &&

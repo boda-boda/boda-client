@@ -309,6 +309,8 @@ export default function CareGiverList() {
         )
       )
     );
+    setCurrentPage(1);
+    setCurrentPaginationGroup(0);
   };
 
   useEffect(() => {
@@ -387,7 +389,7 @@ export default function CareGiverList() {
           <S.InnerSection>
             <S.InnerContent>
               <S.SectionTitleWrapper>
-                <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+                <S.SectionTitle>내 요양보호사 검색</S.SectionTitle>
                 <S.UseLocalStorageWrapper onClick={() => setUseLocalStorage(!useLocalStorage)}>
                   검색필터 저장하기
                 </S.UseLocalStorageWrapper>

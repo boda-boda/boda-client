@@ -103,7 +103,7 @@ export default function CareGiverDetail() {
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
-            <Link href={`${router.query.ID}/edit`} passHref>
+            <Link href={`edit`} passHref>
               <S.StyledLink>
                 <S.EditButton>세부정보 수정</S.EditButton>
               </S.StyledLink>
@@ -145,7 +145,7 @@ export default function CareGiverDetail() {
                   </td>
                 </tr>
                 <tr>
-                  <th>가능 시간</th>
+                  <th>돌봄 시간</th>
                   <td className="infovalue" colSpan={3}>
                     {careWorker.time}
                   </td>
@@ -233,7 +233,7 @@ export default function CareGiverDetail() {
                     <S.AvailabilityInfoList>
                       {careWorker.careWorkerMetas &&
                         careWorker.careWorkerMetas
-                          .filter((meta) => meta.type === RELIGION)
+                          .filter((meta) => meta.type === RELIGION && meta.key)
                           .map((meta, i) => (
                             <S.AvailabilityInfoItem key={`${RELIGION}-${i}`}>
                               {meta.key}

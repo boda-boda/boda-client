@@ -6,7 +6,12 @@ import OuterCareGiverList from '../../components/outer-care-giver-list';
 import Head from 'next/head';
 import Category from '../../components/category';
 
+import { useCareCenter } from '../../context/care-center';
+import { usePrivatePage } from '../../common/hooks/private-page';
+
 function Search() {
+  usePrivatePage(useCareCenter());
+
   return (
     <>
       <Head>
@@ -15,7 +20,7 @@ function Search() {
       <Layout>
         <>
           <Banner bannerStyle={BannerStyleType.AD} />
-          <Category list={['홈', '요양보호사 검색']} />
+          <Category list={['홈', '돌봄 요양보호사 매칭', '돌봄 요양보호사 검색']} />
           <S.Search>
             <OuterCareGiverList />
           </S.Search>

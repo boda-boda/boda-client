@@ -15,8 +15,8 @@ export default function SpinnerCircleSVG(props: any) {
         cy="100"
         r="50"
         stroke={`${THEME.HEADER_BACKGROUND}`}
-        stroke-width="3"
-        stroke-linecap="round"
+        strokeWidth="3"
+        strokeLinecap="round"
         fill="none"
       ></circle>
       <circle
@@ -24,8 +24,8 @@ export default function SpinnerCircleSVG(props: any) {
         cy="100"
         r="50"
         stroke={`${THEME.MAIN}`}
-        stroke-width="3"
-        stroke-linecap="round"
+        strokeWidth="3"
+        strokeLinecap="round"
         fill="none"
       >
         <animateTransform

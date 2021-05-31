@@ -49,6 +49,7 @@ export default function OuterCareGiverList() {
     getPaginationBarNumbers,
     careWorkers,
     onClickSearchOuterCareGiver,
+    convertedOuterCareWorkerIds,
   } = useOuterCareGiverList();
 
   return (
@@ -57,7 +58,7 @@ export default function OuterCareGiverList() {
         <S.Section isBackgroundColored={false}>
           <S.InnerSection>
             <S.InnerContent>
-              <S.SectionTitle>요양보호사 검색</S.SectionTitle>
+              <S.SectionTitle>돌봄 요양보호사 검색</S.SectionTitle>
               <S.FilterTable>
                 <tbody>
                   <tr>
@@ -233,51 +234,102 @@ export default function OuterCareGiverList() {
                     </S.EmptyCardContainer>
                   ) : (
                     <S.CardList>
-                      {careWorkers.map((worker, idx) => (
-                        <S.StyledLink>
-                          <Link
-                            key={`worker-${idx}`}
-                            href={{
-                              pathname: '/search/[id]',
-                            }}
-                            as={`/search/${worker.id}`}
-                            passHref
-                          >
-                            <S.Card>
-                              <S.ProfileImage src={worker.profile} />
-                              <S.InfoContainer>
-                                <S.BasicInfo>
-                                  {worker.name} ({worker.age}/{worker.gender[0]})
-                                </S.BasicInfo>
-                                {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
-                                <S.InfoRow>
-                                  <S.SVGIconBox>
-                                    <PhoneNumberIconSVG />
-                                  </S.SVGIconBox>
-                                  <S.InfoType>휴대전화</S.InfoType>
-                                  <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
-                                </S.InfoRow>
-                                <S.InfoRow>
-                                  <S.SVGIconBox>
-                                    <CareInfoIconSVG />
-                                  </S.SVGIconBox>
-                                  <S.InfoType>가능 조건</S.InfoType>
+                      {careWorkers.map((worker, idx) =>
+                        convertedOuterCareWorkerIds.includes(worker.id) ? (
+                          <S.StyledLink>
+                            <Link
+                              key={`worker-${idx}`}
+                              href={{
+                                pathname: '/search/[id]',
+                              }}
+                              as={`/search/${worker.id}`}
+                              passHref
+                            >
+                              <S.Card>
+                                <S.ProfileImage src={worker.profile} />
+                                <S.InfoContainer>
+                                  <S.BasicInfo>
+                                    {worker.name} ({worker.age}/{worker.gender[0]})
+                                  </S.BasicInfo>
+                                  <S.ConvertedInfo>이미 전환된 요양보호사 입니다.</S.ConvertedInfo>
+                                  {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <PhoneNumberIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>휴대전화</S.InfoType>
+                                    <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                                  </S.InfoRow>
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <CareInfoIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>가능 조건</S.InfoType>
 
-                                  <S.InfoItemList>
-                                    {worker.careWorkerCapabilities.map((capability, index) => {
-                                      return (
-                                        <S.InfoItem key={`careInfoItem-${index}`}>
-                                          {capability}
-                                        </S.InfoItem>
-                                      );
-                                    })}
-                                  </S.InfoItemList>
-                                </S.InfoRow>
-                              </S.InfoContainer>
-                            </S.Card>
-                          </Link>
-                        </S.StyledLink>
-                      ))}
+                                    <S.InfoItemList>
+                                      {worker.outerCareWorkerCapabilities.map(
+                                        (capability, index) => {
+                                          return (
+                                            <S.InfoItem key={`careInfoItem-${index}`}>
+                                              {capability}
+                                            </S.InfoItem>
+                                          );
+                                        }
+                                      )}
+                                    </S.InfoItemList>
+                                  </S.InfoRow>
+                                </S.InfoContainer>
+                              </S.Card>
+                            </Link>
+                          </S.StyledLink>
+                        ) : (
+                          <S.StyledLink>
+                            <Link
+                              key={`worker-${idx}`}
+                              href={{
+                                pathname: '/search/[id]',
+                              }}
+                              as={`/search/${worker.id}`}
+                              passHref
+                            >
+                              <S.Card>
+                                <S.ProfileImage src={worker.profile} />
+                                <S.InfoContainer>
+                                  <S.BasicInfo>
+                                    {worker.name} ({worker.age}/{worker.gender[0]})
+                                  </S.BasicInfo>
+                                  {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <PhoneNumberIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>휴대전화</S.InfoType>
+                                    <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                                  </S.InfoRow>
+                                  <S.InfoRow>
+                                    <S.SVGIconBox>
+                                      <CareInfoIconSVG />
+                                    </S.SVGIconBox>
+                                    <S.InfoType>가능 조건</S.InfoType>
+
+                                    <S.InfoItemList>
+                                      {worker.outerCareWorkerCapabilities.map(
+                                        (capability, index) => {
+                                          return (
+                                            <S.InfoItem key={`careInfoItem-${index}`}>
+                                              {capability}
+                                            </S.InfoItem>
+                                          );
+                                        }
+                                      )}
+                                    </S.InfoItemList>
+                                  </S.InfoRow>
+                                </S.InfoContainer>
+                              </S.Card>
+                            </Link>
+                          </S.StyledLink>
+                        )
+                      )}
                       <S.PaginationContainer>
                         <S.PaginationItem
                           isLeft
