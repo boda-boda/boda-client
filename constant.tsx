@@ -7,6 +7,8 @@ import CareWorkerSingleSchedule from './model/care-worker-single-schedule';
 
 export const CONTENT_WIDTH = 978;
 
+export const CONTENT_WIDTH_NARROW = 700;
+
 export const THEME = {
   MAIN: '#7131b7',
   RED: '#dc3545',
@@ -221,6 +223,7 @@ export const RELIGION = 'Religion';
 
 export const OUTER_CARE_WORKER_SCHEDULE_TYPES = ['오전', '오후', '종일'];
 
+export const CREDITS_ON_CONVERSION = 50;
 export const NAME_ORDER = (a: CareWorker, b: CareWorker) => {
   return a.name < b.name ? -1 : a.name === b.name ? 0 : 1;
 };

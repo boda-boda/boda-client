@@ -275,13 +275,11 @@ export const useCareGiverUpsert = (isNew: boolean) => {
     const availableAreas = careWorkerAreas.filter((a) => a.city);
     const availableCareers = careWorkerCareers.filter((a) => a.workplace || a.duration || a.memo); // prettier-ignore
     setIsRequesting(true);
-
     try {
       await axios.post('/care-worker', {
         careWorker,
         careWorkerCapabilities,
         careWorkerReligions,
-        careWorkerSchedules: availableSchedule,
         careWorkerCareers: availableCareers,
         careWorkerAreas: availableAreas,
       });

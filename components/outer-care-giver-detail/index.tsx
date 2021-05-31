@@ -4,10 +4,12 @@ import * as S from './styles';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { chunk } from '../../common/lib';
-import { CAPABILITY, DAY_LIST, RELIGION } from '../../constant';
+import { CAPABILITY, CREDITS_ON_CONVERSION, DAY_LIST, RELIGION } from '../../constant';
 import { DayType } from '../../common/types/date';
 import Link from 'next/link';
 import { useCareCenter } from '../../context/care-center';
+import { validateCareWorker } from '../../common/lib/validate';
+import Credit from '../../model/credit';
 
 const dummyCompliment = [
   {
@@ -39,6 +41,7 @@ export default function OuterCareGiverDetail() {
   const [myComplimentTitle, setMyComplimentTitle] = useState('');
   const [myComplimentContent, setMyComplimentContent] = useState('');
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [convertedOuterCareWorkerIds, setConvertedOuterCareWorkerIds] = useState([] as string[]);
 
   useEffect(() => {
     if (!contentRef.current) return;
@@ -68,6 +71,8 @@ export default function OuterCareGiverDetail() {
       try {
         const response = await axios.get(`/outer-care-worker/${router.query.ID}`);
         setOuterCareWorker(response.data);
+        const ocwIdResponse = await axios.get(`/outer-care-worker/id/converted`);
+        setConvertedOuterCareWorkerIds(ocwIdResponse.data);
       } catch (e) {
         router.push('/search');
       }
@@ -83,12 +88,49 @@ export default function OuterCareGiverDetail() {
     //update 칭찬
   };
 
+  const handleClickConversionButton = async () => {
+    if (
+      !window.confirm(
+        `${CREDITS_ON_CONVERSION} 돌봄 포인트를 사용하여 내 요양보호사로 전환하시겠습니까?`
+      )
+    )
+      return;
+
+    try {
+      const creditResponse = await axios.get(`/credit`);
+      const credit = creditResponse.data as Credit;
+      if (credit.freeCredit + credit.paidCredit < CREDITS_ON_CONVERSION) {
+        alert('보유하신 돌봄 포인트가 부족합니다.');
+        return;
+      }
+      if (convertedOuterCareWorkerIds.includes(outerCareWorker.id)) {
+        alert('이미 전환된 요양보호사 입니다.');
+        return;
+      }
+      await axios.post('/outer-care-worker/convert', {
+        outerCareWorkerId: outerCareWorker.id,
+        usedCredit: CREDITS_ON_CONVERSION,
+      });
+    } catch (e) {
+      alert(
+        '해당 요양보호사 전환에 실패하였습니다. 관리자에게 문의 주시면 신속하게 도와드리겠습니다.'
+      );
+      router.push('/search');
+      return;
+    }
+
+    alert('요양보호사 전환에 성공하였습니다.');
+  };
+
   return (
     <>
       <S.CareGiverDetail>
         <S.InnerContent>
           <S.Section>
             <S.SectionTitle>기본 정보</S.SectionTitle>
+            {convertedOuterCareWorkerIds.includes(outerCareWorker.id) && (
+              <S.ConvertedInfo>(이미 전환된 요양보호사 입니다.)</S.ConvertedInfo>
+            )}
             <S.Table>
               <tbody>
                 <tr>
@@ -205,17 +247,17 @@ export default function OuterCareGiverDetail() {
             <S.Table>
               <tbody>
                 <tr>
-                  <th className="career long">근무지</th>
-                  <th className="career">수급자</th>
-                  <th className="career right">기간</th>
+                  <th className="career">근무지(수급자)</th>
+                  <th className="career">기간</th>
+                  <th className="career long right">비고</th>
                 </tr>
                 {outerCareWorker.outerCareWorkerCareers ? (
                   outerCareWorker.outerCareWorkerCareers.length > 0 ? (
                     outerCareWorker.outerCareWorkerCareers.map((career, idx) => (
                       <tr key={`career-${idx}`}>
-                        <td className="career long">{career.workplace}</td>
-                        <td className="career">{career.recipient}</td>
-                        <td className="career right">{career.duration}</td>
+                        <td className="career">{career.workplace}</td>
+                        <td className="career">{career.duration}</td>
+                        <td className="career long right">{career.memo}</td>
                       </tr>
                     ))
                   ) : (
@@ -299,7 +341,9 @@ export default function OuterCareGiverDetail() {
             </S.Table>
           </S.Section> */}
           <S.FinishButtonContainer>
-            <S.TransferButton>내 요양보호사로 전환하기</S.TransferButton>
+            <S.TransferButton onClick={handleClickConversionButton}>
+              내 요양보호사로 전환하기
+            </S.TransferButton>
             <Link
               key={`worker-${outerCareWorker.id}`}
               href={{

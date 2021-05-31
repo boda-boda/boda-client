@@ -20,7 +20,7 @@ function Search() {
       <Layout>
         <>
           <Banner bannerStyle={BannerStyleType.AD} />
-          <Category list={['홈', '요양보호사 검색']} />
+          <Category list={['홈', '돌봄 요양보호사 매칭', '돌봄 요양보호사 검색']} />
           <S.Search>
             <OuterCareGiverList />
           </S.Search>

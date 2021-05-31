@@ -21,9 +21,44 @@ export default function Header() {
             </S.StyledLink>
           </Link>
           <S.MenuList>
-            {/* <Link href="/search" passHref>
-              <S.MenuItem onClick={() => handleMenuClick(0)}>신규 요양보호사 검색</S.MenuItem>
-            </Link> */}
+            <S.MenuItem
+              onClick={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  handleMenuClick(-1);
+                  return;
+                }
+              }}
+              onMouseEnter={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  return;
+                }
+                handleMenuClick(0);
+              }}
+              onMouseLeave={() => {
+                if (!careCenter.isValidating && !careCenter.isLoggedIn) {
+                  return;
+                }
+                handleMenuClick(0);
+              }}
+            >
+              돌봄 요양보호사 매칭
+              {!careCenter.isValidating && careCenter.isLoggedIn && isMenuModalOn[0] ? (
+                <>
+                  <ArrowUp />
+                  <S.MenuModal isMenuModalOn={isMenuModalOn[0]}>
+                    <Link href="/search" passHref>
+                      <S.StyledLink>돌봄 요양보호사 검색</S.StyledLink>
+                    </Link>
+                    <S.MenuBar />
+                    <Link href="/proposal-list" passHref>
+                      <S.StyledLink>매칭 제안서 목록</S.StyledLink>
+                    </Link>
+                  </S.MenuModal>
+                </>
+              ) : (
+                <ArrowDown />
+              )}
+            </S.MenuItem>
             <S.MenuItem
               onClick={() => {
                 if (!careCenter.isValidating && !careCenter.isLoggedIn) {
@@ -64,6 +99,7 @@ export default function Header() {
             </S.MenuItem>
             {careCenter.isLoggedIn ? (
               <S.MenuItem
+                isNarrow={true}
                 onMouseEnter={() => {
                   if (!careCenter.isValidating && !careCenter.isLoggedIn) {
                     return;
@@ -88,6 +124,10 @@ export default function Header() {
                       <S.MenuBar />
                       <Link href="/recipients" passHref>
                         <S.StyledLink>수급자 관리</S.StyledLink>
+                      </Link>
+                      <S.MenuBar />
+                      <Link href="/credits" passHref>
+                        <S.StyledLink>돌봄 포인트 관리</S.StyledLink>
                       </Link>
                       <S.MenuBar />
                       <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>
