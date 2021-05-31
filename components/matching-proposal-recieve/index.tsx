@@ -10,7 +10,7 @@ interface MatchingProposalProps {
   isFilled: boolean;
 }
 
-export default function MatchingProposalRecieve({ isFilled }: MatchingProposalProps) {
+export default function MatchingProposalReceive({ isFilled }: MatchingProposalProps) {
   const router = useRouter();
   const [selectedCareInfo, setSelectedCareInfo] = useState([] as string[]);
   const [matchingProposal, setMatchingProposal] = useState(
@@ -63,7 +63,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
     }
     try {
       (async () => {
-        const response = await axios.get(`/matching-proposal/recieve/${router.query.ID}`);
+        const response = await axios.get(`/matching-proposal/receive/${router.query.ID}`);
         setMatchingProposal(response.data);
       })();
     } catch (e) {
@@ -78,7 +78,7 @@ export default function MatchingProposalRecieve({ isFilled }: MatchingProposalPr
     matchingProposal.recipient.id
       ? (async () => {
           const response = await axios.get(
-            `/recipient/matching-proposal-recieve/${matchingProposal.recipient.id}`
+            `/recipient/matching-proposal-receive/${matchingProposal.recipient.id}`
           );
           setRecipient(response.data);
         })()

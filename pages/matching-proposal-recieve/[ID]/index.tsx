@@ -1,7 +1,7 @@
 import { withRouter } from 'next/router';
-import MatchingProposalRecieveView from '../../../views/matching-proposal-recieve-view';
+import MatchingProposalReceiveView from '../../../views/matching-proposal-receive-view';
 
-function MatchingProposalRecievePage() {
-  return <MatchingProposalRecieveView />;
+function MatchingProposalReceivePage() {
+  return <MatchingProposalReceiveView />;
 }
-export default withRouter(MatchingProposalRecievePage);
+export default withRouter(MatchingProposalReceivePage);
