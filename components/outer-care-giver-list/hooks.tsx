@@ -62,6 +62,7 @@ export const useOuterCareGiverList = () => {
     setCity('');
     setGu('');
     setDong('');
+    setSelectedTime('');
     setSelectedCareInfo([] as string[]);
     setSelectedReligion([] as string[]);
   }, [careWorkers]);
