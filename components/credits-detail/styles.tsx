@@ -480,3 +480,44 @@ export const CreditSVGWrapper = styled.div`
   padding-top: 1px;
   margin-right: 5px;
 `;
+
+export const PaginationContainer = styled.div`
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  ${FLEX_ROW_CENTER_CENTER}
+`;
+
+interface PaginationItemProps {
+  isClicked?: boolean;
+  isLeft?: boolean;
+}
+
+export const PaginationItem = styled.div<PaginationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  margin-left: ${(props) => !props.isLeft && '10px'};
+  background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
+  color: ${(props) => (props.isClicked ? 'white' : 'black')};
+  border-radius: 3px;
+  font-size: 14px;
+  padding-bottom: 1px;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.2s ease;
+  :hover {
+    background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.HEADER_BACKGROUND)};
+    box-shadow: ${(props) => props.isClicked && '0 0px 6px 0 rgba(0, 0, 0, 0.25)'};
+  }
+`;
+
+export const PaginationItemArrow = styled.div<PaginationItemProps>`
+  height: 30px;
+  width: 30px;
+  ${FLEX_COLUMN_CENTER_CENTER}
+  border: 1px solid ${THEME.GRAY_LINE};
+  border-left: ${(props) => !props.isLeft && 'none'};
+  cursor: pointer;
+  user-select: none;
+`;
