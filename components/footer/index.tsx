@@ -9,7 +9,7 @@ export default function Footer() {
           <S.Text>
             <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
             <br />
-            사업자번호 : 252-63-00514
+            사업자번호 : 825-88-02119
             <br />
             정보 조회
           </S.Text>
