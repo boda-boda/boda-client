@@ -1,13 +1,12 @@
 import styled, { css } from 'styled-components';
 import { ButtonSize } from '../../common/types';
 import {
-  CONTENT_WIDTH,
+  CONTENT_WIDTH_NARROW,
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
   FLEX_COLUMN_START_CENTER,
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
-  FLEX_ROW_CENTER_START,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
   THEME,
@@ -33,13 +32,13 @@ export const CompleteSection = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_ROW_CENTER_CENTER};
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 60px;
 `;
 
 export const InnerContent = styled.div`
   position: relative;
-  width: ${CONTENT_WIDTH}px;
+  width: ${CONTENT_WIDTH_NARROW}px;
   height: 100%;
   color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
@@ -65,7 +64,7 @@ export const InfoTable = styled.table`
   th,
   td {
     border-bottom: 1px solid ${THEME.GRAY_LINE};
-    padding: 12px 12px;
+    padding: 16px 10px;
     color: ${THEME.GRAY_FONT};
     font-size: 24px;
     text-align: left;
@@ -73,20 +72,19 @@ export const InfoTable = styled.table`
     table-layout: fixed;
   }
   th {
-    width: 150px;
     background: ${THEME.HEADER_BACKGROUND};
     color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
     font-weight: 500;
   }
-  .profile {
-    padding: 0 0;
-    width: 168px;
-    vertical-align: middle;
+  .td {
+    width: 230px;
+  }
+  .th {
+    width: 120px;
   }
   .recipientProfile {
-    width: 168px;
     vertical-align: top;
-    padding: 32px 25px 0 25px;
+    /* padding: 32px 25px 0 25px; */
   }
   .left {
     /* width: 336px; */
@@ -97,7 +95,66 @@ export const InfoTable = styled.table`
   .wide {
     /* width: 726px; */
   }
+  .top {
+    border-top: 2px solid ${THEME.MAIN};
+  }
+  .select {
+    padding: 12px;
+  }
+  .overtd {
+    padding: 2px 0 12px 12px;
+  }
+  .overitems {
+    margin-top: 10px;
+  }
+  .money {
+    margin-right: 5px;
+  }
+`;
 
+export const InfoTableWorkingCondition = styled.table`
+  width: 100%;
+  margin-top: 17px;
+  border-top: 2px solid ${THEME.MAIN};
+  border-collapse: collapse;
+  table-layout: fixed;
+  th,
+  td {
+    border-bottom: 1px solid ${THEME.GRAY_LINE};
+    padding: 12px 12px;
+    color: ${THEME.GRAY_FONT};
+    font-size: 24px;
+    text-align: left;
+    vertical-align: middle;
+    table-layout: fixed;
+  }
+  th {
+    background: ${THEME.HEADER_BACKGROUND};
+    color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
+    font-weight: 500;
+  }
+  .td {
+    width: 580px;
+  }
+  .th {
+    width: 120px;
+  }
+  .recipientProfile {
+    vertical-align: top;
+    /* padding: 32px 25px 0 25px; */
+  }
+  .left {
+    /* width: 336px; */
+  }
+  .right {
+    /* width: 306px; */
+  }
+  .wide {
+    /* width: 726px; */
+  }
+  .top {
+    border-top: 2px solid ${THEME.MAIN};
+  }
   .select {
     padding: 12px;
   }
@@ -244,8 +301,8 @@ export const ClockSelect = styled.div`
 export const ProfileImageContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 25px 25px;
-  ${FLEX_ROW_CENTER_START};
+  /* padding: 25px 25px; */
+  ${FLEX_ROW_CENTER_CENTER};
 `;
 
 interface ProfileImageProps {
@@ -254,8 +311,8 @@ interface ProfileImageProps {
 }
 
 export const ProfileImage = styled.div<ProfileImageProps>`
-  width: 118px;
-  height: 118px;
+  width: 160px;
+  height: 160px;
   border-radius: 10px;
   background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
@@ -431,10 +488,9 @@ export const FinishButton = styled.button`
 `;
 
 export const EditButton = styled.button`
-  padding: 11px 10px;
-  height: 36px;
+  padding: 12px 20px;
   border-radius: 3px;
-  font-size: 20px;
+  font-size: 32px;
   font-weight: bold;
   outline: none;
   border: 1px solid ${THEME.MAIN};
@@ -451,13 +507,12 @@ export const EditButton = styled.button`
 `;
 
 export const DeleteButton = styled.button`
-  padding: 11px 10px;
-  margin-left: 15px;
-  height: 36px;
+  padding: 12px 20px;
+  margin-left: 40px;
   border-radius: 3px;
   outline: none;
   border: 1px solid ${THEME.RED};
-  font-size: 20px;
+  font-size: 32px;
   font-weight: bold;
   background-color: white;
   color: ${THEME.RED};
