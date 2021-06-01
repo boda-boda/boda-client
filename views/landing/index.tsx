@@ -186,7 +186,7 @@ export default function Landing() {
                 isLeft={jumbotronInfo[jumbotronIndex].isLeft}
                 dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
               ></S.JumboTitle>
-              <Link href={careCenter.isLoggedIn ? '/list' : '/demo'}>
+              <Link href={careCenter.isLoggedIn ? '/search' : '/demo'}>
                 <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
                   {careCenter.isLoggedIn ? '돌봄' : '데모'} 바로가기 <RightArrowIconWhite />
                 </S.ContactButton>
@@ -301,7 +301,7 @@ export default function Landing() {
               <S.FooterText>
                 <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
                 <br />
-                사업자번호 : 252-63-00514
+                사업자번호 : 825-88-02119
                 <br />
                 <br />
                 Copyright ⓒ dolbom. All rights reserved.

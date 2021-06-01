@@ -64,7 +64,7 @@ export default function RecipientsDetail() {
             <S.InnerContent>
               <S.Section>
                 <S.SectionTitle>수급자 정보</S.SectionTitle>
-                <Link href={`${router.query.ID}/edit`} passHref>
+                <Link href={`edit`} passHref>
                   <S.StyledLink>
                     <S.EditButton>세부정보 수정</S.EditButton>
                   </S.StyledLink>

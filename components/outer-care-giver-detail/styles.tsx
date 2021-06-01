@@ -336,6 +336,7 @@ export const FinishButton = styled.button`
   border: none;
   width: 306px;
   height: 48px;
+  margin-right: 10px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: ${THEME.MAIN};
@@ -355,7 +356,6 @@ export const TransferButton = styled.button`
   border: none;
   width: 306px;
   height: 48px;
-  margin-right: 10px;
   border-radius: 3px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   background-color: ${THEME.MAIN};

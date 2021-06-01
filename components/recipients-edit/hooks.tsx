@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { useCareCenter } from '../../context/care-center';
 import {
   CAPABILITY,
-  WORKER_MAN_SMALL_IMAGE_URL,
-  WORKER_WOMAN_SMALL_IMAGE_URL,
+  RECIPIENT_MAN_SMALL_IMAGE_URL,
+  RECIPIENT_WOMAN_SMALL_IMAGE_URL,
 } from '../../constant';
 import { validateRecipient } from '../../common/lib/validate';
 import Recipient from '../../model/recipient';
@@ -102,8 +102,8 @@ export const useRecipientsUpsert = (isNew: boolean) => {
   const handleUpdateGender = useCallback(
     (isFemale: boolean) => () => {
       if (
-        recipient.profile !== WORKER_MAN_SMALL_IMAGE_URL &&
-        recipient.profile !== WORKER_WOMAN_SMALL_IMAGE_URL
+        recipient.profile !== RECIPIENT_MAN_SMALL_IMAGE_URL &&
+        recipient.profile !== RECIPIENT_WOMAN_SMALL_IMAGE_URL
       ) {
         setRecipient({ ...recipient, isFemale });
         return;
@@ -112,7 +112,7 @@ export const useRecipientsUpsert = (isNew: boolean) => {
       setRecipient({
         ...recipient,
         isFemale,
-        profile: isFemale ? WORKER_WOMAN_SMALL_IMAGE_URL : WORKER_MAN_SMALL_IMAGE_URL,
+        profile: isFemale ? RECIPIENT_WOMAN_SMALL_IMAGE_URL : RECIPIENT_MAN_SMALL_IMAGE_URL,
       });
     },
     [recipient]

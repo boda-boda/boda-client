@@ -446,27 +446,89 @@ export const EditButton = styled.button`
   :hover {
     background: ${THEME.MAIN};
     color: white;
+    font-weight: bold;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
+export const ButtonContainer = styled.div`
+  ${FLEX_ROW_CENTER_CENTER}
+`;
+
 export const DeleteButton = styled.button`
   padding: 11px 10px;
-  margin-left: 15px;
   height: 36px;
   border-radius: 3px;
+  margin-bottom: -10px;
+  margin-right: 10px;
   outline: none;
-  border: 1px solid ${THEME.RED};
-  font-size: 20px;
-  font-weight: bold;
+  border: 1px solid red;
   background-color: white;
-  color: ${THEME.RED};
+  color: red;
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
   transition: 0.2s ease;
   :hover {
-    background: ${THEME.RED};
+    background: red;
     color: white;
+    font-weight: bold;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
+`;
+
+export const TransferButton = styled.button`
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  margin-bottom: -10px;
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.MAIN};
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const NoRecipient = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  height: 320px;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: ${THEME.GRAY_FONT};
+  border-radius: 10px;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  font-size: 24px;
+  font-weight: 500;
+`;
+
+export const NoRecipientModal = styled.div`
+  width: 500px;
+  height: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  color: ${THEME.GRAY_FONT};
+  font-size: 24px;
+  font-weight: 500;
+  /* padding: 0 50px; */
+  text-align: center;
+  word-break: keep-all;
+  filter: blur(0px);
+  ${FLEX_COLUMN_CENTER_CENTER};
+`;
+
+export const ConvertedInfo = styled.div`
+  font-size: 20px;
+  position: absolute;
+  left: 160px;
+  top: 22px;
+  color: ${THEME.MAIN};
+  margin-bottom: 15px;
 `;

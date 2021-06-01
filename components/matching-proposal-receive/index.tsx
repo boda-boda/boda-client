@@ -18,6 +18,7 @@ export default function MatchingProposalReceive({ isFilled }: MatchingProposalPr
   );
   const [recipient, setRecipient] = useState(new Recipient());
   const [memo, setMemo] = useState('');
+  const [securityCode, setSecurityCode] = useState(0);
   const memoRef = useRef<HTMLTextAreaElement>(null);
 
   const handleClickAcceptButton = async () => {
@@ -88,108 +89,128 @@ export default function MatchingProposalReceive({ isFilled }: MatchingProposalPr
   return (
     <>
       <S.MatchingProposalContent>
-        <S.InnerContent>
-          <S.Section>
-            <S.SectionTitleContainer>
-              <S.SectionTitle>수급자 정보</S.SectionTitle>
-            </S.SectionTitleContainer>
-            <S.InfoTable>
-              <tbody>
-                <tr>
-                  <td rowSpan={9} className="recipientProfile">
-                    <S.ProfileImageContainer>
-                      <S.ProfileImage src={recipient.profile} />
-                    </S.ProfileImageContainer>
-                  </td>
-                  <th>이름</th>
-                  <td className="left">{recipient.name}</td>
-                  <th>성별</th>
-                  <td className="right">{recipient.isFemale ? '여자' : '남자'}</td>
-                </tr>
-                <tr>
-                  <th>나이</th>
-                  <td className="right">{recipient.age}세</td>
-                  <th>등급</th>
-                  <td className="select left">{recipient.grade}등급</td>
-                </tr>
-                <tr>
-                  <th>돌봄 시간</th>
-                  <td colSpan={1} className="wide">
-                    {recipient.schedule}
-                  </td>
-                  <th>종교</th>
-                  <td colSpan={1} className="">
-                    {recipient.religion}
-                  </td>
-                </tr>
-                <tr>
-                  <th>거주 형태</th>
-                  <td colSpan={1} className="wide">
-                    {recipient.familyType}
-                  </td>
-                  <th>휴대전화</th>
-                  <td colSpan={1} className="wide">
-                    {recipient.phoneNumber}
-                  </td>
-                </tr>
-                <tr>
-                  <th rowSpan={1}>주소</th>
-                  <td colSpan={3}>
-                    ({recipient.zipCode}) {recipient.address} {recipient.detailAddress}
-                  </td>
-                </tr>
-                <tr>
-                  <th>요구 사항</th>
-                  <td colSpan={3} className="overtd">
-                    <S.TdFlexBox>
-                      {recipient.recipientMetas
-                        ? recipient.recipientMetas
-                            .filter((meta) => meta.type === CAPABILITY)
-                            .map((meta, index) => {
-                              return (
-                                <S.ToggleButton
-                                  className="overitems"
-                                  key={`careInfoListItem-${index}`}
-                                >
-                                  {meta.key}
-                                </S.ToggleButton>
-                              );
-                            })
-                        : ''}
-                    </S.TdFlexBox>
-                  </td>
-                </tr>
-                <tr>
-                  <th>세부 사항</th>
-                  <td colSpan={3} className="select wide">
-                    {recipient.description}
-                  </td>
-                </tr>
-              </tbody>
-            </S.InfoTable>
-          </S.Section>
-          <S.Section>
-            <S.SectionTitleContainer>
-              <S.SectionTitle>근무 조건</S.SectionTitle>
-            </S.SectionTitleContainer>
-            <S.InfoTable>
-              <tbody>
-                <tr>
-                  <th>시급</th>
-                  <td>{matchingProposal.hourlyWage}원</td>
-                </tr>
-                <tr>
-                  <th>비고</th>
-                  <td>{matchingProposal.description}</td>
-                </tr>
-              </tbody>
-            </S.InfoTable>
-          </S.Section>
-          <S.CompleteSection>
-            <S.EditButton onClick={handleClickAcceptButton}>수락 하기</S.EditButton>
-            <S.DeleteButton onClick={handleClickDeclineButton}>거절 하기</S.DeleteButton>
-          </S.CompleteSection>
-        </S.InnerContent>
+        {matchingProposal.securityCode.toString() === securityCode.toString() ? (
+          <S.InnerContent>
+            <S.Section>
+              <S.SectionTitleContainer>
+                <S.SectionTitle>수급자 정보</S.SectionTitle>
+              </S.SectionTitleContainer>
+              <S.InfoTable>
+                <tbody>
+                  <tr>
+                    <td rowSpan={9} className="recipientProfile">
+                      <S.ProfileImageContainer>
+                        <S.ProfileImage src={recipient.profile} />
+                      </S.ProfileImageContainer>
+                    </td>
+                    <th>이름</th>
+                    <td className="left">{recipient.name}</td>
+                    <th>성별</th>
+                    <td className="right">{recipient.isFemale ? '여자' : '남자'}</td>
+                  </tr>
+                  <tr>
+                    <th>나이</th>
+                    <td className="right">{recipient.age}세</td>
+                    <th>등급</th>
+                    <td className="select left">{recipient.grade}등급</td>
+                  </tr>
+                  <tr>
+                    <th>돌봄 시간</th>
+                    <td colSpan={1} className="wide">
+                      {recipient.schedule}
+                    </td>
+                    <th>종교</th>
+                    <td colSpan={1} className="">
+                      {recipient.religion}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>거주 형태</th>
+                    <td colSpan={1} className="wide">
+                      {recipient.familyType}
+                    </td>
+                    <th>휴대전화</th>
+                    <td colSpan={1} className="wide">
+                      {recipient.phoneNumber}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th rowSpan={1}>주소</th>
+                    <td colSpan={3}>
+                      {recipient.zipCode && `(${recipient.zipCode})`} {recipient.address}{' '}
+                      {recipient.detailAddress}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>요구 사항</th>
+                    <td colSpan={3} className="overtd">
+                      <S.TdFlexBox>
+                        {recipient.recipientMetas
+                          ? recipient.recipientMetas
+                              .filter((meta) => meta.type === CAPABILITY)
+                              .map((meta, index) => {
+                                return (
+                                  <S.ToggleButton
+                                    className="overitems"
+                                    key={`careInfoListItem-${index}`}
+                                  >
+                                    {meta.key}
+                                  </S.ToggleButton>
+                                );
+                              })
+                          : ''}
+                      </S.TdFlexBox>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>세부 사항</th>
+                    <td colSpan={3} className="select wide">
+                      {recipient.description}
+                    </td>
+                  </tr>
+                </tbody>
+              </S.InfoTable>
+            </S.Section>
+            <S.Section>
+              <S.SectionTitleContainer>
+                <S.SectionTitle>근무 조건</S.SectionTitle>
+              </S.SectionTitleContainer>
+              <S.InfoTable>
+                <tbody>
+                  <tr>
+                    <th>시급</th>
+                    <td>{matchingProposal.hourlyWage}원</td>
+                  </tr>
+                  <tr>
+                    <th>비고</th>
+                    <td>{matchingProposal.description}</td>
+                  </tr>
+                </tbody>
+              </S.InfoTable>
+            </S.Section>
+            <S.CompleteSection>
+              <S.EditButton onClick={handleClickAcceptButton}>수락 하기</S.EditButton>
+              <S.DeleteButton onClick={handleClickDeclineButton}>거절 하기</S.DeleteButton>
+            </S.CompleteSection>
+          </S.InnerContent>
+        ) : (
+          <S.NeedSecurityCodeContent>
+            <S.NeedSecurityCode>
+              <S.Logo>
+                <S.LogoImg src="/logo.png" />
+              </S.Logo>
+              <S.NeedSecurityCodeTitle>보안코드를 입력해주세요</S.NeedSecurityCodeTitle>
+              <S.TextInput
+                onChange={(e: any) => {
+                  setSecurityCode(e.target.value);
+                }}
+                autoFocus
+                type="text"
+                maxLength={4}
+              ></S.TextInput>
+            </S.NeedSecurityCode>
+          </S.NeedSecurityCodeContent>
+        )}
       </S.MatchingProposalContent>
     </>
   );

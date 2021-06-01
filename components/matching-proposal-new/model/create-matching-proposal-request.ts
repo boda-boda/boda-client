@@ -6,10 +6,12 @@ export default class CreateMatchingProposalRequest {
     this.description = '';
     this.outerCareWorkerId = '';
     this.recipientId = '';
+    this.securityCode = 0;
   }
 
   public hourlyWage: number;
   public description: string;
   public outerCareWorkerId: string;
   public recipientId: string;
+  public securityCode: number;
 }

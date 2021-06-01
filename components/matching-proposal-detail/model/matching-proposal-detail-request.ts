@@ -2,7 +2,7 @@ import { WORKER_WOMAN_SMALL_IMAGE_URL } from '../../../constant';
 
 export default class MatchingProposalDetailRequest {
   public static noArgsConstructor() {
-    return new MatchingProposalDetailRequest('', '', '', {}, {});
+    return new MatchingProposalDetailRequest('', '', '', {}, {}, 0);
   }
 
   public constructor(
@@ -10,13 +10,15 @@ export default class MatchingProposalDetailRequest {
     hourlyWage: any,
     description: any,
     recipient: any,
-    outerCareWorker: any
+    outerCareWorker: any,
+    securityCode: any
   ) {
     this.id = id;
     this.hourlyWage = hourlyWage;
     this.description = description;
     this.recipient = recipient;
     this.outerCareWorker = outerCareWorker;
+    this.securityCode = securityCode;
   }
 
   public id: string;
@@ -24,4 +26,5 @@ export default class MatchingProposalDetailRequest {
   public description: string;
   public recipient: any;
   public outerCareWorker: any;
+  public securityCode: any;
 }
