@@ -85,16 +85,16 @@ export default function RecipientsUpsert({ isNew }: RecipientsEditProps) {
                   <td className="infovalue">
                     <S.TdFlexBox>
                       <S.ToggleButton
-                        isSelected={!recipient.isFemale}
-                        onClick={handleUpdateGender(false)}
-                      >
-                        남
-                      </S.ToggleButton>
-                      <S.ToggleButton
                         isSelected={recipient.isFemale}
                         onClick={handleUpdateGender(true)}
                       >
                         여
+                      </S.ToggleButton>
+                      <S.ToggleButton
+                        isSelected={!recipient.isFemale}
+                        onClick={handleUpdateGender(false)}
+                      >
+                        남
                       </S.ToggleButton>
                     </S.TdFlexBox>
                   </td>

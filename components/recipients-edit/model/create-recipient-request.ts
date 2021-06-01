@@ -1,4 +1,4 @@
-import { WORKER_WOMAN_SMALL_IMAGE_URL } from '../../../constant';
+import { RECIPIENT_WOMAN_SMALL_IMAGE_URL } from '../../../constant';
 
 export default class CreateRecipientRequest {
   public static allArgsConstructor(
@@ -40,11 +40,11 @@ export default class CreateRecipientRequest {
   public static noArgsConstructor() {
     return new CreateRecipientRequest(
       '',
-      false,
+      true,
       0,
       1,
       '',
-      WORKER_WOMAN_SMALL_IMAGE_URL,
+      RECIPIENT_WOMAN_SMALL_IMAGE_URL,
       '',
       '',
       '',
@@ -59,7 +59,7 @@ export default class CreateRecipientRequest {
 
   public constructor(
     name: any,
-    isFemale: any,
+    isFemale: boolean,
     age: any,
     grade: any,
     phoneNumber: any,

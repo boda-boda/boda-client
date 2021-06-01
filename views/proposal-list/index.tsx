@@ -25,7 +25,7 @@ export default function ProposalList() {
   const careCenter = useCareCenter();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPaginationGroup, setCurrentPaginationGroup] = useState(0);
-  const [proposalsPerPage, setProposalsPerPage] = useState(10);
+  const [proposalsPerPage, setProposalsPerPage] = useState(5);
   const [proposals, setProposals] = useState([] as MatchingProposal[]);
   const indexOfLastProposal = currentPage * proposalsPerPage;
   const indexOfFirstProposal = indexOfLastProposal - proposalsPerPage;
@@ -68,10 +68,8 @@ export default function ProposalList() {
           <S.Section isBackgroundColored>
             <S.InnerContent>
               <S.SectionTitle>매칭 제안서 목록</S.SectionTitle>
-              <S.EditButton>삭제하기</S.EditButton>
-              <S.TransferButton>전환하기</S.TransferButton>
               <S.RecipientsList>
-                {proposals.length === 0 ? (
+                {currentPageProposals.length === 0 ? (
                   <S.CardList>
                     <S.EmptyCardContainer>
                       <S.EmptyCard>현재 발송한 매칭 제안서가 없습니다.</S.EmptyCard>
@@ -79,7 +77,7 @@ export default function ProposalList() {
                   </S.CardList>
                 ) : (
                   <S.CardList>
-                    {proposals.map((proposal, idx) => (
+                    {currentPageProposals.map((proposal, idx) => (
                       <S.StyledLink>
                         <Link
                           key={`worker-${idx}`}
@@ -90,12 +88,12 @@ export default function ProposalList() {
                           passHref
                         >
                           <S.Card>
-                            <S.CheckBox
+                            {/* <S.CheckBox
                               type="checkbox"
                               onClick={(e) => {
                                 e.stopPropagation();
                               }}
-                            />
+                            /> */}
                             {proposal.status === MATCHING_PROPOSAL_STATUS[2] ? (
                               <S.StatusDivWait
                                 onClick={(e) => {

@@ -12,7 +12,7 @@ import EtcSVG from '../../svgs/etc-svg';
 import LocationIconSVG from '../../svgs/location-icon-svg';
 import CreateMatchingProposalReqeust from './model/create-matching-proposal-request';
 import { validateMatchingProposal } from '../../common/lib/validate';
-import { route } from 'next/dist/next-server/server/router';
+import Link from 'next/link';
 
 interface MatchingProposalProps {
   isFilled: boolean;
@@ -116,6 +116,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
     try {
       await axios.post('/matching-proposal', matchingProposal);
     } catch (e) {
+      alert('매칭 제안서 발송에 실패하였습니다. 관리자에게 문의주시기 바랍니다.');
       return;
     }
 
@@ -253,19 +254,27 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
             </S.FinishButton>
           </S.CompleteSection>
           {isLoadModalOn && (
-            <S.LoginModalLayout>
-              <S.LoginModal>
-                <S.LoginModalTitle>수급자 선택</S.LoginModalTitle>
+            <S.LoadModalLayout>
+              <S.LoadModal>
+                <S.LoadModalTitle>수급자 선택</S.LoadModalTitle>
                 <CloseIconSVG
                   style={{ position: 'absolute', top: '20px', right: '20px', cursor: 'pointer' }}
                   onClick={() => {
                     setIsLoadModalOn(false);
                   }}
                 />
-                <S.LoginModalInnerContent>
+                <S.LoadModalInnerContent>
                   {recipients.length === 0 ? (
                     <S.EmptyCardContainer>
-                      <S.EmptyCard>현재 관리하고 있는 수급자가 없습니다.</S.EmptyCard>
+                      <S.EmptyCard>
+                        <S.CenterDiv>현재 관리하고 있는 수급자가 없습니다.</S.CenterDiv>
+                        <br />
+                        <Link href={`/recipients/new`} passHref>
+                          <S.RecipientsNewPageLink>
+                            여기를 클릭하여 수급자 정보 추가할 수 있습니다.
+                          </S.RecipientsNewPageLink>
+                        </Link>
+                      </S.EmptyCard>
                     </S.EmptyCardContainer>
                   ) : (
                     <S.CardList>
@@ -314,9 +323,9 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
                       ))}
                     </S.CardList>
                   )}
-                </S.LoginModalInnerContent>
-              </S.LoginModal>
-            </S.LoginModalLayout>
+                </S.LoadModalInnerContent>
+              </S.LoadModal>
+            </S.LoadModalLayout>
           )}
         </S.InnerContent>
       </S.MatchingProposalContent>

@@ -6,6 +6,7 @@ export default class MatchingProposal {
   public hourlyWage: number;
   public description: string;
   public status: string;
+  public securityCode: number;
   public outerCareWorker: OuterCareWorker;
   public recipient: Recipient;
 }

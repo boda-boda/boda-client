@@ -341,9 +341,6 @@ export default function OuterCareGiverDetail() {
             </S.Table>
           </S.Section> */}
           <S.FinishButtonContainer>
-            <S.TransferButton onClick={handleClickConversionButton}>
-              내 요양보호사로 전환하기
-            </S.TransferButton>
             <Link
               key={`worker-${outerCareWorker.id}`}
               href={{
@@ -354,6 +351,9 @@ export default function OuterCareGiverDetail() {
             >
               <S.FinishButton>매칭 제안서 작성하기</S.FinishButton>
             </Link>
+            <S.TransferButton onClick={handleClickConversionButton}>
+              내 요양보호사로 전환하기
+            </S.TransferButton>
           </S.FinishButtonContainer>
         </S.InnerContent>
       </S.CareGiverDetail>
