@@ -420,7 +420,7 @@ export const FinishButton = styled.button`
   }
 `;
 
-export const LoginModalLayout = styled.div`
+export const LoadModalLayout = styled.div`
   position: fixed;
   z-index: 30;
   top: 0;
@@ -431,7 +431,7 @@ export const LoginModalLayout = styled.div`
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
-export const LoginModal = styled.div`
+export const LoadModal = styled.div`
   position: relative;
   width: 980px;
   margin: 15px 15px 0 0;
@@ -442,12 +442,12 @@ export const LoginModal = styled.div`
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
-export const LoginModalInnerContent = styled.div`
+export const LoadModalInnerContent = styled.div`
   width: 100%;
   ${FLEX_COLUMN_CENTER_START};
 `;
 
-export const LoginModalTitle = styled.div`
+export const LoadModalTitle = styled.div`
   width: 100%;
   font-size: 32px;
   font-weight: 500;
@@ -457,7 +457,7 @@ export const LoginModalTitle = styled.div`
   margin-bottom: 10px;
 `;
 
-export const LoginModalSubtitle = styled.div`
+export const LoadModalSubtitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   text-align: left;
@@ -470,14 +470,14 @@ export const LoginModalSubtitle = styled.div`
   }
 `;
 
-export const LoginModalText = styled.div`
+export const LoadModalText = styled.div`
   font-size: 12px;
   margin-bottom: 15px;
   margin-top: -5px;
   color: ${THEME.GRAY_FONT};
 `;
 
-export const LoginModalBar = styled.div`
+export const LoadModalBar = styled.div`
   width: 100%;
   height: 1px;
   border-bottom: 1px solid ${THEME.GRAY_LINE};
@@ -523,16 +523,31 @@ export const EmptyCard = styled.div`
   position: relative;
   width: 100%;
   height: 480px;
-  padding: 25px;
+  padding: 25px 25px 100px 25px;
   border-radius: 10px;
   margin-top: 30px;
-  font-size: 20px;
   ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
 export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
+`;
+
+export const CenterDiv = styled.div`
+  width: 100%;
+  font-size: 30px;
+  color: ${THEME.PLACEHOLDER_UNACTIVE};
+  ${FLEX_COLUMN_CENTER_CENTER}
+`;
+
+export const RecipientsNewPageLink = styled.div`
+  width: 100%;
+  font-size: 30px;
+  color: ${THEME.PLACEHOLDER_UNACTIVE};
+  ${FLEX_COLUMN_CENTER_CENTER}
+  cursor: pointer;
+  text-decoration: underline;
 `;
 
 export const PaginationContainer = styled.div`

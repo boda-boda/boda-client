@@ -186,7 +186,7 @@ export default function Landing() {
                 isLeft={jumbotronInfo[jumbotronIndex].isLeft}
                 dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
               ></S.JumboTitle>
-              <Link href={careCenter.isLoggedIn ? '/list' : '/demo'}>
+              <Link href={careCenter.isLoggedIn ? '/search' : '/demo'}>
                 <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
                   {careCenter.isLoggedIn ? '돌봄' : '데모'} 바로가기 <RightArrowIconWhite />
                 </S.ContactButton>
