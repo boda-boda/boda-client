@@ -68,8 +68,6 @@ export default function ProposalList() {
           <S.Section isBackgroundColored>
             <S.InnerContent>
               <S.SectionTitle>매칭 제안서 목록</S.SectionTitle>
-              <S.EditButton>삭제하기</S.EditButton>
-              <S.TransferButton>전환하기</S.TransferButton>
               <S.RecipientsList>
                 {proposals.length === 0 ? (
                   <S.CardList>
@@ -90,12 +88,12 @@ export default function ProposalList() {
                           passHref
                         >
                           <S.Card>
-                            <S.CheckBox
+                            {/* <S.CheckBox
                               type="checkbox"
                               onClick={(e) => {
                                 e.stopPropagation();
                               }}
-                            />
+                            /> */}
                             {proposal.status === MATCHING_PROPOSAL_STATUS[2] ? (
                               <S.StatusDivWait
                                 onClick={(e) => {

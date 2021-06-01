@@ -116,6 +116,7 @@ export default function MatchingProposalNew({ isFilled }: MatchingProposalProps)
     try {
       await axios.post('/matching-proposal', matchingProposal);
     } catch (e) {
+      alert('매칭 제안서 발송에 실패하였습니다. 관리자에게 문의주시기 바랍니다.');
       return;
     }
 

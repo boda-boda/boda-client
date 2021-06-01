@@ -4,16 +4,17 @@ import {
   CONTENT_WIDTH,
   FLEX_COLUMN_CENTER_CENTER,
   FLEX_COLUMN_CENTER_START,
+  FLEX_COLUMN_START_CENTER,
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_CENTER_START,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
-  FLEX_ROW_START_START,
   THEME,
 } from '../../constant';
 
 export const MatchingProposalContent = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -37,6 +38,7 @@ export const CompleteSection = styled.div`
 `;
 
 export const InnerContent = styled.div`
+  position: relative;
   width: ${CONTENT_WIDTH}px;
   height: 100%;
   color: ${THEME.GRAY_LINE};
@@ -269,20 +271,18 @@ export const ImageIconContainer = styled.div<ProfileImageProps>`
   }
 `;
 
-interface TextInputProps {
-  withButton?: boolean;
-  long?: boolean;
-}
-
-export const TextInput = styled.input<TextInputProps>`
+export const TextInput = styled.input`
   outline: none;
-  width: ${(props) => (props.long ? '100%' : '200px')};
-  height: 36px;
+  width: 400px;
+  height: 70px;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 20px;
   border-radius: 3px;
   border: solid 1px ${THEME.GRAY_BORDER};
+  text-align: center;
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
-  cursor: ${(props) => props.withButton && 'pointer'};
   :focus {
     border: solid 1px ${THEME.MAIN};
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
@@ -469,4 +469,48 @@ export const DeleteButton = styled.button`
     color: white;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
+`;
+
+export const NeedSecurityCodeContent = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  color: ${THEME.GRAY_LINE};
+  ${FLEX_COLUMN_START_CENTER};
+`;
+
+export const NeedSecurityCode = styled.div`
+  background: white;
+  padding-top: 50px;
+  color: ${THEME.GRAY_FONT};
+  font-size: 40px;
+  font-weight: 500;
+  text-align: center;
+  word-break: keep-all;
+  filter: blur(0px);
+  ${FLEX_COLUMN_START_CENTER};
+`;
+
+export const NeedSecurityCodeTitle = styled.div`
+  color: ${THEME.GRAY_FONT};
+  font-size: 40px;
+  font-weight: 500;
+  text-align: center;
+`;
+
+export const SecurityCodeInput = styled.input``;
+
+export const Logo = styled.div`
+  background-color: ${THEME.MAIN};
+  margin-bottom: 30px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  ${FLEX_COLUMN_CENTER_CENTER}
+`;
+
+export const LogoImg = styled.img`
+  width: auto;
+  height: 70%;
+  margin-left: 10px;
 `;
