@@ -220,6 +220,8 @@ export const RECIPIENT_WOMAN_SMALL_IMAGE_URL =
 export const RECIPIENT_MAN_SMALL_IMAGE_URL =
   'https://dolbom.s3.ap-northeast-2.amazonaws.com/newFiles/0c3cfb1c-bd12-449b-9d9d-aa4c68e2934e_%E1%84%82%E1%85%A1%E1%86%B7%E1%84%89%E1%85%A5%E1%86%BC%E1%84%89%E1%85%AE%E1%84%80%E1%85%B3%E1%86%B8%E1%84%8C%E1%85%A1.png';
 
+export const PRIVACY_POLICY_URL = 'https://www.notion.so/8fb0a0537e86464d8a49c6d647c08e76';
+
 export const LOCALSTORAGE_KEY = {
   MY_CARE_WORKER_SEARCH_PARAMS: 'MY_CARE_WORKER_SEARCH_PARAMS',
 };
