@@ -17,7 +17,7 @@ export default function CareGiverListView() {
           bannerStyle={BannerStyleType.SECTION}
           sectionIndex={0}
           title="요양보호사 목록"
-          subtitle="내 요양보호사 목록에서 조건에 맞는 요양보호사를 검색할 수 있습니다."
+          subtitle="내 요양보호사 목록에서 조건에 맞는 요양보호사를 편리하게 검색할 수 있습니다."
         />
         <Category list={['홈', '나의 요양보호사 관리', '요양보호사 목록']} />
         <S.CareGiverDetailPage>
