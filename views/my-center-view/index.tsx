@@ -47,7 +47,7 @@ export default function MyCenterView() {
           <S.InnerContent>
             <S.MyCenterPage>
               <S.Section>
-                <Link href="mycenter/edit">
+                <Link href="edit">
                   <S.EditButton>센터정보 수정</S.EditButton>
                 </Link>
                 <S.PasswordEditButton onClick={() => setPasswordModalOn(true)}>
