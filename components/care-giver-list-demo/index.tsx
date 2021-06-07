@@ -15,7 +15,6 @@ import {
   PAGINATION_LENGTH,
   WORKING_STATE,
   OUTER_CARE_WORKER_SCHEDULE_TYPES,
-  NAME_ORDER,
   CARE_WORKERS_DEMO,
 } from '../../constant';
 import {
@@ -23,7 +22,6 @@ import {
   isCareWorkerScheduleValid,
   isCareWorkerScheduleValidListPage,
 } from '../../model/care-worker-schedule';
-import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import DoubleArrowLeftSVG from '../../svgs/double-arrow-left';
 import DoubleArrowRightSVG from '../../svgs/double-arrow-right';
@@ -91,8 +89,6 @@ export default function CareGiverListDemo() {
   }, [currentPaginationGroup, maxPageNumber]);
 
   useEffect(() => {
-    if (careCenter.isValidating || !careCenter.isLoggedIn) return;
-
     (async () => {
       try {
         setFilteredCareWorkers(CARE_WORKERS_DEMO);
@@ -386,7 +382,7 @@ export default function CareGiverListDemo() {
           <S.InnerSection>
             <S.InnerContent>
               <S.SectionTitleWrapper>
-                <S.SectionTitle>내 요양보호사 검색</S.SectionTitle>
+                <S.SectionTitle>내 요양보호사 검색 - 데모 페이지 입니다</S.SectionTitle>
                 <S.UseLocalStorageWrapper onClick={() => setUseLocalStorage(!useLocalStorage)}>
                   검색필터 저장하기
                 </S.UseLocalStorageWrapper>
@@ -588,15 +584,7 @@ export default function CareGiverListDemo() {
           </S.InnerSection>
         </S.Section>
         <S.Section isBackgroundColored={true}>
-          {careCenter.isValidating ||
-            (!careCenter.isLoggedIn && (
-              <S.NeedLogin>
-                <S.NeedLoginModal>
-                  자세한 내용은 회원가입 및 로그인 후에 확인 가능합니다.
-                </S.NeedLoginModal>
-              </S.NeedLogin>
-            ))}
-          <S.InnerSection isBlur={careCenter.isValidating || !careCenter.isLoggedIn}>
+          <S.InnerSection>
             <S.InnerContent>
               <S.SectionTitle>검색 결과</S.SectionTitle>
               <S.CareWorkersPerPageContainer>
@@ -637,158 +625,116 @@ export default function CareGiverListDemo() {
                 ))}
               </S.ConsonantFilterList>
               <S.CardList>
-                {!careCenter.isValidating && careCenter.isLoggedIn ? (
-                  currentPageCareWorkers.length === 0 ? (
-                    <S.EmptyCardContainer>
-                      <S.EmptyCard>해당 조건의 요양보호사가 없습니다.</S.EmptyCard>
-                    </S.EmptyCardContainer>
-                  ) : (
-                    <S.CardList>
-                      {currentPageCareWorkers.map((worker, idx) => (
-                        <S.StyledLink>
-                          <Link
-                            key={`worker-${idx}`}
-                            href={{
-                              pathname: '/demo/[id]',
-                            }}
-                            as={`/demo/${worker.id}`}
-                            passHref
-                          >
-                            <S.Card>
-                              <S.ProfileImage src={worker.profile} />
-                              <S.InfoContainer>
-                                <S.BasicInfo>
-                                  {worker.name} ({worker.age}/{worker.gender[0]})
-                                </S.BasicInfo>
-                                {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
-                                <S.InfoRow>
-                                  <S.SVGIconBox>
-                                    <PhoneNumberIconSVG />
-                                  </S.SVGIconBox>
-                                  <S.InfoType>휴대전화</S.InfoType>
-                                  <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
-                                </S.InfoRow>
-                                <S.InfoRow>
-                                  <S.SVGIconBox>
-                                    <CareInfoIconSVG />
-                                  </S.SVGIconBox>
-                                  <S.InfoType>가능 조건</S.InfoType>
+                <S.CardList>
+                  {currentPageCareWorkers.map((worker, idx) => (
+                    <S.StyledLink>
+                      <Link
+                        key={`worker-${idx}`}
+                        href={{
+                          pathname: '/demo/[id]',
+                        }}
+                        as={`/demo/${worker.id}`}
+                        passHref
+                      >
+                        <S.Card>
+                          <S.ProfileImage src={worker.profile} />
+                          <S.InfoContainer>
+                            <S.BasicInfo>
+                              {worker.name} ({worker.age}/{worker.gender[0]})
+                            </S.BasicInfo>
+                            {/* <S.Time>1시간 전</S.Time> TODO: 이거 구현해야함 백엔드에서 */}
+                            <S.InfoRow>
+                              <S.SVGIconBox>
+                                <PhoneNumberIconSVG />
+                              </S.SVGIconBox>
+                              <S.InfoType>휴대전화</S.InfoType>
+                              <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
+                            </S.InfoRow>
+                            <S.InfoRow>
+                              <S.SVGIconBox>
+                                <CareInfoIconSVG />
+                              </S.SVGIconBox>
+                              <S.InfoType>가능 조건</S.InfoType>
 
-                                  <S.InfoItemList>
-                                    {worker.careWorkerMetas
-                                      ?.filter((meta) => meta.type === CAPABILITY)
-                                      .map((meta, index) => {
-                                        return (
-                                          <S.InfoItem key={`careInfoItem-${index}`}>
-                                            {meta.key}
-                                          </S.InfoItem>
-                                        );
-                                      })}
-                                  </S.InfoItemList>
-                                </S.InfoRow>
-                              </S.InfoContainer>
-                            </S.Card>
-                          </Link>
-                        </S.StyledLink>
-                      ))}
-                      <S.PaginationContainer>
-                        <S.PaginationItem
-                          isLeft
-                          key={'first-page-btn'}
-                          onClick={() => {
-                            setCurrentPage(1);
-                            setCurrentPaginationGroup(0);
-                          }}
-                        >
-                          <DoubleArrowLeftSVG />
-                        </S.PaginationItem>
-                        <S.PaginationItem
-                          key={'previous-pageset-btn'}
-                          onClick={() => {
-                            const paginationGroup = Math.max(0, currentPaginationGroup - 1);
-                            setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
-                            setCurrentPaginationGroup(paginationGroup);
-                          }}
-                        >
-                          <SingleArrowLeftSVG />
-                        </S.PaginationItem>
-                        {getPaginationBarNumbers().map((pageNumber) => (
-                          <S.PaginationItem
-                            key={`page-${pageNumber}`}
-                            onClick={() => {
-                              setCurrentPage(pageNumber as number);
-                            }}
-                            isClicked={currentPage === pageNumber}
-                          >
-                            {pageNumber}
-                          </S.PaginationItem>
-                        ))}
-                        <S.PaginationItem
-                          key={'next-pageset-btn'}
-                          onClick={() => {
-                            const paginationGroup = Math.min(
-                              Math.floor(maxPageNumber / PAGINATION_LENGTH),
-                              currentPaginationGroup + 1
-                            );
-                            setCurrentPage(
-                              Math.max(
-                                paginationGroup * PAGINATION_LENGTH + 1,
-                                getPaginationBarNumbers().slice(-1)[0]
-                              )
-                            );
-                            setCurrentPaginationGroup(paginationGroup);
-                          }}
-                        >
-                          <SingleArrowRightSVG />
-                        </S.PaginationItem>
-                        <S.PaginationItem key={'last-page-btn'}>
-                          <DoubleArrowRightSVG
-                            key={'last-page-btn'}
-                            onClick={() => {
-                              setCurrentPage(maxPageNumber);
-                              setCurrentPaginationGroup(
-                                Math.floor(maxPageNumber / PAGINATION_LENGTH)
-                              );
-                            }}
-                          />
-                        </S.PaginationItem>
-                      </S.PaginationContainer>
-                    </S.CardList>
-                  )
-                ) : (
-                  <>
-                    {dummyCareWorkers.map((worker, idx) => (
-                      <S.Card key={`dummy-${idx}`}>
-                        <S.ProfileImage src={worker.profile} />
-                        <S.InfoContainer>
-                          <S.BasicInfo>
-                            {worker.name} ({worker.age}/{worker.gender[0]})
-                          </S.BasicInfo>
-                          <S.InfoRow>
-                            <S.SVGIconBox>
-                              <PhoneNumberIconSVG />
-                            </S.SVGIconBox>
-                            <S.InfoType>휴대전화</S.InfoType>
-                            <S.InfoValue>{worker.phoneNumber}</S.InfoValue>
-                          </S.InfoRow>
-                          <S.InfoRow>
-                            <S.SVGIconBox>
-                              <CareInfoIconSVG />
-                            </S.SVGIconBox>
-                            <S.InfoType>가능 조건</S.InfoType>
-                            <S.InfoItemList>
-                              {worker.careWorkerMetas.map((meta, index) => {
-                                return (
-                                  <S.InfoItem key={`careInfoItem-${index}`}>{meta.key}</S.InfoItem>
-                                );
-                              })}
-                            </S.InfoItemList>
-                          </S.InfoRow>
-                        </S.InfoContainer>
-                      </S.Card>
+                              <S.InfoItemList>
+                                {worker.careWorkerMetas
+                                  ?.filter((meta) => meta.type === CAPABILITY)
+                                  .map((meta, index) => {
+                                    return (
+                                      <S.InfoItem key={`careInfoItem-${index}`}>
+                                        {meta.key}
+                                      </S.InfoItem>
+                                    );
+                                  })}
+                              </S.InfoItemList>
+                            </S.InfoRow>
+                          </S.InfoContainer>
+                        </S.Card>
+                      </Link>
+                    </S.StyledLink>
+                  ))}
+                  <S.PaginationContainer>
+                    <S.PaginationItem
+                      isLeft
+                      key={'first-page-btn'}
+                      onClick={() => {
+                        setCurrentPage(1);
+                        setCurrentPaginationGroup(0);
+                      }}
+                    >
+                      <DoubleArrowLeftSVG />
+                    </S.PaginationItem>
+                    <S.PaginationItem
+                      key={'previous-pageset-btn'}
+                      onClick={() => {
+                        const paginationGroup = Math.max(0, currentPaginationGroup - 1);
+                        setCurrentPage(Math.max(currentPaginationGroup * PAGINATION_LENGTH, 1));
+                        setCurrentPaginationGroup(paginationGroup);
+                      }}
+                    >
+                      <SingleArrowLeftSVG />
+                    </S.PaginationItem>
+                    {getPaginationBarNumbers().map((pageNumber) => (
+                      <S.PaginationItem
+                        key={`page-${pageNumber}`}
+                        onClick={() => {
+                          setCurrentPage(pageNumber as number);
+                        }}
+                        isClicked={currentPage === pageNumber}
+                      >
+                        {pageNumber}
+                      </S.PaginationItem>
                     ))}
-                  </>
-                )}
+                    <S.PaginationItem
+                      key={'next-pageset-btn'}
+                      onClick={() => {
+                        const paginationGroup = Math.min(
+                          Math.floor(maxPageNumber / PAGINATION_LENGTH),
+                          currentPaginationGroup + 1
+                        );
+                        setCurrentPage(
+                          Math.max(
+                            paginationGroup * PAGINATION_LENGTH + 1,
+                            getPaginationBarNumbers().slice(-1)[0]
+                          )
+                        );
+                        setCurrentPaginationGroup(paginationGroup);
+                      }}
+                    >
+                      <SingleArrowRightSVG />
+                    </S.PaginationItem>
+                    <S.PaginationItem key={'last-page-btn'}>
+                      <DoubleArrowRightSVG
+                        key={'last-page-btn'}
+                        onClick={() => {
+                          setCurrentPage(maxPageNumber);
+                          setCurrentPaginationGroup(Math.floor(maxPageNumber / PAGINATION_LENGTH));
+                        }}
+                      />
+                    </S.PaginationItem>
+                  </S.PaginationContainer>
+                </S.CardList>
+                )
               </S.CardList>
             </S.InnerContent>
           </S.InnerSection>

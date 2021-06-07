@@ -400,7 +400,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '강동구', dong: '길동' },
@@ -425,6 +425,11 @@ export const CARE_WORKERS_DEMO = [
       { day: '목', startAt: '9:00', endAt: '12:00' },
       { day: '금', startAt: '9:00', endAt: '12:00' },
     ],
+    careWorkerCareers: [
+      { workplace: '서대문구 재가센터', recipient: '김수급', duration: '2019.03 ~ 2020.05' },
+      { workplace: '용산구 재가센터', recipient: '어르신', duration: '2019.05 ~ 2020.05' },
+      { workplace: '은평구 재가센터', recipient: '김수급', duration: '2019.08 ~ 2020.09' },
+    ],
   },
   {
     id: '1',
@@ -439,7 +444,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '강남구', dong: '개포동' },
@@ -469,7 +474,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오후',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '서대문구', dong: '' },
@@ -532,7 +537,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '서대문구', dong: '남가좌동' },
@@ -574,7 +579,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '은평구', dong: '녹번동' },
@@ -607,7 +612,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '용산구', dong: '' },
@@ -645,7 +650,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description:
       '매우 성실하시고 체력이 좋으시다. 경력이 많으셔서 모든 업무 가능하다.  수급자 만족도 높은 편',
     careWorkerAreas: [
@@ -692,7 +697,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '경력이 많으셔서 모든 업무 가능하다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '강남구', dong: '' },
@@ -729,7 +734,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '매우 성실하시고 체력이 좋으시다.  수급자 만족도 높은 편',
     careWorkerAreas: [
       { city: '서울특별시', gu: '서대문구', dong: '남가좌동' },
@@ -763,7 +768,7 @@ export const CARE_WORKERS_DEMO = [
     detailAddress: '000동 0000호',
     workingState: '재직',
     licenseDate: '20210601',
-    time: '종일',
+    time: '오전',
     description: '모든 업무 가능하시다. 수급자 만족도 높은 편',
     careWorkerAreas: [{ city: '서울특별시', gu: '', dong: '' }],
     careWorkerMetas: [
