@@ -28,7 +28,7 @@ export const Section = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding-top: 10px;
+  padding-top: 20px;
   padding-bottom: 10px;
 `;
 
@@ -84,6 +84,9 @@ export const Table = styled.table`
   }
   th.career {
     padding: 13px 0;
+  }
+  .twoRow {
+    padding: 0 12px;
   }
   .area {
     width: 33.3333%;
@@ -211,7 +214,7 @@ export const ButtonContainer = styled.div`
 
 export const EditButton = styled.button`
   position: absolute;
-  top: 13px;
+  top: 20px;
   right: 0;
   padding: 11px 10px;
   height: 36px;
@@ -230,7 +233,116 @@ export const EditButton = styled.button`
   }
 `;
 
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 85px;
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.RED};
+  background-color: white;
+  color: ${THEME.RED};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.RED};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
 export const StyledLink = styled.span`
   color: ${THEME.GRAY_FONT};
   text-decoration: none;
+`;
+
+export const ComplimentTitle = styled.div`
+  font-size: 18px;
+  font-weight: 700;
+  color: ${THEME.GRAY_FONT};
+  ::before {
+    content: '“';
+  }
+  ::after {
+    content: '”';
+  }
+`;
+
+export const ComplimentDate = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: ${THEME.PLACEHOLDER_UNACTIVE};
+`;
+
+export const ComplimentContent = styled.div`
+  font-size: 16px;
+  color: ${THEME.GRAY_FONT};
+  margin-top: 10px;
+`;
+
+export const ComplimentEditButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.MAIN};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const ComplimentApplyButton = styled.button`
+  margin-top: 10px;
+  padding: 11px 10px;
+  height: 36px;
+  border-radius: 3px;
+  outline: none;
+  border: 1px solid ${THEME.MAIN};
+  background-color: white;
+  color: ${THEME.MAIN};
+  ${FLEX_ROW_CENTER_CENTER};
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    background: ${THEME.MAIN};
+    color: white;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const ComplimentTitleInput = styled.input`
+  width: 100%;
+  padding: 10px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  outline: none;
+`;
+
+export const ComplimentContentInput = styled.textarea`
+  outline: none;
+  width: 100%;
+  min-height: 84px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  border: solid 1px ${THEME.GRAY_BORDER};
+  resize: none;
+  overflow-y: hidden;
+  color: ${THEME.GRAY_FONT};
+  :focus {
+    border: solid 1px ${THEME.MAIN};
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
+  }
 `;

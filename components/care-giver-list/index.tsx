@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import CareInfoIconSVG from '../../svgs/care-info-icon-svg';
 import PhoneNumberIconSVG from '../../svgs/phone-number-icon-svg';
-import PlusIconSVG from '../../svgs/plus-icon-svg';
 import * as S from './styles';
-import MinusIconSVG from '../../svgs/minus-icon-svg';
 import Link from 'next/link';
 import {
   CARE_INFO_LIST,
@@ -23,9 +21,7 @@ import {
   CareWorkerSchedule,
   isCareWorkerScheduleValid,
   isCareWorkerScheduleValidListPage,
-  toggleDayOfCareWorkerSchedule,
 } from '../../model/care-worker-schedule';
-import { DayType } from '../../common/types/date';
 import axios from 'axios';
 import { useCareCenter } from '../../context/care-center';
 import CareWorker from '../../model/care-worker';

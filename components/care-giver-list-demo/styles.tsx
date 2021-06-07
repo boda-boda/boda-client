@@ -5,12 +5,13 @@ import {
   FLEX_COLUMN_CENTER_END,
   FLEX_COLUMN_CENTER_START,
   FLEX_ROW_CENTER_CENTER,
-  FLEX_ROW_CENTER_END,
+  FLEX_ROW_END_END,
   FLEX_ROW_END_CENTER,
   FLEX_ROW_SPACE_CENTER,
   FLEX_ROW_START_CENTER,
   FLEX_ROW_START_START,
   THEME,
+  FLEX_ROW_START_END,
 } from '../../constant';
 
 export const CgList = styled.div`
@@ -27,8 +28,20 @@ interface SectionProps {
 export const Section = styled.div<SectionProps>`
   width: 100%;
   ${FLEX_COLUMN_CENTER_CENTER};
-  padding: 30px 0;
   background: ${(props) => (props.isBackgroundColored ? THEME.BACKGROUND : 'white')};
+  position: relative;
+`;
+
+interface BlurProps {
+  isBlur?: boolean;
+}
+
+export const InnerSection = styled.div<BlurProps>`
+  width: 100%;
+  height: 100%;
+  padding: 30px 0;
+  ${FLEX_COLUMN_CENTER_CENTER};
+  filter: ${(props) => props.isBlur && `blur(4px)`};
 `;
 
 export const InnerContent = styled.div`
@@ -36,6 +49,7 @@ export const InnerContent = styled.div`
   height: 100%;
   color: ${THEME.GRAY_LINE};
   ${FLEX_COLUMN_CENTER_START};
+  position: relative;
 `;
 
 export const SectionTitle = styled.div`
@@ -44,16 +58,23 @@ export const SectionTitle = styled.div`
   color: ${THEME.PLACEHOLDER_ACTIVE_LOCATION_END};
 `;
 
-interface TimeSeleceContainerProps {
-  isLast: boolean;
-}
-
-export const TimeSelectContainer = styled.div<TimeSeleceContainerProps>`
-  ${FLEX_ROW_SPACE_CENTER};
-  padding: 10px;
-  border-bottom: ${(props) => (props.isLast ? 'none' : css`1px solid ${THEME.GRAY_LINE}`)};
+export const SectionTitleWrapper = styled.div`
+  width: 100%;
+  ${FLEX_ROW_SPACE_CENTER}
 `;
 
+export const UseLocalStorageWrapper = styled.div`
+  position: absolute;
+  right: 35px;
+  top: 10px;
+  color: ${THEME.GRAY_FONT};
+  cursor: pointer;
+`;
+
+export const TimeSelectContainer = styled.div`
+  ${FLEX_ROW_START_CENTER};
+  border-bottom: none;
+`;
 export const FilterTable = styled.table`
   width: 100%;
   margin-top: 12px;
@@ -103,6 +124,9 @@ export const FilterTable = styled.table`
   }
   .innerTableHeader {
     padding: 12px 12px;
+  }
+  .empty {
+    cursor: default;
   }
   table {
     border: none;
@@ -154,10 +178,10 @@ export const ToggleButton = styled.div<ToggleButtonProps>`
   -moz-user-select: none;
   -webkit-user-select: none;
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    color: ${(props) => !props.isSelected && THEME.MAIN};
   }
 `;
 
@@ -193,13 +217,12 @@ export const TextInput = styled.input`
   border: solid 1px ${THEME.GRAY_BORDER};
   padding: 0 10px;
   color: ${THEME.GRAY_FONT};
+  transition: 0.2s ease;
   :hover {
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
   }
   :focus {
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.09);
   }
 `;
 
@@ -225,9 +248,9 @@ export const PlusMinusButton = styled.button<PlusMinusButtonProps>`
   cursor: ${(props) => (props.hide ? 'normal' : `pointer`)};
   background-color: white;
   opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: 0.2s ease;
   :hover {
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
   }
 `;
 
@@ -236,6 +259,16 @@ export const CheckBox = styled.input`
   right: 10px;
   width: 16px;
   height: 16px;
+  cursor: pointer;
+`;
+
+export const LocalStorageCheckBox = styled.input`
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 `;
 
 export const ResetButtonContainer = styled.div`
@@ -254,7 +287,7 @@ export const FilterButton = styled.button<ButtonProps>`
   margin-left: 20px;
   ${FLEX_ROW_CENTER_CENTER};
   border-radius: 3px;
-  box-shadow: ${(props) => (props.isReset ? 'none' : '0 3px 6px 0 rgba(0, 0, 0, 0.16);')};
+  box-shadow: ${(props) => (props.isReset ? 'none' : '0 3px 6px 0 rgba(0, 0, 0, 0.16)')};
 
   background-color: ${(props) => (props.isReset ? 'white' : THEME.MAIN)};
   outline: none;
@@ -262,9 +295,13 @@ export const FilterButton = styled.button<ButtonProps>`
   color: ${(props) => (props.isReset ? THEME.MAIN : 'white')};
   border: ${(props) => (props.isReset ? `1px solid ${THEME.MAIN}` : 'none')};
   cursor: pointer;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    background-color: ${(props) => props.isReset && THEME.MAIN};
+    color: ${(props) => props.isReset && 'white'};
+    border: ${(props) => props.isReset && 'none'};
+    box-shadow: ${(props) =>
+      props.isReset ? '0 3px 6px 0 rgba(0, 0, 0, 0.16)' : '0 3px 6px 0 rgba(0, 0, 0, 0.3)'};
   }
 `;
 
@@ -282,12 +319,14 @@ export const Card = styled.div`
   padding: 25px;
   border-radius: 10px;
   margin-top: 30px;
+  margin-bottom: -10px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
   background-color: white;
   ${FLEX_ROW_SPACE_CENTER};
+  transition: 0.2s ease;
   :hover {
     /* border: solid 1px ${THEME.MAIN}; */
-    box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.3);
   }
 `;
 export const EmptyCardContainer = styled.div`
@@ -363,6 +402,7 @@ export const InfoType = styled.div`
 
 export const InfoValue = styled.div`
   margin-top: -1px;
+  color: ${THEME.GRAY_FONT};
 `;
 
 export const SVGIconBox = styled.div`
@@ -398,7 +438,7 @@ export const ConsonantFilterList = styled.div`
   height: 40px;
   margin-top: 20px;
   border-bottom: 5px solid ${THEME.MAIN};
-  ${FLEX_ROW_CENTER_END};
+  ${FLEX_ROW_START_END};
 `;
 
 interface NameFilterItemProps {
@@ -408,7 +448,8 @@ interface NameFilterItemProps {
 
 export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : THEME.GRAY_LINE)};
-  border-left: ${(props) => !props.isLeft && 'none'};
+  margin-left: ${(props) => !props.isLeft && '-1px'};
+  outline-offset: -1px;
   border-bottom: none;
   height: ${(props) => (props.isClicked ? '40px' : '35px')};
   background-color: ${(props) => (props.isClicked ? THEME.MAIN : 'white')};
@@ -418,16 +459,47 @@ export const ConsonantFilterItem = styled.div<NameFilterItemProps>`
   border-radius: 10px 10px 0 0;
   ${FLEX_ROW_CENTER_CENTER};
   cursor: pointer;
+  z-index: ${(props) => props.isClicked && 1};
   :hover {
-    font-weight: bold;
+    color: ${(props) => !props.isClicked && THEME.MAIN};
     border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    border-bottom: none;
+    z-index: 1;
   }
+`;
+
+export const NeedLogin = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+  ${FLEX_COLUMN_CENTER_CENTER};
+`;
+
+export const NeedLoginModal = styled.div`
+  width: 978px;
+  height: 329px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  color: ${THEME.GRAY_FONT};
+  font-size: 36px;
+  font-weight: 500;
+  padding: 0 250px;
+  text-align: center;
+  word-break: keep-all;
+  filter: blur(0px);
+  ${FLEX_COLUMN_CENTER_CENTER};
 `;
 
 export const CareWorkersPerPageContainer = styled.div`
   width: 100%;
-  margin-top: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
   ${FLEX_COLUMN_CENTER_END}
 `;
 
@@ -461,18 +533,18 @@ export const PaginationItem = styled.div<PaginationItemProps>`
   height: 30px;
   width: 30px;
   ${FLEX_COLUMN_CENTER_CENTER}
-  border: 1px solid ${(props) => (props.isClicked ? THEME.MAIN : 'none')};
   margin-left: ${(props) => !props.isLeft && '10px'};
   background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.BACKGROUND)};
   color: ${(props) => (props.isClicked ? 'white' : 'black')};
+  border-radius: 3px;
   font-size: 14px;
   padding-bottom: 1px;
   cursor: pointer;
   user-select: none;
+  transition: 0.2s ease;
   :hover {
-    font-weight: bold;
-    border: solid 1px ${THEME.MAIN};
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+    background-color: ${(props) => (props.isClicked ? THEME.MAIN : THEME.HEADER_BACKGROUND)};
+    box-shadow: ${(props) => props.isClicked && '0 0px 6px 0 rgba(0, 0, 0, 0.25)'};
   }
 `;
 
