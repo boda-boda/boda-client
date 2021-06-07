@@ -15,7 +15,7 @@ export default function Demo() {
         <>
           <Banner bannerStyle={BannerStyleType.AD} />
           <S.Main>
-            <CareGiverListDemo isMyCaregiver={false} />
+            <CareGiverListDemo />
           </S.Main>
         </>
       </Layout>
