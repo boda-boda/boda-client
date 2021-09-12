@@ -55,7 +55,7 @@ export default function Landing() {
       answer: `치매는 진행 단계별 관리가 꼭 필요합니다. 저희 ${jumbotronLogo}은 단계별 인지 프로그램을 제공하여 어르신의 치매 진행을 늦춥니다.`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115616.jpg',
+      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115624.jpg',
       question: `어머님께서 식사를 힘들어하시나요?`,
       answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
     },
@@ -68,23 +68,25 @@ export default function Landing() {
   ];
   const serviceInfo = [
     {
-      image: '',
+      image:
+        'https://user-images.githubusercontent.com/52532871/132996425-f3b0f574-7938-49c1-af3d-0ec84beed1fc.jpg',
       content: `케어에 필요한 유니폼과 자체 돌봄 키트를 사용하여 준비된 케어를 제공합니다.`,
     },
     {
-      image: '',
+      image: 'https://imagescdn.gettyimagesbank.com/500/201911/jv11942530.jpg',
       content: `CS교육을 통해 어르신을 존중하는 대화법을 사용합니다.`,
     },
     {
-      image: '',
+      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115624.jpg',
       content: `어르신의 삼킴 정도와 기저 질환을 고려한 식단표를 바탕으로 식단을 제공합니다.`,
     },
     {
-      image: '',
+      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115507.jpg',
       content: `각종 오감을 자극하는 어르신 단계별 인지 프로그램을 진행하여 치매 진행을 완화합니다.`,
     },
     {
-      image: '',
+      image:
+        'https://user-images.githubusercontent.com/52532871/132996024-e69918fd-dd8f-4286-9eab-5bd3153dc6f0.jpg',
       content: `혈압, 혈당, 체온, 식사량 등의 기초건강수치와 돌봄일지를 작성하여 각종 노인질환에 빠르게 대응합니다.`,
     },
     ,
@@ -96,34 +98,36 @@ export default function Landing() {
   ];
   const verificationInfo = [
     {
-      background: '#ffeea1',
-      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      background: '#ffe77a',
+      icon: 'https://cdn-icons-png.flaticon.com/512/3523/3523429.png',
       title: '요양보호사 자격증',
       subtitle: '국가공인자격증을 취득한 검증된 요양보호사와 함께 일을 합니다.',
     },
     {
-      background: '#ffeea1',
-      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      background: '#e1efff',
+      icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135682.png',
       title: '돌봄 인성 면접 및 근무 조건 인터뷰 진행',
       subtitle:
         '기존 방문요양보다 전문적인 케어에 동의한 책임감있는 요양보호사와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 매칭합니다.',
     },
     {
-      background: '#ffeea1',
-      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      background: '#e1e4eb',
+      icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058578.png',
       title: '돌봄 전문성 강화 교육',
       subtitle:
         '근무를 시작하기 전 돌봄 전문성 강화 교육을 제공합니다. 기본적인 CS 마인드, 케어 전문 교육, 행동심리 및 의료교육을 제공하여 케어에 필수적인 전문성 강화 교육을 제공합니다.',
     },
     {
-      background: '#ffeea1',
-      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      background: '#e6f5d4',
+      icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058599.png',
       title: '돌봄 정기 보완 교육',
       subtitle: '근무를 하며 한 달에 한 번 정기 교육을 제공하여 사례회의 등 보완교육을 제공합니다.',
     },
   ];
   const peopleInfo = [
     {
+      small:
+        'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimg.theqoo.net%2Fimg%2FRfoAB.jpg&type=sc960_832',
       background:
         'https://media.istockphoto.com/photos/indian-female-professional-picture-id1045876104?k=20&m=1045876104&s=170667a&w=0&h=MaX9Hf-qU11yyUbj7c60VF1DxlfMfH33x3OL-uz0u98=',
       title: 'CS교육',
@@ -135,6 +139,8 @@ export default function Landing() {
       isRight: true,
     },
     {
+      small:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAxMDRfMjk5%2FMDAxNTQ2NTM0NDYzNDA2.N964Gq3q9-8pknGxXz0jlqvPXrt6WGkg7Djtrk3y6sUg.rTm-y9YBHW8F8IuaKuZfZf9Ls9JcmCtJXvEeBnhyoQUg.JPEG.wjdtjdrbs123%2FIMG_20190104_004804.jpg&type=sc960_832',
       background:
         'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
       title: '어르신 케어 교육',
@@ -146,6 +152,8 @@ export default function Landing() {
       isRight: false,
     },
     {
+      small:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5129%2F2017%2F04%2F16%2F1492322043_1231576_20170416145718050.jpg&type=sc960_832',
       background:
         'https://thumbs.dreamstime.com/b/confident-professional-young-woman-blue-blouse-pointing-finger-upper-left-corner-looking-camera-persuade-customer-make-174846578.jpg',
       title: '행동심리 의료 교육',
@@ -157,6 +165,8 @@ export default function Landing() {
       isRight: false,
     },
     {
+      small:
+        'https://w.namu.la/s/82a024f1e71d4a9951ca1718b01f3c77d499178d44c926f2eac3d29cbb7215c71a4ef9804ed6f7e4857e9a8741ae8a22d828169f01bd8cfe363c343159f950d7334ceb5c56ca4abbfeb8d9978048b1a957d5d7d50a64a8793e2f1b11880d487f',
       background: 'https://ak.picdn.net/shutterstock/videos/13086851/thumb/1.jpg',
       title: 'A플러스사랑드림재가센터',
       name: '조재분',
@@ -167,6 +177,8 @@ export default function Landing() {
       isRight: false,
     },
     {
+      small:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F117%2F2019%2F09%2F27%2F201909271417438682_1_20190927141933449.jpg&type=sc960_832',
       background:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAHMDUWQsX2tKxTqShxIJyEAyTSowqqiI0R4C1WdGGMUdq9d6zy4Uu_kAFXpCG2G6mebo&usqp=CAU',
       title: '정다운재가복지센터',
@@ -180,16 +192,26 @@ export default function Landing() {
   ];
   const [jumbotronIndex, setJumbotronIndex] = useState(0);
   const [peopleIndex, setPeopleIndex] = useState(0);
-  const [featureIndex, setFeatureIndex] = useState(0);
   const imageChange = () => {
     setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length);
   };
+  const peopleChange = () => {
+    setPeopleIndex((peopleIndex + 1) % peopleInfo.length);
+  };
   useEffect(() => {
     const change = setInterval(imageChange, 20000);
-    return () => clearInterval(change);
+    return () => {
+      clearInterval(change);
+    };
   }, [jumbotronIndex]);
+  useEffect(() => {
+    const change = setInterval(peopleChange, 10000);
+    return () => {
+      clearInterval(change);
+    };
+  }, [peopleIndex]);
   useEffect(() => AOS.init(), []);
-  const { contact, handleContactUpdate, handleConsultRequest } = useLogin();
+  /* const { contact, handleContactUpdate, handleConsultRequest } = useLogin(); */
 
   return (
     <>
@@ -241,7 +263,7 @@ export default function Landing() {
           </S.IndicatorContainer>
         </S.Jumbotron>
         <S.Section>
-          <S.SectionTitle>
+          <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의
             <br />
             <span>프리미엄 방문요양</span>이란?
@@ -262,7 +284,7 @@ export default function Landing() {
           </S.ServiceList>
         </S.Section>
         <S.Section>
-          <S.SectionTitle>
+          <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의 서비스는
             <br />
             이렇게 만들어집니다.
@@ -282,16 +304,16 @@ export default function Landing() {
           </S.VerificationList>
         </S.Section>
         <S.Section>
-          <S.SectionTitle>
+          <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />은 경험 많은
             <br />
             강사진과 재가센터와 함께 합니다.
           </S.SectionTitle>
-          <S.PeopleIndicatorContainer>
+          <S.PeopleIndicatorContainer data-aos="fade">
             {peopleInfo.map((item, index) => (
               <S.PeopleIndicator
                 key={index}
-                src={item.background}
+                src={item.small}
                 isSelected={peopleIndex == index}
                 onClick={() => setPeopleIndex(index)}
               ></S.PeopleIndicator>
@@ -342,39 +364,33 @@ export default function Landing() {
             ))}
           </S.PeopleList>
         </S.Section>
-        <S.Section style={{ background: '#332347' }}>
-          <S.EndSectionBackground />
-          <S.EndSection>
-            <S.EndSectionTitle>
-              간편하게 원하는 요양보호사를 탐색해보세요!
-              <br />
-              재가센터의 요양보호사 관리 및 매칭서비스, 돌봄
-            </S.EndSectionTitle>
-            <S.EndSectionSubtitle>
-              돌봄이 처음이신가요?
-              <br />
-              아래에 연락처를 남겨 주시면 상담 연락 드리겠습니다.
-            </S.EndSectionSubtitle>
-            <S.StringInput
-              value={contact}
-              onChange={handleContactUpdate}
-              type="string"
-              placeholder="연락처 입력"
-            />
-            <S.CunsultButton onClick={handleConsultRequest}>상담 신청하기</S.CunsultButton>
-            <S.Footer>
-              <S.FooterBar />
-              <S.FooterText>
-                <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
-                <br />
-                사업자번호 : 825-88-02119
-                <br />
-                <br />
-                Copyright ⓒ dolbom. All rights reserved.
-              </S.FooterText>
-            </S.Footer>
-          </S.EndSection>
+        <S.Section>
+          <img src="https://user-images.githubusercontent.com/52532871/132998378-5bec9ef4-cb98-4068-bcbc-440471f53f6a.png" />
+          <S.EventContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+            신청 바로가기 <RightArrowIconWhite />
+          </S.EventContactButton>
         </S.Section>
+        <S.FooterBar />
+        <S.Footer>
+          <S.FooterText>
+            <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
+            <br />
+            사업자번호 : 825-88-02119
+            <br />
+            <br />
+            Copyright ⓒ dolbom. All rights reserved.
+          </S.FooterText>
+          <S.FooterText style={{ color: '#4e515c' }}>
+            Icon{' '}
+            <a href="https://www.freepik.com" title="Freepik" style={{ color: '#4e515c' }}>
+              Freepik
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/kr/" title="Flaticon" style={{ color: '#4e515c' }}>
+              www.flaticon.com
+            </a>
+          </S.FooterText>
+        </S.Footer>
       </S.Layout>
     </>
   );

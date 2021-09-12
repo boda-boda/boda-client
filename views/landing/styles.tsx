@@ -85,16 +85,29 @@ export const JumboQuestion = styled.div`
   font-size: 40px;
   font-weight: 700;
   color: white;
+  border-bottom: 1px solid white;
+  padding-bottom: 5px;
   ::before {
-    content: 'Q.';
+    content: '“';
+    margin-right: 10px;
+  }
+  ::after {
+    content: '”';
+    margin-left: 10px;
   }
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
     font-size: 36px;
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: 22px;
+    border-bottom: none;
     ::before {
       content: '';
+      margin: 0;
+    }
+    ::after {
+      content: '';
+      margin: 0;
     }
   }
 `;
@@ -131,6 +144,7 @@ export const JumboAnswer = styled.div`
 
 export const ContactButtonContainer = styled.div`
   margin-top: 100px;
+  z-index: 10;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;
     height: 100%;
@@ -143,6 +157,7 @@ export const ContactButtonContainer = styled.div`
 `;
 
 export const ContactButton = styled.a`
+  display: block;
   padding: 10px 20px;
   margin-top: 20px;
   outline: none;
@@ -243,9 +258,9 @@ export const Header = styled.div<HeaderProps>`
   font-weight: 500;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     position: absolute;
-    padding: 20px 20px;
     background: none;
     color: white;
+    padding: 20px 20px;
   }
 `;
 
@@ -461,6 +476,8 @@ export const PeopleIndicator = styled.div<PeopleIndicatorProps>`
   background-position: center;
   background-size: cover;
 
+  transition: 0.2s ease;
+
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     ${(props) =>
       !props.isSelected &&
@@ -488,6 +505,7 @@ export const PeopleCarousel = styled.div<PeopleCardProps>`
   ${(props) => (props.isRight ? FLEX_COLUMN_CENTER_END : FLEX_COLUMN_CENTER_START)};
   display: none;
   padding: 30px;
+  transition: 0.2s ease;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     display: flex;
   }
@@ -567,8 +585,7 @@ export const EndSection = styled.div`
   position: relative;
   width: 100%;
   ${FLEX_COLUMN_START_START};
-  padding: 100px 200px;
-  padding-bottom: 50px;
+  padding: 20px 30px;
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
     padding: 100px;
     padding-bottom: 50px;
@@ -577,19 +594,6 @@ export const EndSection = styled.div`
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     padding: 50px 20px;
   }
-`;
-
-export const EndSectionBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('https://user-images.githubusercontent.com/52532871/113483535-eb85d800-94de-11eb-9212-b4456162e1b9.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: right;
-  opacity: 0.3;
 `;
 
 export const EndSectionTitle = styled.div`
@@ -650,14 +654,11 @@ export const Footer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 70px;
-  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    margin-top: 30px;
-  }
+  padding: 20px 30px;
 `;
 
 export const FooterText = styled.div`
-  color: white;
+  color: ${THEME.GRAY_FONT};
   font-size: 14px;
   line-height: 1.71;
   span {
@@ -670,5 +671,26 @@ export const FooterBar = styled.div`
   width: 100%;
   height: 1px;
   border-bottom: 1px solid ${THEME.GRAY_LINE};
-  margin: 20px 0;
+`;
+
+export const EventContactButton = styled.a`
+  font-size: 18px;
+  background: ${THEME.MAIN};
+  border-radius: 100px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  outline: none;
+  border: 1px solid white;
+  color: white;
+  font-weight: 500;
+  font-size: 20px;
+  border-radius: 100px;
+  z-index: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+  :hover {
+    transform: translateY(-3px);
+  }
 `;
