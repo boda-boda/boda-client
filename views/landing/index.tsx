@@ -1,38 +1,21 @@
 import * as S from './styles';
 import Head from 'next/head';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SlideLeftButton from '../../svgs/slide-left-button-svg';
 import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
-import Link from 'next/link';
-import { useCareCenter } from '../../context/care-center';
 import { useSoftRefresh } from '../../common/hooks/auth';
 import { useLogin } from '../login/hooks';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
-const Header = ({ nowSection, setNowSection, sectionRefs }) => {
+const Header = () => {
   const [isTop, setIstop] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [offset, setOffset] = useState(500);
 
   function logit() {
     setIstop(window.pageYOffset === 0 || isMobile);
-    switch (true) {
-      case sectionRefs[2].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(2);
-        break;
-      case sectionRefs[1].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(1);
-        break;
-      case sectionRefs[0].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(0);
-        break;
-      default:
-        setNowSection(-1);
-    }
   }
-  const goSection = (index: number) => {
-    window.scrollTo({ top: sectionRefs[index].current.offsetTop - 150, behavior: 'smooth' });
-  };
   useEffect(() => {
     function watchScroll() {
       window.addEventListener('scroll', logit);
@@ -43,123 +26,160 @@ const Header = ({ nowSection, setNowSection, sectionRefs }) => {
     };
   });
   useEffect(() => {
-    setIsMobile(window.screen.width < 750);
-    if (window.screen.width < 750) setOffset(200);
-  }, []);
+    function handleResize() {
+      if (window.innerWidth <= 750 && !isMobile) setIsMobile(true);
+      else if (window.innerWidth > 750 && isMobile) setIsMobile(false);
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile]);
   return (
     <S.Header isTop={isTop}>
       <S.Logo>
         <S.LogoImg src={isTop ? '/logo.png' : '/logo_purple.png'} />
       </S.Logo>
-      {!isMobile && (
-        <S.Navibar>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 0}
-            onClick={(e) => {
-              goSection(0);
-            }}
-          >
-            서비스 소개
-          </S.NaviItem>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 1}
-            onClick={(e) => {
-              goSection(1);
-            }}
-          >
-            서비스 확장성
-          </S.NaviItem>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 2}
-            onClick={(e) => {
-              goSection(2);
-            }}
-          >
-            상담 신청
-          </S.NaviItem>
-        </S.Navibar>
-      )}
+      프리미엄 방문요양 서비스, 돌봄
     </S.Header>
   );
 };
 
 export default function Landing() {
   useSoftRefresh();
-  const careCenter = useCareCenter();
-
+  const jumbotronLogo = `<img src='/logo.png' />`;
   const jumbotronInfo = [
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498372-4eab5500-9547-11eb-8c46-555aee277adb.jpg',
-      text: `요양보호사가 필요할 때<br />
-      여기저기 전화는 NO
-      <br />
-      여기 10번의 클릭이면 OK`,
-      isLeft: false,
+      question: `어머님께서 치매가 심해지시나요?`,
+      answer: `치매는 진행 단계별 관리가 꼭 필요합니다. 저희 ${jumbotronLogo}은 단계별 인지 프로그램을 제공하여 어르신의 치매 진행을 늦춥니다.`,
+    },
+    {
+      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115616.jpg',
+      question: `어머님께서 식사를 힘들어하시나요?`,
+      answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498373-50751880-9547-11eb-8a79-909a9a6e34f3.jpg',
-      text: `매칭에 꼭 필요한 조건 검색으로<br />
-      수급자 어르신과 딱 맞는<br />
-      요양보호사를 찾을 수 있을 거에요.`,
-      isLeft: true,
+      question: `혼자 계시는 어머님이 걱정되시나요?`,
+      answer: `저희 ${jumbotronLogo}은 매일 돌봄일지를 작성하고 기초건강수치를 기록하며 각종 노인질환을 예방합니다.`,
     },
   ];
-  const featureInfo = [
+  const serviceInfo = [
     {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113480969-03a32a80-94d2-11eb-8d1b-b7bd5590cb36.png',
-      title: `매칭에 꼭 필요한<br />
-      <span>조건 검색</span>`,
-      subtitle: `이름, 지역, 시간, 가능 조건, 종교 등 조건을 검색할 수 있어요.`,
+      image: '',
+      content: `케어에 필요한 유니폼과 자체 돌봄 키트를 사용하여 준비된 케어를 제공합니다.`,
     },
     {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113481748-51ba2d00-94d6-11eb-9a63-7d03b93d2e1a.png',
-      title: `필요할 때 바로 바로<br />
-      <span>요양보호사 찾기</span>`,
-      subtitle: `더 이상 요양보호사 연락 기다리지 마세요.<br/>
-      원할때 바로바로 검색해서 찾아보세요.`,
+      image: '',
+      content: `CS교육을 통해 어르신을 존중하는 대화법을 사용합니다.`,
     },
     {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113480969-03a32a80-94d2-11eb-8d1b-b7bd5590cb36.png',
-      title: `다른 센터에서 작성한
-      <br />
-      <span>칭찬글 보기</span>`,
-      subtitle: `다른 센터가 경험한 요양보호사의 생생한 칭찬 후기를 확인해보세요. `,
-    },
-  ];
-  const expansionInfo = [
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113498634-9501b380-9549-11eb-9b55-2a58646a51bf.jpg',
-      title: `나의 센터 요양보호사<br/>관리하기`,
-      subtitle: `일을 하다가 그만 두신 분, 연락만 했던 요양보호사 정보를 한 곳에 모아 관리할 수 있어요.
-      소중한 정보를 안전하고 효율적으로 관리하세요.`,
+      image: '',
+      content: `어르신의 삼킴 정도와 기저 질환을 고려한 식단표를 바탕으로 식단을 제공합니다.`,
     },
     {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113498866-cbd8c900-954b-11eb-8a54-1c5efad68c9f.jpg',
-      title: `요양보호사<br/>탐색하기`,
-      subtitle: `요양보호사가 필요할 때 바로 검색하고 찾아보세요! 매칭에 필요한 정보와 칭찬후기로 원하는 요양보호사를 찾을 수 있을 겁니다.`,
+      image: '',
+      content: `각종 오감을 자극하는 어르신 단계별 인지 프로그램을 진행하여 치매 진행을 완화합니다.`,
     },
+    {
+      image: '',
+      content: `혈압, 혈당, 체온, 식사량 등의 기초건강수치와 돌봄일지를 작성하여 각종 노인질환에 빠르게 대응합니다.`,
+    },
+    ,
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
-      title: `쉿!<br/>아직 준비중입니다.`,
-      subtitle: `돌봄만의 획기적인 서비스를 기대주세요.`,
+      content: `치매 진행으로 인한 행동심리 증상에 대한 이해도를 가지고 어르신의 증상을 이해하고 대처합니다.`,
     },
   ];
-  const sectionRefs = Array(3)
-    .fill(0)
-    .map((i) => useRef<HTMLDivElement>(null));
-  const [nowSection, setNowSection] = useState(-1);
+  const verificationInfo = [
+    {
+      background: '#ffeea1',
+      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      title: '요양보호사 자격증',
+      subtitle: '국가공인자격증을 취득한 검증된 요양보호사와 함께 일을 합니다.',
+    },
+    {
+      background: '#ffeea1',
+      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      title: '돌봄 인성 면접 및 근무 조건 인터뷰 진행',
+      subtitle:
+        '기존 방문요양보다 전문적인 케어에 동의한 책임감있는 요양보호사와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 매칭합니다.',
+    },
+    {
+      background: '#ffeea1',
+      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      title: '돌봄 전문성 강화 교육',
+      subtitle:
+        '근무를 시작하기 전 돌봄 전문성 강화 교육을 제공합니다. 기본적인 CS 마인드, 케어 전문 교육, 행동심리 및 의료교육을 제공하여 케어에 필수적인 전문성 강화 교육을 제공합니다.',
+    },
+    {
+      background: '#ffeea1',
+      icon: 'https://user-images.githubusercontent.com/52532871/132952646-29d623f3-1069-4b98-a9e2-e9f6c851de31.png',
+      title: '돌봄 정기 보완 교육',
+      subtitle: '근무를 하며 한 달에 한 번 정기 교육을 제공하여 사례회의 등 보완교육을 제공합니다.',
+    },
+  ];
+  const peopleInfo = [
+    {
+      background:
+        'https://media.istockphoto.com/photos/indian-female-professional-picture-id1045876104?k=20&m=1045876104&s=170667a&w=0&h=MaX9Hf-qU11yyUbj7c60VF1DxlfMfH33x3OL-uz0u98=',
+      title: 'CS교육',
+      name: '조성희',
+      role: '대표님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '전해 주고 싶어 슬픈 시간이',
+      isRight: true,
+    },
+    {
+      background:
+        'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+      title: '어르신 케어 교육',
+      name: '문명란',
+      role: '선생님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '다 흩어진 후에야 들리지만',
+      isRight: false,
+    },
+    {
+      background:
+        'https://thumbs.dreamstime.com/b/confident-professional-young-woman-blue-blouse-pointing-finger-upper-left-corner-looking-camera-persuade-customer-make-174846578.jpg',
+      title: '행동심리 의료 교육',
+      name: '손유리',
+      role: '의사님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '특별한 기적을 기다리지 마',
+      isRight: false,
+    },
+    {
+      background: 'https://ak.picdn.net/shutterstock/videos/13086851/thumb/1.jpg',
+      title: 'A플러스사랑드림재가센터',
+      name: '조재분',
+      role: '센터장님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '너를 향한 내 눈빛을',
+      isRight: false,
+    },
+    {
+      background:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAHMDUWQsX2tKxTqShxIJyEAyTSowqqiI0R4C1WdGGMUdq9d6zy4Uu_kAFXpCG2G6mebo&usqp=CAU',
+      title: '정다운재가복지센터',
+      name: '정은희',
+      role: '사회복지사님',
+      career: `1997 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '눈을 감고 느껴 봐 움직이는 마음',
+      isRight: true,
+    },
+  ];
   const [jumbotronIndex, setJumbotronIndex] = useState(0);
+  const [peopleIndex, setPeopleIndex] = useState(0);
   const [featureIndex, setFeatureIndex] = useState(0);
   const imageChange = () => {
     setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length);
@@ -168,6 +188,7 @@ export default function Landing() {
     const change = setInterval(imageChange, 20000);
     return () => clearInterval(change);
   }, [jumbotronIndex]);
+  useEffect(() => AOS.init(), []);
   const { contact, handleContactUpdate, handleConsultRequest } = useLogin();
 
   return (
@@ -176,21 +197,23 @@ export default function Landing() {
         <title>돌봄</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Header nowSection={nowSection} setNowSection={setNowSection} sectionRefs={sectionRefs} />
+      <Header />
       <S.Layout>
         <S.Jumbotron>
           <S.BackgroundImage url={jumbotronInfo[jumbotronIndex].image} />
           <S.InnerContentContainer>
-            <S.InnerContent isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-              <S.JumboTitle
-                isLeft={jumbotronInfo[jumbotronIndex].isLeft}
-                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
-              ></S.JumboTitle>
-              <Link href={careCenter.isLoggedIn ? '/search' : '/demo'}>
-                <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-                  {careCenter.isLoggedIn ? '돌봄' : '데모'} 바로가기 <RightArrowIconWhite />
+            <S.InnerContent>
+              <S.JumboQuestion
+                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].question }}
+              ></S.JumboQuestion>
+              <S.JumboAnswer
+                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].answer }}
+              ></S.JumboAnswer>
+              <S.ContactButtonContainer>
+                <S.ContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                  신청 바로가기 <RightArrowIconWhite />
                 </S.ContactButton>
-              </Link>
+              </S.ContactButtonContainer>
             </S.InnerContent>
           </S.InnerContentContainer>
           <S.ButtonContainer>
@@ -217,66 +240,109 @@ export default function Landing() {
             })}
           </S.IndicatorContainer>
         </S.Jumbotron>
-        <S.Section ref={sectionRefs[0]}>
-          <S.MenuList>
-            <S.MenuItem
-              isSelected={featureIndex === 0}
-              onClick={(e) => {
-                setFeatureIndex(0);
-              }}
-            >
-              조건 검색
-            </S.MenuItem>
-            <S.MenuItem
-              isSelected={featureIndex === 1}
-              onClick={(e) => {
-                setFeatureIndex(1);
-              }}
-            >
-              요양보호사 풀
-            </S.MenuItem>
-            <S.MenuItem
-              isSelected={featureIndex === 2}
-              onClick={(e) => {
-                setFeatureIndex(2);
-              }}
-            >
-              칭찬 후기
-            </S.MenuItem>
-          </S.MenuList>
-          <S.FeatureContainer>
-            <S.MoniterContainer isNowSection={nowSection === 0}>
-              <S.MoniterInnerImage src={featureInfo[featureIndex].image} />
-              <S.MonitorMokup />
-            </S.MoniterContainer>
-            <S.FeatureTextContainer isNowSection={nowSection === 0}>
-              <S.SectionTitle
-                dangerouslySetInnerHTML={{ __html: featureInfo[featureIndex].title }}
-              />
-              <S.SectionSubtitle
-                dangerouslySetInnerHTML={{ __html: featureInfo[featureIndex].subtitle }}
-              />
-            </S.FeatureTextContainer>
-          </S.FeatureContainer>
-        </S.Section>
-        <S.Section style={{ background: 'white' }} ref={sectionRefs[1]}>
-          <S.ExpansionTitle isNowSection={nowSection === 1}>돌봄 서비스 확장성</S.ExpansionTitle>
-          <S.ExpansionSubtitle isNowSection={nowSection === 1}>
-            돌봄만의 획기적인 서비스를 기대해주세요.
-          </S.ExpansionSubtitle>
-          <S.ExpansionList isNowSection={nowSection === 1}>
-            {expansionInfo.map((item, index) => {
+        <S.Section>
+          <S.SectionTitle>
+            <img src="/logo_purple.png" />의
+            <br />
+            <span>프리미엄 방문요양</span>이란?
+          </S.SectionTitle>
+          <S.ServiceSubtitle>
+            돌봄은 실무에 직접적인 요양보호사 교육을 통해 전문성 있는 <a>방문요양</a>
+            서비스를 제공합니다.
+          </S.ServiceSubtitle>
+          <S.ServiceList>
+            {serviceInfo.map((item, index) => {
               return (
-                <S.ExpansionCard key={`expansion-${index}`}>
-                  <S.ExpansionCardImage src={item.image} />
-                  <S.ExpansionCardTitle dangerouslySetInnerHTML={{ __html: item.title }} />
-                  <S.ExpansionCardSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
-                </S.ExpansionCard>
+                <S.ServiceCard key={index} data-aos="fade-up">
+                  <S.ServiceCardImage src={item.image} />
+                  <S.ServiceCardTitle dangerouslySetInnerHTML={{ __html: item.content }} />
+                </S.ServiceCard>
               );
             })}
-          </S.ExpansionList>
+          </S.ServiceList>
         </S.Section>
-        <S.Section style={{ background: '#332347' }} ref={sectionRefs[2]}>
+        <S.Section>
+          <S.SectionTitle>
+            <img src="/logo_purple.png" />의 서비스는
+            <br />
+            이렇게 만들어집니다.
+          </S.SectionTitle>
+          <S.VerificationList>
+            {verificationInfo.map((item, index) => (
+              <S.VerificationItem data-aos="fade-up" key={index}>
+                <S.VerificationIconBackground style={{ background: item.background }}>
+                  <S.VerificationIcon src={item.icon} />
+                </S.VerificationIconBackground>
+                <S.VerificationTitle>
+                  {item.title}
+                  <S.VerificationSubtitle>{item.subtitle}</S.VerificationSubtitle>
+                </S.VerificationTitle>
+              </S.VerificationItem>
+            ))}
+          </S.VerificationList>
+        </S.Section>
+        <S.Section>
+          <S.SectionTitle>
+            <img src="/logo_purple.png" />은 경험 많은
+            <br />
+            강사진과 재가센터와 함께 합니다.
+          </S.SectionTitle>
+          <S.PeopleIndicatorContainer>
+            {peopleInfo.map((item, index) => (
+              <S.PeopleIndicator
+                key={index}
+                src={item.background}
+                isSelected={peopleIndex == index}
+                onClick={() => setPeopleIndex(index)}
+              ></S.PeopleIndicator>
+            ))}
+          </S.PeopleIndicatorContainer>
+          <S.PeopleCarousel
+            src={peopleInfo[peopleIndex].background}
+            isRight={peopleInfo[peopleIndex].isRight}
+          >
+            <S.ButtonContainer>
+              <S.ButtonDiv onClick={() => setPeopleIndex((peopleIndex + 1) % peopleInfo.length)}>
+                <SlideLeftButton />
+              </S.ButtonDiv>
+              <S.ButtonDiv onClick={() => setPeopleIndex((peopleIndex + 1) % peopleInfo.length)}>
+                <SlideRightButton />
+              </S.ButtonDiv>
+            </S.ButtonContainer>
+            <S.PeopleTitle>{peopleInfo[peopleIndex].title}</S.PeopleTitle>
+            <S.PeopleName>
+              {peopleInfo[peopleIndex].name}
+              <span>{peopleInfo[peopleIndex].role}</span>
+            </S.PeopleName>
+            <S.PeopleCareer
+              dangerouslySetInnerHTML={{ __html: peopleInfo[peopleIndex].career }}
+              isRight={peopleInfo[peopleIndex].isRight}
+            />
+            <S.PeopleMent>{peopleInfo[peopleIndex].ment}</S.PeopleMent>
+          </S.PeopleCarousel>
+          <S.PeopleList>
+            {peopleInfo.map((item, index) => (
+              <S.PeopleCard
+                src={item.background}
+                isRight={item.isRight}
+                key={index}
+                data-aos="fade-right"
+              >
+                <S.PeopleTitle>{item.title}</S.PeopleTitle>
+                <S.PeopleName>
+                  {item.name}
+                  <span>{item.role}</span>
+                </S.PeopleName>
+                <S.PeopleCareer
+                  dangerouslySetInnerHTML={{ __html: item.career }}
+                  isRight={item.isRight}
+                />
+                <S.PeopleMent>{item.ment}</S.PeopleMent>
+              </S.PeopleCard>
+            ))}
+          </S.PeopleList>
+        </S.Section>
+        <S.Section style={{ background: '#332347' }}>
           <S.EndSectionBackground />
           <S.EndSection>
             <S.EndSectionTitle>
