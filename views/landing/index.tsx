@@ -5,7 +5,8 @@ import SlideLeftButton from '../../svgs/slide-left-button-svg';
 import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
 import { useSoftRefresh } from '../../common/hooks/auth';
-import { useLogin } from '../login/hooks';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -39,7 +40,7 @@ const Header = () => {
       <S.Logo>
         <S.LogoImg src={isTop ? '/logo.png' : '/logo_purple.png'} />
       </S.Logo>
-      프리미엄 방문요양 서비스, 돌봄
+      프리미엄 방문요양 서비스
     </S.Header>
   );
 };
@@ -70,30 +71,30 @@ export default function Landing() {
     {
       image:
         'https://user-images.githubusercontent.com/52532871/132996425-f3b0f574-7938-49c1-af3d-0ec84beed1fc.jpg',
-      content: `케어에 필요한 유니폼과 자체 돌봄 키트를 사용하여 준비된 케어를 제공합니다.`,
+      content: `<span>유니폼</span> 착용 및 <span>자체 돌봄 키트</span> 사용`,
     },
     {
       image: 'https://imagescdn.gettyimagesbank.com/500/201911/jv11942530.jpg',
-      content: `CS교육을 통해 어르신을 존중하는 대화법을 사용합니다.`,
+      content: `<span>어르신을 존중하는 대화법</span> 사용`,
     },
     {
       image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115624.jpg',
-      content: `어르신의 삼킴 정도와 기저 질환을 고려한 식단표를 바탕으로 식단을 제공합니다.`,
+      content: `<span>삼킴 정도와 기저 질환</span>을 고려한 식단 제공`,
     },
     {
       image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115507.jpg',
-      content: `각종 오감을 자극하는 어르신 단계별 인지 프로그램을 진행하여 치매 진행을 완화합니다.`,
+      content: `<span>단계별 인지 프로그램</span> 진행`,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/132996024-e69918fd-dd8f-4286-9eab-5bd3153dc6f0.jpg',
-      content: `혈압, 혈당, 체온, 식사량 등의 기초건강수치와 돌봄일지를 작성하여 각종 노인질환에 빠르게 대응합니다.`,
+      content: `혈압, 혈당, 체온, 식사량 등의 <span>기초건강수치와 돌봄일지</span>를 작성`,
     },
     ,
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
-      content: `치매 진행으로 인한 행동심리 증상에 대한 이해도를 가지고 어르신의 증상을 이해하고 대처합니다.`,
+      content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
     },
   ];
   const verificationInfo = [
@@ -240,7 +241,11 @@ export default function Landing() {
           </S.InnerContentContainer>
           <S.ButtonContainer>
             <S.ButtonDiv
-              onClick={() => setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length)}
+              onClick={() =>
+                setJumbotronIndex(
+                  (jumbotronIndex + jumbotronInfo.length - 1) % jumbotronInfo.length
+                )
+              }
             >
               <SlideLeftButton />
             </S.ButtonDiv>
@@ -262,6 +267,30 @@ export default function Landing() {
             })}
           </S.IndicatorContainer>
         </S.Jumbotron>
+        {/* <S.CarouselContainer>
+          <Carousel showThumbs={false}>
+            {jumbotronInfo.map((item, index) => (
+              <div key={index}>
+                <S.BackgroundImage url={item.image} />
+                <S.InnerContentContainer>
+                  <S.InnerContent>
+                    <S.JumboQuestion
+                      dangerouslySetInnerHTML={{ __html: item.question }}
+                    ></S.JumboQuestion>
+                    <S.JumboAnswer
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    ></S.JumboAnswer>
+                    <S.ContactButtonContainer>
+                      <S.ContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                        신청 바로가기 <RightArrowIconWhite />
+                      </S.ContactButton>
+                    </S.ContactButtonContainer>
+                  </S.InnerContent>
+                </S.InnerContentContainer>
+              </div>
+            ))}
+          </Carousel>
+        </S.CarouselContainer> */}
         <S.Section>
           <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의
@@ -269,7 +298,10 @@ export default function Landing() {
             <span>프리미엄 방문요양</span>이란?
           </S.SectionTitle>
           <S.ServiceSubtitle>
-            돌봄은 실무에 직접적인 요양보호사 교육을 통해 전문성 있는 <a>방문요양</a>
+            돌봄은 실무에 직접적인 요양보호사 교육을 통해 전문성 있는{' '}
+            <a href="https://blog.naver.com/dol-bom/222497492924" target="_blank">
+              방문요양
+            </a>
             서비스를 제공합니다.
           </S.ServiceSubtitle>
           <S.ServiceList>
@@ -324,7 +356,11 @@ export default function Landing() {
             isRight={peopleInfo[peopleIndex].isRight}
           >
             <S.ButtonContainer>
-              <S.ButtonDiv onClick={() => setPeopleIndex((peopleIndex + 1) % peopleInfo.length)}>
+              <S.ButtonDiv
+                onClick={() =>
+                  setPeopleIndex((peopleIndex + peopleInfo.length - 1) % peopleInfo.length)
+                }
+              >
                 <SlideLeftButton />
               </S.ButtonDiv>
               <S.ButtonDiv onClick={() => setPeopleIndex((peopleIndex + 1) % peopleInfo.length)}>

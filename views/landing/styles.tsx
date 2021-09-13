@@ -36,11 +36,22 @@ interface JumbotronProps {
 
 export const Jumbotron = styled.div<JumbotronProps>`
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 800px;
   background-color: #1e0130;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    height: 600px;
+    display: none;
+  }
+`;
+
+export const CarouselContainer = styled.div`
+  display: none;
+  position: relative;
+  width: 100vw;
+  height: 600px;
+  background-color: #1e0130;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    display: block;
   }
 `;
 
@@ -100,7 +111,6 @@ export const JumboQuestion = styled.div`
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: 22px;
-    border-bottom: none;
     ::before {
       content: '';
       margin: 0;
@@ -329,6 +339,8 @@ export const ServiceSubtitle = styled.div`
     font-weight: 300;
     border-bottom: 1px dotted ${THEME.GRAY_FONT};
     cursor: pointer;
+    text-decoration: none;
+    color: inherit;
     @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
       font-size: 18px;
     }
@@ -391,6 +403,11 @@ export const ServiceCardTitle = styled.div`
   ::before {
     content: '✔ ';
     color: ${THEME.MAIN};
+  }
+  span {
+    font-size: inherit;
+    color: inherit;
+    font-weight: 700;
   }
 
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
