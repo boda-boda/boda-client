@@ -134,18 +134,18 @@ export default function Landing() {
   const peopleInfo = [
     {
       small:
-        'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fimg.theqoo.net%2Fimg%2FRfoAB.jpg&type=sc960_832',
+        'https://user-images.githubusercontent.com/52532871/133298465-5866fdbf-8a9c-4e33-b9bd-dd105f3b2e80.jpg',
       background:
-        'https://media.istockphoto.com/photos/indian-female-professional-picture-id1045876104?k=20&m=1045876104&s=170667a&w=0&h=MaX9Hf-qU11yyUbj7c60VF1DxlfMfH33x3OL-uz0u98=',
+        'https://user-images.githubusercontent.com/52532871/133289722-9c8882d5-9022-4b15-8052-6104b7612e10.jpg',
       title: 'CS교육',
       name: '조성희',
       role: '대표님',
-      career: `1999 출생<br/>
-      2021 도쿄올림픽 배구 4강 진출`,
-      ment: '전해 주고 싶어 슬픈 시간이',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
       isRight: true,
     },
-    {
+    /*     {
       small:
         'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAxMDRfMjk5%2FMDAxNTQ2NTM0NDYzNDA2.N964Gq3q9-8pknGxXz0jlqvPXrt6WGkg7Djtrk3y6sUg.rTm-y9YBHW8F8IuaKuZfZf9Ls9JcmCtJXvEeBnhyoQUg.JPEG.wjdtjdrbs123%2FIMG_20190104_004804.jpg&type=sc960_832',
       background:
@@ -157,8 +157,8 @@ export default function Landing() {
       2021 도쿄올림픽 배구 4강 진출`,
       ment: '다 흩어진 후에야 들리지만',
       isRight: false,
-    },
-    {
+    }, */
+    /*     {
       small:
         'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5129%2F2017%2F04%2F16%2F1492322043_1231576_20170416145718050.jpg&type=sc960_832',
       background:
@@ -170,30 +170,31 @@ export default function Landing() {
       2021 도쿄올림픽 배구 4강 진출`,
       ment: '특별한 기적을 기다리지 마',
       isRight: false,
-    },
+    }, */
     {
       small:
-        'https://w.namu.la/s/82a024f1e71d4a9951ca1718b01f3c77d499178d44c926f2eac3d29cbb7215c71a4ef9804ed6f7e4857e9a8741ae8a22d828169f01bd8cfe363c343159f950d7334ceb5c56ca4abbfeb8d9978048b1a957d5d7d50a64a8793e2f1b11880d487f',
-      background: 'https://ak.picdn.net/shutterstock/videos/13086851/thumb/1.jpg',
+        'https://user-images.githubusercontent.com/52532871/133298468-24d6a1e9-522c-4aa5-9443-1dc3248bcc57.jpg',
+      background:
+        'https://user-images.githubusercontent.com/52532871/133289708-34ede9b5-9188-47e3-a3e6-56a11ffa8ed0.jpg',
       title: 'A플러스사랑드림재가센터',
       name: '조재분',
       role: '센터장님',
-      career: `1999 출생<br/>
-      2021 도쿄올림픽 배구 4강 진출`,
-      ment: '너를 향한 내 눈빛을',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
       isRight: false,
     },
     {
       small:
-        'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F117%2F2019%2F09%2F27%2F201909271417438682_1_20190927141933449.jpg&type=sc960_832',
+        'https://user-images.githubusercontent.com/52532871/133298392-a4708c35-aec3-4a06-99a5-938025543604.jpg',
       background:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAHMDUWQsX2tKxTqShxIJyEAyTSowqqiI0R4C1WdGGMUdq9d6zy4Uu_kAFXpCG2G6mebo&usqp=CAU',
+        'https://user-images.githubusercontent.com/52532871/133289719-3195e5ec-4bae-4559-9758-43348c014b7c.jpg',
       title: '정다운재가복지센터',
       name: '정은희',
       role: '사회복지사님',
-      career: `1997 출생<br/>
-      2021 도쿄올림픽 배구 4강 진출`,
-      ment: '눈을 감고 느껴 봐 움직이는 마음',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
       isRight: true,
     },
   ];
@@ -202,21 +203,12 @@ export default function Landing() {
   const imageChange = () => {
     setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length);
   };
-  const peopleChange = () => {
-    setPeopleIndex((peopleIndex + 1) % peopleInfo.length);
-  };
   useEffect(() => {
     const change = setInterval(imageChange, 20000);
     return () => {
       clearInterval(change);
     };
   }, [jumbotronIndex]);
-  useEffect(() => {
-    const change = setInterval(peopleChange, 10000);
-    return () => {
-      clearInterval(change);
-    };
-  }, [peopleIndex]);
   useEffect(() => AOS.init(), []);
   /* const { contact, handleContactUpdate, handleConsultRequest } = useLogin(); */
 
@@ -357,33 +349,38 @@ export default function Landing() {
               ></S.PeopleIndicator>
             ))}
           </S.PeopleIndicatorContainer>
-          <S.PeopleCarousel
-            src={peopleInfo[peopleIndex].background}
-            isRight={peopleInfo[peopleIndex].isRight}
-          >
-            <S.ButtonContainer>
-              <S.ButtonDiv
-                onClick={() =>
-                  setPeopleIndex((peopleIndex + peopleInfo.length - 1) % peopleInfo.length)
-                }
-              >
-                <SlideLeftButton />
-              </S.ButtonDiv>
-              <S.ButtonDiv onClick={() => setPeopleIndex((peopleIndex + 1) % peopleInfo.length)}>
-                <SlideRightButton />
-              </S.ButtonDiv>
-            </S.ButtonContainer>
-            <S.PeopleTitle>{peopleInfo[peopleIndex].title}</S.PeopleTitle>
-            <S.PeopleName>
-              {peopleInfo[peopleIndex].name}
-              <span>{peopleInfo[peopleIndex].role}</span>
-            </S.PeopleName>
-            <S.PeopleCareer
-              dangerouslySetInnerHTML={{ __html: peopleInfo[peopleIndex].career }}
-              isRight={peopleInfo[peopleIndex].isRight}
-            />
-            <S.PeopleMent>{peopleInfo[peopleIndex].ment}</S.PeopleMent>
-          </S.PeopleCarousel>
+          <S.CarouselContainer style={{ height: '300px', marginTop: '20px' }}>
+            <Carousel
+              showThumbs={false}
+              showArrows={false}
+              showStatus={false}
+              infiniteLoop={true}
+              showIndicators={false}
+              onChange={(i) => {
+                setPeopleIndex(i);
+              }}
+            >
+              {peopleInfo.map((item, index) => (
+                <S.PeopleCard
+                  src={item.background}
+                  isRight={item.isRight}
+                  key={index}
+                  data-aos="fade-right"
+                >
+                  <S.PeopleTitle>{item.title}</S.PeopleTitle>
+                  <S.PeopleName>
+                    {item.name}
+                    <span>{item.role}</span>
+                  </S.PeopleName>
+                  <S.PeopleCareer
+                    dangerouslySetInnerHTML={{ __html: item.career }}
+                    isRight={item.isRight}
+                  />
+                  <S.PeopleMent>{item.ment}</S.PeopleMent>
+                </S.PeopleCard>
+              ))}
+            </Carousel>
+          </S.CarouselContainer>
           <S.PeopleList>
             {peopleInfo.map((item, index) => (
               <S.PeopleCard
@@ -407,10 +404,24 @@ export default function Landing() {
           </S.PeopleList>
         </S.Section>
         <S.Section>
-          <img src="https://user-images.githubusercontent.com/52532871/132998378-5bec9ef4-cb98-4068-bcbc-440471f53f6a.png" />
-          <S.EventContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
-            신청 바로가기 <RightArrowIconWhite />
-          </S.EventContactButton>
+          <S.EventSection>
+            <S.EventImage>
+              <S.EventContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                신청 바로가기 <RightArrowIconWhite />
+              </S.EventContactButton>
+            </S.EventImage>
+          </S.EventSection>
+        </S.Section>
+        <S.Section>
+          <S.SectionTitle>협력 기관</S.SectionTitle>
+          <S.LogoList>
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295373-bb85905a-1511-43be-89c5-152cc4ed1bf3.png" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297324-9d00549e-8007-4ead-a1d5-a61ed54972d8.gif" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295376-0a343e10-d579-42b4-8c19-b07c7f69cc38.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295378-0eea03e3-8e44-45bf-919c-3e2d837b348a.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295379-dd4b9062-ed47-45b9-9a0e-c13039b5b596.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297326-eca3de23-91fd-42a9-8d54-803761ab0864.png" />
+          </S.LogoList>
         </S.Section>
         <S.FooterBar />
         <S.Footer>
@@ -420,7 +431,7 @@ export default function Landing() {
               <br />
               (평일 9시 ~ 18시)
             </S.FooterTitle>
-            이메일(비즈니스&제휴): info@dol-bom.com
+            이메일(비즈니스{'&'}제휴): info@dol-bom.com
             <br />
             <br />
           </S.FooterText>

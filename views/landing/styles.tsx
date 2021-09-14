@@ -42,6 +42,7 @@ interface JumbotronProps {
 export const Jumbotron = styled.div<JumbotronProps>`
   position: relative;
   width: 100vw;
+  max-width: 100%;
   height: 800px;
   background-color: #1e0130;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
@@ -574,6 +575,9 @@ export const PeopleCard = styled.div<PeopleCardProps>`
   background-size: cover;
   ${(props) => (props.isRight ? FLEX_COLUMN_CENTER_END : FLEX_COLUMN_CENTER_START)};
   padding: 50px;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 50px 30px;
+  }
 `;
 
 export const PeopleTitle = styled.div`
@@ -608,6 +612,10 @@ export const PeopleCareer = styled.div<PeopleCardProps>`
         `};
   padding: 0 10px;
   margin: 0 5px;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    max-width: 200px;
+    word-break: keep-all;
+  }
 `;
 
 export const PeopleMent = styled.div`
@@ -620,6 +628,10 @@ export const PeopleMent = styled.div`
   }
   ::after {
     content: '”';
+  }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 45%;
+    word-break: keep-all;
   }
 `;
 
@@ -692,6 +704,25 @@ export const CunsultButton = styled.button`
   cursor: pointer;
 `;
 
+export const LogoList = styled.div`
+  ${FLEX_ROW_CENTER_CENTER};
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin-top: 40px;
+`;
+
+export const LogoItem = styled.div<ImageProps>`
+  width: 300px;
+  height: 100px;
+  background-image: url(${(props) => props.src});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    width: 150px;
+  }
+`;
+
 export const Footer = styled.div`
   width: 100%;
   ${FLEX_ROW_CENTER_START};
@@ -702,6 +733,7 @@ export const Footer = styled.div`
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     ${FLEX_COLUMN_START_START};
     padding: 40px 30px;
+    gap: 0;
   }
 `;
 
@@ -721,6 +753,12 @@ export const FooterBar = styled.div`
   width: 100%;
   height: 1px;
   border-bottom: 1px solid ${THEME.GRAY_LINE};
+`;
+
+export const EventSection = styled.div`
+  width: 100%;
+  ${FLEX_ROW_CENTER_CENTER};
+  background: ${THEME.BACKGROUND};
 `;
 
 export const EventContactButton = styled.a`
@@ -743,4 +781,24 @@ export const EventContactButton = styled.a`
   :hover {
     transform: translateY(-3px);
   }
+  position: relative;
+  top: 140px;
+`;
+
+export const EventImage = styled.div`
+  width: 800px;
+  height: 500px;
+
+  background-image: url('https://user-images.githubusercontent.com/52532871/133306145-9921f8da-f8e3-4f31-8ad6-3296bd365ee8.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 500px;
+  ${FLEX_ROW_CENTER_CENTER};
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    background-image: url('https://user-images.githubusercontent.com/52532871/133306765-a5c0c61a-277f-48ca-9a80-d51c56d32b24.png');
+  }
+`;
+
+export const ContactText = styled.div`
+  padding: 0 30px;
 `;
