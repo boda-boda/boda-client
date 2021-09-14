@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
+    "@types/aos": "^3.0.4",
+    "aos": "^2.3.4",
     "axios": "^0.21.1",
     "date-fns": "^2.21.3",
     "jsonwebtoken": "^8.5.1",
@@ -15,6 +17,7 @@
     "react": "^17.0.2",
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.2",
+    "react-responsive-carousel": "^3.2.21",
     "styled-components": "5.2.1",
     "swr": "^0.5.6"
   },

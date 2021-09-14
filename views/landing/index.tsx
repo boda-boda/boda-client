@@ -1,38 +1,22 @@
 import * as S from './styles';
 import Head from 'next/head';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SlideLeftButton from '../../svgs/slide-left-button-svg';
 import SlideRightButton from '../../svgs/slide-right-button-svg';
 import { RightArrowIconWhite } from '../../svgs/right-arrow-icon-svg';
-import Link from 'next/link';
-import { useCareCenter } from '../../context/care-center';
 import { useSoftRefresh } from '../../common/hooks/auth';
-import { useLogin } from '../login/hooks';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
-const Header = ({ nowSection, setNowSection, sectionRefs }) => {
+const Header = () => {
   const [isTop, setIstop] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [offset, setOffset] = useState(500);
 
   function logit() {
     setIstop(window.pageYOffset === 0 || isMobile);
-    switch (true) {
-      case sectionRefs[2].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(2);
-        break;
-      case sectionRefs[1].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(1);
-        break;
-      case sectionRefs[0].current.offsetTop - offset < window.pageYOffset:
-        setNowSection(0);
-        break;
-      default:
-        setNowSection(-1);
-    }
   }
-  const goSection = (index: number) => {
-    window.scrollTo({ top: sectionRefs[index].current.offsetTop - 150, behavior: 'smooth' });
-  };
   useEffect(() => {
     function watchScroll() {
       window.addEventListener('scroll', logit);
@@ -43,132 +27,190 @@ const Header = ({ nowSection, setNowSection, sectionRefs }) => {
     };
   });
   useEffect(() => {
-    setIsMobile(window.screen.width < 750);
-    if (window.screen.width < 750) setOffset(200);
-  }, []);
+    function handleResize() {
+      if (window.innerWidth <= 750 && !isMobile) setIsMobile(true);
+      else if (window.innerWidth > 750 && isMobile) setIsMobile(false);
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile]);
   return (
     <S.Header isTop={isTop}>
       <S.Logo>
         <S.LogoImg src={isTop ? '/logo.png' : '/logo_purple.png'} />
       </S.Logo>
-      {!isMobile && (
-        <S.Navibar>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 0}
-            onClick={(e) => {
-              goSection(0);
-            }}
-          >
-            서비스 소개
-          </S.NaviItem>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 1}
-            onClick={(e) => {
-              goSection(1);
-            }}
-          >
-            서비스 확장성
-          </S.NaviItem>
-          <S.NaviItem
-            isTop={isTop}
-            isSelected={nowSection === 2}
-            onClick={(e) => {
-              goSection(2);
-            }}
-          >
-            상담 신청
-          </S.NaviItem>
-        </S.Navibar>
-      )}
+      프리미엄 방문요양 서비스
     </S.Header>
   );
 };
 
 export default function Landing() {
   useSoftRefresh();
-  const careCenter = useCareCenter();
-
+  const jumbotronLogo = `<img src='/logo.png' />`;
   const jumbotronInfo = [
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498372-4eab5500-9547-11eb-8c46-555aee277adb.jpg',
-      text: `요양보호사가 필요할 때<br />
-      여기저기 전화는 NO
-      <br />
-      여기 10번의 클릭이면 OK`,
-      isLeft: false,
+      question: `어머님께서 치매가 심해지시나요?`,
+      answer: `치매는 진행 단계별 관리가 꼭 필요합니다. 저희 ${jumbotronLogo}은 단계별 인지 프로그램을 제공하여 어르신의 치매 진행을 늦춥니다.`,
+    },
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133236347-11f1805a-10b8-4275-a75c-b598b6e8ddc2.jpg',
+      question: `어머님께서 식사를 힘들어하시나요?`,
+      answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498373-50751880-9547-11eb-8a79-909a9a6e34f3.jpg',
-      text: `매칭에 꼭 필요한 조건 검색으로<br />
-      수급자 어르신과 딱 맞는<br />
-      요양보호사를 찾을 수 있을 거에요.`,
-      isLeft: true,
+      question: `혼자 계시는 어머님이 걱정되시나요?`,
+      answer: `저희 ${jumbotronLogo}은 매일 돌봄일지를 작성하고 기초건강수치를 기록하며 각종 노인질환을 예방합니다.`,
     },
   ];
-  const featureInfo = [
+  const serviceInfo = [
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/113480969-03a32a80-94d2-11eb-8d1b-b7bd5590cb36.png',
-      title: `매칭에 꼭 필요한<br />
-      <span>조건 검색</span>`,
-      subtitle: `이름, 지역, 시간, 가능 조건, 종교 등 조건을 검색할 수 있어요.`,
-    },
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113481748-51ba2d00-94d6-11eb-9a63-7d03b93d2e1a.png',
-      title: `필요할 때 바로 바로<br />
-      <span>요양보호사 찾기</span>`,
-      subtitle: `더 이상 요양보호사 연락 기다리지 마세요.<br/>
-      원할때 바로바로 검색해서 찾아보세요.`,
-    },
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113480969-03a32a80-94d2-11eb-8d1b-b7bd5590cb36.png',
-      title: `다른 센터에서 작성한
-      <br />
-      <span>칭찬글 보기</span>`,
-      subtitle: `다른 센터가 경험한 요양보호사의 생생한 칭찬 후기를 확인해보세요. `,
-    },
-  ];
-  const expansionInfo = [
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113498634-9501b380-9549-11eb-9b55-2a58646a51bf.jpg',
-      title: `나의 센터 요양보호사<br/>관리하기`,
-      subtitle: `일을 하다가 그만 두신 분, 연락만 했던 요양보호사 정보를 한 곳에 모아 관리할 수 있어요.
-      소중한 정보를 안전하고 효율적으로 관리하세요.`,
-    },
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/113498866-cbd8c900-954b-11eb-8a54-1c5efad68c9f.jpg',
-      title: `요양보호사<br/>탐색하기`,
-      subtitle: `요양보호사가 필요할 때 바로 검색하고 찾아보세요! 매칭에 필요한 정보와 칭찬후기로 원하는 요양보호사를 찾을 수 있을 겁니다.`,
+        'https://user-images.githubusercontent.com/52532871/132996425-f3b0f574-7938-49c1-af3d-0ec84beed1fc.jpg',
+      content: `<span>유니폼</span> 착용 및 <span>자체 돌봄 키트</span> 사용`,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
-      title: `쉿!<br/>아직 준비중입니다.`,
-      subtitle: `돌봄만의 획기적인 서비스를 기대주세요.`,
+      content: `<span>어르신을 존중하는 대화법</span> 사용`,
+    },
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133238988-7ab4f380-934e-40e6-8932-65b9ae8dac59.jpg',
+      content: `<span>삼킴 정도와 기저 질환</span>을 고려한 식단 제공`,
+    },
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133238697-32b1f028-e6f4-491c-b1cd-47a8478d7abd.jpg',
+      content: `<span>단계별 인지 프로그램</span> 진행`,
+    },
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133239418-3c3c1d61-3229-47fc-9fcb-23320733906b.jpg',
+      content: `혈압, 혈당, 체온, 식사량 등의 <span>기초건강수치와 돌봄일지</span>를 작성`,
+    },
+    ,
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133238693-64450d2a-3958-4ee1-833e-8d33baac5f2b.jpg',
+      content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
     },
   ];
-  const sectionRefs = Array(3)
-    .fill(0)
-    .map((i) => useRef<HTMLDivElement>(null));
-  const [nowSection, setNowSection] = useState(-1);
+  const verificationInfo = [
+    {
+      background: '#ffe77a',
+      icon: 'https://cdn-icons-png.flaticon.com/512/3523/3523429.png',
+      title: '국가공인자격증',
+      subtitle:
+        '240시간의 교육과정을 이수하여 <span>국가공인자격증</span>을 취득한 검증된 요양보호사와 함께합니다.',
+    },
+    {
+      background: '#e1efff',
+      icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135682.png',
+      title: '검증된 요양보호사',
+      subtitle:
+        '기존 방문요양보다 <span>전문적인 케어</span>에 동의한 <span>책임감있는 요양보호사</span>와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 선발합니다.',
+    },
+    {
+      background: '#e1e4eb',
+      icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058578.png',
+      title: '전문성 강화 교육',
+      subtitle:
+        '선발된 요양보호사는 근무 전 <span>돌봄 전문성 강화 교육을 수강</span>합니다. 기본적인 <span>CS 마인드, 전문 케어 교육, 행동심리 및 의료교육</span>을 각 분야의 전문가가 진행합니다.',
+    },
+    {
+      background: '#e6f5d4',
+      icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058599.png',
+      title: '정기 보완 교육',
+      subtitle:
+        '한 달에 한 번 정기적으로 <span>사례회의와 추가교육 등 보완교육</span>을 통해 서비스 품질을 향상시킵니다. 어르신(보호자)의 피드백이 있을 경우에는 이를 바탕으로 <span>즉각적인 보완교육</span>이 이루어집니다.',
+    },
+  ];
+  const peopleInfo = [
+    {
+      small:
+        'https://user-images.githubusercontent.com/52532871/133298465-5866fdbf-8a9c-4e33-b9bd-dd105f3b2e80.jpg',
+      background:
+        'https://user-images.githubusercontent.com/52532871/133289722-9c8882d5-9022-4b15-8052-6104b7612e10.jpg',
+      title: 'CS교육',
+      name: '조성희',
+      role: '대표님',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
+      isRight: true,
+    },
+    /*     {
+      small:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAxMDRfMjk5%2FMDAxNTQ2NTM0NDYzNDA2.N964Gq3q9-8pknGxXz0jlqvPXrt6WGkg7Djtrk3y6sUg.rTm-y9YBHW8F8IuaKuZfZf9Ls9JcmCtJXvEeBnhyoQUg.JPEG.wjdtjdrbs123%2FIMG_20190104_004804.jpg&type=sc960_832',
+      background:
+        'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+      title: '어르신 케어 교육',
+      name: '문명란',
+      role: '선생님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '다 흩어진 후에야 들리지만',
+      isRight: false,
+    }, */
+    /*     {
+      small:
+        'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5129%2F2017%2F04%2F16%2F1492322043_1231576_20170416145718050.jpg&type=sc960_832',
+      background:
+        'https://thumbs.dreamstime.com/b/confident-professional-young-woman-blue-blouse-pointing-finger-upper-left-corner-looking-camera-persuade-customer-make-174846578.jpg',
+      title: '행동심리 의료 교육',
+      name: '손유리',
+      role: '의사님',
+      career: `1999 출생<br/>
+      2021 도쿄올림픽 배구 4강 진출`,
+      ment: '특별한 기적을 기다리지 마',
+      isRight: false,
+    }, */
+    {
+      small:
+        'https://user-images.githubusercontent.com/52532871/133298468-24d6a1e9-522c-4aa5-9443-1dc3248bcc57.jpg',
+      background:
+        'https://user-images.githubusercontent.com/52532871/133289708-34ede9b5-9188-47e3-a3e6-56a11ffa8ed0.jpg',
+      title: 'A플러스사랑드림재가센터',
+      name: '조재분',
+      role: '센터장님',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
+      isRight: false,
+    },
+    {
+      small:
+        'https://user-images.githubusercontent.com/52532871/133298392-a4708c35-aec3-4a06-99a5-938025543604.jpg',
+      background:
+        'https://user-images.githubusercontent.com/52532871/133289719-3195e5ec-4bae-4559-9758-43348c014b7c.jpg',
+      title: '정다운재가복지센터',
+      name: '정은희',
+      role: '사회복지사님',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
+      isRight: true,
+    },
+  ];
   const [jumbotronIndex, setJumbotronIndex] = useState(0);
-  const [featureIndex, setFeatureIndex] = useState(0);
+  const [peopleIndex, setPeopleIndex] = useState(0);
   const imageChange = () => {
     setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length);
   };
   useEffect(() => {
     const change = setInterval(imageChange, 20000);
-    return () => clearInterval(change);
+    return () => {
+      clearInterval(change);
+    };
   }, [jumbotronIndex]);
-  const { contact, handleContactUpdate, handleConsultRequest } = useLogin();
+  useEffect(() => AOS.init(), []);
+  /* const { contact, handleContactUpdate, handleConsultRequest } = useLogin(); */
 
   return (
     <>
@@ -176,26 +218,32 @@ export default function Landing() {
         <title>돌봄</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Header nowSection={nowSection} setNowSection={setNowSection} sectionRefs={sectionRefs} />
+      <Header />
       <S.Layout>
         <S.Jumbotron>
           <S.BackgroundImage url={jumbotronInfo[jumbotronIndex].image} />
           <S.InnerContentContainer>
-            <S.InnerContent isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-              <S.JumboTitle
-                isLeft={jumbotronInfo[jumbotronIndex].isLeft}
-                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].text }}
-              ></S.JumboTitle>
-              <Link href={careCenter.isLoggedIn ? '/search' : '/demo'}>
-                <S.ContactButton isLeft={jumbotronInfo[jumbotronIndex].isLeft}>
-                  {careCenter.isLoggedIn ? '돌봄' : '데모'} 바로가기 <RightArrowIconWhite />
+            <S.InnerContent>
+              <S.JumboQuestion
+                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].question }}
+              ></S.JumboQuestion>
+              <S.JumboAnswer
+                dangerouslySetInnerHTML={{ __html: jumbotronInfo[jumbotronIndex].answer }}
+              ></S.JumboAnswer>
+              <S.ContactButtonContainer>
+                <S.ContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                  신청 바로가기 <RightArrowIconWhite />
                 </S.ContactButton>
-              </Link>
+              </S.ContactButtonContainer>
             </S.InnerContent>
           </S.InnerContentContainer>
           <S.ButtonContainer>
             <S.ButtonDiv
-              onClick={() => setJumbotronIndex((jumbotronIndex + 1) % jumbotronInfo.length)}
+              onClick={() =>
+                setJumbotronIndex(
+                  (jumbotronIndex + jumbotronInfo.length - 1) % jumbotronInfo.length
+                )
+              }
             >
               <SlideLeftButton />
             </S.ButtonDiv>
@@ -217,98 +265,195 @@ export default function Landing() {
             })}
           </S.IndicatorContainer>
         </S.Jumbotron>
-        <S.Section ref={sectionRefs[0]}>
-          <S.MenuList>
-            <S.MenuItem
-              isSelected={featureIndex === 0}
-              onClick={(e) => {
-                setFeatureIndex(0);
-              }}
-            >
-              조건 검색
-            </S.MenuItem>
-            <S.MenuItem
-              isSelected={featureIndex === 1}
-              onClick={(e) => {
-                setFeatureIndex(1);
-              }}
-            >
-              요양보호사 풀
-            </S.MenuItem>
-            <S.MenuItem
-              isSelected={featureIndex === 2}
-              onClick={(e) => {
-                setFeatureIndex(2);
-              }}
-            >
-              칭찬 후기
-            </S.MenuItem>
-          </S.MenuList>
-          <S.FeatureContainer>
-            <S.MoniterContainer isNowSection={nowSection === 0}>
-              <S.MoniterInnerImage src={featureInfo[featureIndex].image} />
-              <S.MonitorMokup />
-            </S.MoniterContainer>
-            <S.FeatureTextContainer isNowSection={nowSection === 0}>
-              <S.SectionTitle
-                dangerouslySetInnerHTML={{ __html: featureInfo[featureIndex].title }}
-              />
-              <S.SectionSubtitle
-                dangerouslySetInnerHTML={{ __html: featureInfo[featureIndex].subtitle }}
-              />
-            </S.FeatureTextContainer>
-          </S.FeatureContainer>
-        </S.Section>
-        <S.Section style={{ background: 'white' }} ref={sectionRefs[1]}>
-          <S.ExpansionTitle isNowSection={nowSection === 1}>돌봄 서비스 확장성</S.ExpansionTitle>
-          <S.ExpansionSubtitle isNowSection={nowSection === 1}>
-            돌봄만의 획기적인 서비스를 기대해주세요.
-          </S.ExpansionSubtitle>
-          <S.ExpansionList isNowSection={nowSection === 1}>
-            {expansionInfo.map((item, index) => {
+        <S.CarouselContainer>
+          <Carousel showThumbs={false} showArrows={false} showStatus={false} infiniteLoop={true}>
+            {jumbotronInfo.map((item, index) => (
+              <div key={index} style={{ width: '100%', height: '600px' }}>
+                <S.BackgroundImage url={item.image} />
+                <S.InnerContentContainer>
+                  <S.InnerContent>
+                    <S.JumboQuestion
+                      dangerouslySetInnerHTML={{ __html: item.question }}
+                    ></S.JumboQuestion>
+                    <S.JumboAnswer
+                      dangerouslySetInnerHTML={{ __html: item.answer }}
+                    ></S.JumboAnswer>
+                    <S.ContactButtonContainer>
+                      <S.ContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                        신청 바로가기 <RightArrowIconWhite />
+                      </S.ContactButton>
+                    </S.ContactButtonContainer>
+                  </S.InnerContent>
+                </S.InnerContentContainer>
+              </div>
+            ))}
+          </Carousel>
+        </S.CarouselContainer>
+        <S.Section>
+          <S.SectionTitle data-aos="fade">
+            <img src="/logo_purple.png" />의
+            <br />
+            <span>프리미엄 방문요양</span>이란?
+          </S.SectionTitle>
+          <S.ServiceSubtitle>
+            돌봄은 실무에 직접적인 요양보호사 교육을 통해 전문성 있는{' '}
+            <a href="https://blog.naver.com/dol-bom/222497492924" target="_blank">
+              방문요양
+            </a>
+            서비스를 제공합니다.
+          </S.ServiceSubtitle>
+          <S.ServiceList>
+            {serviceInfo.map((item, index) => {
               return (
-                <S.ExpansionCard key={`expansion-${index}`}>
-                  <S.ExpansionCardImage src={item.image} />
-                  <S.ExpansionCardTitle dangerouslySetInnerHTML={{ __html: item.title }} />
-                  <S.ExpansionCardSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
-                </S.ExpansionCard>
+                <S.ServiceCard key={index} data-aos="fade-up">
+                  <S.ServiceCardImage src={item.image} />
+                  <S.ServiceCardTitle dangerouslySetInnerHTML={{ __html: item.content }} />
+                </S.ServiceCard>
               );
             })}
-          </S.ExpansionList>
+          </S.ServiceList>
         </S.Section>
-        <S.Section style={{ background: '#332347' }} ref={sectionRefs[2]}>
-          <S.EndSectionBackground />
-          <S.EndSection>
-            <S.EndSectionTitle>
-              간편하게 원하는 요양보호사를 탐색해보세요!
-              <br />
-              재가센터의 요양보호사 관리 및 매칭서비스, 돌봄
-            </S.EndSectionTitle>
-            <S.EndSectionSubtitle>
-              돌봄이 처음이신가요?
-              <br />
-              아래에 연락처를 남겨 주시면 상담 연락 드리겠습니다.
-            </S.EndSectionSubtitle>
-            <S.StringInput
-              value={contact}
-              onChange={handleContactUpdate}
-              type="string"
-              placeholder="연락처 입력"
-            />
-            <S.CunsultButton onClick={handleConsultRequest}>상담 신청하기</S.CunsultButton>
-            <S.Footer>
-              <S.FooterBar />
-              <S.FooterText>
-                <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
-                <br />
-                사업자번호 : 825-88-02119
-                <br />
-                <br />
-                Copyright ⓒ dolbom. All rights reserved.
-              </S.FooterText>
-            </S.Footer>
-          </S.EndSection>
+        <S.Section style={{ background: '#f8f8f8' }}>
+          <S.SectionTitle data-aos="fade">
+            <img src="/logo_purple.png" />의 서비스는
+            <br />
+            이렇게 만들어집니다.
+          </S.SectionTitle>
+          <S.VerificationList>
+            {verificationInfo.map((item, index) => (
+              <S.VerificationItem data-aos="fade-up" key={index}>
+                <S.VerificationTitle>
+                  <S.VerificationIconBackground style={{ background: item.background }}>
+                    <S.VerificationIcon src={item.icon} />
+                  </S.VerificationIconBackground>
+                  {item.title}
+                </S.VerificationTitle>
+                <S.VerificationSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
+              </S.VerificationItem>
+            ))}
+          </S.VerificationList>
         </S.Section>
+        <S.Section>
+          <S.SectionTitle data-aos="fade" isSmall>
+            <img src="/logo_purple.png" />은 경험 많은
+            <br />
+            강사진과 재가센터와 함께 합니다.
+          </S.SectionTitle>
+          <S.PeopleIndicatorContainer data-aos="fade">
+            {peopleInfo.map((item, index) => (
+              <S.PeopleIndicator
+                key={index}
+                src={item.small}
+                isSelected={peopleIndex == index}
+                onClick={() => setPeopleIndex(index)}
+              ></S.PeopleIndicator>
+            ))}
+          </S.PeopleIndicatorContainer>
+          <S.CarouselContainer style={{ height: '300px', marginTop: '20px' }}>
+            <Carousel
+              showThumbs={false}
+              showArrows={false}
+              showStatus={false}
+              infiniteLoop={true}
+              showIndicators={false}
+              onChange={(i) => {
+                setPeopleIndex(i);
+              }}
+            >
+              {peopleInfo.map((item, index) => (
+                <S.PeopleCard
+                  src={item.background}
+                  isRight={item.isRight}
+                  key={index}
+                  data-aos="fade-right"
+                >
+                  <S.PeopleTitle>{item.title}</S.PeopleTitle>
+                  <S.PeopleName>
+                    {item.name}
+                    <span>{item.role}</span>
+                  </S.PeopleName>
+                  <S.PeopleCareer
+                    dangerouslySetInnerHTML={{ __html: item.career }}
+                    isRight={item.isRight}
+                  />
+                  <S.PeopleMent>{item.ment}</S.PeopleMent>
+                </S.PeopleCard>
+              ))}
+            </Carousel>
+          </S.CarouselContainer>
+          <S.PeopleList>
+            {peopleInfo.map((item, index) => (
+              <S.PeopleCard
+                src={item.background}
+                isRight={item.isRight}
+                key={index}
+                data-aos="fade-right"
+              >
+                <S.PeopleTitle>{item.title}</S.PeopleTitle>
+                <S.PeopleName>
+                  {item.name}
+                  <span>{item.role}</span>
+                </S.PeopleName>
+                <S.PeopleCareer
+                  dangerouslySetInnerHTML={{ __html: item.career }}
+                  isRight={item.isRight}
+                />
+                <S.PeopleMent>{item.ment}</S.PeopleMent>
+              </S.PeopleCard>
+            ))}
+          </S.PeopleList>
+        </S.Section>
+        <S.Section>
+          <S.EventSection>
+            <S.EventImage>
+              <S.EventContactButton href="https://forms.gle/JB2wvsidpGgCzLjg8" target="_blank">
+                신청 바로가기 <RightArrowIconWhite />
+              </S.EventContactButton>
+            </S.EventImage>
+          </S.EventSection>
+        </S.Section>
+        <S.Section>
+          <S.SectionTitle>협력 기관</S.SectionTitle>
+          <S.LogoList>
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295373-bb85905a-1511-43be-89c5-152cc4ed1bf3.png" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297324-9d00549e-8007-4ead-a1d5-a61ed54972d8.gif" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295376-0a343e10-d579-42b4-8c19-b07c7f69cc38.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295378-0eea03e3-8e44-45bf-919c-3e2d837b348a.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295379-dd4b9062-ed47-45b9-9a0e-c13039b5b596.jpg" />
+            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297326-eca3de23-91fd-42a9-8d54-803761ab0864.png" />
+          </S.LogoList>
+        </S.Section>
+        <S.FooterBar />
+        <S.Footer>
+          <S.FooterText>
+            <S.FooterTitle>
+              고객센터: 010-5618-9508
+              <br />
+              (평일 9시 ~ 18시)
+            </S.FooterTitle>
+            이메일(비즈니스{'&'}제휴): info@dol-bom.com
+            <br />
+            <br />
+          </S.FooterText>
+          <S.FooterText>
+            <S.FooterTitle>웁시데이지(주)</S.FooterTitle>
+            사업자번호 : 825-88-02119 | 대표 김예지
+            <br />
+            서울특별시 노원구 동일173길 27 서울창업디딤터
+            <br />
+            <br />
+            Copyright ⓒ dolbom. All rights reserved.
+            <br />
+            Icon{' '}
+            <a href="https://www.freepik.com" title="Freepik" style={{ color: '#4e515c' }}>
+              Freepik
+            </a>{' '}
+            from{' '}
+            <a href="https://www.flaticon.com/kr/" title="Flaticon" style={{ color: '#4e515c' }}>
+              www.flaticon.com
+            </a>
+          </S.FooterText>
+        </S.Footer>
       </S.Layout>
     </>
   );
