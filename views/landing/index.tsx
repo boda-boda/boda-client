@@ -359,6 +359,7 @@ export default function Landing() {
               onChange={(i) => {
                 setPeopleIndex(i);
               }}
+              selectedItem={peopleIndex}
             >
               {peopleInfo.map((item, index) => (
                 <S.PeopleCard
