@@ -56,7 +56,8 @@ export default function Landing() {
       answer: `치매는 진행 단계별 관리가 꼭 필요합니다. 저희 ${jumbotronLogo}은 단계별 인지 프로그램을 제공하여 어르신의 치매 진행을 늦춥니다.`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115624.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/133236347-11f1805a-10b8-4275-a75c-b598b6e8ddc2.jpg',
       question: `어머님께서 식사를 힘들어하시나요?`,
       answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
     },
@@ -74,26 +75,29 @@ export default function Landing() {
       content: `<span>유니폼</span> 착용 및 <span>자체 돌봄 키트</span> 사용`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/201911/jv11942530.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
       content: `<span>어르신을 존중하는 대화법</span> 사용`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115624.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/133238988-7ab4f380-934e-40e6-8932-65b9ae8dac59.jpg',
       content: `<span>삼킴 정도와 기저 질환</span>을 고려한 식단 제공`,
     },
     {
-      image: 'https://imagescdn.gettyimagesbank.com/500/202011/jv12115507.jpg',
+      image:
+        'https://user-images.githubusercontent.com/52532871/133238697-32b1f028-e6f4-491c-b1cd-47a8478d7abd.jpg',
       content: `<span>단계별 인지 프로그램</span> 진행`,
     },
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/132996024-e69918fd-dd8f-4286-9eab-5bd3153dc6f0.jpg',
+        'https://user-images.githubusercontent.com/52532871/133239418-3c3c1d61-3229-47fc-9fcb-23320733906b.jpg',
       content: `혈압, 혈당, 체온, 식사량 등의 <span>기초건강수치와 돌봄일지</span>를 작성`,
     },
     ,
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
+        'https://user-images.githubusercontent.com/52532871/133238693-64450d2a-3958-4ee1-833e-8d33baac5f2b.jpg',
       content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
     },
   ];
@@ -102,27 +106,29 @@ export default function Landing() {
       background: '#ffe77a',
       icon: 'https://cdn-icons-png.flaticon.com/512/3523/3523429.png',
       title: '요양보호사 자격증',
-      subtitle: '국가공인자격증을 취득한 검증된 요양보호사와 함께 일을 합니다.',
+      subtitle:
+        '240시간의 교육과정을 이수하여 <span>국가공인자격증</span>을 취득한 검증된 요양보호사와 함께합니다.',
     },
     {
       background: '#e1efff',
       icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135682.png',
       title: '돌봄 인성 면접 및 근무 조건 인터뷰 진행',
       subtitle:
-        '기존 방문요양보다 전문적인 케어에 동의한 책임감있는 요양보호사와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 매칭합니다.',
+        '기존 방문요양보다 <span>전문적인 케어</span>에 동의한 <span>책임감있는 요양보호사</span>와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 선발합니다.',
     },
     {
       background: '#e1e4eb',
       icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058578.png',
       title: '돌봄 전문성 강화 교육',
       subtitle:
-        '근무를 시작하기 전 돌봄 전문성 강화 교육을 제공합니다. 기본적인 CS 마인드, 케어 전문 교육, 행동심리 및 의료교육을 제공하여 케어에 필수적인 전문성 강화 교육을 제공합니다.',
+        '선발된 요양보호사는 근무 전 <span>돌봄 전문성 강화 교육을 수강</span>합니다. 기본적인 <span>CS 마인드, 전문 케어 교육, 행동심리 및 의료교육</span>을 각 분야의 전문가가 진행합니다.',
     },
     {
       background: '#e6f5d4',
       icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058599.png',
       title: '돌봄 정기 보완 교육',
-      subtitle: '근무를 하며 한 달에 한 번 정기 교육을 제공하여 사례회의 등 보완교육을 제공합니다.',
+      subtitle:
+        '한 달에 한 번 정기적으로 <span>사례회의와 추가교육 등 보완교육</span>을 통해 서비스 품질을 향상시킵니다. 어르신(보호자)의 피드백이 있을 경우에는 이를 바탕으로 <span>즉각적인 보완교육</span>이 이루어집니다.',
     },
   ];
   const peopleInfo = [
@@ -267,10 +273,10 @@ export default function Landing() {
             })}
           </S.IndicatorContainer>
         </S.Jumbotron>
-        {/* <S.CarouselContainer>
-          <Carousel showThumbs={false}>
+        <S.CarouselContainer>
+          <Carousel showThumbs={false} showArrows={false} showStatus={false} infiniteLoop={true}>
             {jumbotronInfo.map((item, index) => (
-              <div key={index}>
+              <div key={index} style={{ width: '100%', height: '600px' }}>
                 <S.BackgroundImage url={item.image} />
                 <S.InnerContentContainer>
                   <S.InnerContent>
@@ -290,7 +296,7 @@ export default function Landing() {
               </div>
             ))}
           </Carousel>
-        </S.CarouselContainer> */}
+        </S.CarouselContainer>
         <S.Section>
           <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의
@@ -329,14 +335,14 @@ export default function Landing() {
                 </S.VerificationIconBackground>
                 <S.VerificationTitle>
                   {item.title}
-                  <S.VerificationSubtitle>{item.subtitle}</S.VerificationSubtitle>
+                  <S.VerificationSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
                 </S.VerificationTitle>
               </S.VerificationItem>
             ))}
           </S.VerificationList>
         </S.Section>
         <S.Section>
-          <S.SectionTitle data-aos="fade">
+          <S.SectionTitle data-aos="fade" isSmall>
             <img src="/logo_purple.png" />은 경험 많은
             <br />
             강사진과 재가센터와 함께 합니다.

@@ -129,6 +129,7 @@ export const JumboAnswer = styled.div`
   text-align: center;
   margin-top: 20px;
   img {
+    width: auto;
     height: 40px;
     padding-top: 5px;
     margin-bottom: -5px;
@@ -137,6 +138,7 @@ export const JumboAnswer = styled.div`
     font-size: 28px;
     line-height: 1.8;
     img {
+      width: auto !important;
       height: 35px;
       margin-bottom: -3px;
     }
@@ -294,17 +296,21 @@ export const SectionSubtitle = styled.div`
   }
 `;
 
-export const SectionTitle = styled.div`
+interface SectionTitleProps {
+  isSmall?: boolean;
+}
+
+export const SectionTitle = styled.div<SectionTitleProps>`
   color: ${THEME.GRAY_FONT};
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 700;
   margin-top: 50px;
   line-height: 1.8;
   text-align: center;
   img {
-    height: 40px;
+    height: 50px;
     padding-top: 5px;
-    margin-bottom: -5px;
+    margin-bottom: -8px;
     margin-right: 3px;
   }
   span {
@@ -314,9 +320,9 @@ export const SectionTitle = styled.div`
     padding: 0 5px;
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 24px;
+    font-size: ${(props) => (props.isSmall ? '24px' : '28px')};
     img {
-      height: 32px;
+      height: 40px;
       padding-top: 5px;
       margin-bottom: -5px;
       margin-right: 3px;
@@ -398,7 +404,7 @@ export const ServiceCardTitle = styled.div`
   font-size: 20px;
   font-weight: 500;
   margin: 20px 0;
-  line-height: 1.5;
+  line-height: 1.6;
   color: ${THEME.GRAY_FONT};
   ::before {
     content: '✔ ';
@@ -408,14 +414,15 @@ export const ServiceCardTitle = styled.div`
     font-size: inherit;
     color: inherit;
     font-weight: 700;
+    border-bottom: 1px solid ${THEME.GRAY_FONT};
   }
 
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
     font-size: 16px;
     margin: 10px 0;
+    line-height: 1.5;
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 16px;
     padding: 10px 20px;
   }
 `;
@@ -456,15 +463,25 @@ export const VerificationIcon = styled.div<ImageProps>`
 
 export const VerificationTitle = styled.div`
   font-weight: 700;
-  font-size: 18px;
+  font-size: 24px;
   color: ${THEME.GRAY_FONT};
-  margin-top: 10px;
+  margin-top: 20px;
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    margin-top: 10px;
+  }
 `;
 
 export const VerificationSubtitle = styled.div`
   font-size: 18px;
   color: ${THEME.GRAY_FONT};
   margin-top: 5px;
+  line-height: 1.8;
+  span {
+    font-size: inherit;
+    color: inherit;
+    font-weight: 700;
+    border-bottom: 1px solid ${THEME.GRAY_FONT};
+  }
 `;
 
 export const PeopleIndicatorContainer = styled.div`
