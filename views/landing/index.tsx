@@ -105,28 +105,28 @@ export default function Landing() {
     {
       background: '#ffe77a',
       icon: 'https://cdn-icons-png.flaticon.com/512/3523/3523429.png',
-      title: '요양보호사 자격증',
+      title: '국가공인자격증',
       subtitle:
         '240시간의 교육과정을 이수하여 <span>국가공인자격증</span>을 취득한 검증된 요양보호사와 함께합니다.',
     },
     {
       background: '#e1efff',
       icon: 'https://cdn-icons-png.flaticon.com/512/3135/3135682.png',
-      title: '돌봄 인성 면접 및 근무 조건 인터뷰 진행',
+      title: '검증된 요양보호사',
       subtitle:
         '기존 방문요양보다 <span>전문적인 케어</span>에 동의한 <span>책임감있는 요양보호사</span>와 함께합니다. 안정적인 근무가 가능하도록 근무에 대한 이해도가 높은 요양보호사를 선발합니다.',
     },
     {
       background: '#e1e4eb',
       icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058578.png',
-      title: '돌봄 전문성 강화 교육',
+      title: '전문성 강화 교육',
       subtitle:
         '선발된 요양보호사는 근무 전 <span>돌봄 전문성 강화 교육을 수강</span>합니다. 기본적인 <span>CS 마인드, 전문 케어 교육, 행동심리 및 의료교육</span>을 각 분야의 전문가가 진행합니다.',
     },
     {
       background: '#e6f5d4',
       icon: 'https://cdn-icons-png.flaticon.com/512/1058/1058599.png',
-      title: '돌봄 정기 보완 교육',
+      title: '정기 보완 교육',
       subtitle:
         '한 달에 한 번 정기적으로 <span>사례회의와 추가교육 등 보완교육</span>을 통해 서비스 품질을 향상시킵니다. 어르신(보호자)의 피드백이 있을 경우에는 이를 바탕으로 <span>즉각적인 보완교육</span>이 이루어집니다.',
     },
@@ -321,7 +321,7 @@ export default function Landing() {
             })}
           </S.ServiceList>
         </S.Section>
-        <S.Section>
+        <S.Section style={{ background: '#f8f8f8' }}>
           <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의 서비스는
             <br />
@@ -330,13 +330,13 @@ export default function Landing() {
           <S.VerificationList>
             {verificationInfo.map((item, index) => (
               <S.VerificationItem data-aos="fade-up" key={index}>
-                <S.VerificationIconBackground style={{ background: item.background }}>
-                  <S.VerificationIcon src={item.icon} />
-                </S.VerificationIconBackground>
                 <S.VerificationTitle>
+                  <S.VerificationIconBackground style={{ background: item.background }}>
+                    <S.VerificationIcon src={item.icon} />
+                  </S.VerificationIconBackground>
                   {item.title}
-                  <S.VerificationSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
                 </S.VerificationTitle>
+                <S.VerificationSubtitle dangerouslySetInnerHTML={{ __html: item.subtitle }} />
               </S.VerificationItem>
             ))}
           </S.VerificationList>
@@ -415,14 +415,24 @@ export default function Landing() {
         <S.FooterBar />
         <S.Footer>
           <S.FooterText>
-            <span>돌봄</span> | 대표이사 : 김예지 | 개인정보관리책임자 : 백종근
+            <S.FooterTitle>
+              고객센터: 010-5618-9508
+              <br />
+              (평일 9시 ~ 18시)
+            </S.FooterTitle>
+            이메일(비즈니스&제휴): info@dol-bom.com
             <br />
-            사업자번호 : 825-88-02119
+            <br />
+          </S.FooterText>
+          <S.FooterText>
+            <S.FooterTitle>웁시데이지(주)</S.FooterTitle>
+            사업자번호 : 825-88-02119 | 대표 김예지
+            <br />
+            서울특별시 노원구 동일173길 27 서울창업디딤터
             <br />
             <br />
             Copyright ⓒ dolbom. All rights reserved.
-          </S.FooterText>
-          <S.FooterText style={{ color: '#4e515c' }}>
+            <br />
             Icon{' '}
             <a href="https://www.freepik.com" title="Freepik" style={{ color: '#4e515c' }}>
               Freepik

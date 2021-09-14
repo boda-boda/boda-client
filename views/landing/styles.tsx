@@ -7,7 +7,12 @@ import {
   FLEX_COLUMN_START_START,
   FLEX_ROW_CENTER_CENTER,
   FLEX_ROW_CENTER_END,
+  FLEX_ROW_CENTER_START,
+  FLEX_ROW_END_START,
   FLEX_ROW_SPACE_CENTER,
+  FLEX_ROW_START_CENTER,
+  FLEX_ROW_START_END,
+  FLEX_ROW_START_START,
   THEME,
 } from '../../constant';
 
@@ -98,6 +103,8 @@ export const JumboQuestion = styled.div`
   color: white;
   border-bottom: 1px solid white;
   padding-bottom: 5px;
+  width: 100%;
+  text-align: center;
   ::before {
     content: '“';
     margin-right: 10px;
@@ -111,13 +118,12 @@ export const JumboQuestion = styled.div`
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: 22px;
+    word-break: keep-all;
     ::before {
-      content: '';
-      margin: 0;
+      margin-right: 3px;
     }
     ::after {
-      content: '';
-      margin: 0;
+      margin-left: 3px;
     }
   }
 `;
@@ -128,6 +134,7 @@ export const JumboAnswer = styled.div`
   color: white;
   text-align: center;
   margin-top: 20px;
+  padding: 0 15px;
   img {
     width: auto;
     height: 40px;
@@ -144,7 +151,7 @@ export const JumboAnswer = styled.div`
     }
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    font-size: 20px;
+    font-size: 18px;
     text-align: left;
     margin-top: 10px;
     img {
@@ -446,15 +453,15 @@ export const VerificationItem = styled.div`
 `;
 
 export const VerificationIconBackground = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   padding: 10px;
   border-radius: 10px;
 `;
 
 export const VerificationIcon = styled.div<ImageProps>`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
   background-position: center;
@@ -463,9 +470,10 @@ export const VerificationIcon = styled.div<ImageProps>`
 
 export const VerificationTitle = styled.div`
   font-weight: 700;
-  font-size: 24px;
+  font-size: 20px;
   color: ${THEME.GRAY_FONT};
-  margin-top: 20px;
+  ${FLEX_ROW_START_CENTER};
+  gap: 10px;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     margin-top: 10px;
   }
@@ -474,7 +482,7 @@ export const VerificationTitle = styled.div`
 export const VerificationSubtitle = styled.div`
   font-size: 18px;
   color: ${THEME.GRAY_FONT};
-  margin-top: 5px;
+  margin-top: 20px;
   line-height: 1.8;
   span {
     font-size: inherit;
@@ -686,19 +694,27 @@ export const CunsultButton = styled.button`
 
 export const Footer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 30px;
+  ${FLEX_ROW_CENTER_START};
+  flex-direction: row-reverse;
+  gap: 200px;
+  padding: 40px 0;
+  background: ${THEME.BACKGROUND};
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    ${FLEX_COLUMN_START_START};
+    padding: 40px 30px;
+  }
+`;
+
+export const FooterTitle = styled.div`
+  color: ${THEME.GRAY_FONT};
+  font-size: 18px;
+  font-weight: 700;
 `;
 
 export const FooterText = styled.div`
   color: ${THEME.GRAY_FONT};
   font-size: 14px;
   line-height: 1.71;
-  span {
-    font-size: 14px;
-    font-weight: 600;
-  }
 `;
 
 export const FooterBar = styled.div`
