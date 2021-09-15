@@ -54,18 +54,21 @@ export default function Landing() {
         'https://user-images.githubusercontent.com/52532871/113498372-4eab5500-9547-11eb-8c46-555aee277adb.jpg',
       question: `어머님께서 치매가 심해지시나요?`,
       answer: `치매는 진행 단계별 관리가 꼭 필요합니다. 저희 ${jumbotronLogo}은 단계별 인지 프로그램을 제공하여 어르신의 치매 진행을 늦춥니다.`,
+      isRight: false,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/133236347-11f1805a-10b8-4275-a75c-b598b6e8ddc2.jpg',
       question: `어머님께서 식사를 힘들어하시나요?`,
       answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
+      isRight: false,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/113498373-50751880-9547-11eb-8a79-909a9a6e34f3.jpg',
       question: `혼자 계시는 어머님이 걱정되시나요?`,
       answer: `저희 ${jumbotronLogo}은 매일 돌봄일지를 작성하고 기초건강수치를 기록하며 각종 노인질환을 예방합니다.`,
+      isRight: true,
     },
   ];
   const serviceInfo = [
@@ -76,7 +79,7 @@ export default function Landing() {
     },
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg',
+        'https://user-images.githubusercontent.com/52532871/133405674-22b7154c-5c23-4134-8100-7331a844c750.jpg',
       content: `<span>어르신을 존중하는 대화법</span> 사용`,
     },
     {
@@ -99,6 +102,7 @@ export default function Landing() {
       image:
         'https://user-images.githubusercontent.com/52532871/133238693-64450d2a-3958-4ee1-833e-8d33baac5f2b.jpg',
       content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
+      origin: 'bottom',
     },
   ];
   const verificationInfo = [
@@ -269,7 +273,7 @@ export default function Landing() {
           <Carousel showThumbs={false} showArrows={false} showStatus={false} infiniteLoop={true}>
             {jumbotronInfo.map((item, index) => (
               <div key={index} style={{ width: '100%', height: '600px' }}>
-                <S.BackgroundImage url={item.image} />
+                <S.BackgroundImage url={item.image} isRight={item.isRight} />
                 <S.InnerContentContainer>
                   <S.InnerContent>
                     <S.JumboQuestion
@@ -306,7 +310,7 @@ export default function Landing() {
             {serviceInfo.map((item, index) => {
               return (
                 <S.ServiceCard key={index} data-aos="fade-up">
-                  <S.ServiceCardImage src={item.image} />
+                  <S.ServiceCardImage src={item.image} origin={item.origin} />
                   <S.ServiceCardTitle dangerouslySetInnerHTML={{ __html: item.content }} />
                 </S.ServiceCard>
               );

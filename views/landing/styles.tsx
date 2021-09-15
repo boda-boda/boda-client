@@ -37,6 +37,7 @@ export const Section = styled.div`
 
 interface JumbotronProps {
   url?: string;
+  isRight?: boolean;
 }
 
 export const Jumbotron = styled.div<JumbotronProps>`
@@ -77,7 +78,7 @@ export const BackgroundImage = styled.div<JumbotronProps>`
   background-image: url(${(props) => props.url});
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: ${(props) => (props.isRight ? 'right' : 'center')};
   transition: 0.2s ease;
   opacity: 0.6;
 `;
@@ -385,14 +386,19 @@ export const ServiceList = styled.div`
 
 export const ServiceCard = styled.div`
   width: 300px;
-  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+  @media screen and (max-width: ${TABLET_BREAKPOINT}) {
     width: 100%;
+    max-width: 350px;
     margin: 10px 0;
+  }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    max-width: none;
   }
 `;
 
 interface ImageProps {
   src: string;
+  origin?: string;
 }
 
 export const ServiceCardImage = styled.div<ImageProps>`
@@ -401,10 +407,15 @@ export const ServiceCardImage = styled.div<ImageProps>`
   background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: ${(props) => (props.origin ? props.origin : 'center')};
   background-size: cover;
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
-    height: 150px;
+    height: 180px;
+    ${(props) =>
+      props.origin == 'top' &&
+      css`
+        background-position: 'top -20px center';
+      `}
   }
 `;
 
