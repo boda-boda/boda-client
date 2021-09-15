@@ -24,15 +24,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta
           name="description"
-          content="간편하게 원하는 요양보호사를 탐색해보세요! 재가센터의 요양보호사 관리 및 매칭서비스, 돌봄입니다."
+          content="부모님을 위한 최고의 선택, 프리미엄 방문요양 서비스 돌봄"
         />
         <meta
           property="og:description"
-          content="간편하게 원하는 요양보호사를 탐색해보세요! 재가센터의 요양보호사 관리 및 매칭서비스, 돌봄입니다."
+          content="부모님을 위한 최고의 선택, 프리미엄 방문요양 서비스 돌봄"
         />
         <meta
           property="og:image"
-          content="https://user-images.githubusercontent.com/52532871/111497282-51a2f900-8784-11eb-93ff-1b699a13b582.png"
+          content="https://user-images.githubusercontent.com/52532871/113498681-1b1dfa00-954a-11eb-9c0f-25aab2033c56.jpg"
         />
         <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=1" />
       </Head>
