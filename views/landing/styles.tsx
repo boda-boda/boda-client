@@ -158,7 +158,9 @@ export const JumboAnswer = styled.div`
     margin-top: 10px;
     img {
       height: 35px;
-      margin-bottom: -5px;
+      margin-bottom: -3px;
+      padding-bottom: 2px;
+      margin-top: -2px;
     }
   }
 `;

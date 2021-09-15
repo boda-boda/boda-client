@@ -89,7 +89,7 @@ export default function Landing() {
     },
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/133238697-32b1f028-e6f4-491c-b1cd-47a8478d7abd.jpg',
+        'https://user-images.githubusercontent.com/52532871/133408005-465ffca3-3157-4d53-aff0-7e1df7e9a76f.jpg',
       content: `<span>단계별 인지 프로그램</span> 진행`,
     },
     {
