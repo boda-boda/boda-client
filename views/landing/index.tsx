@@ -138,68 +138,68 @@ export default function Landing() {
   const peopleInfo = [
     {
       small:
-        'https://user-images.githubusercontent.com/52532871/133298465-5866fdbf-8a9c-4e33-b9bd-dd105f3b2e80.jpg',
+        'https://user-images.githubusercontent.com/52532871/133982020-6592d025-e4eb-4dba-8177-790ff50b3f36.jpg',
       background:
-        'https://user-images.githubusercontent.com/52532871/133289722-9c8882d5-9022-4b15-8052-6104b7612e10.jpg',
+        'https://user-images.githubusercontent.com/52532871/133977474-a0b561cc-5c27-4315-b8f0-f5bab51e5869.jpg',
+      title: '주식회사 웁시데이지',
+      name: '김예지',
+      role: '대표',
+      career: `프리미엄 방문 요양, 돌봄 창업<br/>
+      중소벤처기업부 예비창업패키지 우수기업 선정`,
+      ment: '어르신 케어의 새로운 지평을 열겠습니다.',
+      isRight: false,
+    },
+    {
+      small:
+        'https://user-images.githubusercontent.com/52532871/133982055-7ff4d220-4217-4619-9497-0cc316825766.jpg',
+      background:
+        'https://user-images.githubusercontent.com/52532871/133980750-be97ece9-14c7-4d49-91bc-ecc8f3052dcb.jpg',
       title: 'CS교육',
       name: '조성희',
       role: '대표님',
-      career: `노인장기요양기관 5년 운영<br/>
-      2019년도 장기요양기관 평가 최우수 기관 선정`,
-      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
+      career: `노인장기요양기관 10년 운영<br/>
+      사회서비스 특화 CS`,
+      ment: '감성소통 CS, 감동있는 돌봄서비스',
       isRight: true,
     },
-    /*     {
+    {
       small:
-        'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxOTAxMDRfMjk5%2FMDAxNTQ2NTM0NDYzNDA2.N964Gq3q9-8pknGxXz0jlqvPXrt6WGkg7Djtrk3y6sUg.rTm-y9YBHW8F8IuaKuZfZf9Ls9JcmCtJXvEeBnhyoQUg.JPEG.wjdtjdrbs123%2FIMG_20190104_004804.jpg&type=sc960_832',
+        'https://user-images.githubusercontent.com/52532871/133982037-436ce32c-bed3-4442-8958-204ee03a8369.jpg',
       background:
-        'https://images.unsplash.com/photo-1613918108466-292b78a8ef95?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80',
+        'https://user-images.githubusercontent.com/52532871/133980455-9eceb422-9f1c-4c29-9ec4-0f3d85a6c999.jpg',
       title: '어르신 케어 교육',
       name: '문명란',
       role: '선생님',
-      career: `1999 출생<br/>
-      2021 도쿄올림픽 배구 4강 진출`,
-      ment: '다 흩어진 후에야 들리지만',
+      career: `노인장기요양기관 5년 운영<br/>
+      2019년도 장기요양기관 평가 최우수 기관 선정`,
+      ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
       isRight: false,
-    }, */
-    /*     {
-      small:
-        'https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F5129%2F2017%2F04%2F16%2F1492322043_1231576_20170416145718050.jpg&type=sc960_832',
-      background:
-        'https://thumbs.dreamstime.com/b/confident-professional-young-woman-blue-blouse-pointing-finger-upper-left-corner-looking-camera-persuade-customer-make-174846578.jpg',
-      title: '행동심리 의료 교육',
-      name: '손유리',
-      role: '의사님',
-      career: `1999 출생<br/>
-      2021 도쿄올림픽 배구 4강 진출`,
-      ment: '특별한 기적을 기다리지 마',
-      isRight: false,
-    }, */
+    },
     {
       small:
-        'https://user-images.githubusercontent.com/52532871/133298468-24d6a1e9-522c-4aa5-9443-1dc3248bcc57.jpg',
+        'https://user-images.githubusercontent.com/52532871/133981998-a2689e20-0a9f-4c26-a4c7-c5b4c02031d2.jpg',
       background:
-        'https://user-images.githubusercontent.com/52532871/133289708-34ede9b5-9188-47e3-a3e6-56a11ffa8ed0.jpg',
+        'https://user-images.githubusercontent.com/52532871/133979580-2ee0524e-f502-428d-aeea-2b5b8aac3a08.jpg',
       title: 'A플러스사랑드림재가센터',
       name: '조재분',
       role: '센터장님',
       career: `노인장기요양기관 5년 운영<br/>
       2019년도 장기요양기관 평가 최우수 기관 선정`,
       ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
-      isRight: false,
+      isRight: true,
     },
     {
       small:
-        'https://user-images.githubusercontent.com/52532871/133298392-a4708c35-aec3-4a06-99a5-938025543604.jpg',
+        'https://user-images.githubusercontent.com/52532871/133982046-eafc0b09-ede8-4920-92f5-4b6abf2687f8.jpg',
       background:
-        'https://user-images.githubusercontent.com/52532871/133289719-3195e5ec-4bae-4559-9758-43348c014b7c.jpg',
-      title: '정다운재가복지센터',
-      name: '정은희',
-      role: '사회복지사님',
+        'https://user-images.githubusercontent.com/52532871/133977425-43466335-754f-4229-bfc0-e8c997cfdd52.jpg',
+      title: '...',
+      name: '박근옥',
+      role: '...',
       career: `노인장기요양기관 5년 운영<br/>
       2019년도 장기요양기관 평가 최우수 기관 선정`,
       ment: '눈을 맞추고 손을 맞잡으며 함께 합니다.',
-      isRight: true,
+      isRight: false,
     },
   ];
   const [jumbotronIndex, setJumbotronIndex] = useState(0);

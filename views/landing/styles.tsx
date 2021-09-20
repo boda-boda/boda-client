@@ -581,7 +581,7 @@ export const PeopleCard = styled.div<PeopleCardProps>`
   width: 100%;
   max-width: 800px;
   position: relative;
-  height: 300px;
+  height: 350px;
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
   background-position: center;
