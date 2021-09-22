@@ -316,7 +316,9 @@ export default function Landing() {
           <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의
             <br />
-            <a href="https://blog.naver.com/dol-bom/222499201207">프리미엄 방문요양</a>
+            <a href="https://blog.naver.com/dol-bom/222499201207" target="_blank">
+              프리미엄 방문요양
+            </a>
             이란?
           </S.SectionTitle>
           <S.ServiceSubtitle>
