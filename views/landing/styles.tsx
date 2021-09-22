@@ -37,6 +37,7 @@ export const Section = styled.div`
 
 interface JumbotronProps {
   url?: string;
+  isRight?: boolean;
 }
 
 export const Jumbotron = styled.div<JumbotronProps>`
@@ -77,7 +78,7 @@ export const BackgroundImage = styled.div<JumbotronProps>`
   background-image: url(${(props) => props.url});
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: ${(props) => (props.isRight ? 'right' : 'center')};
   transition: 0.2s ease;
   opacity: 0.6;
 `;
@@ -157,7 +158,9 @@ export const JumboAnswer = styled.div`
     margin-top: 10px;
     img {
       height: 35px;
-      margin-bottom: -5px;
+      margin-bottom: -3px;
+      padding-bottom: 2px;
+      margin-top: -2px;
     }
   }
 `;
@@ -385,14 +388,19 @@ export const ServiceList = styled.div`
 
 export const ServiceCard = styled.div`
   width: 300px;
-  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+  @media screen and (max-width: ${TABLET_BREAKPOINT}) {
     width: 100%;
+    max-width: 350px;
     margin: 10px 0;
+  }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    max-width: none;
   }
 `;
 
 interface ImageProps {
   src: string;
+  origin?: string;
 }
 
 export const ServiceCardImage = styled.div<ImageProps>`
@@ -401,10 +409,15 @@ export const ServiceCardImage = styled.div<ImageProps>`
   background: ${THEME.HEADER_BACKGROUND};
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: ${(props) => (props.origin ? props.origin : 'center')};
   background-size: cover;
   @media screen and (max-width: ${TABLET_BREAKPOINT}) {
-    height: 150px;
+    height: 180px;
+    ${(props) =>
+      props.origin == 'top' &&
+      css`
+        background-position: 'top -20px center';
+      `}
   }
 `;
 
@@ -432,6 +445,30 @@ export const ServiceCardTitle = styled.div`
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     padding: 10px 20px;
+  }
+`;
+
+export const ServiceCardSubContent = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  margin: -15px 0 12px 0;
+  line-height: 1.6;
+  color: ${THEME.GRAY_FONT};
+  span {
+    font-size: inherit;
+    color: inherit;
+    font-weight: 700;
+    border-bottom: 1px solid ${THEME.GRAY_FONT};
+  }
+
+  @media screen and (max-width: ${TABLET_BREAKPOINT}) {
+    font-size: 11px;
+    margin: 0px 0 12px 0;
+    line-height: 1.5;
+  }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 0px 20px;
+    margin: -12px 0 12px 0;
   }
 `;
 
@@ -568,7 +605,7 @@ export const PeopleCard = styled.div<PeopleCardProps>`
   width: 100%;
   max-width: 800px;
   position: relative;
-  height: 300px;
+  height: 350px;
   background-image: url(${(props) => props.src});
   background-repeat: no-repeat;
   background-position: center;
@@ -613,13 +650,13 @@ export const PeopleCareer = styled.div<PeopleCardProps>`
   padding: 0 10px;
   margin: 0 5px;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    max-width: 200px;
+    max-width: 230px;
     word-break: keep-all;
   }
 `;
 
 export const PeopleMent = styled.div`
-  color: ${THEME.GRAY_FONT};
+  color: ${THEME.MAIN};
   margin-top: 20px;
   font-size: 20px;
   font-weight: 800;
@@ -630,7 +667,7 @@ export const PeopleMent = styled.div`
     content: '”';
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    width: 45%;
+    width: 55%;
     word-break: keep-all;
   }
 `;
