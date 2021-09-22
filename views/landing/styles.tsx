@@ -330,6 +330,12 @@ export const SectionTitle = styled.div<SectionTitleProps>`
     background-color: ${THEME.HEADER_BACKGROUND};
     padding: 0 5px;
   }
+  a {
+    font-size: inherit;
+    font-weight: 700;
+    background-color: ${THEME.HEADER_BACKGROUND};
+    padding: 0 5px;
+  }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
     font-size: ${(props) => (props.isSmall ? '24px' : '28px')};
     img {
