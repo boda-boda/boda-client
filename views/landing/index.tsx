@@ -316,7 +316,8 @@ export default function Landing() {
           <S.SectionTitle data-aos="fade">
             <img src="/logo_purple.png" />의
             <br />
-            <span>프리미엄 방문요양</span>이란?
+            <a href="https://blog.naver.com/dol-bom/222499201207">프리미엄 방문요양</a>
+            이란?
           </S.SectionTitle>
           <S.ServiceSubtitle>
             돌봄은 실무에 직접적인 요양보호사 교육을 통해 전문성 있는{' '}
