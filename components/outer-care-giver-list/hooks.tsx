@@ -56,7 +56,7 @@ export const useOuterCareGiverList = () => {
     setSelectedReligion([...selectedReligion, religion]);
   };
 
-  const handleReset = useCallback(() => {
+  const handleReset = useCallback(async () => {
     if (!confirm('검색 조건을 초기화하시겠습니까?')) return;
 
     setCity('');
@@ -65,6 +65,18 @@ export const useOuterCareGiverList = () => {
     setSelectedTime('');
     setSelectedCareInfo([] as string[]);
     setSelectedReligion([] as string[]);
+    try {
+      const response = await axios.get(
+        `/outer-care-worker/search?from=${0}&size=${careWorkersPerPage}`
+      );
+      setCareWorkers(response.data.data);
+      setMaxPage(Math.ceil(response.data.total / careWorkersPerPage));
+      setCurrentPage(1);
+      const ocwIdResponse = await axios.get(`/outer-care-worker/id/converted`);
+      setConvertedOuterCareWorkerIds(ocwIdResponse.data);
+    } catch (e) {
+      return;
+    }
   }, [careWorkers]);
 
   useEffect(() => {
