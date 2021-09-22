@@ -448,6 +448,30 @@ export const ServiceCardTitle = styled.div`
   }
 `;
 
+export const ServiceCardSubContent = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  margin: -15px 0 12px 0;
+  line-height: 1.6;
+  color: ${THEME.GRAY_FONT};
+  span {
+    font-size: inherit;
+    color: inherit;
+    font-weight: 700;
+    border-bottom: 1px solid ${THEME.GRAY_FONT};
+  }
+
+  @media screen and (max-width: ${TABLET_BREAKPOINT}) {
+    font-size: 11px;
+    margin: 0px 0 12px 0;
+    line-height: 1.5;
+  }
+  @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
+    padding: 0px 20px;
+    margin: -12px 0 12px 0;
+  }
+`;
+
 export const VerificationList = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -626,13 +650,13 @@ export const PeopleCareer = styled.div<PeopleCardProps>`
   padding: 0 10px;
   margin: 0 5px;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    max-width: 200px;
+    max-width: 230px;
     word-break: keep-all;
   }
 `;
 
 export const PeopleMent = styled.div`
-  color: ${THEME.GRAY_FONT};
+  color: ${THEME.MAIN};
   margin-top: 20px;
   font-size: 20px;
   font-weight: 800;
@@ -643,7 +667,7 @@ export const PeopleMent = styled.div`
     content: '”';
   }
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    width: 45%;
+    width: 55%;
     word-break: keep-all;
   }
 `;
