@@ -191,7 +191,7 @@ export default function Landing() {
       role: '센터장',
       career: `노인장기요양기관 5년 운영<br/>
       사회복지 표창장 수상`,
-      ment: '오랜 경험과 노하우로 서비스의 품질을 높입니다',
+      ment: '일상 속 복지를 실현하고자 항상 노력하겠습니다',
       isRight: false,
     },
     {
@@ -202,7 +202,7 @@ export default function Landing() {
       title: 'A플러스사랑드림재가센터',
       name: '조재분',
       role: '센터장',
-      career: `전국방문요양목욕기관협회 서울북부 지회장<br/>
+      career: `전국방문요양•목욕기관협회 상임이사<br/>
         장기요양기관 평가 최우수 기관`,
       ment: '부모님을 모시는 마음으로 사회적 효를 실천합니다',
       isRight: true,
@@ -368,7 +368,7 @@ export default function Landing() {
           <S.SectionTitle data-aos="fade" isSmall>
             <img src="/logo_purple.png" />은 경험 많은
             <br />
-            강사진과 재가센터와 함께 합니다.
+            강사진과 재가센터가 함께합니다.
           </S.SectionTitle>
           <S.PeopleIndicatorContainer data-aos="fade">
             {peopleInfo.map((item, index) => (
