@@ -663,7 +663,7 @@ export const PeopleCareer = styled.div<PeopleCardProps>`
   padding: 0 10px;
   margin: 0 5px;
   @media screen and (max-width: ${MOBILE_BREAKPOINT}) {
-    max-width: 230px;
+    max-width: 240px;
     word-break: keep-all;
   }
 `;
