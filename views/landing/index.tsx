@@ -449,10 +449,10 @@ export default function Landing() {
           <S.LogoList>
             <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295373-bb85905a-1511-43be-89c5-152cc4ed1bf3.png" />
             <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297324-9d00549e-8007-4ead-a1d5-a61ed54972d8.gif" />
-            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295376-0a343e10-d579-42b4-8c19-b07c7f69cc38.jpg" />
+            {/* <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295376-0a343e10-d579-42b4-8c19-b07c7f69cc38.jpg" /> */}
             <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295378-0eea03e3-8e44-45bf-919c-3e2d837b348a.jpg" />
             <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133295379-dd4b9062-ed47-45b9-9a0e-c13039b5b596.jpg" />
-            <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297326-eca3de23-91fd-42a9-8d54-803761ab0864.png" />
+            {/* <S.LogoItem src="https://user-images.githubusercontent.com/52532871/133297326-eca3de23-91fd-42a9-8d54-803761ab0864.png" /> */}
           </S.LogoList>
         </S.Section>
         <S.FooterBar />
