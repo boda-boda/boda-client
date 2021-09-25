@@ -168,19 +168,19 @@ export default function Landing() {
       ment: '다양한 놀이법으로 치매를 늦출 수 있습니다',
       isRight: false,
     },
-    {
-      small:
-        'https://user-images.githubusercontent.com/43158467/134341336-597f4809-01a8-40ad-995f-510c8d208760.png',
-      background:
-        'https://user-images.githubusercontent.com/43158467/134341343-45bd71d3-df86-4151-ad40-1edccf204cfd.png',
-      title: '돌봄 식단 담당',
-      name: '추수향',
-      role: '영양사',
-      career: `노인 전문 식단 경력 3년<br/>
-      긴급 돌봄 SOS 및 복지관 업무 총괄`,
-      ment: '한 분만을 위한 식단을 만듭니다',
-      isRight: true,
-    },
+    // {
+    //   small:
+    //     'https://user-images.githubusercontent.com/43158467/134341336-597f4809-01a8-40ad-995f-510c8d208760.png',
+    //   background:
+    //     'https://user-images.githubusercontent.com/43158467/134341343-45bd71d3-df86-4151-ad40-1edccf204cfd.png',
+    //   title: '돌봄 식단 담당',
+    //   name: '추수향',
+    //   role: '영양사',
+    //   career: `노인 전문 식단 경력 3년<br/>
+    //   긴급 돌봄 SOS 및 복지관 업무 총괄`,
+    //   ment: '한 분만을 위한 식단을 만듭니다',
+    //   isRight: true,
+    // },
     {
       small:
         'https://user-images.githubusercontent.com/52532871/133982046-eafc0b09-ede8-4920-92f5-4b6abf2687f8.jpg',
