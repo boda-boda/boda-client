@@ -461,7 +461,7 @@ export default function Landing() {
             <S.FooterTitle>
               고객센터: 010-5618-9508
               <br />
-              (평일 9시 ~ 18시)
+              (평일 10시 ~ 22시)
             </S.FooterTitle>
             이메일(비즈니스{'&'}제휴): info@dol-bom.com
             <br />
