@@ -60,7 +60,7 @@ export default function Landing() {
       image:
         'https://user-images.githubusercontent.com/52532871/133236347-11f1805a-10b8-4275-a75c-b598b6e8ddc2.jpg',
       question: `부모님께서 식사를 힘들어하시나요?`,
-      answer: `어르신은 노화에 따른 삼킴장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
+      answer: `어르신은 노화에 따른 연하장애가 심해지기 때문입니다. 저희 ${jumbotronLogo}은 삼킴 정도와 기저 질환을 고려한 식단을 제공합니다.`,
       isRight: false,
     },
     {
