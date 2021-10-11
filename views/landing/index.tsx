@@ -74,14 +74,8 @@ export default function Landing() {
   const serviceInfo = [
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/132996425-f3b0f574-7938-49c1-af3d-0ec84beed1fc.jpg',
-      content: `<span>유니폼</span> 착용 및 <span>자체 돌봄 키트</span> 사용`,
-      subcontent: `*<span>자체 돌봄 키트</span>란? 혈압계, 혈당계, 체온계, 알콜솜, 인지프로그램 준비물이 포함된 케어에 필요한 키트`,
-    },
-    {
-      image:
-        'https://user-images.githubusercontent.com/52532871/133405674-22b7154c-5c23-4134-8100-7331a844c750.jpg',
-      content: `요양보호사 전문 <span>CS(Customer Service)</span> 과정 수료`,
+        'https://user-images.githubusercontent.com/52532871/133408005-465ffca3-3157-4d53-aff0-7e1df7e9a76f.jpg',
+      content: `오감 자극 <span>단계별 인지 프로그램</span> 진행`,
       subcontent: ``,
     },
     {
@@ -92,23 +86,29 @@ export default function Landing() {
     },
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/133408005-465ffca3-3157-4d53-aff0-7e1df7e9a76f.jpg',
-      content: `오감 자극 <span>단계별 인지 프로그램</span> 진행`,
+        'https://user-images.githubusercontent.com/52532871/133238693-64450d2a-3958-4ee1-833e-8d33baac5f2b.jpg',
+      content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
+      subcontent: ``,
+      origin: 'bottom',
+    },
+    {
+      image:
+        'https://user-images.githubusercontent.com/52532871/133405674-22b7154c-5c23-4134-8100-7331a844c750.jpg',
+      content: `요양보호사 전문 <span>CS(Customer Service)</span> 과정 수료`,
       subcontent: ``,
     },
     {
       image:
         'https://user-images.githubusercontent.com/52532871/133239418-3c3c1d61-3229-47fc-9fcb-23320733906b.jpg',
-      content: `혈압, 혈당, 체온, 식사량 등의 <span>기초건강수치와 돌봄일지</span>를 작성`,
+      content: `체계적인 <span>돌봄일지</span> 작성을 통해 어르신 상태 및 돌봄 내용 기록`,
       subcontent: ``,
     },
     ,
     {
       image:
-        'https://user-images.githubusercontent.com/52532871/133238693-64450d2a-3958-4ee1-833e-8d33baac5f2b.jpg',
-      content: `<span>망상, 환각, 배회</span> 등과 같은 <span>행동심리 증상에 대한 전문 지식</span> 보유`,
+        'https://user-images.githubusercontent.com/52532871/132996425-f3b0f574-7938-49c1-af3d-0ec84beed1fc.jpg',
+      content: `<span>유니폼 및 명찰</span>을 착용하여 신뢰있는 서비스 제공`,
       subcontent: ``,
-      origin: 'bottom',
     },
   ];
   const verificationInfo = [
